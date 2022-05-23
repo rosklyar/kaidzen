@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:splashscreen/splashscreen.dart';
 import 'dart:math';
 
 void main() {
@@ -11,11 +12,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Kaidzen',
+      title: 'Kaizen',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Kaidzen App'),
+      home: SplashScreen(
+        seconds: 8,
+        navigateAfterSeconds: const MyHomePage(title: 'Kaizen App'),
+        // ignore: prefer_const_constructors
+        title: Text(
+          'Choose your destiny',
+          style: const TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.white),
+        ),
+        backgroundColor: Colors.lightBlue[200],
+      ),
     );
   }
 }
