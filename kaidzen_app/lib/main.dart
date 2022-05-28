@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:kaidzen_app/views/boardSection.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -43,18 +45,31 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Your Kaidzen is: ${kaidzens[_index]}',
-            ),
-          ],
-        ),
+      body: PageView(
+        children: [
+          Container(
+            child: Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Your Kaidzen is: ${kaidzens[_index]}',
+                ),
+              ],
+            )),
+            color: Colors.blue,
+          ),
+          Container(
+            child: BoardSection(),
+          ),
+          Container(
+            color: Colors.green,
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showKaidzen,
