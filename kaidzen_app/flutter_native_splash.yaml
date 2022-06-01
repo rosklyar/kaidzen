@@ -22,8 +22,7 @@ flutter_native_splash:
 
   # The branding property allows you to specify an image used as branding in the splash screen.
   # It must be a png file. Currently, it is only supported for Android < v12 and iOS.
-  image: assets/kaizen.png
-  branding: assets/kaizen.png
+  image: assets/origami.png
 
   # To position the branding image at the bottom of the screen you can use bottom, bottomRight,
   # and bottomLeft. The default values is bottom if not specified or specified something else.
@@ -50,7 +49,7 @@ flutter_native_splash:
     # 640 pixels in diameter.
     # App icon without an icon background: This should be 1152×1152 pixels, and fit within a circle
     # 768 pixels in diameter.
-    image: assets/kaizen.png
+    image: assets/origami.png
 
     # Splash screen background color.
     #color: "#42a5f5"
