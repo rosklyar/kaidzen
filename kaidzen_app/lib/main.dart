@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:kaidzen_app/views/BoardSection.dart';
 import 'dart:math';
 
-import 'package:kaidzen_app/views/boardSection.dart';
+import 'models/task.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,6 +36,8 @@ class _MyHomePageState extends State<MyHomePage> {
   static const kaidzens = ["Warrior", "Mage", "Rogue", "Hunter"];
   int _index = 0;
   Random _random = Random();
+  final GlobalKey<BoardSectionState> _boardKey = GlobalKey();
+  final newTaskController = TextEditingController();
 
   void _showKaidzen() {
     setState(() {
@@ -45,7 +48,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(widget.title),
       ),
@@ -64,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
             color: Colors.blue,
           ),
           Container(
-            child: BoardSection(),
+            child: BoardSection(key: _boardKey),
           ),
           Container(
             color: Colors.green,
@@ -72,10 +74,30 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _showKaidzen,
+        onPressed: () async {
+          String? text = await openDialog();
+          _boardKey.currentState?.addItem(Task(name: text!));
+        },
         tooltip: 'Show Kaidzen',
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  Future<String?> openDialog() => showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text('New task'),
+            content: TextField(
+              autofocus: true,
+              decoration: InputDecoration(hintText: 'What should be done?'),
+              controller: newTaskController,
+            ),
+            actions: [
+              TextButton(onPressed: submit, child: Text("Create")),
+            ],
+          ));
+  void submit() {
+    Navigator.of(context).pop(newTaskController.text);
   }
 }

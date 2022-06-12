@@ -7,12 +7,14 @@ import 'package:kaidzen_app/utils/margin.dart';
 import 'package:kaidzen_app/utils/theme.dart';
 
 class BoardSection extends StatefulWidget {
+  const BoardSection({Key? key}) : super(key: key);
+
   @override
-  _BoardSectionState createState() => _BoardSectionState();
+  BoardSectionState createState() => BoardSectionState();
 }
 
-class _BoardSectionState extends State<BoardSection> {
-  late List<Task> tasks = [
+class BoardSectionState extends State<BoardSection> {
+  List<Task> tasks = [
     Task(name: 'Do this'),
     Task(name: 'Do that'),
     Task(name: 'Clean room'),
@@ -21,33 +23,31 @@ class _BoardSectionState extends State<BoardSection> {
     Task(name: 'Read Berlin diary 1'),
     Task(name: 'Read Berlin diary 2'),
     Task(name: 'Read Berlin diary 3'),
-    Task(name: 'Read Berlin diary 4'),
-    Task(name: 'Read Berlin diary 5'),
-    Task(name: 'Read Berlin diary 6'),
-    Task(name: 'Read Berlin diary 6'),
-    Task(name: 'Read Berlin diary 6'),
-    Task(name: 'Read Berlin diary 6'),
-    Task(name: 'Read Berlin diary 6'),
   ];
 
   @override
   void initState() {
     setState(() {
-      tasks.shuffle();
+      tasks;
     });
     super.initState();
   }
 
+  void addItem(Task newTask) {
+    tasks.add(newTask);
+    initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BoardItem(
+    return Board(
       list: tasks,
     );
   }
 }
 
-class BoardItem extends StatefulWidget {
-  const BoardItem({
+class Board extends StatefulWidget {
+  const Board({
     Key? key,
     required this.list,
   }) : super(key: key);
@@ -55,11 +55,11 @@ class BoardItem extends StatefulWidget {
   final List<Task> list;
 
   @override
-  _BoardItemState createState() => _BoardItemState(this.list);
+  _BoardState createState() => _BoardState(this.list);
 }
 
-class _BoardItemState extends State<BoardItem> {
-  _BoardItemState(this.list);
+class _BoardState extends State<Board> {
+  _BoardState(this.list);
   List<Task> list;
 
   void _onReorder(int oldIndex, int newIndex) {
