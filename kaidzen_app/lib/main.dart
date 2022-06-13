@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/views/BoardSection.dart';
+import 'package:kaidzen_app/views/switchableBoard.dart';
 import 'dart:math';
 
 import 'models/task.dart';
@@ -66,7 +67,9 @@ class _MyHomePageState extends State<MyHomePage> {
             color: Colors.blue,
           ),
           Container(
-            child: BoardSection(key: _boardKey),
+            child: SwitchableBoard(
+              key: _boardKey,
+            ),
           ),
           Container(
             color: Colors.green,

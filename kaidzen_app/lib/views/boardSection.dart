@@ -7,7 +7,8 @@ import 'package:kaidzen_app/utils/margin.dart';
 import 'package:kaidzen_app/utils/theme.dart';
 
 class BoardSection extends StatefulWidget {
-  const BoardSection({Key? key}) : super(key: key);
+  const BoardSection(GlobalKey<BoardSectionState> doBoardKey, {Key? key})
+      : super(key: key);
 
   @override
   BoardSectionState createState() => BoardSectionState();
