@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
 
@@ -15,14 +16,19 @@ class BoardSection extends StatefulWidget {
 
 class BoardSectionState extends State<BoardSection> {
   List<Task> tasks = [
-    Task(name: 'Do this'),
-    Task(name: 'Do that'),
-    Task(name: 'Clean room'),
-    Task(name: 'Do not forget about 1st task'),
-    Task(name: 'Visit dentist'),
-    Task(name: 'Read Berlin diary 1'),
-    Task(name: 'Read Berlin diary 2'),
-    Task(name: 'Read Berlin diary 3'),
+    Task('Do this', subtasks: [
+      Task('DO that'),
+      Task('AND that'),
+      Task('EVEN that'),
+      Task('AND EVEN that')
+    ]),
+    Task('Do that'),
+    Task('Clean room'),
+    Task('Do not forget about 1st task'),
+    Task('Visit dentist'),
+    Task('Read Berlin diary 1'),
+    Task('Read Berlin diary 2'),
+    Task('Read Berlin diary 3'),
   ];
 
   @override
@@ -128,8 +134,90 @@ class ListViewCard extends StatefulWidget {
 }
 
 class _ListViewCard extends State<ListViewCard> {
+  final newTaskController = TextEditingController();
+
+  void _onSubtasksReorder(int oldIndex, int newIndex) {
+    setState(
+      () {
+        if (newIndex > oldIndex) {
+          newIndex -= 1;
+        }
+        final Task item = widget.task.subtasks.removeAt(oldIndex);
+        widget.task.subtasks.insert(newIndex, item);
+      },
+    );
+  }
+
+  refresh() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    return widget.task.hasSubtasks()
+        ? ExpandablePanel(
+            header: buildContainer('(' +
+                widget.task.subtasks.length.toString() +
+                ')' +
+                widget.task.name),
+            collapsed: IconButton(
+              icon: const Icon(Icons.add),
+              tooltip: 'New subtask',
+              onPressed: () async {
+                String? text = await openDialog();
+                setState(() {
+                  widget.task.addSubTask(Task(text!));
+                });
+              },
+            ),
+            expanded: Container(
+              height: (70 * widget.task.subtasks.length).ceilToDouble(),
+              width: context.screenWidth(1),
+              margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+              decoration: const BoxDecoration(
+                color: Color(0xfff0f2f5),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(0),
+                ),
+              ),
+              child: ReorderableListView(
+                onReorder: _onSubtasksReorder,
+                scrollController: ScrollController(),
+                // buildDraggableFeedback: (a, b, c) => Container(),
+                children: List.generate(
+                  widget.task.subtasks.length,
+                  (index) {
+                    return ListViewCard(
+                      widget.task.subtasks[index],
+                      index,
+                      Key('$index'),
+                    );
+                  },
+                ),
+              ),
+            ))
+        : buildContainer(widget.task.name);
+  }
+
+  Future<String?> openDialog() => showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text('New subtask'),
+            content: TextField(
+              autofocus: true,
+              decoration: InputDecoration(hintText: 'What should be done?'),
+              controller: newTaskController,
+            ),
+            actions: [
+              TextButton(onPressed: submit, child: Text("Create")),
+            ],
+          ));
+  void submit() {
+    Navigator.of(context).pop(newTaskController.text);
+  }
+
+  Widget buildContainer(String name) {
     return Container(
         margin: EdgeInsets.fromLTRB(15, 18, 15, 0),
         padding: EdgeInsets.all(16),
@@ -153,7 +241,7 @@ class _ListViewCard extends State<ListViewCard> {
                 padding: EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                 margin: EdgeInsets.only(right: 6),
                 child: Center(
-                  child: Text(widget.task.name ?? '',
+                  child: Text(name,
                       style: TextStyle(
                         fontWeight: FontWeight.w300,
                         fontSize: 16,

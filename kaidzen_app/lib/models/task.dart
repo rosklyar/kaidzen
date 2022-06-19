@@ -1,7 +1,14 @@
 class Task {
   final String name;
+  final List<Task> subtasks;
 
-  Task({
-    required this.name,
-  });
+  Task(this.name, {this.subtasks = const []});
+
+  void addSubTask(Task subTask) {
+    subtasks.add(subTask);
+  }
+
+  bool hasSubtasks() {
+    return subtasks.isNotEmpty;
+  }
 }
