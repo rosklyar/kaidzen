@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'dart:developer' as dev;
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
@@ -8,8 +8,7 @@ import 'package:kaidzen_app/utils/margin.dart';
 import 'package:kaidzen_app/utils/theme.dart';
 
 class BoardSection extends StatefulWidget {
-  const BoardSection(GlobalKey<BoardSectionState> doBoardKey, {Key? key})
-      : super(key: key);
+  const BoardSection({Key? key}) : super(key: key);
 
   @override
   BoardSectionState createState() => BoardSectionState();
@@ -41,8 +40,9 @@ class BoardSectionState extends State<BoardSection> {
   }
 
   void addItem(Task newTask) {
-    tasks.add(newTask);
-    initState();
+    setState(() {
+      tasks.add(newTask);
+    });
   }
 
   @override
