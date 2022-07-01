@@ -63,21 +63,23 @@ class SwitchableBoardContainer extends StatefulWidget {
 
 class SwitchableBoardContainerState extends State<SwitchableBoardContainer> {
   late String currentBoard = Boards.DO;
-  final GlobalKey<BoardSectionState> _doBoardKey = GlobalKey();
-  final GlobalKey<BoardSectionState> _doingBoardKey = GlobalKey();
-  final GlobalKey<BoardSectionState> _doneBoardKey = GlobalKey();
-  final Map<String, BoardSection> sections = {};
-  final Map<String, GlobalKey<BoardSectionState>> states = {};
+  final GlobalKey<BoardState> _doBoardKey = GlobalKey();
+  final GlobalKey<BoardState> _doingBoardKey = GlobalKey();
+  final GlobalKey<BoardState> _doneBoardKey = GlobalKey();
+  final Map<String, Board> boards = {};
+  final Map<String, GlobalKey<BoardState>> states = {};
 
   @override
   void initState() {
     setState(() {
-      sections;
+      boards;
       states;
-      sections.putIfAbsent(Boards.DO, () => BoardSection(key: _doBoardKey));
-      sections.putIfAbsent(
-          Boards.DOING, () => BoardSection(key: _doingBoardKey));
-      sections.putIfAbsent(Boards.DONE, () => BoardSection(key: _doneBoardKey));
+      boards.putIfAbsent(
+          Boards.DO, () => Board(key: _doBoardKey, name: Boards.DO, list: []));
+      boards.putIfAbsent(Boards.DOING,
+          () => Board(key: _doingBoardKey, name: Boards.DOING, list: []));
+      boards.putIfAbsent(Boards.DONE,
+          () => Board(key: _doneBoardKey, name: Boards.DONE, list: []));
 
       states.putIfAbsent(Boards.DO, () => _doBoardKey);
       states.putIfAbsent(Boards.DOING, () => _doingBoardKey);
@@ -92,16 +94,14 @@ class SwitchableBoardContainerState extends State<SwitchableBoardContainer> {
 
   void changeBoard(String board) {
     setState(() {
-      log('changeBoard board=' + board);
       currentBoard = board;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    log('build SwitchableBoardContainerState');
     return Container(
-      child: sections[currentBoard]!,
+      child: boards[currentBoard]!,
     );
   }
 }

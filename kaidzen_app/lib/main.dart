@@ -79,7 +79,8 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           String? text = await openDialog();
-          _switchableBoardKey.currentState?.addItem(Task(text!));
+          var task = Task(text!, subtasks: [Task(text)]);
+          _switchableBoardKey.currentState?.addItem(task);
         },
         tooltip: 'Show Kaidzen',
         child: const Icon(Icons.add),

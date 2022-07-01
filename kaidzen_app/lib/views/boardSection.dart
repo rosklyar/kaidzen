@@ -1,73 +1,35 @@
-import 'dart:math';
 import 'dart:developer' as dev;
+import 'dart:math';
+
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
-
 import 'package:kaidzen_app/utils/margin.dart';
 import 'package:kaidzen_app/utils/theme.dart';
-
-class BoardSection extends StatefulWidget {
-  const BoardSection({Key? key}) : super(key: key);
-
-  @override
-  BoardSectionState createState() => BoardSectionState();
-}
-
-class BoardSectionState extends State<BoardSection> {
-  List<Task> tasks = [
-    Task('Do this', subtasks: [
-      Task('DO that'),
-      Task('AND that'),
-      Task('EVEN that'),
-      Task('AND EVEN that')
-    ]),
-    Task('Do that'),
-    Task('Clean room'),
-    Task('Do not forget about 1st task'),
-    Task('Visit dentist'),
-    Task('Read Berlin diary 1'),
-    Task('Read Berlin diary 2'),
-    Task('Read Berlin diary 3'),
-  ];
-
-  @override
-  void initState() {
-    setState(() {
-      tasks;
-    });
-    super.initState();
-  }
-
-  void addItem(Task newTask) {
-    setState(() {
-      tasks.add(newTask);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Board(
-      list: tasks,
-    );
-  }
-}
 
 class Board extends StatefulWidget {
   const Board({
     Key? key,
+    required this.name,
     required this.list,
   }) : super(key: key);
 
   final List<Task> list;
+  final String name;
 
   @override
-  _BoardState createState() => _BoardState(this.list);
+  BoardState createState() => BoardState(this.list);
 }
 
-class _BoardState extends State<Board> {
-  _BoardState(this.list);
+class BoardState extends State<Board> {
+  BoardState(this.list);
   List<Task> list;
+
+  void addItem(Task task) {
+    setState(() {
+      list.add(task);
+    });
+  }
 
   void _onReorder(int oldIndex, int newIndex) {
     setState(
