@@ -30,7 +30,7 @@ class BoardState extends State<Board> {
       list.add(task);
     });
   }
-
+  
   void _onReorder(int oldIndex, int newIndex) {
     setState(
       () {
