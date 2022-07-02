@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/views/BoardSection.dart';
+import 'package:kaidzen_app/views/switchableBoard.dart';
 import 'dart:math';
 
 import 'models/task.dart';
@@ -36,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
   static const kaidzens = ["Warrior", "Mage", "Rogue", "Hunter"];
   int _index = 0;
   Random _random = Random();
-  final GlobalKey<BoardSectionState> _boardKey = GlobalKey();
+  final GlobalKey<SwitchableBoardState> _switchableBoardKey = GlobalKey();
   final newTaskController = TextEditingController();
 
   void _showKaidzen() {
@@ -66,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
             color: Colors.blue,
           ),
           Container(
-            child: BoardSection(key: _boardKey),
+            child: SwitchableBoard(key: _switchableBoardKey),
           ),
           Container(
             color: Colors.green,
@@ -76,7 +79,8 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           String? text = await openDialog();
-          _boardKey.currentState?.addItem(Task(text!));
+          var task = Task(text!, subtasks: [Task(text)]);
+          _switchableBoardKey.currentState?.addItem(task);
         },
         tooltip: 'Show Kaidzen',
         child: const Icon(Icons.add),
