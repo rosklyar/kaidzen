@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/views/BoardSection.dart';
+import 'package:kaidzen_app/views/profilePanel.dart';
 import 'package:kaidzen_app/views/switchableBoard.dart';
 import 'dart:math';
 
@@ -40,6 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _index = 0;
   Random _random = Random();
   final GlobalKey<SwitchableBoardState> _switchableBoardKey = GlobalKey();
+  final GlobalKey<SwitchableBoardState> _profilePanelKey = GlobalKey();
   final newTaskController = TextEditingController();
 
   void _showKaidzen() {
@@ -54,28 +56,16 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: PageView(
-        children: [
-          Container(
-            child: Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Your Kaidzen is: ${kaidzens[_index]}',
-                ),
-              ],
-            )),
-            color: Colors.blue,
-          ),
-          Container(
-            child: SwitchableBoard(key: _switchableBoardKey),
-          ),
-          Container(
-            color: Colors.green,
-          ),
-        ],
-      ),
+      body: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+              child: Column(
+            children: [
+              ProfilePanel(
+                  key: _profilePanelKey, name: "Rostyslav Skliar", level: 10),
+              SwitchableBoard(key: _switchableBoardKey),
+            ],
+          ))),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           String? text = await openDialog();

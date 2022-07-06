@@ -35,10 +35,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_feather_icons: ^2.0.0+1
-  google_fonts: ^3.0.0
-  expandable: ^5.0.1
   flutter_native_splash: ^2.2.2
-  flutter_feather_icons: ^2.0.0+1
   expandable: ^5.0.1
   google_fonts: ^3.0.0
   toggle_switch: ^2.0.1
