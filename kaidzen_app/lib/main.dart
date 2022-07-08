@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:kaidzen_app/assets/constants.dart';
+import 'package:kaidzen_app/models/progress.dart';
 import 'package:kaidzen_app/views/BoardSection.dart';
 import 'package:kaidzen_app/views/profilePanel.dart';
 import 'package:kaidzen_app/views/switchableBoard.dart';
@@ -62,7 +64,17 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
             children: [
               ProfilePanel(
-                  key: _profilePanelKey, name: "Rostyslav Skliar", level: 10),
+                key: _profilePanelKey,
+                name: "Rostyslav Skliar",
+                level: 10,
+                progressMap: {
+                  Category.CAREER_AND_FINANCES: Progress(0.3, 5),
+                  Category.HEALTH: Progress(0.4, 7),
+                  Category.PERSONAL_DEVELOPMENT: Progress(0.2, 3),
+                  Category.LEISURE: Progress(0.7, 15),
+                  Category.RELATIONSHIPS: Progress(0.1, 2)
+                },
+              ),
               SwitchableBoard(key: _switchableBoardKey),
             ],
           ))),
