@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
+import 'package:kaidzen_app/service/TaskRepository.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:kaidzen_app/views/boardSection.dart';
 import 'package:kaidzen_app/assets/constants.dart';
@@ -21,6 +22,7 @@ class SwitchableBoardState extends State<SwitchableBoard> {
     Boards.DOING,
     Boards.DONE,
   ];
+  final TaskRepository taskRepository = TaskRepository();
 
   void addItem(Task newTask) {
     _switchableBoardContainerKey.currentState?.addItemToCurrentBoard(newTask);
@@ -47,14 +49,20 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                     ?.changeBoard(_boards[index!]);
               },
             ),
-            SwitchableBoardContainer(key: _switchableBoardContainerKey)
+            SwitchableBoardContainer(taskRepository,
+                key: _switchableBoardContainerKey)
           ],
         )));
   }
 }
 
 class SwitchableBoardContainer extends StatefulWidget {
-  const SwitchableBoardContainer({Key? key}) : super(key: key);
+  final TaskRepository taskRepository;
+
+  const SwitchableBoardContainer(
+    this.taskRepository, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   SwitchableBoardContainerState createState() =>
@@ -86,9 +94,18 @@ class SwitchableBoardContainerState extends State<SwitchableBoardContainer> {
       states.putIfAbsent(Boards.DONE, () => _doneBoardKey);
     });
     super.initState();
+    widget.taskRepository.getAll().then((allTasks) {
+      setState(() {
+        boards[currentBoard] = Board(
+            key: boards[currentBoard]!.key,
+            name: boards[currentBoard]!.name,
+            list: allTasks);
+      });
+    });
   }
 
   void addItemToCurrentBoard(Task newTask) {
+    widget.taskRepository.insert(newTask);
     states[currentBoard]!.currentState?.addItem(newTask);
   }
 
@@ -100,8 +117,6 @@ class SwitchableBoardContainerState extends State<SwitchableBoardContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: boards[currentBoard]!,
-    );
+    return Container(child: boards[currentBoard]!);
   }
 }
