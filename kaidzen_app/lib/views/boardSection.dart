@@ -8,37 +8,42 @@ import 'package:kaidzen_app/utils/margin.dart';
 import 'package:kaidzen_app/utils/theme.dart';
 
 class Board extends StatefulWidget {
-  const Board({
+  Board({
     Key? key,
     required this.name,
     required this.list,
   }) : super(key: key);
 
-  final List<Task> list;
+  List<Task> list;
   final String name;
 
+  setList(List<Task> newList) {
+    list = newList;
+  }
+
   @override
-  BoardState createState() => BoardState(this.list);
+  // ignore: no_logic_in_create_state
+  BoardState createState() {
+    debugPrint('createState:');
+    return BoardState();
+  }
 }
 
 class BoardState extends State<Board> {
-  BoardState(this.list);
-  List<Task> list;
-
   void addItem(Task task) {
     setState(() {
-      list.add(task);
+      widget.list.add(task);
     });
   }
-  
+
   void _onReorder(int oldIndex, int newIndex) {
     setState(
       () {
         if (newIndex > oldIndex) {
           newIndex -= 1;
         }
-        final Task item = list.removeAt(oldIndex);
-        list.insert(newIndex, item);
+        final Task item = widget.list.removeAt(oldIndex);
+        widget.list.insert(newIndex, item);
       },
     );
   }
@@ -89,8 +94,9 @@ class ListViewCard extends StatefulWidget {
   final int index;
   final Key key;
   final Task task;
+  final bool allowsSubtasks;
 
-  ListViewCard(this.task, this.index, this.key);
+  ListViewCard(this.task, this.index, this.key, {this.allowsSubtasks = false});
 
   @override
   _ListViewCard createState() => _ListViewCard();
@@ -117,7 +123,7 @@ class _ListViewCard extends State<ListViewCard> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.task.hasSubtasks()
+    return widget.task.hasSubtasks() && widget.allowsSubtasks
         ? ExpandablePanel(
             header: buildContainer('(' +
                 widget.task.subtasks.length.toString() +
@@ -127,7 +133,7 @@ class _ListViewCard extends State<ListViewCard> {
               icon: const Icon(Icons.add),
               tooltip: 'New subtask',
               onPressed: () async {
-                String? text = await openDialog();
+                String? text = await openDialog(widget.task);
                 setState(() {
                   widget.task.addSubTask(Task(text!));
                 });
@@ -163,7 +169,7 @@ class _ListViewCard extends State<ListViewCard> {
         : buildContainer(widget.task.name);
   }
 
-  Future<String?> openDialog() => showDialog<String>(
+  Future<String?> openDialog(Task parent) => showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
             title: Text('New subtask'),
@@ -203,14 +209,26 @@ class _ListViewCard extends State<ListViewCard> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                 margin: EdgeInsets.only(right: 6),
-                child: Center(
-                  child: Text(name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 16,
-                        color: Colors.grey[400],
-                      )),
-                ),
+                child: Row(children: [
+                  Center(
+                    child: Text(name,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 16,
+                          color: Colors.grey[400],
+                        )),
+                  ),
+                  const YMargin(5),
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    onPressed: () async {
+                      String? text = await openDialog(widget.task);
+                      setState(() {
+                        widget.task.addSubTask(Task(text!));
+                      });
+                    },
+                  )
+                ]),
               ),
             ],
           ),
