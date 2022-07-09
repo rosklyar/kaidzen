@@ -15,9 +15,9 @@ class TasksState extends ChangeNotifier {
   Future loadAll() async {
     List<Task> allTasks = await repository.getAll();
     _tasks = groupBy(allTasks, (Task task) => task.status);
-    _tasks.putIfAbsent(Boards.DO, () => <Task>[]);
-    _tasks.putIfAbsent(Boards.DOING, () => <Task>[]);
-    _tasks.putIfAbsent(Boards.DONE, () => <Task>[]);
+    _tasks.putIfAbsent(Status.TODO, () => <Task>[]);
+    _tasks.putIfAbsent(Status.DOING, () => <Task>[]);
+    _tasks.putIfAbsent(Status.DONE, () => <Task>[]);
     notifyListeners();
   }
 
