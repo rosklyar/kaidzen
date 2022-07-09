@@ -38,14 +38,30 @@ class SwitchableBoardState extends State<SwitchableBoard> {
         child: SingleChildScrollView(
             child: Column(
           children: [
-            ToggleSwitch(
-              initialLabelIndex: 0,
-              totalSwitches: 3,
-              labels: const [Boards.DO, Boards.DOING, Boards.DONE],
-              onToggle: (index) {
-                _switchableBoardContainerKey.currentState
-                    ?.changeBoard(_boards[index!]);
-              },
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Scrollbar(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: ToggleSwitch(
+                    cornerRadius: 20.0,
+                    radiusStyle: true,
+                    minHeight: 50.0,
+                    activeBgColor: [Colors.grey],
+                    activeFgColor: Colors.black,
+                    inactiveBgColor: Colors.white,
+                    inactiveFgColor: Colors.black,
+                    customWidths: [135.0, 135.0, 135.0],
+                    initialLabelIndex: 0,
+                    totalSwitches: 3,
+                    labels: const [Boards.DO, Boards.DOING, Boards.DONE],
+                    onToggle: (index) {
+                      _switchableBoardContainerKey.currentState
+                          ?.changeBoard(_boards[index!]);
+                    },
+                  ),
+                ),
+              ),
             ),
             SwitchableBoardContainer(key: _switchableBoardContainerKey)
           ],
