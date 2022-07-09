@@ -17,7 +17,7 @@ class ProfilePanel extends StatefulWidget {
 
   @override
   ProfilePanelState createState() =>
-      ProfilePanelState(this.name, this.level, this.progressMap);
+      ProfilePanelState(name, level, progressMap);
 }
 
 class ProfilePanelState extends State<ProfilePanel> {
@@ -28,59 +28,73 @@ class ProfilePanelState extends State<ProfilePanel> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: Row(
+    return Row(
       children: [
-        Container(
-          child: Column(children: [
-            Icon(
-              Icons.person,
-              size: 100.0,
-              color: Colors.grey,
-            ),
-            Text(
-              '$level LEVEL',
-              style: TextStyle(fontSize: 20.0),
-            ),
-          ]),
-          padding: const EdgeInsets.all(10.0),
-        ),
-        Row(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                progressIndicator(Category.CAREER_AND_FINANCES),
-                progressIndicator(Category.PERSONAL_DEVELOPMENT),
-                progressIndicator(Category.RELATIONSHIPS)
+        Column(children: [
+          const Icon(
+            Icons.person,
+            size: 100.0,
+            color: Colors.grey,
+          ),
+          Text(
+            '$level LEVEL',
+            style: const TextStyle(fontSize: 20.0),
+          ),
+        ]),
+        Column(children: [
+          SizedBox(
+            height: 25.0,
+            width: 300.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: const [
+                Icon(Icons.surfing, size: 20.0, color: Colors.grey),
+                Icon(Icons.subject, size: 20.0, color: Colors.grey)
               ],
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                progressIndicator(Category.HEALTH),
-                progressIndicator(Category.LEISURE)
-              ],
-            )
-          ],
-        )
+          ),
+          Row(
+            children: [
+              Column(
+                children: [
+                  progressIndicator(Category.CAREER_AND_FINANCES),
+                  progressIndicator(Category.PERSONAL_DEVELOPMENT),
+                  progressIndicator(Category.RELATIONSHIPS)
+                ],
+              ),
+              Column(
+                children: [
+                  progressIndicator(Category.HEALTH),
+                  progressIndicator(Category.LEISURE),
+                  const SizedBox(height: 25.0),
+                ],
+              )
+            ],
+          )
+        ])
       ],
-    ));
+    );
   }
 
   Padding progressIndicator(Category category) {
     return Padding(
-      padding: EdgeInsets.all(15.0),
-      child: new LinearPercentIndicator(
-        width: 70.0,
-        lineHeight: 14.0,
-        percent: this.progressMap[category]!.progress,
-        center: Text(
-          "${category.description}",
-          style: new TextStyle(fontSize: 12.0),
-        ),
-        trailing: Text("LVL ${this.progressMap[category]!.level}"),
-        linearStrokeCap: LinearStrokeCap.roundAll,
+      padding: const EdgeInsets.all(5.0),
+      child: LinearPercentIndicator(
+        width: 145.0,
+        lineHeight: 15.0,
+        percent: progressMap[category]!.progress,
+        center:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text(
+            " ${category.description}",
+            style: const TextStyle(fontSize: 8.0),
+          ),
+          Text(
+            "LVL ${progressMap[category]!.level} ",
+            style: const TextStyle(fontSize: 8.0),
+          ),
+        ]),
+        barRadius: const Radius.circular(3.0),
         backgroundColor: Colors.white,
         progressColor: Colors.grey,
       ),

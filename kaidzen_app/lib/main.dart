@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Kaizen',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
       ),
       home: const MyHomePage(title: 'Kaizen App'),
     );
@@ -56,36 +56,40 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        toolbarHeight: 0.0,
       ),
       body: SizedBox(
-          height: MediaQuery.of(context).size.height,
           child: SingleChildScrollView(
               child: Column(
-            children: [
-              ProfilePanel(
-                key: _profilePanelKey,
-                name: "Rostyslav Skliar",
-                level: 10,
-                progressMap: {
-                  Category.CAREER_AND_FINANCES: Progress(0.3, 5),
-                  Category.HEALTH: Progress(0.4, 7),
-                  Category.PERSONAL_DEVELOPMENT: Progress(0.2, 3),
-                  Category.LEISURE: Progress(0.7, 15),
-                  Category.RELATIONSHIPS: Progress(0.1, 2)
-                },
-              ),
-              SwitchableBoard(key: _switchableBoardKey),
-            ],
-          ))),
+        children: [
+          ProfilePanel(
+            key: _profilePanelKey,
+            name: "Rostyslav Skliar",
+            level: 10,
+            progressMap: {
+              Category.CAREER_AND_FINANCES: Progress(0.3, 5),
+              Category.HEALTH: Progress(0.4, 7),
+              Category.PERSONAL_DEVELOPMENT: Progress(0.2, 3),
+              Category.LEISURE: Progress(0.7, 15),
+              Category.RELATIONSHIPS: Progress(0.1, 2)
+            },
+          ),
+          const Padding(padding: EdgeInsets.all(7.0)),
+          SwitchableBoard(key: _switchableBoardKey),
+        ],
+      ))),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.grey,
         onPressed: () async {
           String? text = await openDialog();
           var task = Task(text!, subtasks: [Task(text)]);
           _switchableBoardKey.currentState?.addItem(task);
         },
-        tooltip: 'Show Kaidzen',
-        child: const Icon(Icons.add),
+        tooltip: 'Add task',
+        child: const Icon(
+          Icons.add,
+          color: Colors.black,
+        ),
       ),
     );
   }
