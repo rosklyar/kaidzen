@@ -30,48 +30,56 @@ class ProfilePanelState extends State<ProfilePanel> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Column(children: [
-          const Icon(
-            Icons.person,
-            size: 100.0,
-            color: Colors.grey,
-          ),
-          Text(
-            '$level LEVEL',
-            style: const TextStyle(fontSize: 20.0),
-          ),
-        ]),
-        Column(children: [
-          SizedBox(
-            height: 25.0,
-            width: 300.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: const [
-                Icon(Icons.surfing, size: 20.0, color: Colors.grey),
-                Icon(Icons.subject, size: 20.0, color: Colors.grey)
-              ],
-            ),
-          ),
-          Row(
-            children: [
-              Column(
-                children: [
-                  progressIndicator(Category.CAREER_AND_FINANCES),
-                  progressIndicator(Category.PERSONAL_DEVELOPMENT),
-                  progressIndicator(Category.RELATIONSHIPS)
-                ],
+        Expanded(
+            child: Column(children: [
+              const Icon(
+                Icons.person,
+                size: 100.0,
+                color: Colors.grey,
               ),
-              Column(
+              Text(
+                '$level LEVEL',
+                style: const TextStyle(fontSize: 20.0),
+              ),
+            ]),
+            flex: 3),
+        Expanded(
+            child: Column(children: [
+              SizedBox(
+                height: 25.0,
+                width: 300.0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [
+                    Icon(Icons.surfing, size: 20.0, color: Colors.grey),
+                    Icon(Icons.subject, size: 20.0, color: Colors.grey)
+                  ],
+                ),
+              ),
+              Row(
                 children: [
-                  progressIndicator(Category.HEALTH),
-                  progressIndicator(Category.LEISURE),
-                  const SizedBox(height: 25.0),
+                  Expanded(
+                      child: Column(
+                        children: [
+                          progressIndicator(Category.CAREER_AND_FINANCES),
+                          progressIndicator(Category.PERSONAL_DEVELOPMENT),
+                          progressIndicator(Category.RELATIONSHIPS)
+                        ],
+                      ),
+                      flex: 5),
+                  Expanded(
+                      child: Column(
+                        children: [
+                          progressIndicator(Category.HEALTH),
+                          progressIndicator(Category.LEISURE),
+                          const SizedBox(height: 25.0),
+                        ],
+                      ),
+                      flex: 5)
                 ],
               )
-            ],
-          )
-        ])
+            ]),
+            flex: 7)
       ],
     );
   }
@@ -80,7 +88,6 @@ class ProfilePanelState extends State<ProfilePanel> {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: LinearPercentIndicator(
-        width: 145.0,
         lineHeight: 15.0,
         percent: progressMap[category]!.progress,
         center:
