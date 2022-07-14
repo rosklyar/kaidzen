@@ -17,6 +17,6 @@ enum Category {
   RELATIONSHIPS("Relatioships"),
   LEISURE("Leisure");
 
-  const Category(this.description);
-  final String description;
+  const Category(this.name);
+  final String name;
 }

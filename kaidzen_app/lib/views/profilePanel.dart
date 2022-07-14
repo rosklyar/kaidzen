@@ -89,11 +89,11 @@ class ProfilePanelState extends State<ProfilePanel> {
       padding: const EdgeInsets.all(5.0),
       child: LinearPercentIndicator(
         lineHeight: 15.0,
-        percent: progressMap[category]!.progress,
+        percent: progressMap[category]!.value,
         center:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text(
-            " ${category.description}",
+            " ${category.name}",
             style: const TextStyle(fontSize: 8.0),
           ),
           Text(
