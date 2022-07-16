@@ -4,6 +4,12 @@ class Boards {
   static const String DONE = "Done";
 }
 
+class Status {
+  static const String TODO = "todo";
+  static const String DOING = "inProgress";
+  static const String DONE = "done";
+}
+
 enum Category {
   CAREER_AND_FINANCES("Career and finances"),
   HEALTH("Health"),

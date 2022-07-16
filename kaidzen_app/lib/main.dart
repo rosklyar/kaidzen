@@ -1,17 +1,24 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/models/progress.dart';
-import 'package:kaidzen_app/views/BoardSection.dart';
+import 'package:kaidzen_app/service/TaskRepository.dart';
+import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/views/profilePanel.dart';
 import 'package:kaidzen_app/views/switchableBoard.dart';
+import 'package:provider/provider.dart';
 import 'dart:math';
 
 import 'models/task.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context)  {
+      TasksState taskState = TasksState(repository: TaskRepository());
+      taskState.loadAll();
+      return taskState;
+    },
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

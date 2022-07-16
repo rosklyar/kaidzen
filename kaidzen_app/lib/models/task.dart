@@ -1,8 +1,14 @@
-class Task {
-  final String name;
-  final List<Task> subtasks;
+import 'package:equatable/equatable.dart';
 
-  Task(this.name, {this.subtasks = const []});
+import '../assets/constants.dart';
+
+class Task extends Equatable {
+  int? id;
+  String name;
+  String status;
+  List<Task> subtasks;
+
+  Task(this.name, {this.status = Status.TODO, this.id, this.subtasks = const []});
 
   void addSubTask(Task subTask) {
     subtasks.add(subTask);
@@ -11,9 +17,12 @@ class Task {
   bool hasSubtasks() {
     return subtasks.isNotEmpty;
   }
-  
+
   @override
   String toString() {
     return "name=" + name;
   }
+  
+  @override
+  List<Object?> get props => [id, name, status];
 }

@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
+import 'package:kaidzen_app/service/TasksState.dart';
+import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:kaidzen_app/views/boardSection.dart';
 import 'package:kaidzen_app/assets/constants.dart';
@@ -23,7 +25,7 @@ class SwitchableBoardState extends State<SwitchableBoard> {
   ];
 
   void addItem(Task newTask) {
-    _switchableBoardContainerKey.currentState?.addItemToCurrentBoard(newTask);
+    Provider.of<TasksState>(context, listen: false).addTask(newTask);
   }
 
   @override
@@ -63,14 +65,21 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                 ),
               ),
             ),
-            SwitchableBoardContainer(key: _switchableBoardContainerKey)
+            Consumer<TasksState>(
+              builder: (context, state, child) => SwitchableBoardContainer(state, key: _switchableBoardContainerKey)
+              )
           ],
         )));
   }
 }
 
 class SwitchableBoardContainer extends StatefulWidget {
-  const SwitchableBoardContainer({Key? key}) : super(key: key);
+  final TasksState tasksState;
+
+  const SwitchableBoardContainer(
+    this.tasksState, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   SwitchableBoardContainerState createState() =>
@@ -82,30 +91,21 @@ class SwitchableBoardContainerState extends State<SwitchableBoardContainer> {
   final GlobalKey<BoardState> _doBoardKey = GlobalKey();
   final GlobalKey<BoardState> _doingBoardKey = GlobalKey();
   final GlobalKey<BoardState> _doneBoardKey = GlobalKey();
-  final Map<String, Board> boards = {};
   final Map<String, GlobalKey<BoardState>> states = {};
+  final Map<String, String> boardToStatus = {
+    Boards.DO: Status.TODO,
+    Boards.DOING: Status.DOING,
+    Boards.DONE: Status.DONE,
+  };
 
   @override
   void initState() {
     setState(() {
-      boards;
-      states;
-      boards.putIfAbsent(
-          Boards.DO, () => Board(key: _doBoardKey, name: Boards.DO, list: []));
-      boards.putIfAbsent(Boards.DOING,
-          () => Board(key: _doingBoardKey, name: Boards.DOING, list: []));
-      boards.putIfAbsent(Boards.DONE,
-          () => Board(key: _doneBoardKey, name: Boards.DONE, list: []));
-
       states.putIfAbsent(Boards.DO, () => _doBoardKey);
       states.putIfAbsent(Boards.DOING, () => _doingBoardKey);
       states.putIfAbsent(Boards.DONE, () => _doneBoardKey);
     });
     super.initState();
-  }
-
-  void addItemToCurrentBoard(Task newTask) {
-    states[currentBoard]!.currentState?.addItem(newTask);
   }
 
   void changeBoard(String board) {
@@ -116,8 +116,9 @@ class SwitchableBoardContainerState extends State<SwitchableBoardContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: boards[currentBoard]!,
-    );
+    return Board(
+        key: states[currentBoard],
+        name: currentBoard,
+        list: widget.tasksState.getByStatus(boardToStatus[currentBoard]!));
   }
 }

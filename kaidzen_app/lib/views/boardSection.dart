@@ -4,8 +4,12 @@ import 'dart:math';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
+import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/utils/margin.dart';
 import 'package:kaidzen_app/utils/theme.dart';
+import 'package:provider/provider.dart';
+
+import '../assets/constants.dart';
 
 class Board extends StatefulWidget {
   const Board({
@@ -18,27 +22,28 @@ class Board extends StatefulWidget {
   final String name;
 
   @override
-  BoardState createState() => BoardState(this.list);
+  // ignore: no_logic_in_create_state
+  BoardState createState() {
+    debugPrint('createState:');
+    return BoardState();
+  }
 }
 
 class BoardState extends State<Board> {
-  BoardState(this.list);
-  List<Task> list;
-
   void addItem(Task task) {
     setState(() {
-      list.add(task);
+      widget.list.add(task);
     });
   }
-  
+
   void _onReorder(int oldIndex, int newIndex) {
     setState(
       () {
         if (newIndex > oldIndex) {
           newIndex -= 1;
         }
-        final Task item = list.removeAt(oldIndex);
-        list.insert(newIndex, item);
+        final Task item = widget.list.removeAt(oldIndex);
+        widget.list.insert(newIndex, item);
       },
     );
   }
@@ -69,10 +74,18 @@ class BoardState extends State<Board> {
                 children: List.generate(
                   widget.list.length,
                   (index) {
-                    return ListViewCard(
-                      widget.list[index],
-                      index,
-                      Key('$index'),
+                    return Dismissible(
+                      key: Key(widget.list[index].id.toString()),
+                      onDismissed: (direction) async {
+                        await Provider.of<TasksState>(context, listen: false).deleteTask(widget.list[index]);
+                      },
+                      // Show a red background as the item is swiped away.
+                      background: Container(color: Colors.red),
+                      child: ListViewCard(
+                        widget.list[index],
+                        index,
+                        key: Key('$index'),
+                      ),
                     );
                   },
                 ),
@@ -87,10 +100,10 @@ class BoardState extends State<Board> {
 
 class ListViewCard extends StatefulWidget {
   final int index;
-  final Key key;
   final Task task;
+  final bool allowsSubtasks;
 
-  ListViewCard(this.task, this.index, this.key);
+  const ListViewCard(this.task, this.index, {Key? key, this.allowsSubtasks = false}) : super(key: key);
 
   @override
   _ListViewCard createState() => _ListViewCard();
@@ -117,17 +130,14 @@ class _ListViewCard extends State<ListViewCard> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.task.hasSubtasks()
+    return widget.task.hasSubtasks() && widget.allowsSubtasks
         ? ExpandablePanel(
-            header: buildContainer('(' +
-                widget.task.subtasks.length.toString() +
-                ')' +
-                widget.task.name),
+            header: buildContainer(widget.task),
             collapsed: IconButton(
               icon: const Icon(Icons.add),
               tooltip: 'New subtask',
               onPressed: () async {
-                String? text = await openDialog();
+                String? text = await openDialog(widget.task);
                 setState(() {
                   widget.task.addSubTask(Task(text!));
                 });
@@ -154,19 +164,19 @@ class _ListViewCard extends State<ListViewCard> {
                     return ListViewCard(
                       widget.task.subtasks[index],
                       index,
-                      Key('$index'),
+                      key: Key('$index'),
                     );
                   },
                 ),
               ),
             ))
-        : buildContainer(widget.task.name);
+        : buildContainer(widget.task);
   }
 
-  Future<String?> openDialog() => showDialog<String>(
+  Future<String?> openDialog(Task parent) => showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-            title: Text('New subtask'),
+            title: const Text('New subtask'),
             content: TextField(
               autofocus: true,
               decoration: InputDecoration(hintText: 'What should be done?'),
@@ -180,7 +190,7 @@ class _ListViewCard extends State<ListViewCard> {
     Navigator.of(context).pop(newTaskController.text);
   }
 
-  Widget buildContainer(String name) {
+  Widget buildContainer(Task task) {
     return Container(
         margin: EdgeInsets.fromLTRB(15, 18, 15, 0),
         padding: EdgeInsets.all(16),
@@ -203,14 +213,35 @@ class _ListViewCard extends State<ListViewCard> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                 margin: EdgeInsets.only(right: 6),
-                child: Center(
-                  child: Text(name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 16,
-                        color: Colors.grey[400],
-                      )),
-                ),
+                
+                child: Row(children: [
+                  Visibility(
+                    visible: task.status != Status.TODO,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_left),
+                      onPressed: () async {
+                        await Provider.of<TasksState>(context, listen: false).moveTask(task, task.status == Status.DOING ? Status.TODO : Status.DOING);
+                      },
+                    ),
+                  ),
+                  Center(
+                    child: Text(task.name,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 16,
+                          color: Colors.grey[400],
+                        )),
+                  ),
+                  Visibility(
+                    visible: task.status != Status.DONE,
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_right),
+                      onPressed: () async {
+                        await Provider.of<TasksState>(context, listen: false).moveTask(task, task.status == Status.DOING ? Status.DONE : Status.DOING);
+                      },
+                    ),
+                  )
+                ]),
               ),
             ],
           ),
