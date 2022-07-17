@@ -72,6 +72,7 @@ class TaskRepository {
   Future<int> delete(int? id) async {
     return await db!
         .delete(tableTask, where: '$columnTaskId = ?', whereArgs: [id]);
+
   }
 
   Future<int> update(Task task) async {

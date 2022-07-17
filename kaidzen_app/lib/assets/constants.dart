@@ -7,9 +7,9 @@ class Boards {
 }
 
 class Status {
-  static const String TODO = "TODO";
-  static const String DOING = "In Progress";
-  static const String DONE = "Done";
+  static const String TODO = "todo";
+  static const String DOING = "inProgress";
+  static const String DONE = "done";
 }
 
 enum Category {
