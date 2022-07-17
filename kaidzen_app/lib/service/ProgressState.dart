@@ -29,4 +29,17 @@ class ProgressState extends ChangeNotifier {
     _progress[category] = updatedProgress;
     notifyListeners();
   }
+
+  int getTotalLevel() {
+    return _progress.entries
+        .fold(0, (int acc, entry) => acc + entry.value.level);
+  }
+
+  int getLevel(Category category) {
+    return _progress[category]?.level ?? 0;
+  }
+
+  double getValue(Category category) {
+    return _progress[category]?.value ?? 0;
+  }
 }

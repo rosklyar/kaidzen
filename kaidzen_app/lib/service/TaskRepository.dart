@@ -1,3 +1,4 @@
+import 'package:kaidzen_app/service/KaizenState.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../models/task.dart';
@@ -33,22 +34,7 @@ class TaskRepository {
   Database? db;
 
   Future open() async {
-    db = await openDatabase('kaizen.db', version: 2,
-        onCreate: (Database db, int version) async {
-      await db.execute('''
-            create table $tableTask ( 
-            $columnTaskId integer primary key autoincrement, 
-            $columnTaskTitle text not null,
-            $columnTaskStatus integer not null)
-          ''');
-
-      await db.execute('''
-            create table $tableSubtaskMapping ( 
-            $columnSubtaskId integer not null, 
-            $columnParentId integer not null,
-            UNIQUE($columnSubtaskId, $columnParentId))
-          ''');
-    });
+    db = await KaizenDb.getDb();
   }
 
   Future<Task> insert(Task todo) async {
@@ -63,8 +49,8 @@ class TaskRepository {
     if (db == null) {
       await open();
     }
-    List<Map> maps = await db!
-        .query(tableTask, columns: [columnTaskId, columnTaskStatus, columnTaskTitle]);
+    List<Map> maps = await db!.query(tableTask,
+        columns: [columnTaskId, columnTaskStatus, columnTaskTitle]);
     List<Task> tasks = maps
         .map((element) => fromMap(element as Map<String, Object?>))
         .toList();
@@ -84,7 +70,8 @@ class TaskRepository {
   }
 
   Future<int> delete(int? id) async {
-    return await db!.delete(tableTask, where: '$columnTaskId = ?', whereArgs: [id]);
+    return await db!
+        .delete(tableTask, where: '$columnTaskId = ?', whereArgs: [id]);
   }
 
   Future<int> update(Task task) async {

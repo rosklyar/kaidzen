@@ -1,4 +1,5 @@
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:kaidzen_app/service/KaizenState.dart';
 import 'package:sqflite/sqflite.dart';
 import '../models/progress.dart';
 
@@ -13,24 +14,7 @@ class ProgressRepository {
   ProgressRepository();
 
   Future open() async {
-    db = await openDatabase('kaizen.db', version: 3,
-        onCreate: (Database db, int version) async {
-      await db.execute('''
-            create table $tableProgress ( 
-            $columnProgressId integer primary key, 
-            $columnProgressCategory varchar(40) not null unique,
-            $columnProgressLevel integer not null,
-            $columnProgressValue double not null)
-          ''');
-      await db.execute('''
-            insert into $tableProgress values
-                (1, ${Category.CAREER_AND_FINANCES.name}, 1, 0.0),
-                (2, ${Category.HEALTH.name}, 2, 0.0),
-                (3, ${Category.PERSONAL_DEVELOPMENT.name}, 3, 0.0),
-                (4, ${Category.RELATIONSHIPS.name}, 4, 0.0),
-                (5, ${Category.LEISURE.name}, 5, 0.0);
-          ''');
-    });
+    db = await KaizenDb.getDb();
   }
 
   Future<Map<Category, Progress>> getProgress() async {
@@ -62,4 +46,6 @@ class ProgressRepository {
       columnProgressValue: progress.value
     };
   }
+
+  Future close() async => db!.close();
 }
