@@ -1,6 +1,6 @@
 class Progress {
-  final double progress;
+  final double value;
   final int level;
 
-  Progress(this.progress, this.level);
+  Progress(this.value, this.level);
 }

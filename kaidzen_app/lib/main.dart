@@ -9,16 +9,24 @@ import 'package:provider/provider.dart';
 import 'dart:math';
 
 import 'models/task.dart';
+import 'service/ProgressRepository.dart';
+import 'service/ProgressState.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context)  {
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) {
       TasksState taskState = TasksState(repository: TaskRepository());
       taskState.loadAll();
       return taskState;
-    },
-    child: const MyApp(),
-  ));
+    }),
+    ChangeNotifierProvider(create: (context) {
+      ProgressState progressState = ProgressState(
+        repository: ProgressRepository(),
+      );
+      progressState.loadAll();
+      return progressState;
+    }),
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -72,14 +80,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ProfilePanel(
             key: _profilePanelKey,
             name: "Rostyslav Skliar",
-            level: 10,
-            progressMap: {
-              Category.CAREER_AND_FINANCES: Progress(0.3, 5),
-              Category.HEALTH: Progress(0.4, 7),
-              Category.PERSONAL_DEVELOPMENT: Progress(0.2, 3),
-              Category.LEISURE: Progress(0.7, 15),
-              Category.RELATIONSHIPS: Progress(0.1, 2)
-            },
           ),
           const Padding(padding: EdgeInsets.all(7.0)),
           SwitchableBoard(key: _switchableBoardKey),
