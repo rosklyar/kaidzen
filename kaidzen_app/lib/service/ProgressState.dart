@@ -3,6 +3,7 @@ import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/models/progress.dart';
 import 'package:kaidzen_app/models/task.dart';
 import "package:collection/collection.dart";
+import 'package:kaidzen_app/service/ProgressCalculator.dart';
 import 'package:kaidzen_app/service/ProgressRepository.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
 
@@ -19,14 +20,17 @@ class ProgressState extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateProgress(
-      Category category, double progressDelta, int levelDelta) async {
+  updateProgress(Task task) async {
+    var progress = _progress[Category.HEALTH]!.value;
+    double progressDelta = ProgressCalculator.progressDelta(progress, task);
+    var level = _progress[Category.HEALTH]!.level;
+    int levelDelta = ProgressCalculator.levelDelta(level, task);
     Progress updatedProgress = Progress(
-      _progress[category]!.value + progressDelta,
-      _progress[category]!.level + levelDelta,
+      progress + progressDelta,
+      levelDelta + levelDelta,
     );
-    await repository.updateProgress(category, updatedProgress);
-    _progress[category] = updatedProgress;
+    await repository.updateProgress(Category.HEALTH, updatedProgress);
+    _progress[Category.HEALTH] = updatedProgress;
     notifyListeners();
   }
 

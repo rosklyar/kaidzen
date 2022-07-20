@@ -1,15 +1,17 @@
-import 'dart:developer' as dev;
 import 'dart:math';
 
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
+import 'package:kaidzen_app/service/ProgressCalculator.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/utils/margin.dart';
 import 'package:kaidzen_app/utils/theme.dart';
 import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
+import '../models/progress.dart';
+import '../service/ProgressState.dart';
 
 class Board extends StatefulWidget {
   const Board({
@@ -77,7 +79,8 @@ class BoardState extends State<Board> {
                     return Dismissible(
                       key: Key(widget.list[index].id.toString()),
                       onDismissed: (direction) async {
-                        await Provider.of<TasksState>(context, listen: false).deleteTask(widget.list[index]);
+                        await Provider.of<TasksState>(context, listen: false)
+                            .deleteTask(widget.list[index]);
                       },
                       // Show a red background as the item is swiped away.
                       background: Container(color: Colors.red),
@@ -103,7 +106,9 @@ class ListViewCard extends StatefulWidget {
   final Task task;
   final bool allowsSubtasks;
 
-  const ListViewCard(this.task, this.index, {Key? key, this.allowsSubtasks = false}) : super(key: key);
+  const ListViewCard(this.task, this.index,
+      {Key? key, this.allowsSubtasks = false})
+      : super(key: key);
 
   @override
   _ListViewCard createState() => _ListViewCard();
@@ -213,14 +218,18 @@ class _ListViewCard extends State<ListViewCard> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                 margin: EdgeInsets.only(right: 6),
-                
                 child: Row(children: [
                   Visibility(
                     visible: task.status != Status.TODO,
                     child: IconButton(
                       icon: const Icon(Icons.arrow_left),
                       onPressed: () async {
-                        await Provider.of<TasksState>(context, listen: false).moveTask(task, task.status == Status.DOING ? Status.TODO : Status.DOING);
+                        await Provider.of<TasksState>(context, listen: false)
+                            .moveTask(
+                                task,
+                                task.status == Status.DOING
+                                    ? Status.TODO
+                                    : Status.DOING);
                       },
                     ),
                   ),
@@ -237,7 +246,17 @@ class _ListViewCard extends State<ListViewCard> {
                     child: IconButton(
                       icon: const Icon(Icons.arrow_right),
                       onPressed: () async {
-                        await Provider.of<TasksState>(context, listen: false).moveTask(task, task.status == Status.DOING ? Status.DONE : Status.DOING);
+                        var newStatus = task.status == Status.DOING
+                            ? Status.DONE
+                            : Status.DOING;
+                        await Provider.of<TasksState>(context, listen: false)
+                            .moveTask(task, newStatus);
+                        if (newStatus == Status.DONE) {
+                          var progressState = Provider.of<ProgressState>(
+                              context,
+                              listen: false);
+                          progressState.updateProgress(task);
+                        }
                       },
                     ),
                   )
