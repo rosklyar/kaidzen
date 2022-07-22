@@ -1,21 +1,14 @@
 import 'package:kaidzen_app/service/KaizenState.dart';
 import 'package:sqflite/sqflite.dart';
+import '../assets/constants.dart';
 
 import '../models/task.dart';
-
-const String tableTask = 'task';
-const String columnTaskId = '_id';
-const String columnTaskTitle = 'title';
-const String columnTaskStatus = 'status';
-
-const String tableSubtaskMapping = 'taskToParent';
-const String columnSubtaskId = '_task_id';
-const String columnParentId = '_parent_id';
 
 Map<String, Object?> toMap(Task task) {
   var map = <String, Object?>{
     columnTaskTitle: task.name,
-    columnTaskStatus: task.status
+    columnTaskStatus: task.status,
+    columnTaskCategory: task.category.id,
   };
   if (task.id != -1) {
     map[columnTaskId] = task.id;
@@ -24,7 +17,10 @@ Map<String, Object?> toMap(Task task) {
 }
 
 Task fromMap(Map<String, Object?> map) {
-  return Task(map[columnTaskTitle] as String,
+  return Task(
+      map[columnTaskTitle] as String,
+      DevelopmentCategory.values.firstWhere(
+          (element) => element.id == (map[columnTaskCategory] as int)),
       id: map[columnTaskId] as int,
       status: map[columnTaskStatus] as String,
       subtasks: []);
@@ -49,8 +45,12 @@ class TaskRepository {
     if (db == null) {
       await open();
     }
-    List<Map> maps = await db!.query(tableTask,
-        columns: [columnTaskId, columnTaskStatus, columnTaskTitle]);
+    List<Map> maps = await db!.query(tableTask, columns: [
+      columnTaskId,
+      columnTaskCategory,
+      columnTaskStatus,
+      columnTaskTitle
+    ]);
     List<Task> tasks = maps
         .map((element) => fromMap(element as Map<String, Object?>))
         .toList();
@@ -72,7 +72,6 @@ class TaskRepository {
   Future<int> delete(int? id) async {
     return await db!
         .delete(tableTask, where: '$columnTaskId = ?', whereArgs: [id]);
-
   }
 
   Future<int> update(Task task) async {

@@ -19,9 +19,9 @@ class SwitchableBoardState extends State<SwitchableBoard> {
   final GlobalKey<SwitchableBoardContainerState> _switchableBoardContainerKey =
       GlobalKey();
   final List<String> _boards = [
-    Boards.DO,
-    Boards.DOING,
-    Boards.DONE,
+    Status.TODO,
+    Status.DOING,
+    Status.DONE,
   ];
 
   void addItem(Task newTask) {
@@ -56,7 +56,7 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                     customWidths: [130.0, 130.0, 130.0],
                     initialLabelIndex: 0,
                     totalSwitches: 3,
-                    labels: const [Boards.DO, Boards.DOING, Boards.DONE],
+                    labels: const [Status.TODO, Status.DOING, Status.DONE],
                     onToggle: (index) {
                       _switchableBoardContainerKey.currentState
                           ?.changeBoard(_boards[index!]);
@@ -66,8 +66,9 @@ class SwitchableBoardState extends State<SwitchableBoard> {
               ),
             ),
             Consumer<TasksState>(
-              builder: (context, state, child) => SwitchableBoardContainer(state, key: _switchableBoardContainerKey)
-              )
+                builder: (context, state, child) => SwitchableBoardContainer(
+                    state,
+                    key: _switchableBoardContainerKey))
           ],
         )));
   }
@@ -87,23 +88,18 @@ class SwitchableBoardContainer extends StatefulWidget {
 }
 
 class SwitchableBoardContainerState extends State<SwitchableBoardContainer> {
-  late String currentBoard = Boards.DO;
+  late String currentBoard = Status.TODO;
   final GlobalKey<BoardState> _doBoardKey = GlobalKey();
   final GlobalKey<BoardState> _doingBoardKey = GlobalKey();
   final GlobalKey<BoardState> _doneBoardKey = GlobalKey();
   final Map<String, GlobalKey<BoardState>> states = {};
-  final Map<String, String> boardToStatus = {
-    Boards.DO: Status.TODO,
-    Boards.DOING: Status.DOING,
-    Boards.DONE: Status.DONE,
-  };
 
   @override
   void initState() {
     setState(() {
-      states.putIfAbsent(Boards.DO, () => _doBoardKey);
-      states.putIfAbsent(Boards.DOING, () => _doingBoardKey);
-      states.putIfAbsent(Boards.DONE, () => _doneBoardKey);
+      states.putIfAbsent(Status.TODO, () => _doBoardKey);
+      states.putIfAbsent(Status.DOING, () => _doingBoardKey);
+      states.putIfAbsent(Status.DONE, () => _doneBoardKey);
     });
     super.initState();
   }
@@ -119,6 +115,6 @@ class SwitchableBoardContainerState extends State<SwitchableBoardContainer> {
     return Board(
         key: states[currentBoard],
         name: currentBoard,
-        list: widget.tasksState.getByStatus(boardToStatus[currentBoard]!));
+        list: widget.tasksState.getByStatus(currentBoard));
   }
 }

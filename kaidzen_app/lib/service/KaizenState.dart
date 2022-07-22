@@ -5,7 +5,6 @@ import '../models/task.dart';
 
 const String tableProgress = 'progress';
 const String columnProgressId = '_id';
-const String columnProgressCategory = 'category';
 const String columnProgressLevel = 'level';
 const String columnProgressValue = 'value';
 
@@ -13,6 +12,7 @@ const String tableTask = 'task';
 const String columnTaskId = '_id';
 const String columnTaskTitle = 'title';
 const String columnTaskStatus = 'status';
+const String columnTaskCategory = 'category_id';
 
 const String tableSubtaskMapping = 'taskToParent';
 const String columnSubtaskId = '_task_id';
@@ -31,24 +31,24 @@ class KaizenDb {
         onCreate: (Database db, int version) async {
       await db.execute('''
             create table $tableProgress ( 
-            $columnProgressId integer primary key, 
-            $columnProgressCategory varchar(40) not null unique,
+            $columnProgressId integer primary key,
             $columnProgressLevel integer not null,
             $columnProgressValue double not null)
           ''');
       await db.execute('''
             insert into $tableProgress values
-                (1, '${Category.CAREER_AND_FINANCES.name}', 1, 0.0),
-                (2, '${Category.HEALTH.name}', 2, 0.0),
-                (3, '${Category.PERSONAL_DEVELOPMENT.name}', 3, 0.0),
-                (4, '${Category.RELATIONSHIPS.name}', 4, 0.0),
-                (5, '${Category.LEISURE.name}', 5, 0.0);
+                (${DevelopmentCategory.CAREER_AND_FINANCES.id}, 1, 0.0),
+                (${DevelopmentCategory.HEALTH.id}, 2, 0.0),
+                (${DevelopmentCategory.PERSONAL_DEVELOPMENT.id}, 3, 0.0),
+                (${DevelopmentCategory.RELATIONSHIPS.id}, 4, 0.0),
+                (${DevelopmentCategory.LEISURE.id}, 5, 0.0);
           ''');
 
       await db.execute('''
             create table $tableTask ( 
             $columnTaskId integer primary key autoincrement, 
             $columnTaskTitle text not null,
+            $columnTaskCategory integer not null,
             $columnTaskStatus integer not null)
           ''');
 

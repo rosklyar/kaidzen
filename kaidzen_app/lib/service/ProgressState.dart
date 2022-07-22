@@ -3,12 +3,13 @@ import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/models/progress.dart';
 import 'package:kaidzen_app/models/task.dart';
 import "package:collection/collection.dart";
+import 'package:kaidzen_app/service/ProgressCalculator.dart';
 import 'package:kaidzen_app/service/ProgressRepository.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
 
 class ProgressState extends ChangeNotifier {
   final ProgressRepository repository;
-  Map<Category, Progress> _progress;
+  Map<DevelopmentCategory, Progress> _progress;
 
   ProgressState({
     required this.repository,
@@ -19,14 +20,17 @@ class ProgressState extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateProgress(
-      Category category, double progressDelta, int levelDelta) async {
+  updateProgress(Task task) async {
+    var progress = _progress[task.category]!.value;
+    double progressDelta = ProgressCalculator.progressDelta(progress, task);
+    var level = _progress[task.category]!.level;
+    int levelDelta = ProgressCalculator.levelDelta(level, task);
     Progress updatedProgress = Progress(
-      _progress[category]!.value + progressDelta,
-      _progress[category]!.level + levelDelta,
+      progress + progressDelta,
+      levelDelta + levelDelta,
     );
-    await repository.updateProgress(category, updatedProgress);
-    _progress[category] = updatedProgress;
+    await repository.updateProgress(task.category, updatedProgress);
+    _progress[task.category] = updatedProgress;
     notifyListeners();
   }
 
@@ -35,11 +39,11 @@ class ProgressState extends ChangeNotifier {
         .fold(0, (int acc, entry) => acc + entry.value.level);
   }
 
-  int getLevel(Category category) {
+  int getLevel(DevelopmentCategory category) {
     return _progress[category]?.level ?? 0;
   }
 
-  double getValue(Category category) {
+  double getValue(DevelopmentCategory category) {
     return _progress[category]?.value ?? 0;
   }
 }
