@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/models/progress.dart';
@@ -6,7 +8,6 @@ import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/views/profilePanel.dart';
 import 'package:kaidzen_app/views/switchableBoard.dart';
 import 'package:provider/provider.dart';
-import 'dart:math';
 
 import 'models/task.dart';
 import 'service/ProgressRepository.dart';
@@ -54,17 +55,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static const kaidzens = ["Warrior", "Mage", "Rogue", "Hunter"];
-  int _index = 0;
-  Random _random = Random();
   final GlobalKey<SwitchableBoardState> _switchableBoardKey = GlobalKey();
   final GlobalKey<SwitchableBoardState> _profilePanelKey = GlobalKey();
   final newTaskController = TextEditingController();
+  int _currentCategory = 0;
 
   void _showKaidzen() {
-    setState(() {
-      _index = _random.nextInt(kaidzens.length);
-    });
+    setState(() {});
   }
 
   @override
@@ -88,9 +85,8 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.grey,
         onPressed: () async {
-          String? text = await openDialog();
-          var task = Task(text!, subtasks: [Task(text)]);
-          _switchableBoardKey.currentState?.addItem(task);
+          Task? task = await openDialog();
+          _switchableBoardKey.currentState?.addItem(task!);
         },
         tooltip: 'Add task',
         child: const Icon(
@@ -101,20 +97,61 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Future<String?> openDialog() => showDialog<String>(
+  Future<Task?> openDialog() => showDialog<Task>(
       context: context,
       builder: (context) => AlertDialog(
             title: Text('New task'),
-            content: TextField(
-              autofocus: true,
-              decoration: InputDecoration(hintText: 'What should be done?'),
-              controller: newTaskController,
-            ),
+            content: Column(children: [
+              TextField(
+                autofocus: true,
+                decoration: InputDecoration(hintText: 'What should be done?'),
+                controller: newTaskController,
+              ),
+              CreateTaskWidget(callback: (value) => _currentCategory = value!),
+            ]),
             actions: [
               TextButton(onPressed: submit, child: Text("Create")),
             ],
           ));
+
   void submit() {
-    Navigator.of(context).pop(newTaskController.text);
+    Navigator.of(context).pop(Task(
+        newTaskController.text,
+        DevelopmentCategory.values
+            .firstWhere((element) => element.id == _currentCategory)));
+  }
+}
+
+class CreateTaskWidget extends StatefulWidget {
+  final void Function(int?)? callback;
+  const CreateTaskWidget({Key? key, required this.callback}) : super(key: key);
+  @override
+  State<CreateTaskWidget> createState() {
+    return _CreateTaskWidgetState(callback);
+  }
+}
+
+class _CreateTaskWidgetState extends State<CreateTaskWidget> {
+  final void Function(int?)? callback;
+  _CreateTaskWidgetState(this.callback);
+  int _currentCategory = DevelopmentCategory.CAREER_AND_FINANCES.id;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<int>(
+      value: _currentCategory,
+      onChanged: (value) {
+        setState(() {
+          _currentCategory = value!;
+          callback?.call(value);
+        });
+      },
+      items: DevelopmentCategory.values.map((category) {
+        return DropdownMenuItem<int>(
+          value: category.id,
+          child: Text(category.name),
+        );
+      }).toList(),
+    );
   }
 }

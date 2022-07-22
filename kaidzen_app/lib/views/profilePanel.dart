@@ -56,28 +56,33 @@ class ProfilePanelState extends State<ProfilePanel> {
                                 children: [
                                   ProgressIndicator(
                                       percent: state.getValue(
-                                          Category.CAREER_AND_FINANCES),
-                                      level: state.getLevel(
-                                          Category.CAREER_AND_FINANCES),
-                                      title: Category.CAREER_AND_FINANCES.name,
-                                      progressColor:
-                                          Category.CAREER_AND_FINANCES.color),
+                                          DevelopmentCategory
+                                              .CAREER_AND_FINANCES),
+                                      level: state.getLevel(DevelopmentCategory
+                                          .CAREER_AND_FINANCES),
+                                      title: DevelopmentCategory
+                                          .CAREER_AND_FINANCES.name,
+                                      progressColor: DevelopmentCategory
+                                          .CAREER_AND_FINANCES.color),
                                   ProgressIndicator(
                                       percent: state.getValue(
-                                          Category.PERSONAL_DEVELOPMENT),
-                                      level: state.getLevel(
-                                          Category.PERSONAL_DEVELOPMENT),
-                                      title: Category.PERSONAL_DEVELOPMENT.name,
-                                      progressColor:
-                                          Category.PERSONAL_DEVELOPMENT.color),
+                                          DevelopmentCategory
+                                              .PERSONAL_DEVELOPMENT),
+                                      level: state.getLevel(DevelopmentCategory
+                                          .PERSONAL_DEVELOPMENT),
+                                      title: DevelopmentCategory
+                                          .PERSONAL_DEVELOPMENT.name,
+                                      progressColor: DevelopmentCategory
+                                          .PERSONAL_DEVELOPMENT.color),
                                   ProgressIndicator(
-                                      percent: state
-                                          .getValue(Category.RELATIONSHIPS),
-                                      level: state
-                                          .getLevel(Category.RELATIONSHIPS),
-                                      title: Category.RELATIONSHIPS.name,
-                                      progressColor:
-                                          Category.RELATIONSHIPS.color),
+                                      percent: state.getValue(
+                                          DevelopmentCategory.RELATIONSHIPS),
+                                      level: state.getLevel(
+                                          DevelopmentCategory.RELATIONSHIPS),
+                                      title: DevelopmentCategory
+                                          .RELATIONSHIPS.name,
+                                      progressColor: DevelopmentCategory
+                                          .RELATIONSHIPS.color),
                                 ],
                               ),
                               flex: 5),
@@ -85,15 +90,21 @@ class ProfilePanelState extends State<ProfilePanel> {
                               child: Column(
                                 children: [
                                   ProgressIndicator(
-                                      percent: state.getValue(Category.HEALTH),
-                                      level: state.getLevel(Category.HEALTH),
-                                      title: Category.HEALTH.name,
-                                      progressColor: Category.HEALTH.color),
+                                      percent: state
+                                          .getValue(DevelopmentCategory.HEALTH),
+                                      level: state
+                                          .getLevel(DevelopmentCategory.HEALTH),
+                                      title: DevelopmentCategory.HEALTH.name,
+                                      progressColor:
+                                          DevelopmentCategory.HEALTH.color),
                                   ProgressIndicator(
-                                      percent: state.getValue(Category.LEISURE),
-                                      level: state.getLevel(Category.LEISURE),
-                                      title: Category.LEISURE.name,
-                                      progressColor: Category.LEISURE.color),
+                                      percent: state.getValue(
+                                          DevelopmentCategory.LEISURE),
+                                      level: state.getLevel(
+                                          DevelopmentCategory.LEISURE),
+                                      title: DevelopmentCategory.LEISURE.name,
+                                      progressColor:
+                                          DevelopmentCategory.LEISURE.color),
                                   const SizedBox(height: 25.0),
                                 ],
                               ),

@@ -9,7 +9,7 @@ import 'package:kaidzen_app/service/TaskRepository.dart';
 
 class ProgressState extends ChangeNotifier {
   final ProgressRepository repository;
-  Map<Category, Progress> _progress;
+  Map<DevelopmentCategory, Progress> _progress;
 
   ProgressState({
     required this.repository,
@@ -21,16 +21,16 @@ class ProgressState extends ChangeNotifier {
   }
 
   updateProgress(Task task) async {
-    var progress = _progress[Category.HEALTH]!.value;
+    var progress = _progress[task.category]!.value;
     double progressDelta = ProgressCalculator.progressDelta(progress, task);
-    var level = _progress[Category.HEALTH]!.level;
+    var level = _progress[task.category]!.level;
     int levelDelta = ProgressCalculator.levelDelta(level, task);
     Progress updatedProgress = Progress(
       progress + progressDelta,
       levelDelta + levelDelta,
     );
-    await repository.updateProgress(Category.HEALTH, updatedProgress);
-    _progress[Category.HEALTH] = updatedProgress;
+    await repository.updateProgress(task.category, updatedProgress);
+    _progress[task.category] = updatedProgress;
     notifyListeners();
   }
 
@@ -39,11 +39,11 @@ class ProgressState extends ChangeNotifier {
         .fold(0, (int acc, entry) => acc + entry.value.level);
   }
 
-  int getLevel(Category category) {
+  int getLevel(DevelopmentCategory category) {
     return _progress[category]?.level ?? 0;
   }
 
-  double getValue(Category category) {
+  double getValue(DevelopmentCategory category) {
     return _progress[category]?.value ?? 0;
   }
 }

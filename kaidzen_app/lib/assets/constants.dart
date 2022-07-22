@@ -1,25 +1,20 @@
 import 'package:flutter/material.dart';
 
-class Boards {
-  static const String DO = "To Do";
+class Status {
+  static const String TODO = "To Do";
   static const String DOING = "In Progress";
   static const String DONE = "Done";
 }
 
-class Status {
-  static const String TODO = "todo";
-  static const String DOING = "inProgress";
-  static const String DONE = "done";
-}
+enum DevelopmentCategory {
+  CAREER_AND_FINANCES(0, "Career and finances", Colors.yellow),
+  HEALTH(1, "Health", Colors.green),
+  PERSONAL_DEVELOPMENT(2, "Personal development", Colors.blue),
+  RELATIONSHIPS(3, "Relatioships", Colors.red),
+  LEISURE(4, "Leisure", Colors.purple);
 
-enum Category {
-  CAREER_AND_FINANCES("Career and finances", Colors.yellow),
-  HEALTH("Health", Colors.green),
-  PERSONAL_DEVELOPMENT("Personal development", Colors.blue),
-  RELATIONSHIPS("Relatioships", Colors.red),
-  LEISURE("Leisure", Colors.purple);
-
-  const Category(this.name, this.color);
+  const DevelopmentCategory(this.id, this.name, this.color);
+  final int id;
   final String name;
   final Color color;
 }

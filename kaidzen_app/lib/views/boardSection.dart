@@ -144,7 +144,7 @@ class _ListViewCard extends State<ListViewCard> {
               onPressed: () async {
                 String? text = await openDialog(widget.task);
                 setState(() {
-                  widget.task.addSubTask(Task(text!));
+                  widget.task.addSubTask(Task(text!, widget.task.category));
                 });
               },
             ),
