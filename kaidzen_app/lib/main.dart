@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'models/task.dart';
 import 'service/ProgressRepository.dart';
 import 'service/ProgressState.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
@@ -59,6 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<SwitchableBoardState> _profilePanelKey = GlobalKey();
   final newTaskController = TextEditingController();
   int _currentCategory = 0;
+  int _currentDifficulty = 0;
+  bool _isSubtask = false;
 
   void _showKaidzen() {
     setState(() {});
@@ -100,14 +103,30 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<Task?> openDialog() => showDialog<Task>(
       context: context,
       builder: (context) => AlertDialog(
-            title: Text('New task'),
+            title: Text('Create goal',
+                textAlign: TextAlign.center, style: TextStyle(fontSize: 20.0)),
             content: Column(children: [
               TextField(
                 autofocus: true,
-                decoration: InputDecoration(hintText: 'What should be done?'),
+                decoration: InputDecoration(hintText: 'Goal name'),
                 controller: newTaskController,
               ),
-              CreateTaskWidget(callback: (value) => _currentCategory = value!),
+              SizedBox(height: 20.0),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Text('Turn into subtask'),
+                Switch(
+                    value: _isSubtask,
+                    onChanged: (value) {
+                      setState(() {
+                        _isSubtask = value;
+                      });
+                    })
+              ]),
+              SizedBox(height: 20.0),
+              TaskTypeWidget(callback: (value) => _currentCategory = value!),
+              SizedBox(height: 20.0),
+              TaskDifficultyWidget(
+                  callback: (value) => _currentDifficulty = value!)
             ]),
             actions: [
               TextButton(onPressed: submit, child: Text("Create")),
@@ -118,27 +137,30 @@ class _MyHomePageState extends State<MyHomePage> {
     Navigator.of(context).pop(Task(
         newTaskController.text,
         DevelopmentCategory.values
-            .firstWhere((element) => element.id == _currentCategory)));
+            .firstWhere((element) => element.id == _currentCategory),
+        Difficulty.values
+            .firstWhere((element) => element.id == _currentDifficulty)));
   }
 }
 
-class CreateTaskWidget extends StatefulWidget {
+class TaskTypeWidget extends StatefulWidget {
   final void Function(int?)? callback;
-  const CreateTaskWidget({Key? key, required this.callback}) : super(key: key);
+  const TaskTypeWidget({Key? key, required this.callback}) : super(key: key);
   @override
-  State<CreateTaskWidget> createState() {
-    return _CreateTaskWidgetState(callback);
+  State<TaskTypeWidget> createState() {
+    return _TaskTypeWidgetState(callback);
   }
 }
 
-class _CreateTaskWidgetState extends State<CreateTaskWidget> {
+class _TaskTypeWidgetState extends State<TaskTypeWidget> {
   final void Function(int?)? callback;
-  _CreateTaskWidgetState(this.callback);
+  _TaskTypeWidgetState(this.callback);
   int _currentCategory = DevelopmentCategory.CAREER_AND_FINANCES.id;
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<int>(
+    return Container(
+        child: DropdownButton<int>(
       value: _currentCategory,
       onChanged: (value) {
         setState(() {
@@ -152,6 +174,48 @@ class _CreateTaskWidgetState extends State<CreateTaskWidget> {
           child: Text(category.name),
         );
       }).toList(),
-    );
+    ));
+  }
+}
+
+class TaskDifficultyWidget extends StatefulWidget {
+  final void Function(int?)? callback;
+  const TaskDifficultyWidget({Key? key, required this.callback})
+      : super(key: key);
+  @override
+  State<TaskDifficultyWidget> createState() {
+    return _TaskDifficultyWidgetState(callback);
+  }
+}
+
+class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
+  final void Function(int?)? callback;
+  _TaskDifficultyWidgetState(this.callback);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      Text('Its accomplishment will improve my life:'),
+      SizedBox(height: 10.0),
+      ToggleSwitch(
+        cornerRadius: 10.0,
+        radiusStyle: true,
+        minHeight: 15.0,
+        activeBgColor: [Colors.grey],
+        activeFgColor: Colors.black,
+        inactiveBgColor: Colors.white,
+        inactiveFgColor: Colors.black,
+        initialLabelIndex: 0,
+        totalSwitches: 3,
+        labels: [
+          Difficulty.EASY.name,
+          Difficulty.MEDIUM.name,
+          Difficulty.HARD.name
+        ],
+        onToggle: (index) {
+          callback?.call(index);
+        },
+      )
+    ]);
   }
 }

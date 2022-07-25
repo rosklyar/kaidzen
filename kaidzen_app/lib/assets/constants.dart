@@ -18,3 +18,13 @@ enum DevelopmentCategory {
   final String name;
   final Color color;
 }
+
+enum Difficulty {
+  EASY(0, "A little"),
+  MEDIUM(1, "Average"),
+  HARD(2, "Majorly");
+
+  const Difficulty(this.id, this.name);
+  final int id;
+  final String name;
+}

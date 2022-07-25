@@ -9,8 +9,9 @@ class Task extends Equatable {
   DevelopmentCategory category;
   String status;
   List<Task> subtasks;
+  Difficulty difficulty;
 
-  Task(this.name, this.category,
+  Task(this.name, this.category, this.difficulty,
       {this.status = Status.TODO, this.id, this.subtasks = const []});
 
   void addSubTask(Task subTask) {
@@ -23,9 +24,9 @@ class Task extends Equatable {
 
   @override
   String toString() {
-    return "id: $id, name: $name, category: $category, status: $status";
+    return "id: $id, name: $name, category: $category, status: $status, difficulty: $difficulty";
   }
 
   @override
-  List<Object?> get props => [id, name, status, category, subtasks];
+  List<Object?> get props => [id, name, status, category, difficulty, subtasks];
 }

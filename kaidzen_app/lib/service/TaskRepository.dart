@@ -9,6 +9,7 @@ Map<String, Object?> toMap(Task task) {
     columnTaskTitle: task.name,
     columnTaskStatus: task.status,
     columnTaskCategory: task.category.id,
+    columnTaskDifficulty: task.difficulty.id,
   };
   if (task.id != -1) {
     map[columnTaskId] = task.id;
@@ -21,6 +22,8 @@ Task fromMap(Map<String, Object?> map) {
       map[columnTaskTitle] as String,
       DevelopmentCategory.values.firstWhere(
           (element) => element.id == (map[columnTaskCategory] as int)),
+      Difficulty.values.firstWhere(
+          (element) => element.id == (map[columnTaskDifficulty] as int)),
       id: map[columnTaskId] as int,
       status: map[columnTaskStatus] as String,
       subtasks: []);

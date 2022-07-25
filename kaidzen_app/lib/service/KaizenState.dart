@@ -13,6 +13,7 @@ const String columnTaskId = '_id';
 const String columnTaskTitle = 'title';
 const String columnTaskStatus = 'status';
 const String columnTaskCategory = 'category_id';
+const String columnTaskDifficulty = 'difficulty_id';
 
 const String tableSubtaskMapping = 'taskToParent';
 const String columnSubtaskId = '_task_id';
@@ -49,6 +50,7 @@ class KaizenDb {
             $columnTaskId integer primary key autoincrement, 
             $columnTaskTitle text not null,
             $columnTaskCategory integer not null,
+            $columnTaskDifficulty integer not null,
             $columnTaskStatus integer not null)
           ''');
 
