@@ -52,7 +52,8 @@ class TaskRepository {
       columnTaskId,
       columnTaskCategory,
       columnTaskStatus,
-      columnTaskTitle
+      columnTaskTitle,
+      columnTaskDifficulty
     ]);
     List<Task> tasks = maps
         .map((element) => fromMap(element as Map<String, Object?>))
