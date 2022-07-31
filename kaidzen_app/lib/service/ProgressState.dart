@@ -26,7 +26,7 @@ class ProgressState extends ChangeNotifier {
     var level = _progress[task.category]!.level;
     int levelDelta = ProgressCalculator.levelDelta(level, task);
     Progress updatedProgress = Progress(
-      progress + progressDelta,
+      (progress + progressDelta).clamp(0.0, 1.0),
       levelDelta + levelDelta,
     );
     await repository.updateProgress(task.category, updatedProgress);
