@@ -11,13 +11,22 @@ import '../achievements/event.dart';
 class TasksState extends ChangeNotifier {
   final TaskRepository repository;
   Map<String, List<Task>> _tasks;
+  Map<int, Task> _tasksMap;
 
   TasksState({
     required this.repository,
-  }) : _tasks = {};
+  })  : _tasks = {},
+        _tasksMap = {};
 
   Future loadAll() async {
     List<Task> allTasks = await repository.getAll();
+    _tasksMap = {for (Task task in allTasks) task.id!: task};
+
+    for (var t in allTasks) {
+      if (t.parent != null) {
+        _tasksMap[t.parent]!.addSubTask(t);
+      }
+    }
     _tasks = groupBy(allTasks, (Task task) => task.status);
     _tasks.putIfAbsent(Status.TODO, () => <Task>[]);
     _tasks.putIfAbsent(Status.DOING, () => <Task>[]);
@@ -26,26 +35,44 @@ class TasksState extends ChangeNotifier {
   }
 
   List<Task> getByStatus(String status) {
-    return _tasks[status] ?? [];
+    List<Task> tasks = _tasks[status] ?? [];
+    if (status == Status.TODO) {
+      return tasks.where((t) => t.parent == null).toList();
+    } else if (status == Status.DONE) {
+      return tasks
+          .whereNot((t) =>
+              t.parent != null && _tasksMap[t.parent]!.status == Status.DONE)
+          .toList();
+    }
+    return tasks;
   }
 
   addTask(Task newTask) async {
     await repository.insert(newTask);
-    _tasks[newTask.status]?.add(newTask);
+    await loadAll();
     notifyListeners();
   }
 
   deleteTask(Task task) async {
     await repository.delete(task.id);
-    _tasks[task.status]?.remove(task);
+    await loadAll();
     notifyListeners();
   }
 
-  moveTask(Task task, String newStatus) async {
-    _tasks[task.status]?.remove(task);
+  moveTaskAndNotify(Task task, String newStatus) async {
+    await moveTask(task, newStatus);
+    if (task.parent != null) {
+      Task parentTask = _tasksMap[task.parent]!;
+      if (parentTask.subtasks.where((st) => st.status != Status.DONE).isEmpty) {
+        await moveTask(parentTask, Status.DONE);
+      }
+    }
+    await loadAll();
+    notifyListeners();
+  }
+
+  Future<void> moveTask(Task task, String newStatus) async {
     task.status = newStatus;
     await repository.update(task);
-    _tasks[task.status]?.add(task);
-    notifyListeners();
   }
 }
