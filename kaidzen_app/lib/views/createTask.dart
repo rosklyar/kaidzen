@@ -6,6 +6,7 @@ import '../models/task.dart';
 import 'package:provider/provider.dart';
 
 import '../service/TasksState.dart';
+import 'package:chip_list/chip_list.dart';
 
 class CreateTask extends StatefulWidget {
   const CreateTask({Key? key}) : super(key: key);
@@ -17,50 +18,89 @@ class CreateTask extends StatefulWidget {
 }
 
 class _CreateTaskState extends State<CreateTask> {
-  final newTaskController = TextEditingController();
-  int _currentCategory = 0;
+  late TextEditingController newTaskController;
+  int _currentCategory = -1;
   int _currentDifficulty = 0;
   bool _isSubtask = false;
+  bool _isCreateButtonActive = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create goal', textAlign: TextAlign.center),
+        centerTitle: true,
+        title: const Text('Create goal'),
       ),
-      body: Container(
-        child: Column(children: [
-          TextField(
-            autofocus: true,
-            decoration: InputDecoration(hintText: 'Goal name'),
-            controller: newTaskController,
-          ),
-          SizedBox(height: 20.0),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text('Subtask'),
-            Switch(
-                value: _isSubtask,
-                onChanged: (value) {
-                  setState(() {
-                    _isSubtask = value;
-                  });
-                })
-          ]),
-          SizedBox(height: 40.0),
-          Text("Life sphere to be affected", textAlign: TextAlign.left),
-          TaskTypeWidget(callback: (value) => _currentCategory = value!),
-          SizedBox(height: 20.0),
-          Text(
-              "Reaching this goal will improve my ${DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name}"),
-          TaskDifficultyWidget(
-              callback: (value) => _currentDifficulty = value!),
-          SizedBox(height: 20.0),
-          TextButton(
-            onPressed: submit,
-            child: Text('Create'),
-          )
-        ]),
-      ),
+      body: Column(children: [
+        Expanded(
+            child: Column(children: [
+              Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextField(
+                    autofocus: true,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Goal title',
+                        labelText: 'Goal title'),
+                    controller: newTaskController,
+                  )),
+              Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Subtask'),
+                        Switch(
+                            value: _isSubtask,
+                            onChanged: (value) {
+                              setState(() {
+                                _isSubtask = value;
+                              });
+                            })
+                      ])),
+              const SizedBox(height: 30),
+              const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                  child: SizedBox(
+                      width: double.infinity,
+                      child: Text("Life sphere to be affected",
+                          textAlign: TextAlign.left))),
+              TaskTypeWidget(
+                  callback: (value) =>
+                      setState(() => _currentCategory = value!)),
+              const SizedBox(height: 20),
+              Visibility(
+                  visible: _currentCategory >= 0,
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 0),
+                      child: SizedBox(
+                          width: double.infinity,
+                          child: Text(
+                            "Reaching this goal will improve my ${_currentCategory >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}",
+                          )))),
+              const SizedBox(height: 10),
+              Visibility(
+                  visible: _currentCategory >= 0,
+                  child: TaskDifficultyWidget(
+                      callback: (value) => _currentDifficulty = value!))
+            ]),
+            flex: 7),
+        Expanded(
+            child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _isCreateButtonActive ? submit : null,
+                      child:
+                          const Text('Create', style: TextStyle(fontSize: 20)),
+                    ))),
+            flex: 1)
+      ]),
     );
   }
 
@@ -72,6 +112,22 @@ class _CreateTaskState extends State<CreateTask> {
         Difficulty.values
             .firstWhere((element) => element.id == _currentDifficulty)));
     Navigator.pop(context);
+  }
+
+  @override
+  void dispose() {
+    newTaskController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    newTaskController = TextEditingController();
+    newTaskController.addListener(() {
+      _isCreateButtonActive =
+          newTaskController.text.isNotEmpty && _currentCategory >= 0;
+    });
   }
 }
 
@@ -87,24 +143,23 @@ class TaskTypeWidget extends StatefulWidget {
 class _TaskTypeWidgetState extends State<TaskTypeWidget> {
   final void Function(int?)? callback;
   _TaskTypeWidgetState(this.callback);
-  int _currentCategory = DevelopmentCategory.CAREER_AND_FINANCES.id;
+  List<int> _currentCategories = [-1];
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<int>(
-      value: _currentCategory,
-      onChanged: (value) {
-        setState(() {
-          _currentCategory = value!;
-          callback?.call(value);
-        });
+    return ChipList(
+      listOfChipNames:
+          DevelopmentCategory.values.map((element) => element.name).toList(),
+      listOfChipIndicesCurrentlySeclected: _currentCategories,
+      activeBgColorList: [Theme.of(context).primaryColor],
+      inactiveBgColorList: const [Colors.white],
+      activeTextColorList: const [Colors.white],
+      inactiveTextColorList: [Theme.of(context).primaryColor],
+      extraOnToggle: (val) {
+        _currentCategories = [val];
+        setState(() {});
+        callback?.call(val);
       },
-      items: DevelopmentCategory.values.map((category) {
-        return DropdownMenuItem<int>(
-          value: category.id,
-          child: Text(category.name),
-        );
-      }).toList(),
     );
   }
 }
@@ -125,23 +180,16 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ToggleSwitch(
-      cornerRadius: 10.0,
-      radiusStyle: true,
-      minHeight: 15.0,
-      activeBgColor: [Colors.grey],
-      activeFgColor: Colors.black,
-      inactiveBgColor: Colors.white,
-      inactiveFgColor: Colors.black,
-      initialLabelIndex: 0,
-      totalSwitches: 3,
-      labels: [
-        Difficulty.EASY.name,
-        Difficulty.MEDIUM.name,
-        Difficulty.HARD.name
-      ],
-      onToggle: (index) {
-        callback?.call(index);
+    return ChipList(
+      listOfChipNames:
+          Difficulty.values.map((element) => element.name).toList(),
+      listOfChipIndicesCurrentlySeclected: [0],
+      activeBgColorList: [Theme.of(context).primaryColor],
+      inactiveBgColorList: const [Colors.white],
+      activeTextColorList: const [Colors.white],
+      inactiveTextColorList: [Theme.of(context).primaryColor],
+      extraOnToggle: (val) {
+        callback?.call(val);
       },
     );
   }

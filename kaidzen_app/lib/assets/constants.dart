@@ -7,11 +7,11 @@ class Status {
 }
 
 enum DevelopmentCategory {
-  CAREER_AND_FINANCES(0, "Career and finances", Colors.yellow),
+  CAREER_AND_FINANCES(0, "Mind", Colors.yellow),
   HEALTH(1, "Health", Colors.green),
-  PERSONAL_DEVELOPMENT(2, "Personal development", Colors.blue),
-  RELATIONSHIPS(3, "Relatioships", Colors.red),
-  LEISURE(4, "Leisure", Colors.purple);
+  PERSONAL_DEVELOPMENT(2, "Energy", Colors.blue),
+  RELATIONSHIPS(3, "Relations", Colors.red),
+  LEISURE(4, "Wealth", Colors.purple);
 
   const DevelopmentCategory(this.id, this.name, this.color);
   final int id;
@@ -22,7 +22,7 @@ enum DevelopmentCategory {
 enum Difficulty {
   EASY(0, "A little"),
   MEDIUM(1, "Average"),
-  HARD(2, "Majorly");
+  HARD(2, "Hugely");
 
   const Difficulty(this.id, this.name);
   final int id;
