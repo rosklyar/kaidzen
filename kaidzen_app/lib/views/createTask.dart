@@ -68,8 +68,12 @@ class _CreateTaskState extends State<CreateTask> {
                       child: Text("Life sphere to be affected",
                           textAlign: TextAlign.left))),
               TaskTypeWidget(
-                  callback: (value) =>
-                      setState(() => _currentCategory = value!)),
+                  callback: (value) => setState(() {
+                        _currentCategory = value!;
+                        _isCreateButtonActive =
+                            newTaskController.text.isNotEmpty &&
+                                _currentCategory >= 0;
+                      })),
               const SizedBox(height: 20),
               Visibility(
                   visible: _currentCategory >= 0,
@@ -95,7 +99,14 @@ class _CreateTaskState extends State<CreateTask> {
                 child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: _isCreateButtonActive ? submit : null,
+                      onPressed: _isCreateButtonActive
+                          ? () {
+                              setState(() {
+                                _isCreateButtonActive = false;
+                              });
+                              submit();
+                            }
+                          : null,
                       child:
                           const Text('Create', style: TextStyle(fontSize: 20)),
                     ))),
@@ -125,8 +136,11 @@ class _CreateTaskState extends State<CreateTask> {
     super.initState();
     newTaskController = TextEditingController();
     newTaskController.addListener(() {
-      _isCreateButtonActive =
+      final _isCreateButtonActive =
           newTaskController.text.isNotEmpty && _currentCategory >= 0;
+      setState(() {
+        this._isCreateButtonActive = _isCreateButtonActive;
+      });
     });
   }
 }
