@@ -27,7 +27,7 @@ class ProgressState extends ChangeNotifier {
     int levelDelta = ProgressCalculator.levelDelta(level, task);
     Progress updatedProgress = Progress(
       (progress + progressDelta).clamp(0.0, 1.0),
-      levelDelta + levelDelta,
+      level + levelDelta,
     );
     await repository.updateProgress(task.category, updatedProgress);
     _progress[task.category] = updatedProgress;

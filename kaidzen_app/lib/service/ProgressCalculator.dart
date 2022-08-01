@@ -17,6 +17,6 @@ class ProgressCalculator {
   }
 
   static int levelDelta(int current, Task task) {
-    return 1 + task.difficulty.id;
+    return 1;
   }
 }
