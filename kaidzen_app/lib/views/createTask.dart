@@ -182,6 +182,7 @@ class TaskDifficultyWidget extends StatefulWidget {
   final void Function(int?)? callback;
   const TaskDifficultyWidget({Key? key, required this.callback})
       : super(key: key);
+
   @override
   State<TaskDifficultyWidget> createState() {
     return _TaskDifficultyWidgetState(callback);
@@ -191,18 +192,21 @@ class TaskDifficultyWidget extends StatefulWidget {
 class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
   final void Function(int?)? callback;
   _TaskDifficultyWidgetState(this.callback);
+  List<int> _currentDifficulty = [0];
 
   @override
   Widget build(BuildContext context) {
     return ChipList(
       listOfChipNames:
           Difficulty.values.map((element) => element.name).toList(),
-      listOfChipIndicesCurrentlySeclected: [0],
+      listOfChipIndicesCurrentlySeclected: _currentDifficulty,
       activeBgColorList: [Theme.of(context).primaryColor],
       inactiveBgColorList: const [Colors.white],
       activeTextColorList: const [Colors.white],
       inactiveTextColorList: [Theme.of(context).primaryColor],
       extraOnToggle: (val) {
+        _currentDifficulty = [val];
+        setState(() {});
         callback?.call(val);
       },
     );

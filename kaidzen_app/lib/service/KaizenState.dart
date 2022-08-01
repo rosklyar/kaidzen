@@ -38,11 +38,11 @@ class KaizenDb {
           ''');
       await db.execute('''
             insert into $tableProgress values
-                (${DevelopmentCategory.CAREER_AND_FINANCES.id}, 1, 0.0),
+                (${DevelopmentCategory.MIND.id}, 1, 0.0),
                 (${DevelopmentCategory.HEALTH.id}, 2, 0.0),
-                (${DevelopmentCategory.PERSONAL_DEVELOPMENT.id}, 3, 0.0),
-                (${DevelopmentCategory.RELATIONSHIPS.id}, 4, 0.0),
-                (${DevelopmentCategory.LEISURE.id}, 5, 0.0);
+                (${DevelopmentCategory.ENERGY.id}, 3, 0.0),
+                (${DevelopmentCategory.RELATIONS.id}, 4, 0.0),
+                (${DevelopmentCategory.WEALTH.id}, 5, 0.0);
           ''');
 
       await db.execute('''

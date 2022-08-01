@@ -21,7 +21,9 @@ class ProfilePanelState extends State<ProfilePanel> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ProgressState>(
-        builder: (context, state, child) => Row(
+        builder: (context, state, child) => Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Row(
               children: [
                 Expanded(
                     child: Column(children: [
@@ -32,63 +34,35 @@ class ProfilePanelState extends State<ProfilePanel> {
                       ),
                       Text(
                         '${state.getTotalLevel()} LEVEL',
-                        style: const TextStyle(fontSize: 20.0),
+                        style: const TextStyle(fontSize: 20),
                       ),
                     ]),
                     flex: 3),
                 Expanded(
                     child: Column(children: [
-                      SizedBox(
-                        height: 25.0,
-                        width: 300.0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
-                            Icon(Icons.surfing, size: 20.0, color: Colors.grey),
-                            Icon(Icons.subject, size: 20.0, color: Colors.grey)
-                          ],
-                        ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: const [
+                          Icon(Icons.surfing, size: 30, color: Colors.grey),
+                          SizedBox(width: 10),
+                          Icon(Icons.subject, size: 30, color: Colors.grey)
+                        ],
                       ),
+                      const SizedBox(height: 20),
                       Row(
                         children: [
                           Expanded(
                               child: Column(
                                 children: [
                                   ProgressIndicator(
-                                      percent: state.getValue(
-                                          DevelopmentCategory
-                                              .CAREER_AND_FINANCES),
-                                      level: state.getLevel(DevelopmentCategory
-                                          .CAREER_AND_FINANCES),
-                                      title: DevelopmentCategory
-                                          .CAREER_AND_FINANCES.name,
-                                      progressColor: DevelopmentCategory
-                                          .CAREER_AND_FINANCES.color),
-                                  ProgressIndicator(
-                                      percent: state.getValue(
-                                          DevelopmentCategory
-                                              .PERSONAL_DEVELOPMENT),
-                                      level: state.getLevel(DevelopmentCategory
-                                          .PERSONAL_DEVELOPMENT),
-                                      title: DevelopmentCategory
-                                          .PERSONAL_DEVELOPMENT.name,
-                                      progressColor: DevelopmentCategory
-                                          .PERSONAL_DEVELOPMENT.color),
-                                  ProgressIndicator(
-                                      percent: state.getValue(
-                                          DevelopmentCategory.RELATIONSHIPS),
-                                      level: state.getLevel(
-                                          DevelopmentCategory.RELATIONSHIPS),
-                                      title: DevelopmentCategory
-                                          .RELATIONSHIPS.name,
-                                      progressColor: DevelopmentCategory
-                                          .RELATIONSHIPS.color),
-                                ],
-                              ),
-                              flex: 5),
-                          Expanded(
-                              child: Column(
-                                children: [
+                                      percent: state
+                                          .getValue(DevelopmentCategory.MIND),
+                                      level: state
+                                          .getLevel(DevelopmentCategory.MIND),
+                                      title: DevelopmentCategory.MIND.name,
+                                      progressColor:
+                                          DevelopmentCategory.MIND.color),
                                   ProgressIndicator(
                                       percent: state
                                           .getValue(DevelopmentCategory.HEALTH),
@@ -98,14 +72,36 @@ class ProfilePanelState extends State<ProfilePanel> {
                                       progressColor:
                                           DevelopmentCategory.HEALTH.color),
                                   ProgressIndicator(
-                                      percent: state.getValue(
-                                          DevelopmentCategory.LEISURE),
-                                      level: state.getLevel(
-                                          DevelopmentCategory.LEISURE),
-                                      title: DevelopmentCategory.LEISURE.name,
+                                      percent: state
+                                          .getValue(DevelopmentCategory.ENERGY),
+                                      level: state
+                                          .getLevel(DevelopmentCategory.ENERGY),
+                                      title: DevelopmentCategory.ENERGY.name,
                                       progressColor:
-                                          DevelopmentCategory.LEISURE.color),
-                                  const SizedBox(height: 25.0),
+                                          DevelopmentCategory.ENERGY.color),
+                                ],
+                              ),
+                              flex: 5),
+                          Expanded(
+                              child: Column(
+                                children: [
+                                  ProgressIndicator(
+                                      percent: state
+                                          .getValue(DevelopmentCategory.WEALTH),
+                                      level: state
+                                          .getLevel(DevelopmentCategory.WEALTH),
+                                      title: DevelopmentCategory.WEALTH.name,
+                                      progressColor:
+                                          DevelopmentCategory.WEALTH.color),
+                                  ProgressIndicator(
+                                      percent: state.getValue(
+                                          DevelopmentCategory.RELATIONS),
+                                      level: state.getLevel(
+                                          DevelopmentCategory.RELATIONS),
+                                      title: DevelopmentCategory.RELATIONS.name,
+                                      progressColor:
+                                          DevelopmentCategory.RELATIONS.color),
+                                  const SizedBox(height: 35.0),
                                 ],
                               ),
                               flex: 5)
@@ -114,7 +110,7 @@ class ProfilePanelState extends State<ProfilePanel> {
                     ]),
                     flex: 7)
               ],
-            ));
+            )));
   }
 }
 
@@ -135,25 +131,36 @@ class ProgressIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: LinearPercentIndicator(
-        lineHeight: 15.0,
-        percent: percent,
-        center:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text(
-            " $title",
-            style: const TextStyle(fontSize: 8.0),
-          ),
-          Text(
-            "LVL $level",
-            style: const TextStyle(fontSize: 8.0),
-          ),
-        ]),
-        barRadius: const Radius.circular(3.0),
-        backgroundColor: Colors.white,
-        progressColor: progressColor,
-      ),
-    );
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Column(children: [
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      " $title",
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                    Row(children: [
+                      const Text(
+                        "LVL   ",
+                        style: TextStyle(fontSize: 7),
+                      ),
+                      Text(
+                        "$level",
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    ]),
+                  ])),
+          LinearPercentIndicator(
+            lineHeight: 7.0,
+            percent: percent,
+            animation: true,
+            barRadius: const Radius.circular(3.0),
+            backgroundColor: const Color.fromRGBO(225, 218, 218, 1.0),
+            progressColor: progressColor,
+          )
+        ]));
   }
 }

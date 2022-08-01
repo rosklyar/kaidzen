@@ -5,11 +5,11 @@ import '../models/task.dart';
 
 class ProgressCalculator {
   static final Map<DevelopmentCategory, double> _progressDeltaMap = {
-    DevelopmentCategory.PERSONAL_DEVELOPMENT: 0.1,
+    DevelopmentCategory.ENERGY: 0.1,
     DevelopmentCategory.HEALTH: 0.2,
-    DevelopmentCategory.LEISURE: 0.15,
-    DevelopmentCategory.RELATIONSHIPS: 0.25,
-    DevelopmentCategory.CAREER_AND_FINANCES: 0.05
+    DevelopmentCategory.WEALTH: 0.15,
+    DevelopmentCategory.RELATIONS: 0.25,
+    DevelopmentCategory.MIND: 0.05
   };
 
   static double progressDelta(double current, Task task) {
