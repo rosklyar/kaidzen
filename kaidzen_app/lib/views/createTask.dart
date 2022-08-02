@@ -36,7 +36,7 @@ class _CreateTaskState extends State<CreateTask> {
             child: Column(children: [
               Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
                   child: TextField(
                     autofocus: true,
                     decoration: const InputDecoration(
@@ -46,8 +46,7 @@ class _CreateTaskState extends State<CreateTask> {
                     controller: newTaskController,
                   )),
               Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                  padding: const EdgeInsets.only(left: 10),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -67,13 +66,16 @@ class _CreateTaskState extends State<CreateTask> {
                       width: double.infinity,
                       child: Text("Life sphere to be affected",
                           textAlign: TextAlign.left))),
-              TaskTypeWidget(
-                  callback: (value) => setState(() {
-                        _currentCategory = value!;
-                        _isCreateButtonActive =
-                            newTaskController.text.isNotEmpty &&
-                                _currentCategory >= 0;
-                      })),
+              Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                  child: TaskTypeWidget(
+                      callback: (value) => setState(() {
+                            _currentCategory = value!;
+                            _isCreateButtonActive =
+                                newTaskController.text.isNotEmpty &&
+                                    _currentCategory >= 0;
+                          }))),
               const SizedBox(height: 20),
               Visibility(
                   visible: _currentCategory >= 0,
@@ -86,10 +88,13 @@ class _CreateTaskState extends State<CreateTask> {
                             "Reaching this goal will improve my ${_currentCategory >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}",
                           )))),
               const SizedBox(height: 10),
-              Visibility(
-                  visible: _currentCategory >= 0,
-                  child: TaskDifficultyWidget(
-                      callback: (value) => _currentDifficulty = value!))
+              Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                  child: Visibility(
+                      visible: _currentCategory >= 0,
+                      child: TaskDifficultyWidget(
+                          callback: (value) => _currentDifficulty = value!)))
             ]),
             flex: 7),
         Expanded(
@@ -157,24 +162,32 @@ class TaskTypeWidget extends StatefulWidget {
 class _TaskTypeWidgetState extends State<TaskTypeWidget> {
   final void Function(int?)? callback;
   _TaskTypeWidgetState(this.callback);
-  List<int> _currentCategories = [-1];
+  int? _value = -1;
 
   @override
   Widget build(BuildContext context) {
-    return ChipList(
-      listOfChipNames:
-          DevelopmentCategory.values.map((element) => element.name).toList(),
-      listOfChipIndicesCurrentlySeclected: _currentCategories,
-      activeBgColorList: [Theme.of(context).primaryColor],
-      inactiveBgColorList: const [Colors.white],
-      activeTextColorList: const [Colors.white],
-      inactiveTextColorList: [Theme.of(context).primaryColor],
-      extraOnToggle: (val) {
-        _currentCategories = [val];
-        setState(() {});
-        callback?.call(val);
-      },
-    );
+    return SizedBox(
+        width: double.infinity,
+        child: Wrap(
+            spacing: 10,
+            children: DevelopmentCategory.values
+                .map((cat) => ChoiceChip(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      label: Row(mainAxisSize: MainAxisSize.min, children: [
+                        Icon(Icons.circle, color: cat.color, size: 7),
+                        const SizedBox(width: 3),
+                        Text(cat.name)
+                      ]),
+                      selected: _value == cat.index,
+                      onSelected: (bool selected) {
+                        setState(() {
+                          _value = selected ? cat.index : _value;
+                        });
+                        callback?.call(_value);
+                      },
+                    ))
+                .toList()));
   }
 }
 
@@ -192,23 +205,32 @@ class TaskDifficultyWidget extends StatefulWidget {
 class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
   final void Function(int?)? callback;
   _TaskDifficultyWidgetState(this.callback);
-  List<int> _currentDifficulty = [0];
+  int? _currentDifficulty = 0;
 
   @override
   Widget build(BuildContext context) {
-    return ChipList(
-      listOfChipNames:
-          Difficulty.values.map((element) => element.name).toList(),
-      listOfChipIndicesCurrentlySeclected: _currentDifficulty,
-      activeBgColorList: [Theme.of(context).primaryColor],
-      inactiveBgColorList: const [Colors.white],
-      activeTextColorList: const [Colors.white],
-      inactiveTextColorList: [Theme.of(context).primaryColor],
-      extraOnToggle: (val) {
-        _currentDifficulty = [val];
-        setState(() {});
-        callback?.call(val);
-      },
-    );
+    return SizedBox(
+        width: double.infinity,
+        child: Wrap(
+            children: Difficulty.values
+                .map((diff) => ChoiceChip(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      label: SizedBox(
+                          width: 100,
+                          child: Text(
+                            diff.name,
+                            textAlign: TextAlign.center,
+                          )),
+                      selected: _currentDifficulty == diff.index,
+                      onSelected: (bool selected) {
+                        setState(() {
+                          _currentDifficulty =
+                              selected ? diff.index : _currentDifficulty;
+                        });
+                        callback?.call(_currentDifficulty);
+                      },
+                    ))
+                .toList()));
   }
 }
