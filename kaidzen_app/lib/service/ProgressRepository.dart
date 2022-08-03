@@ -20,8 +20,7 @@ class ProgressRepository {
       return MapEntry(
           DevelopmentCategory.values
               .firstWhere((category) => category.id == map[columnProgressId]),
-          Progress(map[columnProgressValue] as double,
-              map[columnProgressLevel] as int));
+          Progress(map[columnProgressLevel] as int, map[columnPoints] as int));
     }));
   }
 
@@ -38,7 +37,7 @@ class ProgressRepository {
     return <String, Object?>{
       columnProgressId: category.id,
       columnProgressLevel: progress.level,
-      columnProgressValue: progress.value
+      columnPoints: progress.points
     };
   }
 

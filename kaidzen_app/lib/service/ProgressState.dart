@@ -21,14 +21,8 @@ class ProgressState extends ChangeNotifier {
   }
 
   updateProgress(Task task) async {
-    var progress = _progress[task.category]!.value;
-    double progressDelta = ProgressCalculator.progressDelta(progress, task);
-    var level = _progress[task.category]!.level;
-    int levelDelta = ProgressCalculator.levelDelta(level, task);
-    Progress updatedProgress = Progress(
-      (progress + progressDelta).clamp(0.0, 1.0),
-      levelDelta + levelDelta,
-    );
+    var currentProgress = _progress[task.category]!;
+    var updatedProgress = ProgressCalculator.progress(currentProgress, task);
     await repository.updateProgress(task.category, updatedProgress);
     _progress[task.category] = updatedProgress;
     notifyListeners();
@@ -43,7 +37,9 @@ class ProgressState extends ChangeNotifier {
     return _progress[category]?.level ?? 0;
   }
 
-  double getValue(DevelopmentCategory category) {
-    return _progress[category]?.value ?? 0;
+  double getLevelProgressFraction(DevelopmentCategory category) {
+    return _progress[category] != null
+        ? ProgressCalculator.getLevelFraction(category, _progress[category]!)
+        : 0.0;
   }
 }
