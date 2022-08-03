@@ -6,7 +6,7 @@ import '../models/task.dart';
 const String tableProgress = 'progress';
 const String columnProgressId = '_id';
 const String columnProgressLevel = 'level';
-const String columnProgressValue = 'value';
+const String columnPoints = 'points';
 
 const String tableTask = 'task';
 const String columnTaskId = '_id';
@@ -34,7 +34,7 @@ class KaizenDb {
             create table $tableProgress ( 
             $columnProgressId integer primary key,
             $columnProgressLevel integer not null,
-            $columnProgressValue double not null)
+            $columnPoints integer not null)
           ''');
       await db.execute('''
             insert into $tableProgress values

@@ -26,18 +26,37 @@ class ProfilePanelState extends State<ProfilePanel> {
             child: Row(
               children: [
                 Expanded(
-                    child: Column(children: [
+                    child: Stack(children: [
                       const Icon(
-                        Icons.person,
-                        size: 100.0,
+                        Icons.circle,
+                        size: 130.0,
                         color: Colors.grey,
                       ),
-                      Text(
-                        '${state.getTotalLevel()} LEVEL',
-                        style: const TextStyle(fontSize: 20),
-                      ),
+                      Positioned(
+                          top: 0.0,
+                          left: 70.0,
+                          right: 10.0,
+                          bottom: 80.0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 2, color: Colors.grey),
+                              shape: BoxShape.circle,
+                              // You can use like this way or like the below line
+                              //borderRadius: new BorderRadius.circular(30.0),
+                              color: Colors.white,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(state.getTotalLevel().toString(),
+                                    style: const TextStyle(fontSize: 12)),
+                                const Text('LVL', style: TextStyle(fontSize: 8))
+                              ],
+                            ),
+                          )),
                     ]),
-                    flex: 3),
+                    flex: 4),
                 Expanded(
                     child: Column(children: [
                       const SizedBox(height: 20),
@@ -56,24 +75,24 @@ class ProfilePanelState extends State<ProfilePanel> {
                               child: Column(
                                 children: [
                                   ProgressIndicator(
-                                      percent: state
-                                          .getValue(DevelopmentCategory.MIND),
+                                      percent: state.getLevelProgressFraction(
+                                          DevelopmentCategory.MIND),
                                       level: state
                                           .getLevel(DevelopmentCategory.MIND),
                                       title: DevelopmentCategory.MIND.name,
                                       progressColor:
                                           DevelopmentCategory.MIND.color),
                                   ProgressIndicator(
-                                      percent: state
-                                          .getValue(DevelopmentCategory.HEALTH),
+                                      percent: state.getLevelProgressFraction(
+                                          DevelopmentCategory.HEALTH),
                                       level: state
                                           .getLevel(DevelopmentCategory.HEALTH),
                                       title: DevelopmentCategory.HEALTH.name,
                                       progressColor:
                                           DevelopmentCategory.HEALTH.color),
                                   ProgressIndicator(
-                                      percent: state
-                                          .getValue(DevelopmentCategory.ENERGY),
+                                      percent: state.getLevelProgressFraction(
+                                          DevelopmentCategory.ENERGY),
                                       level: state
                                           .getLevel(DevelopmentCategory.ENERGY),
                                       title: DevelopmentCategory.ENERGY.name,
@@ -86,29 +105,29 @@ class ProfilePanelState extends State<ProfilePanel> {
                               child: Column(
                                 children: [
                                   ProgressIndicator(
-                                      percent: state
-                                          .getValue(DevelopmentCategory.WEALTH),
+                                      percent: state.getLevelProgressFraction(
+                                          DevelopmentCategory.WEALTH),
                                       level: state
                                           .getLevel(DevelopmentCategory.WEALTH),
                                       title: DevelopmentCategory.WEALTH.name,
                                       progressColor:
                                           DevelopmentCategory.WEALTH.color),
                                   ProgressIndicator(
-                                      percent: state.getValue(
+                                      percent: state.getLevelProgressFraction(
                                           DevelopmentCategory.RELATIONS),
                                       level: state.getLevel(
                                           DevelopmentCategory.RELATIONS),
                                       title: DevelopmentCategory.RELATIONS.name,
                                       progressColor:
                                           DevelopmentCategory.RELATIONS.color),
-                                  const SizedBox(height: 35.0),
+                                  const SizedBox(height: 30.0),
                                 ],
                               ),
                               flex: 5)
                         ],
                       )
                     ]),
-                    flex: 7)
+                    flex: 6)
               ],
             )));
   }
@@ -154,10 +173,10 @@ class ProgressIndicator extends StatelessWidget {
                     ]),
                   ])),
           LinearPercentIndicator(
-            lineHeight: 7.0,
+            lineHeight: 6.0,
             percent: percent,
             animation: true,
-            barRadius: const Radius.circular(3.0),
+            barRadius: const Radius.circular(1.0),
             backgroundColor: const Color.fromRGBO(225, 218, 218, 1.0),
             progressColor: progressColor,
           )
