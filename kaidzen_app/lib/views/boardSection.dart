@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
 import '../service/ProgressState.dart';
+import 'createTask.dart';
 
 class Board extends StatefulWidget {
   const Board({
@@ -130,7 +131,7 @@ class _ListViewCard extends State<ListViewCard> {
   @override
   Widget build(BuildContext context) {
     return widget.task.hasSubtasks() &&
-            [Boards.DO, Boards.DONE].contains(widget.boardName)
+            [Status.TODO, Status.DONE].contains(widget.boardName)
         ? taskWithSubtasks(context, widget.task, widget.boardName!)
         : buildContainer(widget.task);
   }
@@ -138,7 +139,7 @@ class _ListViewCard extends State<ListViewCard> {
   ExpandablePanel taskWithSubtasks(
       BuildContext context, Task task, String boardName) {
     debugPrint("ExpandablePanel: rebuild");
-    List<Task> subtasks = boardName == Boards.DO
+    List<Task> subtasks = boardName == Status.TODO
         ? widget.task.subtasks.where((st) => st.status == Status.TODO).toList()
         : widget.task.subtasks.where((st) => st.status == Status.DONE).toList();
     debugPrint("ExpandablePanel: $subtasks");
@@ -270,22 +271,19 @@ class _ListViewCard extends State<ListViewCard> {
                     ),
                   ),
                   Visibility(
-                                      visible: task.status == Status.TODO && task.parent == null,
-                                      child: IconButton(
-                                        icon: const Icon(Icons.add),
-                                        onPressed: () async {
-                                          String? text = await openDialog(widget.task);
-                                          String? text = await openDialog(widget.task);
-                                                          setState(() {
-                                                            widget.task.addSubTask(Task(
-                                                                text!, widget.task.category, widget.task.difficulty));
-                                                          });
-                                          addSubtask(Task(
-                                                                                                                     text!, widget.task.category, widget.task.difficulty));
-                                                                                                               });
-                                        },
-                                      ),
-                                    )Ï
+                    visible: task.status == Status.TODO && task.parent == null,
+                    child: IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () async {
+                        Task parent = widget.task;
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    CreateTask(parent: parent)));
+                      },
+                    ),
+                  )
                 ]),
               ),
             ],
@@ -293,12 +291,12 @@ class _ListViewCard extends State<ListViewCard> {
         ));
   }
 
-  Future<void> addSubtask(
-      String? text, Task parentTask, BuildContext context) async {
-    Task newSubtask = Task(text!, parent: parentTask.id);
-    parentTask.addSubTask(newSubtask);
-    await Provider.of<TasksState>(context, listen: false).addTask(newSubtask);
-  }
+  // Future<void> addSubtask(
+  //     String? text, Task parentTask, BuildContext context) async {
+  //   Task newSubtask = Task(text!, parent: parentTask.id);
+  //   parentTask.addSubTask(newSubtask);
+  //   await Provider.of<TasksState>(context, listen: false).addTask(newSubtask);
+  // }
 }
 
 extension Num on num {

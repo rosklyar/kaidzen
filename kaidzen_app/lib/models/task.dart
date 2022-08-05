@@ -8,12 +8,14 @@ class Task extends Equatable {
   String name;
   DevelopmentCategory category;
   String status;
-  List<Task> subtasks = [];
+  List<Task> subtasks = List.empty(growable: true);
   Difficulty difficulty;
   int? parent;
 
   Task(this.name, this.category, this.difficulty,
-      {this.status = Status.TODO, this.id, this.subtasks = const [], this.parent});
+      {this.status = Status.TODO,
+      this.id,
+      this.parent});
 
   void addSubTask(Task subTask) {
     subtasks.add(subTask);
@@ -29,5 +31,6 @@ class Task extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, name, status, category, difficulty, subtasks, parent];
+  List<Object?> get props =>
+      [id, name, status, category, difficulty, subtasks, parent];
 }

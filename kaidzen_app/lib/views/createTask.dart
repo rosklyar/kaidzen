@@ -10,7 +10,9 @@ import 'package:provider/provider.dart';
 import '../service/TasksState.dart';
 
 class CreateTask extends StatefulWidget {
-  const CreateTask({Key? key}) : super(key: key);
+  final Task? parent;
+
+  const CreateTask({Key? key, this.parent}) : super(key: key);
 
   @override
   State<CreateTask> createState() {
@@ -27,6 +29,8 @@ class _CreateTaskState extends State<CreateTask> {
 
   @override
   Widget build(BuildContext context) {
+    _isSubtask = widget.parent != null;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -63,7 +67,23 @@ class _CreateTaskState extends State<CreateTask> {
                               });
                             })
                       ])),
-              const SizedBox(height: 30),
+              Visibility(
+                visible: widget.parent != null,
+                child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    child: TextFormField(
+                      initialValue: widget.parent == null ? "" : widget.parent!.name,
+                      enabled: false,
+                      autofocus: false,
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Parent goal'),
+                    )),
+              ),
+              Visibility(
+                  visible: widget.parent == null,
+                  child: const SizedBox(height: 30)),
               const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                   child: SizedBox(
@@ -130,7 +150,8 @@ class _CreateTaskState extends State<CreateTask> {
         DevelopmentCategory.values
             .firstWhere((element) => element.id == _currentCategory),
         Difficulty.values
-            .firstWhere((element) => element.id == _currentDifficulty)));
+            .firstWhere((element) => element.id == _currentDifficulty)),
+            parent: widget.parent != null ? widget.parent!.id : null);
     Provider.of<AchievementsState>(context, listen: false)
         .addEvent(Event(EventType.created, DateTime.now()));
     Navigator.pop(context);

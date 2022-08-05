@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import '../assets/constants.dart';
 
 import '../models/task.dart';
+import 'KaizenState.dart';
 
 Map<String, Object?> toMap(Task task) {
   var map = <String, Object?>{
@@ -79,7 +80,6 @@ class TaskRepository {
   }
 
   Future<int> delete(int? id) async {
-    debugPrint("delete $id");
     return await db!.delete(tableTask,
         where: '$columnTaskId = ? OR $columnParentId = ?',
         whereArgs: [id, id]);

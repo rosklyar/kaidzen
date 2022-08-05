@@ -10,6 +10,7 @@ const String tableTask = 'task';
 const String columnTaskId = '_id';
 const String columnTaskTitle = 'title';
 const String columnTaskStatus = 'status';
+const String columnTaskParentId = 'parent_id';
 const String columnTaskCategory = 'category_id';
 const String columnTaskDifficulty = 'difficulty_id';
 
@@ -34,8 +35,19 @@ class KaizenDb {
   static Future<Database> _open() async {
     return await openDatabase('kaizen.db', version: 8,
         onCreate: (Database db, int version) async {
+      await initDb(db);
+    }, onUpgrade: (db, oldVersion, newVersion) async {
       await db.execute('''
-            create table $tableProgress ( 
+            drop table $tableTask;
+            drop table $tableProgress;
+            ''');
+      await initDb(db);
+    });
+  }
+
+  static Future<void> initDb(Database db) async {
+    await db.execute('''
+            create table $tableProgress (
             $columnProgressId integer primary key,
             $columnProgressLevel integer not null,
             $columnPoints integer not null)
@@ -49,28 +61,21 @@ class KaizenDb {
                 (${DevelopmentCategory.WEALTH.id}, 0, 0.0);
           ''');
 
-      await db.execute('''
-            create table $tableTask ( 
-            $columnTaskId integer primary key autoincrement, 
-            $columnTaskTitle text not null,
-            $columnTaskCategory integer not null,
-            $columnTaskDifficulty integer not null,
-            $columnTaskStatus integer not null)
-          ''');
+    await db.execute('''
+          create table $tableTask (
+          $columnTaskId integer primary key autoincrement,
+          $columnTaskTitle text not null,
+          $columnTaskCategory integer not null,
+          $columnTaskDifficulty integer not null,
+          $columnTaskStatus integer not null,
+          $columnParentId integer)
+        ''');
 
       await db.execute('''
-            create table $tableSubtaskMapping ( 
-            $columnSubtaskId integer not null, 
-            $columnParentId integer not null,
-            UNIQUE($columnSubtaskId, $columnParentId))
-          ''');
-
-      await db.execute('''
-            create table $tableEvents ( 
-            $columnEventtId integer primary key autoincrement, 
+            create table $tableEvents (
+            $columnEventtId integer primary key autoincrement,
             $columnEventType integer not null,
             $columnEventTs datetime not null)
-          ''');
-    });
+          ''');ÏÏ
   }
 }
