@@ -61,7 +61,7 @@ class ProfilePanelState extends State<ProfilePanel> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          MaterialButton(
+                          IconButton(
                             onPressed: () {
                               Navigator.push(
                                   context,
@@ -69,14 +69,17 @@ class ProfilePanelState extends State<ProfilePanel> {
                                       builder: (context) =>
                                           const Achievements()));
                             },
-                            child: const Icon(
+                            icon: const Icon(
                               Icons.surfing,
                               size: 30,
+                              color: Colors.grey,
                             ),
                           ),
-                          const SizedBox(width: 10),
-                          const Icon(Icons.subject,
-                              size: 30, color: Colors.grey)
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.subject,
+                                size: 30, color: Colors.grey),
+                          )
                         ],
                       ),
                       const SizedBox(height: 20),

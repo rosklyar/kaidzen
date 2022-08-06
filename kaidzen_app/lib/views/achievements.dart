@@ -13,6 +13,7 @@ class Achievements extends StatelessWidget {
     return Consumer<AchievementsState>(
         builder: (context, achievementsState, child) => Scaffold(
               appBar: AppBar(
+                centerTitle: true,
                 title:
                     const Text('Achievements', style: TextStyle(fontSize: 12)),
               ),
@@ -27,20 +28,36 @@ class Achievements extends StatelessWidget {
                             width: 100,
                             height: 100,
                             child: Center(
-                                child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  shape: const CircleBorder()),
-                              child: const Icon(Icons.add),
-                              onPressed: () {},
-                            ))),
+                                child: Card(
+                                    elevation: 4.0,
+                                    margin: EdgeInsets.zero,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(150),
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                          width: 60,
+                                          height: 60,
+                                          padding: const EdgeInsets.all(3.0),
+                                          decoration: const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white),
+                                          child: Image.asset(
+                                              "assets/origami.png")),
+                                    )))),
                         SizedBox(
                             width: 100,
                             height: 100,
                             child: Center(
-                                child: CircularProgressIndicator(
-                              value: achievement.progress,
-                              color: Colors.red,
-                            )))
+                                child: SizedBox(
+                                    width: 60,
+                                    height: 60,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 3,
+                                      value: achievement.progress,
+                                      color: Colors.pink,
+                                    ))))
                       ]),
                       Text(achievement.title)
                     ],

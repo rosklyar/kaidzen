@@ -10,8 +10,8 @@ enum DevelopmentCategory {
   MIND(0, "Mind", Color.fromRGBO(69, 131, 151, 1.0)),
   HEALTH(1, "Health", Color.fromRGBO(166, 187, 31, 1.0)),
   ENERGY(2, "Energy", Color.fromRGBO(242, 202, 0, 1.0)),
-  RELATIONS(3, "Relations", Color.fromRGBO(138, 94, 176, 1.0)),
-  WEALTH(4, "Wealth", Color.fromRGBO(234, 125, 98, 1.0));
+  RELATIONS(3, "Relations", Color.fromRGBO(234, 125, 98, 1.0)),
+  WEALTH(4, "Wealth", Color.fromRGBO(138, 94, 176, 1.0));
 
   const DevelopmentCategory(this.id, this.name, this.color);
   final int id;

@@ -172,13 +172,16 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
             spacing: 10,
             children: DevelopmentCategory.values
                 .map((cat) => ChoiceChip(
+                      selectedColor: Colors.grey,
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5))),
-                      label: Row(mainAxisSize: MainAxisSize.min, children: [
-                        Icon(Icons.circle, color: cat.color, size: 7),
-                        const SizedBox(width: 3),
-                        Text(cat.name)
-                      ]),
+                      label: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Row(mainAxisSize: MainAxisSize.min, children: [
+                            Icon(Icons.circle, color: cat.color, size: 7),
+                            const SizedBox(width: 5),
+                            Text(cat.name, style: const TextStyle(fontSize: 14))
+                          ])),
                       selected: _value == cat.index,
                       onSelected: (bool selected) {
                         setState(() {
@@ -214,14 +217,14 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
         child: Wrap(
             children: Difficulty.values
                 .map((diff) => ChoiceChip(
+                      selectedColor: Colors.grey,
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5))),
                       label: SizedBox(
                           width: 100,
-                          child: Text(
-                            diff.name,
-                            textAlign: TextAlign.center,
-                          )),
+                          child: Text(diff.name,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 14))),
                       selected: _currentDifficulty == diff.index,
                       onSelected: (bool selected) {
                         setState(() {
