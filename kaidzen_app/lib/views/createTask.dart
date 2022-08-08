@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../service/TasksState.dart';
 import 'package:chip_list/chip_list.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 class CreateTask extends StatefulWidget {
   const CreateTask({Key? key}) : super(key: key);
@@ -39,8 +40,11 @@ class _CreateTaskState extends State<CreateTask> {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
                   child: TextField(
                     autofocus: true,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                            onPressed: newTaskController.clear,
+                            icon: const Icon(Icons.clear)),
+                        border: const OutlineInputBorder(),
                         hintText: 'Goal title',
                         labelText: 'Goal title'),
                     controller: newTaskController,
@@ -172,7 +176,8 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
             spacing: 10,
             children: DevelopmentCategory.values
                 .map((cat) => ChoiceChip(
-                      selectedColor: Colors.grey,
+                      selectedColor: selectedToggleColor,
+                      disabledColor: unselectedToggleColor,
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5))),
                       label: Padding(
@@ -180,7 +185,10 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
                           child: Row(mainAxisSize: MainAxisSize.min, children: [
                             Icon(Icons.circle, color: cat.color, size: 7),
                             const SizedBox(width: 5),
-                            Text(cat.name, style: const TextStyle(fontSize: 14))
+                            Text(cat.name,
+                                style: cat.index == _value
+                                    ? mediumWhiteTextStyle
+                                    : mediumTextStyle)
                           ])),
                       selected: _value == cat.index,
                       onSelected: (bool selected) {
@@ -212,28 +220,26 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: double.infinity,
-        child: Wrap(
-            children: Difficulty.values
-                .map((diff) => ChoiceChip(
-                      selectedColor: Colors.grey,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
-                      label: SizedBox(
-                          width: 100,
-                          child: Text(diff.name,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 14))),
-                      selected: _currentDifficulty == diff.index,
-                      onSelected: (bool selected) {
-                        setState(() {
-                          _currentDifficulty =
-                              selected ? diff.index : _currentDifficulty;
-                        });
-                        callback?.call(_currentDifficulty);
-                      },
-                    ))
-                .toList()));
+    return ToggleSwitch(
+      minWidth: double.infinity,
+      activeBgColor: const [selectedToggleColor],
+      activeFgColor: Colors.white,
+      inactiveBgColor: unselectedToggleColor,
+      inactiveFgColor: Colors.black,
+      initialLabelIndex: _currentDifficulty,
+      dividerColor: const Color.fromARGB(255, 76, 80, 82),
+      totalSwitches: 3,
+      labels: [
+        Difficulty.EASY.name,
+        Difficulty.MEDIUM.name,
+        Difficulty.HARD.name
+      ],
+      onToggle: (index) {
+        setState(() {
+          _currentDifficulty = index;
+        });
+        callback?.call(_currentDifficulty);
+      },
+    );
   }
 }

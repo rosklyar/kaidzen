@@ -35,7 +35,7 @@ class KaizenDb {
   }
 
   static Future<Database> _open() async {
-    return await openDatabase('kaizen.db', version: 6,
+    return await openDatabase('kaizen.db', version: 7,
         onCreate: (Database db, int version) async {
       await db.execute('''
             create table $tableProgress ( 
@@ -79,12 +79,15 @@ class KaizenDb {
 
       await db.execute('''
             insert into $tableAchievements values
-                (1, 'Crane', 1.0, 0, 'crane.png'),
-                (2, 'Fortune teller', 0.5, 0, 'fortune_teller.png'),
-                (3, 'Lotus Flower', 0.1, 0, 'lotus_flower.png'),
-                (4, 'Masu box', 0.0, 0, 'masu_box.png'),
-                (5, 'Jumping frog', 0.0, 0, 'jumping_frog.png'),
-                (6, 'Butterfly', 0.0, 0, 'butterfly.png');
+                (1, 'Rabbit', 1.0, 0, 'first.png'),
+                (2, 'Elephant', 0.5, 0, 'second.png'),
+                (3, 'Whale', 0.1, 0, 'third.png'),
+                (4, 'Fox', 1.0, 0, 'fourth.png'),
+                (5, 'Duck', 1.0, 0, 'fifth.png'),
+                (6, 'Pig', 0.0, 0, 'sixth.png'),
+                (7, 'Frog', 1.0, 0, 'seventh.png'),
+                (8, 'Parrot', 0.6, 0, 'eighth.png'),
+                (9, 'Swan', 0.0, 0, 'ninth.png');
           ''');
     });
   }

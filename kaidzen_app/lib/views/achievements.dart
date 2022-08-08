@@ -43,8 +43,11 @@ class Achievements extends StatelessWidget {
                                           decoration: const BoxDecoration(
                                               shape: BoxShape.circle,
                                               color: Colors.white),
-                                          child: Image.asset(
-                                              "assets/origami.png")),
+                                          child: achievement.progress >= 1.0
+                                              ? Image.asset(
+                                                  "assets/sets/${achievement.setId}/${achievement.iconName}")
+                                              : const Icon(
+                                                  Icons.question_answer)),
                                     )))),
                         SizedBox(
                             width: 100,
@@ -56,7 +59,7 @@ class Achievements extends StatelessWidget {
                                     child: CircularProgressIndicator(
                                       strokeWidth: 3,
                                       value: achievement.progress,
-                                      color: Colors.pink,
+                                      color: Colors.green,
                                     ))))
                       ]),
                       Text(achievement.title)

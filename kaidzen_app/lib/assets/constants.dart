@@ -28,3 +28,24 @@ enum Difficulty {
   final int id;
   final String name;
 }
+
+const selectedToggleColor = Color.fromARGB(255, 81, 79, 79);
+const unselectedToggleColor = Colors.grey;
+
+const TextStyle smallTextStyle = TextStyle(
+  fontSize: 8,
+  color: Colors.black,
+);
+
+const TextStyle mediumTextStyle = TextStyle(
+  fontSize: 12,
+  color: Colors.black,
+);
+
+const TextStyle largeTextStyle = TextStyle(
+  fontSize: 16,
+  color: Colors.black,
+);
+
+const TextStyle mediumWhiteTextStyle =
+    TextStyle(fontSize: 12, color: Colors.white);
