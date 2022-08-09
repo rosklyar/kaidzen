@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:kaidzen_app/achievements/EventsRepository.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/models/progress.dart';
-import 'package:kaidzen_app/service/AchievementsRepository.dart';
-import 'package:kaidzen_app/service/AchievementsState.dart';
+import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/views/createTask.dart';
@@ -33,7 +33,7 @@ void main() {
     }),
     ChangeNotifierProvider(create: (context) {
       AchievementsState achievementsState =
-          AchievementsState(repository: AchievementsRepository());
+          AchievementsState(repository: EventsRepository());
       achievementsState.loadAll();
       return achievementsState;
     }),

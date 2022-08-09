@@ -19,12 +19,10 @@ const String tableSubtaskMapping = 'taskToParent';
 const String columnSubtaskId = '_task_id';
 const String columnParentId = '_parent_id';
 
-const String tableAchievements = 'achievements';
-const String columnAchievementId = '_id';
-const String columnAchievementTitle = 'title';
-const String columnAchievementProgress = 'progress';
-const String columnAchievementSet = 'set_id';
-const String columnAchievementIcon = 'icon_key';
+const String tableEvents = 'events';
+const String columnEventtId = '_id';
+const String columnEventType = 'type';
+const String columnEventTs = 'event_ts';
 
 class KaizenDb {
   static Database? _db;
@@ -35,7 +33,7 @@ class KaizenDb {
   }
 
   static Future<Database> _open() async {
-    return await openDatabase('kaizen.db', version: 7,
+    return await openDatabase('kaizen.db', version: 8,
         onCreate: (Database db, int version) async {
       await db.execute('''
             create table $tableProgress ( 
@@ -69,25 +67,10 @@ class KaizenDb {
           ''');
 
       await db.execute('''
-            create table $tableAchievements ( 
-            $columnAchievementId integer primary key autoincrement, 
-            $columnAchievementTitle text not null,
-            $columnAchievementProgress double not null,
-            $columnAchievementSet integer not null,
-            $columnAchievementIcon text not null)
-          ''');
-
-      await db.execute('''
-            insert into $tableAchievements values
-                (1, 'Rabbit', 1.0, 0, 'first.png'),
-                (2, 'Elephant', 0.5, 0, 'second.png'),
-                (3, 'Whale', 0.1, 0, 'third.png'),
-                (4, 'Fox', 1.0, 0, 'fourth.png'),
-                (5, 'Duck', 1.0, 0, 'fifth.png'),
-                (6, 'Pig', 0.0, 0, 'sixth.png'),
-                (7, 'Frog', 1.0, 0, 'seventh.png'),
-                (8, 'Parrot', 0.6, 0, 'eighth.png'),
-                (9, 'Swan', 0.0, 0, 'ninth.png');
+            create table $tableEvents ( 
+            $columnEventtId integer primary key autoincrement, 
+            $columnEventType integer not null,
+            $columnEventTs datetime not null)
           ''');
     });
   }

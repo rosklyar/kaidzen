@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kaidzen_app/service/AchievementsState.dart';
+import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:provider/provider.dart';
 
-import '../models/achievement.dart';
+import 'achievement.dart';
 
 class Achievements extends StatelessWidget {
   const Achievements({Key? key}) : super(key: key);
@@ -43,7 +43,7 @@ class Achievements extends StatelessWidget {
                                           decoration: const BoxDecoration(
                                               shape: BoxShape.circle,
                                               color: Colors.white),
-                                          child: achievement.progress >= 1.0
+                                          child: achievement.isCompleted
                                               ? Image.asset(
                                                   "assets/sets/${achievement.setId}/${achievement.iconName}")
                                               : const Icon(

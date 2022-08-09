@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/models/progress.dart';
 import 'package:kaidzen_app/service/ProgressState.dart';
-import 'package:kaidzen_app/views/achievements.dart';
+import 'package:kaidzen_app/achievements/achievementsScreen.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 
