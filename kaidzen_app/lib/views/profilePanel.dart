@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/assets/constants.dart';
-import 'package:kaidzen_app/models/progress.dart';
 import 'package:kaidzen_app/service/ProgressState.dart';
+import 'package:kaidzen_app/achievements/achievementsScreen.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePanel extends StatefulWidget {
-  const ProfilePanel({Key? key, required this.name}) : super(key: key);
-
-  final String name;
+  const ProfilePanel({Key? key}) : super(key: key);
 
   @override
-  ProfilePanelState createState() => ProfilePanelState(name);
+  ProfilePanelState createState() => ProfilePanelState();
 }
 
 class ProfilePanelState extends State<ProfilePanel> {
-  ProfilePanelState(this.name);
-  String name;
+  ProfilePanelState();
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ProgressState>(
-        builder: (context, state, child) => Padding(
+        builder: (context, progressState, child) => Padding(
             padding: const EdgeInsets.all(5.0),
             child: Row(
               children: [
@@ -49,7 +46,7 @@ class ProfilePanelState extends State<ProfilePanel> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text(state.getTotalLevel().toString(),
+                                Text(progressState.getTotalLevel().toString(),
                                     style: const TextStyle(fontSize: 12)),
                                 const Text('LVL', style: TextStyle(fontSize: 8))
                               ],
@@ -62,10 +59,26 @@ class ProfilePanelState extends State<ProfilePanel> {
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [
-                          Icon(Icons.surfing, size: 30, color: Colors.grey),
-                          SizedBox(width: 10),
-                          Icon(Icons.subject, size: 30, color: Colors.grey)
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const Achievements()));
+                            },
+                            icon: const Icon(
+                              Icons.surfing,
+                              size: 30,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.subject,
+                                size: 30, color: Colors.grey),
+                          )
                         ],
                       ),
                       const SizedBox(height: 20),
@@ -75,25 +88,28 @@ class ProfilePanelState extends State<ProfilePanel> {
                               child: Column(
                                 children: [
                                   ProgressIndicator(
-                                      percent: state.getLevelProgressFraction(
-                                          DevelopmentCategory.MIND),
-                                      level: state
+                                      percent: progressState
+                                          .getLevelProgressFraction(
+                                              DevelopmentCategory.MIND),
+                                      level: progressState
                                           .getLevel(DevelopmentCategory.MIND),
                                       title: DevelopmentCategory.MIND.name,
                                       progressColor:
                                           DevelopmentCategory.MIND.color),
                                   ProgressIndicator(
-                                      percent: state.getLevelProgressFraction(
-                                          DevelopmentCategory.HEALTH),
-                                      level: state
+                                      percent: progressState
+                                          .getLevelProgressFraction(
+                                              DevelopmentCategory.HEALTH),
+                                      level: progressState
                                           .getLevel(DevelopmentCategory.HEALTH),
                                       title: DevelopmentCategory.HEALTH.name,
                                       progressColor:
                                           DevelopmentCategory.HEALTH.color),
                                   ProgressIndicator(
-                                      percent: state.getLevelProgressFraction(
-                                          DevelopmentCategory.ENERGY),
-                                      level: state
+                                      percent: progressState
+                                          .getLevelProgressFraction(
+                                              DevelopmentCategory.ENERGY),
+                                      level: progressState
                                           .getLevel(DevelopmentCategory.ENERGY),
                                       title: DevelopmentCategory.ENERGY.name,
                                       progressColor:
@@ -105,17 +121,19 @@ class ProfilePanelState extends State<ProfilePanel> {
                               child: Column(
                                 children: [
                                   ProgressIndicator(
-                                      percent: state.getLevelProgressFraction(
-                                          DevelopmentCategory.WEALTH),
-                                      level: state
+                                      percent: progressState
+                                          .getLevelProgressFraction(
+                                              DevelopmentCategory.WEALTH),
+                                      level: progressState
                                           .getLevel(DevelopmentCategory.WEALTH),
                                       title: DevelopmentCategory.WEALTH.name,
                                       progressColor:
                                           DevelopmentCategory.WEALTH.color),
                                   ProgressIndicator(
-                                      percent: state.getLevelProgressFraction(
-                                          DevelopmentCategory.RELATIONS),
-                                      level: state.getLevel(
+                                      percent: progressState
+                                          .getLevelProgressFraction(
+                                              DevelopmentCategory.RELATIONS),
+                                      level: progressState.getLevel(
                                           DevelopmentCategory.RELATIONS),
                                       title: DevelopmentCategory.RELATIONS.name,
                                       progressColor:

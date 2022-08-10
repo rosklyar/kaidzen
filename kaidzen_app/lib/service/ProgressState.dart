@@ -2,10 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/models/progress.dart';
 import 'package:kaidzen_app/models/task.dart';
-import "package:collection/collection.dart";
 import 'package:kaidzen_app/service/ProgressCalculator.dart';
 import 'package:kaidzen_app/service/ProgressRepository.dart';
-import 'package:kaidzen_app/service/TaskRepository.dart';
 
 class ProgressState extends ChangeNotifier {
   final ProgressRepository repository;

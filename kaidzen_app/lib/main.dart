@@ -1,8 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:kaidzen_app/assets/constants.dart';
-import 'package:kaidzen_app/models/progress.dart';
+import 'package:kaidzen_app/achievements/EventsRepository.dart';
+
+import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/views/createTask.dart';
@@ -10,10 +9,8 @@ import 'package:kaidzen_app/views/profilePanel.dart';
 import 'package:kaidzen_app/views/switchableBoard.dart';
 import 'package:provider/provider.dart';
 
-import 'models/task.dart';
 import 'service/ProgressRepository.dart';
 import 'service/ProgressState.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
@@ -29,7 +26,13 @@ void main() {
       progressState.loadAll();
       return progressState;
     }),
-  ], child: MyApp()));
+    ChangeNotifierProvider(create: (context) {
+      AchievementsState achievementsState =
+          AchievementsState(repository: EventsRepository());
+      achievementsState.loadAll();
+      return achievementsState;
+    }),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -70,10 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: SingleChildScrollView(
               child: Column(
         children: [
-          ProfilePanel(
-            key: _profilePanelKey,
-            name: "Rostyslav Skliar",
-          ),
+          ProfilePanel(key: _profilePanelKey),
           const Padding(padding: EdgeInsets.all(7.0)),
           SwitchableBoard(key: _switchableBoardKey),
         ],

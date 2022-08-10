@@ -46,14 +46,14 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: ToggleSwitch(
+                    minWidth: double.infinity,
                     cornerRadius: 10.0,
                     radiusStyle: true,
                     minHeight: 50.0,
-                    activeBgColor: [Colors.grey],
-                    activeFgColor: Colors.black,
-                    inactiveBgColor: Colors.white,
+                    activeBgColor: const [selectedToggleColor],
+                    activeFgColor: Colors.white,
+                    inactiveBgColor: unselectedToggleColor,
                     inactiveFgColor: Colors.black,
-                    customWidths: [130.0, 130.0, 130.0],
                     initialLabelIndex: 0,
                     totalSwitches: 3,
                     labels: const [Status.TODO, Status.DOING, Status.DONE],

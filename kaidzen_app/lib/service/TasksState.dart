@@ -1,8 +1,12 @@
 import 'package:flutter/widgets.dart';
+import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/models/task.dart';
 import "package:collection/collection.dart";
 import 'package:kaidzen_app/service/TaskRepository.dart';
+import 'package:provider/provider.dart';
+
+import '../achievements/event.dart';
 
 class TasksState extends ChangeNotifier {
   final TaskRepository repository;

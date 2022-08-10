@@ -67,7 +67,7 @@ class TaskRepository {
         columns: [columnTaskId, columnTaskStatus, columnTaskTitle],
         where: '$columnTaskId = ?',
         whereArgs: [id]);
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       return fromMap(maps.first as Map<String, Object?>);
     }
     return null;

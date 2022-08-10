@@ -1,7 +1,5 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:kaidzen_app/assets/constants.dart';
-import '../models/progress.dart';
-import '../models/task.dart';
 
 const String tableProgress = 'progress';
 const String columnProgressId = '_id';
@@ -19,6 +17,12 @@ const String tableSubtaskMapping = 'taskToParent';
 const String columnSubtaskId = '_task_id';
 const String columnParentId = '_parent_id';
 
+const String tableEvents = 'events';
+const String columnEventtId = '_id';
+const String columnEventType = 'type';
+const String columnEventTaskId = 'task_id';
+const String columnEventTs = 'event_ts';
+
 class KaizenDb {
   static Database? _db;
 
@@ -28,7 +32,7 @@ class KaizenDb {
   }
 
   static Future<Database> _open() async {
-    return await openDatabase('kaizen.db', version: 5,
+    return await openDatabase('kaizen.db', version: 8,
         onCreate: (Database db, int version) async {
       await db.execute('''
             create table $tableProgress ( 
@@ -59,6 +63,13 @@ class KaizenDb {
             $columnSubtaskId integer not null, 
             $columnParentId integer not null,
             UNIQUE($columnSubtaskId, $columnParentId))
+          ''');
+
+      await db.execute('''
+            create table $tableEvents ( 
+            $columnEventtId integer primary key autoincrement, 
+            $columnEventType integer not null,
+            $columnEventTs datetime not null)
           ''');
     });
   }
