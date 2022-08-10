@@ -1,7 +1,5 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:kaidzen_app/assets/constants.dart';
-import '../models/progress.dart';
-import '../models/task.dart';
 
 const String tableProgress = 'progress';
 const String columnProgressId = '_id';
@@ -22,6 +20,7 @@ const String columnParentId = '_parent_id';
 const String tableEvents = 'events';
 const String columnEventtId = '_id';
 const String columnEventType = 'type';
+const String columnEventTaskId = 'task_id';
 const String columnEventTs = 'event_ts';
 
 class KaizenDb {

@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:provider/provider.dart';
-
-import 'achievement.dart';
 
 class Achievements extends StatelessWidget {
   const Achievements({Key? key}) : super(key: key);

@@ -1,15 +1,27 @@
 import 'package:kaidzen_app/service/KaizenState.dart';
 
 class Event {
-  final int id;
-  final int type;
+  int id;
+  final EventType type;
   final DateTime timestamp;
 
-  Event(this.id, this.type, this.timestamp);
+  Event(this.type, this.timestamp, {this.id = -1});
 
   factory Event.fromMap(Map<String, dynamic> map) {
-    return Event(map[columnEventtId], map[columnEventType],
-        DateTime.parse(map[columnEventTs]));
+    return Event(
+      EventType.values
+          .firstWhere((element) => element.id == map[columnEventType]),
+      DateTime.parse(map[columnEventTs]),
+      id: map[columnEventtId],
+    );
+  }
+
+  static Map<String, Object?> toMap(Event event) {
+    var map = <String, Object?>{
+      columnEventType: event.type.id,
+      columnEventTs: event.timestamp.toString()
+    };
+    return map;
   }
 }
 

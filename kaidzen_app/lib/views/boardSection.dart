@@ -2,15 +2,15 @@ import 'dart:math';
 
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:kaidzen_app/achievements/AchievementsState.dart';
+import 'package:kaidzen_app/achievements/event.dart';
 import 'package:kaidzen_app/models/task.dart';
-import 'package:kaidzen_app/service/ProgressCalculator.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/utils/margin.dart';
 import 'package:kaidzen_app/utils/theme.dart';
 import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
-import '../models/progress.dart';
 import '../service/ProgressState.dart';
 
 class Board extends StatefulWidget {
@@ -257,6 +257,10 @@ class _ListViewCard extends State<ListViewCard> {
                               context,
                               listen: false);
                           progressState.updateProgress(task);
+                          await Provider.of<AchievementsState>(context,
+                                  listen: false)
+                              .addEvent(
+                                  Event(EventType.completed, DateTime.now()));
                         }
                       },
                     ),

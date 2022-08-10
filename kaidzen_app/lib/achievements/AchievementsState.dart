@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:kaidzen_app/achievements/EventsRepository.dart';
 import 'package:kaidzen_app/achievements/achievement.dart';
 import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
+import 'package:kaidzen_app/achievements/event.dart';
+import 'package:kaidzen_app/achievements/set/default/AnyFiveTasksCompletedAchievement.dart';
 import 'package:kaidzen_app/achievements/set/default/TaskCompletedAchievement.dart';
 import 'package:kaidzen_app/achievements/set/default/TaskCreatedAchievement.dart';
 
@@ -14,10 +16,11 @@ class AchievementsState extends ChangeNotifier {
   AchievementsState({required this.repository})
       : achievements = [
           TaskCreatedAchievement(eventsRepository: repository),
-          TaskCompletedAchievement(eventsRepository: repository)
+          TaskCompletedAchievement(eventsRepository: repository),
+          AnyFiveTasksCompletedAchievement(eventsRepository: repository)
         ];
 
-  Future loadAll() async {
+  loadAll() async {
     _snaphots = await Future.wait(
         achievements.map((achievement) => achievement.getSnapshot()));
     notifyListeners();
@@ -25,5 +28,10 @@ class AchievementsState extends ChangeNotifier {
 
   List<AchievementSnapshot> getAchievements() {
     return _snaphots;
+  }
+
+  addEvent(Event event) async {
+    await repository.addEvent(event);
+    loadAll();
   }
 }

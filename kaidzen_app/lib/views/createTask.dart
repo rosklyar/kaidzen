@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 
+import '../achievements/AchievementsState.dart';
+import '../achievements/event.dart';
 import '../models/task.dart';
 import 'package:provider/provider.dart';
 
 import '../service/TasksState.dart';
-import 'package:chip_list/chip_list.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
 class CreateTask extends StatefulWidget {
   const CreateTask({Key? key}) : super(key: key);
@@ -131,6 +131,8 @@ class _CreateTaskState extends State<CreateTask> {
             .firstWhere((element) => element.id == _currentCategory),
         Difficulty.values
             .firstWhere((element) => element.id == _currentDifficulty)));
+    Provider.of<AchievementsState>(context, listen: false)
+        .addEvent(Event(EventType.created, DateTime.now()));
     Navigator.pop(context);
   }
 
