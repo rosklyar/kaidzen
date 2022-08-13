@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kaidzen_app/achievements/AchievementsRepository.dart';
 import 'package:kaidzen_app/achievements/EventsRepository.dart';
 
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
@@ -27,8 +28,9 @@ void main() {
       return progressState;
     }),
     ChangeNotifierProvider(create: (context) {
-      AchievementsState achievementsState =
-          AchievementsState(repository: EventsRepository());
+      AchievementsState achievementsState = AchievementsState(
+          eventsRepository: EventsRepository(),
+          achievementsRepository: AchievementsRepository());
       achievementsState.loadAll();
       return achievementsState;
     }),

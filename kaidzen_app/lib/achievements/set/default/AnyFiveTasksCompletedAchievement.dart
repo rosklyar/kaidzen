@@ -14,7 +14,7 @@ class AnyFiveTasksCompletedAchievement extends Achievement {
   @override
   Future<double> get progress async {
     var eventsNumber =
-        await eventsRepository.getEventsNumberByType(EventType.completed);
+        await eventsRepository.getEventsNumberByType(EventType.taskCompleted);
     return (eventsNumber / 5.0).clamp(0.0, 1.0);
   }
 
@@ -29,4 +29,7 @@ class AnyFiveTasksCompletedAchievement extends Achievement {
 
   @override
   String get title => "Whale";
+
+  @override
+  int get id => 2;
 }

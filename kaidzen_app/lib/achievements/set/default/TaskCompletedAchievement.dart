@@ -13,7 +13,8 @@ class TaskCompletedAchievement extends Achievement {
 
   @override
   Future<double> get progress async =>
-      await eventsRepository.getLatestEventByType(EventType.completed) != null
+      await eventsRepository.getLatestEventByType(EventType.taskCompleted) !=
+              null
           ? 1.0
           : 0.0;
 
@@ -28,4 +29,7 @@ class TaskCompletedAchievement extends Achievement {
 
   @override
   String get title => "Elephant";
+
+  @override
+  int get id => 1;
 }

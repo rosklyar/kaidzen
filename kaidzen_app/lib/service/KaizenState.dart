@@ -20,8 +20,11 @@ const String columnParentId = '_parent_id';
 const String tableEvents = 'events';
 const String columnEventtId = '_id';
 const String columnEventType = 'type';
-const String columnEventTaskId = 'task_id';
 const String columnEventTs = 'event_ts';
+
+const String tableAchievements = 'achievements';
+const String columnAchievementId = '_id';
+const String columnAchievementState = 'state_id';
 
 class KaizenDb {
   static Database? _db;
@@ -70,6 +73,19 @@ class KaizenDb {
             $columnEventtId integer primary key autoincrement, 
             $columnEventType integer not null,
             $columnEventTs datetime not null)
+          ''');
+
+      await db.execute('''
+            create table $tableAchievements ( 
+            $columnAchievementId integer primary key autoincrement, 
+            $columnAchievementState integer not null)
+          ''');
+
+      await db.execute('''
+            insert into $tableAchievements values
+                (0, 0),
+                (1, 0),
+                (2, 0)
           ''');
     });
   }

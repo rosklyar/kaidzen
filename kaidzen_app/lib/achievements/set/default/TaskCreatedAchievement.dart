@@ -13,7 +13,7 @@ class TaskCreatedAchievement extends Achievement {
 
   @override
   Future<double> get progress async =>
-      await eventsRepository.getLatestEventByType(EventType.created) != null
+      await eventsRepository.getLatestEventByType(EventType.taskCreated) != null
           ? 1.0
           : 0.0;
 
@@ -28,4 +28,7 @@ class TaskCreatedAchievement extends Achievement {
 
   @override
   String get title => "Rabbit";
+
+  @override
+  int get id => 0;
 }

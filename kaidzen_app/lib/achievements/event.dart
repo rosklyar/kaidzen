@@ -1,11 +1,11 @@
 import 'package:kaidzen_app/service/KaizenState.dart';
 
 class Event {
-  int id;
+  final int? id;
   final EventType type;
   final DateTime timestamp;
 
-  Event(this.type, this.timestamp, {this.id = -1});
+  Event(this.type, this.timestamp, {this.id});
 
   factory Event.fromMap(Map<String, dynamic> map) {
     return Event(
@@ -26,10 +26,10 @@ class Event {
 }
 
 enum EventType {
-  created(0),
-  inProgress(1),
-  completed(2),
-  deleted(3);
+  taskCreated(0),
+  taskInProgress(1),
+  taskCompleted(2),
+  taskDeleted(3);
 
   const EventType(this.id);
   final int id;

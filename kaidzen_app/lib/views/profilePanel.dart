@@ -66,7 +66,7 @@ class ProfilePanelState extends State<ProfilePanel> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const Achievements()));
+                                          const AchievementsScreen()));
                             },
                             icon: const Icon(
                               Icons.surfing,

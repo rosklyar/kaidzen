@@ -132,7 +132,7 @@ class _CreateTaskState extends State<CreateTask> {
         Difficulty.values
             .firstWhere((element) => element.id == _currentDifficulty)));
     Provider.of<AchievementsState>(context, listen: false)
-        .addEvent(Event(EventType.created, DateTime.now()));
+        .addEvent(Event(EventType.taskCreated, DateTime.now()));
     Navigator.pop(context);
   }
 

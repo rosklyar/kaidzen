@@ -259,8 +259,8 @@ class _ListViewCard extends State<ListViewCard> {
                           progressState.updateProgress(task);
                           await Provider.of<AchievementsState>(context,
                                   listen: false)
-                              .addEvent(
-                                  Event(EventType.completed, DateTime.now()));
+                              .addEvent(Event(
+                                  EventType.taskCompleted, DateTime.now()));
                         }
                       },
                     ),
