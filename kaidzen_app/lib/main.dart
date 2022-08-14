@@ -16,8 +16,13 @@ void main() {
   ProgressState progressState = ProgressState(
     repository: ProgressRepository(),
   );
-  TasksState taskState =
-      TasksState(repository: TaskRepository(), progressState: progressState);
+  AchievementsState achievementsState =
+      AchievementsState(repository: EventsRepository());
+
+  TasksState taskState = TasksState(
+      repository: TaskRepository(),
+      progressState: progressState,
+      achievementsState: achievementsState);
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) {
@@ -29,8 +34,6 @@ void main() {
       return progressState;
     }),
     ChangeNotifierProvider(create: (context) {
-      AchievementsState achievementsState =
-          AchievementsState(repository: EventsRepository());
       achievementsState.loadAll();
       return achievementsState;
     }),

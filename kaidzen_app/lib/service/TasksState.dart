@@ -13,12 +13,14 @@ import 'ProgressState.dart';
 class TasksState extends ChangeNotifier {
   final TaskRepository repository;
   final ProgressState progressState;
+  final AchievementsState achievementsState;
   Map<String, List<Task>> _tasks;
   Map<int, Task> _tasksMap;
 
   TasksState({
     required this.repository,
     required this.progressState,
+    required this.achievementsState,
   })  : _tasks = {},
         _tasksMap = {};
 
@@ -82,8 +84,9 @@ class TasksState extends ChangeNotifier {
   Future<void> moveTask(Task task, String newStatus) async {
     task.status = newStatus;
     await repository.update(task);
-    if(newStatus == Status.DONE) {
+    if (newStatus == Status.DONE) {
       await progressState.updateProgress(task);
+      await achievementsState.addEvent(Event(EventType.completed, DateTime.now()));
     }
   }
 }

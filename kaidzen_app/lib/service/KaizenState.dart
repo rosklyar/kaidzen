@@ -33,7 +33,7 @@ class KaizenDb {
   }
 
   static Future<Database> _open() async {
-    return await openDatabase('kaizen.db', version: 8,
+    return await openDatabase('kaizen.db', version: 1,
         onCreate: (Database db, int version) async {
       await initDb(db);
     }, onUpgrade: (db, oldVersion, newVersion) async {
@@ -71,11 +71,11 @@ class KaizenDb {
           $columnParentId integer)
         ''');
 
-      await db.execute('''
+    await db.execute('''
             create table $tableEvents (
             $columnEventtId integer primary key autoincrement,
             $columnEventType integer not null,
             $columnEventTs datetime not null)
-          ''');ÏÏ
+          ''');
   }
 }
