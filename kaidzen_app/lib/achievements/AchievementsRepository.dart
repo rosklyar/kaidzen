@@ -1,6 +1,6 @@
+import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'package:kaidzen_app/service/KaizenState.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:kaidzen_app/achievements/achievementStatus.dart';
 
 class AchievementsRepository {
   Database? db;
@@ -12,20 +12,21 @@ class AchievementsRepository {
 
   Future close() async => db!.close();
 
-  Future<int> updateAchievementState(AchievementState achievementState) async {
+  Future<int> updateAchievementSnapshot(
+      AchievementSnapshot achievementSnapshot) async {
     if (db == null) {
       await open();
     }
     return await db!.update(
-        tableAchievements, AchievementState.toMap(achievementState),
-        where: '$columnAchievementId = ?', whereArgs: [achievementState.id]);
+        tableAchievements, AchievementSnapshot.toMap(achievementSnapshot),
+        where: '$columnAchievementId = ?', whereArgs: [achievementSnapshot.id]);
   }
 
-  Future<List<AchievementState>> getAchievementStates() async {
+  Future<List<AchievementSnapshot>> getAchievementSnapshots() async {
     if (db == null) {
       await open();
     }
     final List<Map<String, dynamic>> maps = await db!.query(tableAchievements);
-    return maps.map((map) => AchievementState.fromMap(map)).toList();
+    return maps.map((map) => AchievementSnapshot.fromMap(map)).toList();
   }
 }

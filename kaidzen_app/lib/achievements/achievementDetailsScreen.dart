@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
-import 'package:kaidzen_app/achievements/achievementStatus.dart';
 
 import '../assets/constants.dart';
 

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/achievements/achievementDetailsScreen.dart';
-import 'package:kaidzen_app/achievements/achievementStatus.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:provider/provider.dart';
+
+import 'achievementSnaphot.dart';
 
 class AchievementsScreen extends StatelessWidget {
   const AchievementsScreen({Key? key}) : super(key: key);
@@ -55,12 +56,16 @@ class AchievementsScreen extends StatelessWidget {
                                                     AchievementDetailsScreen(
                                                         achievementSnapshot:
                                                             achievement)));
-                                        achievementsState.achievementsRepository
-                                            .updateAchievementState(
-                                                AchievementState(
-                                                    achievement.id,
-                                                    AchievementStatus
-                                                        .completed));
+                                        if (achievement.status ==
+                                            AchievementStatus.completed) {
+                                          achievementsState
+                                              .achievementsRepository
+                                              .updateAchievementSnapshot(
+                                                  AchievementSnapshot.updateStatus(
+                                                      achievement,
+                                                      AchievementStatus
+                                                          .completedAndShown));
+                                        }
                                       },
                                       child: Container(
                                           width: 60,
