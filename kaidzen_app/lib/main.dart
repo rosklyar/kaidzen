@@ -13,16 +13,18 @@ import 'service/ProgressRepository.dart';
 import 'service/ProgressState.dart';
 
 void main() {
+  ProgressState progressState = ProgressState(
+    repository: ProgressRepository(),
+  );
+  TasksState taskState =
+      TasksState(repository: TaskRepository(), progressState: progressState);
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) {
-      TasksState taskState = TasksState(repository: TaskRepository());
       taskState.loadAll();
       return taskState;
     }),
     ChangeNotifierProvider(create: (context) {
-      ProgressState progressState = ProgressState(
-        repository: ProgressRepository(),
-      );
       progressState.loadAll();
       return progressState;
     }),

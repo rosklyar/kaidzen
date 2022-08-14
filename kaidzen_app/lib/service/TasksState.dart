@@ -8,13 +8,17 @@ import 'package:provider/provider.dart';
 
 import '../achievements/event.dart';
 
+import 'ProgressState.dart';
+
 class TasksState extends ChangeNotifier {
   final TaskRepository repository;
+  final ProgressState progressState;
   Map<String, List<Task>> _tasks;
   Map<int, Task> _tasksMap;
 
   TasksState({
     required this.repository,
+    required this.progressState,
   })  : _tasks = {},
         _tasksMap = {};
 
@@ -47,6 +51,10 @@ class TasksState extends ChangeNotifier {
     return tasks;
   }
 
+  Task getById(int id) {
+    return _tasksMap[id]!;
+  }
+
   addTask(Task newTask) async {
     await repository.insert(newTask);
     await loadAll();
@@ -74,5 +82,8 @@ class TasksState extends ChangeNotifier {
   Future<void> moveTask(Task task, String newStatus) async {
     task.status = newStatus;
     await repository.update(task);
+    if(newStatus == Status.DONE) {
+      await progressState.updateProgress(task);
+    }
   }
 }

@@ -38,8 +38,8 @@ class KaizenDb {
       await initDb(db);
     }, onUpgrade: (db, oldVersion, newVersion) async {
       await db.execute('''
-            drop table $tableTask;
-            drop table $tableProgress;
+            drop table if exists $tableProgress;
+            drop table if exists $tableTask;
             ''');
       await initDb(db);
     });
@@ -52,7 +52,7 @@ class KaizenDb {
             $columnProgressLevel integer not null,
             $columnPoints integer not null)
           ''');
-      await db.execute('''
+    await db.execute('''
             insert into $tableProgress values
                 (${DevelopmentCategory.MIND.id}, 0, 0.0),
                 (${DevelopmentCategory.HEALTH.id}, 0, 0.0),
