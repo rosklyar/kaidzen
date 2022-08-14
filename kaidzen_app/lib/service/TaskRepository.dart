@@ -1,13 +1,14 @@
-import 'package:kaidzen_app/service/KaizenState.dart';
 import 'package:sqflite/sqflite.dart';
 import '../assets/constants.dart';
 
 import '../models/task.dart';
+import 'KaizenState.dart';
 
 Map<String, Object?> toMap(Task task) {
   var map = <String, Object?>{
     columnTaskTitle: task.name,
     columnTaskStatus: task.status,
+    columnParentId: task.parent,
     columnTaskCategory: task.category.id,
     columnTaskDifficulty: task.difficulty.id,
   };
@@ -26,7 +27,7 @@ Task fromMap(Map<String, Object?> map) {
           (element) => element.id == (map[columnTaskDifficulty] as int)),
       id: map[columnTaskId] as int,
       status: map[columnTaskStatus] as String,
-      subtasks: []);
+      parent: map[columnParentId] as int?);
 }
 
 class TaskRepository {
@@ -52,19 +53,24 @@ class TaskRepository {
       columnTaskId,
       columnTaskCategory,
       columnTaskStatus,
+      columnParentId,
       columnTaskTitle,
       columnTaskDifficulty
     ]);
     List<Task> tasks = maps
         .map((element) => fromMap(element as Map<String, Object?>))
         .toList();
-
     return tasks;
   }
 
   Future<Task?> getTask(int id) async {
     List<Map> maps = await db!.query(tableTask,
-        columns: [columnTaskId, columnTaskStatus, columnTaskTitle],
+        columns: [
+          columnTaskId,
+          columnTaskStatus,
+          columnTaskTitle,
+          columnParentId
+        ],
         where: '$columnTaskId = ?',
         whereArgs: [id]);
     if (maps.isNotEmpty) {
@@ -74,8 +80,9 @@ class TaskRepository {
   }
 
   Future<int> delete(int? id) async {
-    return await db!
-        .delete(tableTask, where: '$columnTaskId = ?', whereArgs: [id]);
+    return await db!.delete(tableTask,
+        where: '$columnTaskId = ? OR $columnParentId = ?',
+        whereArgs: [id, id]);
   }
 
   Future<int> update(Task task) async {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 import '../achievements/AchievementsState.dart';
 import '../achievements/event.dart';
@@ -10,7 +10,9 @@ import 'package:provider/provider.dart';
 import '../service/TasksState.dart';
 
 class CreateTask extends StatefulWidget {
-  const CreateTask({Key? key}) : super(key: key);
+  final Task? parent;
+
+  const CreateTask({Key? key, this.parent}) : super(key: key);
 
   @override
   State<CreateTask> createState() {
@@ -22,7 +24,6 @@ class _CreateTaskState extends State<CreateTask> {
   late TextEditingController newTaskController;
   int _currentCategory = -1;
   int _currentDifficulty = 0;
-  bool _isSubtask = false;
   bool _isCreateButtonActive = false;
 
   @override
@@ -49,20 +50,6 @@ class _CreateTaskState extends State<CreateTask> {
                         labelText: 'Goal title'),
                     controller: newTaskController,
                   )),
-              Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Subtask'),
-                        Switch(
-                            value: _isSubtask,
-                            onChanged: (value) {
-                              setState(() {
-                                _isSubtask = value;
-                              });
-                            })
-                      ])),
               const SizedBox(height: 30),
               const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
@@ -130,7 +117,8 @@ class _CreateTaskState extends State<CreateTask> {
         DevelopmentCategory.values
             .firstWhere((element) => element.id == _currentCategory),
         Difficulty.values
-            .firstWhere((element) => element.id == _currentDifficulty)));
+            .firstWhere((element) => element.id == _currentDifficulty),
+            parent: widget.parent != null ? widget.parent!.id : null));
     Provider.of<AchievementsState>(context, listen: false)
         .addEvent(Event(EventType.created, DateTime.now()));
     Navigator.pop(context);
