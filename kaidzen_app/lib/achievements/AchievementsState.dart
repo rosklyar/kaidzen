@@ -43,6 +43,12 @@ class AchievementsState extends ChangeNotifier {
     return _snaphots;
   }
 
+  int getCompletedAchievementsCount() {
+    return _snaphots
+        .where((s) => s.status == AchievementStatus.completed)
+        .length;
+  }
+
   addEvent(Event event) async {
     await eventsRepository.addEvent(event);
     loadAll();
