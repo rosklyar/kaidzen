@@ -59,7 +59,6 @@ class AchievementsScreen extends StatelessWidget {
                                         if (achievement.status ==
                                             AchievementStatus.completed) {
                                           achievementsState
-                                              .achievementsRepository
                                               .updateAchievementSnapshot(
                                                   AchievementSnapshot.updateStatus(
                                                       achievement,

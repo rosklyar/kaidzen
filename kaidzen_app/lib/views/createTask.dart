@@ -22,7 +22,6 @@ class _CreateTaskState extends State<CreateTask> {
   late TextEditingController newTaskController;
   int _currentCategory = -1;
   int _currentDifficulty = 0;
-  bool _isSubtask = false;
   bool _isCreateButtonActive = false;
 
   @override
@@ -49,27 +48,12 @@ class _CreateTaskState extends State<CreateTask> {
                         labelText: 'Goal title'),
                     controller: newTaskController,
                   )),
-              Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Subtask'),
-                        Switch(
-                            value: _isSubtask,
-                            onChanged: (value) {
-                              setState(() {
-                                _isSubtask = value;
-                              });
-                            })
-                      ])),
-              const SizedBox(height: 30),
               const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                   child: SizedBox(
                       width: double.infinity,
                       child: Text("Life sphere to be affected",
-                          textAlign: TextAlign.left))),
+                          textAlign: TextAlign.left, style: mediumTextStyle))),
               Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
@@ -80,7 +64,6 @@ class _CreateTaskState extends State<CreateTask> {
                                 newTaskController.text.isNotEmpty &&
                                     _currentCategory >= 0;
                           }))),
-              const SizedBox(height: 20),
               Visibility(
                   visible: _currentCategory >= 0,
                   child: Padding(
@@ -90,6 +73,7 @@ class _CreateTaskState extends State<CreateTask> {
                           width: double.infinity,
                           child: Text(
                             "Reaching this goal will improve my ${_currentCategory >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}",
+                            style: mediumTextStyle,
                           )))),
               const SizedBox(height: 10),
               Padding(
@@ -125,14 +109,15 @@ class _CreateTaskState extends State<CreateTask> {
   }
 
   void submit() {
+    var category = DevelopmentCategory.values
+        .firstWhere((element) => element.id == _currentCategory);
     Provider.of<TasksState>(context, listen: false).addTask(Task(
         newTaskController.text,
-        DevelopmentCategory.values
-            .firstWhere((element) => element.id == _currentCategory),
+        category,
         Difficulty.values
             .firstWhere((element) => element.id == _currentDifficulty)));
     Provider.of<AchievementsState>(context, listen: false)
-        .addEvent(Event(EventType.taskCreated, DateTime.now()));
+        .addEvent(Event(EventType.taskCreated, DateTime.now(), category));
     Navigator.pop(context);
   }
 

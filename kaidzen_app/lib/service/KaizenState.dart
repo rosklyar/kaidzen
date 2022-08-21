@@ -20,6 +20,7 @@ const String columnParentId = '_parent_id';
 const String tableEvents = 'events';
 const String columnEventtId = '_id';
 const String columnEventType = 'type';
+const String columnEventTaskCategory = 'category';
 const String columnEventTs = 'event_ts';
 
 const String tableAchievements = 'achievements';
@@ -78,6 +79,7 @@ class KaizenDb {
             create table $tableEvents ( 
             $columnEventtId integer primary key autoincrement, 
             $columnEventType integer not null,
+            $columnEventTaskCategory integer not null,
             $columnEventTs datetime not null)
           ''');
 
@@ -95,9 +97,12 @@ class KaizenDb {
 
       await db.execute('''
             insert into $tableAchievements values
-                (0, 0, 'Rabbit', 'Create any task and get Rabbit origami', 'first.png', 0, false, 0.0),
-                (1, 0, 'Elephant', 'Complete any task and get Elephant origami', 'second.png', 0, false, 0.0),
-                (2, 0, 'Whale', 'Complete any 5 tasks and get Whale origami', 'third.png', 0, false, 0.0);
+                (0, 0, 'Rabbit', 'Create 5 tasks and get Rabbit origami', 'first.png', 0, false, 0.0),
+                (1, 0, 'Elephant', 'Create 25 tasks and get Elephant origami', 'second.png', 0, false, 0.0),
+                (2, 0, 'Whale', 'Create 100 tasks and get Whale origami', 'third.png', 0, false, 0.0),
+                (3, 0, 'Fox', 'Complete 5 tasks in any sphere and get Fox origami', 'fourth.png', 0, false, 0.0),
+                (4, 0, 'Duck', 'Complete 50 tasks in any sphere and get Duck origami', 'fifth.png', 0, false, 0.0),
+                (5, 0, 'Pig', 'Complete 150 tasks in any sphere and get Pig origami', 'sixth.png', 0, false, 0.0);
           ''');
     });
   }
