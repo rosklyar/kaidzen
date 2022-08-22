@@ -7,6 +7,7 @@ import 'package:kaidzen_app/service/TaskRepository.dart';
 import 'package:provider/provider.dart';
 
 import '../achievements/event.dart';
+import 'ProgressState.dart';
 
 import 'ProgressState.dart';
 

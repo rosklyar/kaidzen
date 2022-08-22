@@ -1,3 +1,4 @@
+import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/service/KaizenState.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:kaidzen_app/achievements/event.dart';
@@ -38,6 +39,15 @@ class EventsRepository {
     final List<Map<String, dynamic>> maps = await db!.rawQuery(
         'SELECT COUNT(*) FROM $tableEvents WHERE $columnEventType = ${eventType.id}');
     return maps.first['COUNT(*)'] as int;
+  }
+
+  Future<int> getMaxEventsNumberAmongAllCategories(EventType eventType) async {
+    if (db == null) {
+      await open();
+    }
+    final List<Map<String, dynamic>> maps = await db!.rawQuery(
+        'SELECT COUNT(*) FROM $tableEvents WHERE $columnEventType = ${eventType.id} GROUP BY $columnEventTaskCategory ORDER BY COUNT(*) DESC LIMIT 1');
+    return maps.isNotEmpty ? maps.first['COUNT(*)'] as int : 0;
   }
 
   Future<int> addEvent(Event event) async {

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
+import 'package:kaidzen_app/achievements/achievementDetailsScreen.dart';
+import 'package:kaidzen_app/assets/constants.dart';
 import 'package:provider/provider.dart';
 
-class Achievements extends StatelessWidget {
-  const Achievements({Key? key}) : super(key: key);
+import 'achievementSnaphot.dart';
+
+class AchievementsScreen extends StatelessWidget {
+  const AchievementsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,8 +15,7 @@ class Achievements extends StatelessWidget {
         builder: (context, achievementsState, child) => Scaffold(
               appBar: AppBar(
                 centerTitle: true,
-                title:
-                    const Text('Achievements', style: TextStyle(fontSize: 12)),
+                title: const Text('Achievements', style: largeTextStyle),
               ),
               body: GridView.count(
                 crossAxisCount: 3,
@@ -25,6 +28,19 @@ class Achievements extends StatelessWidget {
                             width: 100,
                             height: 100,
                             child: Center(
+                                child: SizedBox(
+                                    width: 65,
+                                    height: 65,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 4,
+                                      value: achievement.progress,
+                                      backgroundColor: Colors.grey,
+                                      color: Colors.green,
+                                    )))),
+                        SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: Center(
                                 child: Card(
                                     elevation: 4.0,
                                     margin: EdgeInsets.zero,
@@ -32,7 +48,24 @@ class Achievements extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(150),
                                     ),
                                     child: InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AchievementDetailsScreen(
+                                                        achievementSnapshot:
+                                                            achievement)));
+                                        if (achievement.status ==
+                                            AchievementStatus.completed) {
+                                          achievementsState
+                                              .updateAchievementSnapshot(
+                                                  AchievementSnapshot.updateStatus(
+                                                      achievement,
+                                                      AchievementStatus
+                                                          .completedAndShown));
+                                        }
+                                      },
                                       child: Container(
                                           width: 60,
                                           height: 60,
@@ -40,23 +73,12 @@ class Achievements extends StatelessWidget {
                                           decoration: const BoxDecoration(
                                               shape: BoxShape.circle,
                                               color: Colors.white),
-                                          child: achievement.isCompleted
+                                          child: achievement.status !=
+                                                  AchievementStatus.notCompleted
                                               ? Image.asset(
                                                   "assets/sets/${achievement.setId}/${achievement.iconName}")
                                               : const Icon(
                                                   Icons.question_answer)),
-                                    )))),
-                        SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: Center(
-                                child: SizedBox(
-                                    width: 60,
-                                    height: 60,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 3,
-                                      value: achievement.progress,
-                                      color: Colors.green,
                                     ))))
                       ]),
                       Text(achievement.title)

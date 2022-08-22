@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
@@ -38,39 +36,41 @@ class SwitchableBoardState extends State<SwitchableBoard> {
     return SizedBox(
         height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
-            child: Column(
-          children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Scrollbar(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: ToggleSwitch(
-                    minWidth: double.infinity,
-                    cornerRadius: 10.0,
-                    radiusStyle: true,
-                    minHeight: 50.0,
-                    activeBgColor: const [selectedToggleColor],
-                    activeFgColor: Colors.white,
-                    inactiveBgColor: unselectedToggleColor,
-                    inactiveFgColor: Colors.black,
-                    initialLabelIndex: 0,
-                    totalSwitches: 3,
-                    labels: const [Status.TODO, Status.DOING, Status.DONE],
-                    onToggle: (index) {
-                      _switchableBoardContainerKey.currentState
-                          ?.changeBoard(_boards[index!]);
-                    },
+            child: Stack(children: [
+          Positioned(child: Image.asset("assets/mountains.png"), top: 0),
+          Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: Column(
+                children: [
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Scrollbar(
+                      child: ToggleSwitch(
+                        minWidth: double.infinity,
+                        cornerRadius: 10.0,
+                        radiusStyle: true,
+                        minHeight: 50.0,
+                        activeBgColor: const [selectedToggleColor],
+                        activeFgColor: Colors.white,
+                        inactiveBgColor: unselectedToggleColor,
+                        inactiveFgColor: Colors.black,
+                        initialLabelIndex: 0,
+                        totalSwitches: 3,
+                        labels: const [Status.TODO, Status.DOING, Status.DONE],
+                        onToggle: (index) {
+                          _switchableBoardContainerKey.currentState
+                              ?.changeBoard(_boards[index!]);
+                        },
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-            Consumer<TasksState>(
-                builder: (context, state, child) => SwitchableBoardContainer(
-                    state,
-                    key: _switchableBoardContainerKey))
-          ],
-        )));
+                  Consumer<TasksState>(
+                      builder: (context, state, child) =>
+                          SwitchableBoardContainer(state,
+                              key: _switchableBoardContainerKey))
+                ],
+              ))
+        ])));
   }
 }
 
