@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 import '../achievements/event.dart';
 import 'ProgressState.dart';
 
+import 'ProgressState.dart';
+
 class TasksState extends ChangeNotifier {
   final TaskRepository repository;
   final ProgressState progressState;

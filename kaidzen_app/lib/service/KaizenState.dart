@@ -111,6 +111,5 @@ class KaizenDb {
                 (4, 0, 'Duck', 'Complete 50 tasks in any sphere and get Duck origami', 'fifth.png', 0, false, 0.0),
                 (5, 0, 'Pig', 'Complete 150 tasks in any sphere and get Pig origami', 'sixth.png', 0, false, 0.0);
           ''');
-    });
   }
 }

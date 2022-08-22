@@ -38,7 +38,6 @@ void main() {
       AchievementsState achievementsState = AchievementsState(
           eventsRepository: EventsRepository(),
           achievementsRepository: AchievementsRepository());
-
       achievementsState.loadAll();
       return achievementsState;
     }),
