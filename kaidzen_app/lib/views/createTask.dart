@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 import '../achievements/AchievementsState.dart';
 import '../achievements/event.dart';
@@ -10,7 +10,9 @@ import 'package:provider/provider.dart';
 import '../service/TasksState.dart';
 
 class CreateTask extends StatefulWidget {
-  const CreateTask({Key? key}) : super(key: key);
+  final Task? parent;
+
+  const CreateTask({Key? key, this.parent}) : super(key: key);
 
   @override
   State<CreateTask> createState() {
@@ -115,7 +117,8 @@ class _CreateTaskState extends State<CreateTask> {
         newTaskController.text,
         category,
         Difficulty.values
-            .firstWhere((element) => element.id == _currentDifficulty)));
+            .firstWhere((element) => element.id == _currentDifficulty),
+            parent: widget.parent != null ? widget.parent!.id : null));
     Provider.of<AchievementsState>(context, listen: false)
         .addEvent(Event(EventType.taskCreated, DateTime.now(), category));
     Navigator.pop(context);
