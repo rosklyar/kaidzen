@@ -8,7 +8,8 @@ import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/utils/margin.dart';
 import 'package:kaidzen_app/views/listViewComplexTaskItem.dart';
 import 'package:provider/provider.dart';
-
+import '../assets/constants.dart';
+import '../service/ProgressState.dart';
 import 'ListViewTaskItem.dart';
 
 class Board extends StatefulWidget {
@@ -92,8 +93,8 @@ class BoardState extends State<Board> {
       ],
     ));
   }
-
   Widget listItem(Task task) => task.hasSubtasks() ?  ListViewComplexTaskItem(task: task): ListViewTaskItem(task: task);
+
 }
 
 extension Num on num {

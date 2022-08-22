@@ -21,8 +21,19 @@ const String columnParentId = '_parent_id';
 const String tableEvents = 'events';
 const String columnEventtId = '_id';
 const String columnEventType = 'type';
-const String columnEventTaskId = 'task_id';
+
+const String columnEventTaskCategory = 'category';
 const String columnEventTs = 'event_ts';
+
+const String tableAchievements = 'achievements';
+const String columnAchievementId = '_id';
+const String columnAchievementState = 'state_id';
+const String columnAchievementTitle = 'title';
+const String columnAchievementDescription = 'description';
+const String columnAchievementIconName = 'icon_name';
+const String columnAchievementSetId = 'set_id';
+const String columnAchievementIsSecret = 'is_secret';
+const String columnAchievementProgress = 'progress';
 
 class KaizenDb {
   static Database? _db;
@@ -54,11 +65,11 @@ class KaizenDb {
           ''');
     await db.execute('''
             insert into $tableProgress values
-                (${DevelopmentCategory.MIND.id}, 0, 0.0),
-                (${DevelopmentCategory.HEALTH.id}, 0, 0.0),
-                (${DevelopmentCategory.ENERGY.id}, 0, 0.0),
-                (${DevelopmentCategory.RELATIONS.id}, 0, 0.0),
-                (${DevelopmentCategory.WEALTH.id}, 0, 0.0);
+                (${DevelopmentCategory.MIND.id}, 0, 0),
+                (${DevelopmentCategory.HEALTH.id}, 0, 0),
+                (${DevelopmentCategory.ENERGY.id}, 0, 0),
+                (${DevelopmentCategory.RELATIONS.id}, 0, 0),
+                (${DevelopmentCategory.WEALTH.id}, 0, 0);
           ''');
 
     await db.execute('''
@@ -71,11 +82,35 @@ class KaizenDb {
           $columnParentId integer)
         ''');
 
-    await db.execute('''
-            create table $tableEvents (
-            $columnEventtId integer primary key autoincrement,
+      await db.execute('''
+            create table $tableEvents ( 
+            $columnEventtId integer primary key autoincrement, 
             $columnEventType integer not null,
+            $columnEventTaskCategory integer not null,
             $columnEventTs datetime not null)
           ''');
+
+      await db.execute('''
+            create table $tableAchievements ( 
+            $columnAchievementId integer primary key autoincrement, 
+            $columnAchievementState integer not null,
+            $columnAchievementTitle text not null,
+            $columnAchievementDescription text not null,
+            $columnAchievementIconName text not null,
+            $columnAchievementSetId integer not null,
+            $columnAchievementIsSecret boolean not null,
+            $columnAchievementProgress double not null)
+          ''');
+
+      await db.execute('''
+            insert into $tableAchievements values
+                (0, 0, 'Rabbit', 'Create 5 tasks and get Rabbit origami', 'first.png', 0, false, 0.0),
+                (1, 0, 'Elephant', 'Create 25 tasks and get Elephant origami', 'second.png', 0, false, 0.0),
+                (2, 0, 'Whale', 'Create 100 tasks and get Whale origami', 'third.png', 0, false, 0.0),
+                (3, 0, 'Fox', 'Complete 5 tasks in any sphere and get Fox origami', 'fourth.png', 0, false, 0.0),
+                (4, 0, 'Duck', 'Complete 50 tasks in any sphere and get Duck origami', 'fifth.png', 0, false, 0.0),
+                (5, 0, 'Pig', 'Complete 150 tasks in any sphere and get Pig origami', 'sixth.png', 0, false, 0.0);
+          ''');
+    });
   }
 }

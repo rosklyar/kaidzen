@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/service/ProgressState.dart';
 import 'package:kaidzen_app/achievements/achievementsScreen.dart';
@@ -17,137 +18,148 @@ class ProfilePanelState extends State<ProfilePanel> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProgressState>(
-        builder: (context, progressState, child) => Padding(
+    return Consumer2<ProgressState, AchievementsState>(
+        builder: (context, progressState, achievementsState, child) => Padding(
             padding: const EdgeInsets.all(5.0),
-            child: Row(
-              children: [
-                Expanded(
-                    child: Stack(children: [
-                      const Icon(
-                        Icons.circle,
-                        size: 130.0,
-                        color: Colors.grey,
-                      ),
-                      Positioned(
-                          top: 0.0,
-                          left: 70.0,
-                          right: 10.0,
-                          bottom: 80.0,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 2, color: Colors.grey),
-                              shape: BoxShape.circle,
-                              // You can use like this way or like the below line
-                              //borderRadius: new BorderRadius.circular(30.0),
-                              color: Colors.white,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(progressState.getTotalLevel().toString(),
-                                    style: const TextStyle(fontSize: 12)),
-                                const Text('LVL', style: TextStyle(fontSize: 8))
-                              ],
-                            ),
-                          )),
-                    ]),
-                    flex: 4),
-                Expanded(
-                    child: Column(children: [
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const Achievements()));
-                            },
-                            icon: const Icon(
-                              Icons.surfing,
-                              size: 30,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.subject,
-                                size: 30, color: Colors.grey),
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Expanded(
+            child: Stack(children: [
+              Row(
+                children: [
+                  Expanded(
+                      child: Stack(children: [
+                        const Icon(
+                          Icons.circle,
+                          size: 130.0,
+                          color: Colors.grey,
+                        ),
+                        Positioned(
+                            top: 0.0,
+                            left: 70.0,
+                            right: 10.0,
+                            bottom: 80.0,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(width: 2, color: Colors.grey),
+                                shape: BoxShape.circle,
+                                // You can use like this way or like the below line
+                                //borderRadius: new BorderRadius.circular(30.0),
+                                color: Colors.white,
+                              ),
                               child: Column(
-                                children: [
-                                  ProgressIndicator(
-                                      percent: progressState
-                                          .getLevelProgressFraction(
-                                              DevelopmentCategory.MIND),
-                                      level: progressState
-                                          .getLevel(DevelopmentCategory.MIND),
-                                      title: DevelopmentCategory.MIND.name,
-                                      progressColor:
-                                          DevelopmentCategory.MIND.color),
-                                  ProgressIndicator(
-                                      percent: progressState
-                                          .getLevelProgressFraction(
-                                              DevelopmentCategory.HEALTH),
-                                      level: progressState
-                                          .getLevel(DevelopmentCategory.HEALTH),
-                                      title: DevelopmentCategory.HEALTH.name,
-                                      progressColor:
-                                          DevelopmentCategory.HEALTH.color),
-                                  ProgressIndicator(
-                                      percent: progressState
-                                          .getLevelProgressFraction(
-                                              DevelopmentCategory.ENERGY),
-                                      level: progressState
-                                          .getLevel(DevelopmentCategory.ENERGY),
-                                      title: DevelopmentCategory.ENERGY.name,
-                                      progressColor:
-                                          DevelopmentCategory.ENERGY.color),
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(progressState.getTotalLevel().toString(),
+                                      style: const TextStyle(fontSize: 12)),
+                                  const Text('LVL',
+                                      style: TextStyle(fontSize: 8))
                                 ],
                               ),
-                              flex: 5),
-                          Expanded(
-                              child: Column(
-                                children: [
-                                  ProgressIndicator(
-                                      percent: progressState
-                                          .getLevelProgressFraction(
-                                              DevelopmentCategory.WEALTH),
-                                      level: progressState
-                                          .getLevel(DevelopmentCategory.WEALTH),
-                                      title: DevelopmentCategory.WEALTH.name,
-                                      progressColor:
-                                          DevelopmentCategory.WEALTH.color),
-                                  ProgressIndicator(
-                                      percent: progressState
-                                          .getLevelProgressFraction(
-                                              DevelopmentCategory.RELATIONS),
-                                      level: progressState.getLevel(
-                                          DevelopmentCategory.RELATIONS),
-                                      title: DevelopmentCategory.RELATIONS.name,
-                                      progressColor:
-                                          DevelopmentCategory.RELATIONS.color),
-                                  const SizedBox(height: 30.0),
-                                ],
+                            )),
+                      ]),
+                      flex: 4),
+                  Expanded(
+                      child: Column(children: [
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Stack(children: [
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const AchievementsScreen()));
+                                },
+                                icon:
+                                    Image.asset("assets/achievements_icon.png"),
                               ),
-                              flex: 5)
-                        ],
-                      )
-                    ]),
-                    flex: 6)
-              ],
-            )));
+                              Positioned(
+                                  top: 0.0,
+                                  right: 4.0,
+                                  child: Text(
+                                      achievementsState
+                                          .getCompletedAchievementsCount()
+                                          .toString(),
+                                      style: mediumTextStyle))
+                            ]),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Image.asset("assets/burger_icon.png"),
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: Column(
+                                  children: [
+                                    ProgressIndicator(
+                                        percent: progressState
+                                            .getLevelProgressFraction(
+                                                DevelopmentCategory.MIND),
+                                        level: progressState
+                                            .getLevel(DevelopmentCategory.MIND),
+                                        title: DevelopmentCategory.MIND.name,
+                                        progressColor:
+                                            DevelopmentCategory.MIND.color),
+                                    ProgressIndicator(
+                                        percent: progressState
+                                            .getLevelProgressFraction(
+                                                DevelopmentCategory.HEALTH),
+                                        level: progressState.getLevel(
+                                            DevelopmentCategory.HEALTH),
+                                        title: DevelopmentCategory.HEALTH.name,
+                                        progressColor:
+                                            DevelopmentCategory.HEALTH.color),
+                                    ProgressIndicator(
+                                        percent: progressState
+                                            .getLevelProgressFraction(
+                                                DevelopmentCategory.ENERGY),
+                                        level: progressState.getLevel(
+                                            DevelopmentCategory.ENERGY),
+                                        title: DevelopmentCategory.ENERGY.name,
+                                        progressColor:
+                                            DevelopmentCategory.ENERGY.color),
+                                  ],
+                                ),
+                                flex: 5),
+                            Expanded(
+                                child: Column(
+                                  children: [
+                                    ProgressIndicator(
+                                        percent: progressState
+                                            .getLevelProgressFraction(
+                                                DevelopmentCategory.WEALTH),
+                                        level: progressState.getLevel(
+                                            DevelopmentCategory.WEALTH),
+                                        title: DevelopmentCategory.WEALTH.name,
+                                        progressColor:
+                                            DevelopmentCategory.WEALTH.color),
+                                    ProgressIndicator(
+                                        percent: progressState
+                                            .getLevelProgressFraction(
+                                                DevelopmentCategory.RELATIONS),
+                                        level: progressState.getLevel(
+                                            DevelopmentCategory.RELATIONS),
+                                        title:
+                                            DevelopmentCategory.RELATIONS.name,
+                                        progressColor: DevelopmentCategory
+                                            .RELATIONS.color),
+                                    const SizedBox(height: 30.0),
+                                  ],
+                                ),
+                                flex: 5)
+                          ],
+                        )
+                      ]),
+                      flex: 6)
+                ],
+              )
+            ])));
   }
 }
 

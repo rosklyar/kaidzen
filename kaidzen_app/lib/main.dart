@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kaidzen_app/achievements/AchievementsRepository.dart';
 import 'package:kaidzen_app/achievements/EventsRepository.dart';
 
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
@@ -34,6 +35,10 @@ void main() {
       return progressState;
     }),
     ChangeNotifierProvider(create: (context) {
+      AchievementsState achievementsState = AchievementsState(
+          eventsRepository: EventsRepository(),
+          achievementsRepository: AchievementsRepository());
+
       achievementsState.loadAll();
       return achievementsState;
     }),
@@ -74,15 +79,13 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         toolbarHeight: 0.0,
       ),
-      body: SizedBox(
-          child: SingleChildScrollView(
-              child: Column(
+      body: SingleChildScrollView(
+          child: Column(
         children: [
           ProfilePanel(key: _profilePanelKey),
-          const Padding(padding: EdgeInsets.all(7.0)),
           SwitchableBoard(key: _switchableBoardKey),
         ],
-      ))),
+      )),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.grey,
         onPressed: () {
