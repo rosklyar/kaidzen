@@ -93,8 +93,10 @@ class BoardState extends State<Board> {
       ],
     ));
   }
-  Widget listItem(Task task) => task.hasSubtasks() ?  ListViewComplexTaskItem(task: task): ListViewTaskItem(task: task);
 
+  Widget listItem(Task task) => task.hasSubtasks()
+      ? ListViewComplexTaskItem(task: task)
+      : ListViewTaskItem(task: task);
 }
 
 extension Num on num {

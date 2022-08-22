@@ -7,6 +7,7 @@ import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'package:kaidzen_app/achievements/event.dart';
 import 'package:kaidzen_app/achievements/set/default/TaskCompletedInSomeSphereAchievement.dart';
 import 'package:kaidzen_app/achievements/set/default/TaskCreatedAchievement.dart';
+import 'package:kaidzen_app/achievements/set/default/TasksCompletedInAllSpheresAchievement.dart';
 
 class AchievementsState extends ChangeNotifier {
   AchievementsRepository achievementsRepository;
@@ -31,6 +32,15 @@ class AchievementsState extends ChangeNotifier {
     var hundredAndFiftyTasksCompletedInSomeSphereAchievement =
         TaskCompletedInSomeSphereAchievement(5, 150,
             eventsRepository: eventsRepository);
+    var fiveTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
+        6, 5,
+        eventsRepository: eventsRepository);
+    var tenTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
+        7, 10,
+        eventsRepository: eventsRepository);
+    var thirtyTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
+        8, 30,
+        eventsRepository: eventsRepository);
 
     achievements = {
       fiveTasksCreatedAchievement.id: fiveTasksCreatedAchievement,
@@ -42,6 +52,9 @@ class AchievementsState extends ChangeNotifier {
           fiftyTasksCompletedInSomeSphereAchievement,
       hundredAndFiftyTasksCompletedInSomeSphereAchievement.id:
           hundredAndFiftyTasksCompletedInSomeSphereAchievement,
+      fiveTasksCompletedInEachSphere.id: fiveTasksCompletedInEachSphere,
+      tenTasksCompletedInEachSphere.id: tenTasksCompletedInEachSphere,
+      thirtyTasksCompletedInEachSphere.id: thirtyTasksCompletedInEachSphere
     };
   }
 
@@ -67,8 +80,7 @@ class AchievementsState extends ChangeNotifier {
   }
 
   addEvent(Event event) async {
-    await eventsRepository.addEvent(event);
-    loadAll();
+    await eventsRepository.addEvent(event).then((value) => loadAll());
   }
 
   void updateAchievementSnapshot(

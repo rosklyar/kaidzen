@@ -87,7 +87,8 @@ class TasksState extends ChangeNotifier {
     await repository.update(task);
     if (newStatus == Status.DONE) {
       await progressState.updateProgress(task);
-      await achievementsState.addEvent(Event(EventType.completed, DateTime.now()));
+      await achievementsState.addEvent(
+          Event(EventType.taskCompleted, DateTime.now(), task.category));
     }
   }
 }

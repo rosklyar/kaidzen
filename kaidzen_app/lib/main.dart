@@ -17,8 +17,9 @@ void main() {
   ProgressState progressState = ProgressState(
     repository: ProgressRepository(),
   );
-  AchievementsState achievementsState =
-      AchievementsState(repository: EventsRepository());
+  AchievementsState achievementsState = AchievementsState(
+      eventsRepository: EventsRepository(),
+      achievementsRepository: AchievementsRepository());
 
   TasksState taskState = TasksState(
       repository: TaskRepository(),
@@ -35,9 +36,6 @@ void main() {
       return progressState;
     }),
     ChangeNotifierProvider(create: (context) {
-      AchievementsState achievementsState = AchievementsState(
-          eventsRepository: EventsRepository(),
-          achievementsRepository: AchievementsRepository());
       achievementsState.loadAll();
       return achievementsState;
     }),
