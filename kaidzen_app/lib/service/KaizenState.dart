@@ -82,7 +82,7 @@ class KaizenDb {
           $columnParentId integer)
         ''');
 
-      await db.execute('''
+    await db.execute('''
             create table $tableEvents ( 
             $columnEventtId integer primary key autoincrement, 
             $columnEventType integer not null,
@@ -90,7 +90,7 @@ class KaizenDb {
             $columnEventTs datetime not null)
           ''');
 
-      await db.execute('''
+    await db.execute('''
             create table $tableAchievements ( 
             $columnAchievementId integer primary key autoincrement, 
             $columnAchievementState integer not null,
@@ -102,14 +102,17 @@ class KaizenDb {
             $columnAchievementProgress double not null)
           ''');
 
-      await db.execute('''
+    await db.execute('''
             insert into $tableAchievements values
-                (0, 0, 'Rabbit', 'Create 5 tasks and get Rabbit origami', 'first.png', 0, false, 0.0),
-                (1, 0, 'Elephant', 'Create 25 tasks and get Elephant origami', 'second.png', 0, false, 0.0),
-                (2, 0, 'Whale', 'Create 100 tasks and get Whale origami', 'third.png', 0, false, 0.0),
-                (3, 0, 'Fox', 'Complete 5 tasks in any sphere and get Fox origami', 'fourth.png', 0, false, 0.0),
-                (4, 0, 'Duck', 'Complete 50 tasks in any sphere and get Duck origami', 'fifth.png', 0, false, 0.0),
-                (5, 0, 'Pig', 'Complete 150 tasks in any sphere and get Pig origami', 'sixth.png', 0, false, 0.0);
+                (0, 0, 'Rabbit', 'Create 5 tasks and get Rabbit origami', 'rabbit.png', 0, false, 0.0),
+                (1, 0, 'Elephant', 'Create 25 tasks and get Elephant origami', 'elephant.png', 0, false, 0.0),
+                (2, 0, 'Whale', 'Create 100 tasks and get Whale origami', 'whale.png', 0, false, 0.0),
+                (3, 0, 'Fox', 'Complete 5 tasks in any sphere and get Fox origami', 'fox.png', 0, false, 0.0),
+                (4, 0, 'Duck', 'Complete 50 tasks in any sphere and get Duck origami', 'duck.png', 0, false, 0.0),
+                (5, 0, 'Pig', 'Complete 150 tasks in any sphere and get Pig origami', 'pig.png', 0, false, 0.0),
+                (6, 0, 'Frog', 'Complete 5 tasks in each sphere and get Frog origami', 'frog.png', 0, false, 0.0),
+                (7, 0, 'Parrot', 'Complete 10 tasks in each sphere and get Parrot origami', 'parrot.png', 0, false, 0.0),
+                (8, 0, 'Swan', 'Complete 30 tasks in each sphere and get Swan origami', 'swan.png', 0, false, 0.0);
           ''');
   }
 }

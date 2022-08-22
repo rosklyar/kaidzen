@@ -76,14 +76,18 @@ class ProfilePanelState extends State<ProfilePanel> {
                                 icon:
                                     Image.asset("assets/achievements_icon.png"),
                               ),
-                              Positioned(
-                                  top: 0.0,
-                                  right: 4.0,
-                                  child: Text(
-                                      achievementsState
-                                          .getCompletedAchievementsCount()
-                                          .toString(),
-                                      style: mediumTextStyle))
+                              Visibility(
+                                  visible: achievementsState
+                                          .getCompletedAchievementsCount() >
+                                      0,
+                                  child: Positioned(
+                                      top: 0.0,
+                                      right: 4.0,
+                                      child: Text(
+                                          achievementsState
+                                              .getCompletedAchievementsCount()
+                                              .toString(),
+                                          style: mediumTextStyle)))
                             ]),
                             IconButton(
                               onPressed: () {},
