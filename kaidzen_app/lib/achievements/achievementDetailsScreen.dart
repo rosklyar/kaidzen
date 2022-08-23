@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
+import 'package:kaidzen_app/achievements/style.dart';
 
 import '../assets/constants.dart';
 
@@ -12,31 +13,49 @@ class AchievementDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: achievementScreenBackgroundColor,
         appBar: AppBar(
-            centerTitle: true,
-            title: Text(achievementSnapshot.title, style: largeTextStyle),
-            leading: IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: () => Navigator.pop(context, false),
-            )),
+          backgroundColor: achievementScreenBackgroundColor,
+          leading: IconButton(
+            icon: Image.asset("assets/shevron-left.png"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          actions: [
+            IconButton(
+              icon: Image.asset("assets/close_icon.png"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
         body: Column(children: [
+          const SizedBox(height: 15),
           Expanded(
-              child: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  padding: const EdgeInsets.all(3.0),
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.white),
-                  child: achievementSnapshot.status !=
-                          AchievementStatus.notCompleted
-                      ? Image.asset(
-                          "assets/sets/${achievementSnapshot.setId}/${achievementSnapshot.iconName}")
-                      : const Icon(Icons.question_answer)),
-              flex: 3),
-          Expanded(
-              child:
-                  Text(achievementSnapshot.description, style: largeTextStyle),
+              child: Stack(children: [
+                Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            width: 10, color: achievementScreenBackgroundColor),
+                        shape: BoxShape.circle,
+                        color: notCompletedAchievementScreenBackgroundColor),
+                    child: achievementSnapshot.status !=
+                            AchievementStatus.notCompleted
+                        ? Image.asset(
+                            "assets/sets/${achievementSnapshot.setId}/${achievementSnapshot.iconName}")
+                        : Image.asset("assets/locked-achievement-big.png"))
+              ]),
               flex: 1),
+          const SizedBox(height: 15),
+          Text(achievementSnapshot.title, style: achievementsAppBarTextStyle),
+          const SizedBox(height: 30),
+          Expanded(
+              child: Text(achievementSnapshot.description,
+                  style: achievementsTitleTextStyle)),
         ]));
   }
 }
