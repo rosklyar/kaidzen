@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/achievements/achievementDetailsScreen.dart';
+import 'package:kaidzen_app/achievements/style.dart';
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 import 'achievementSnaphot.dart';
@@ -13,11 +15,25 @@ class AchievementsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AchievementsState>(
         builder: (context, achievementsState, child) => Scaffold(
-              appBar: AppBar(
-                centerTitle: true,
-                title: const Text('Achievements', style: largeTextStyle),
-              ),
-              body: GridView.count(
+            backgroundColor: achievementScreenBackgroundColor,
+            appBar: AppBar(
+              backgroundColor: achievementScreenBackgroundColor,
+              automaticallyImplyLeading: false,
+              centerTitle: true,
+              title: const Text('Achievements',
+                  style: achievementsAppBarTextStyle),
+              actions: <Widget>[
+                IconButton(
+                  icon: Image.asset("assets/close_icon.png"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+            body: Container(
+              color: achievementScreenBackgroundColor,
+              child: GridView.count(
                 crossAxisCount: 3,
                 children:
                     achievementsState.getAchievements().map((achievement) {
@@ -28,15 +44,18 @@ class AchievementsScreen extends StatelessWidget {
                             width: 100,
                             height: 100,
                             child: Center(
-                                child: SizedBox(
-                                    width: 65,
-                                    height: 65,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 4,
-                                      value: achievement.progress,
-                                      backgroundColor: Colors.grey,
-                                      color: Colors.green,
-                                    )))),
+                                child: CircularPercentIndicator(
+                              radius: 35,
+                              lineWidth: 4,
+                              percent: achievement.progress,
+                              progressColor: achievement.status ==
+                                      AchievementStatus.notCompleted
+                                  ? notCompletedAchievementScreenProgressColor
+                                  : completedAchievementScreenBackgroundColor,
+                              circularStrokeCap: CircularStrokeCap.round,
+                              backgroundColor:
+                                  notCompletedAchievementScreenBackgroundColor,
+                            ))),
                         SizedBox(
                             width: 100,
                             height: 100,
@@ -45,7 +64,7 @@ class AchievementsScreen extends StatelessWidget {
                                     elevation: 4.0,
                                     margin: EdgeInsets.zero,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(150),
+                                      borderRadius: BorderRadius.circular(50),
                                     ),
                                     child: InkWell(
                                       onTap: () {
@@ -69,23 +88,30 @@ class AchievementsScreen extends StatelessWidget {
                                       child: Container(
                                           width: 60,
                                           height: 60,
-                                          padding: const EdgeInsets.all(3.0),
-                                          decoration: const BoxDecoration(
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  width: 4,
+                                                  color:
+                                                      achievementScreenBackgroundColor),
                                               shape: BoxShape.circle,
-                                              color: Colors.white),
+                                              color: achievement.status ==
+                                                      AchievementStatus
+                                                          .notCompleted
+                                                  ? notCompletedAchievementScreenBackgroundColor
+                                                  : completedAchievementScreenBackgroundColor),
                                           child: achievement.status !=
                                                   AchievementStatus.notCompleted
                                               ? Image.asset(
                                                   "assets/sets/${achievement.setId}/${achievement.iconName}")
-                                              : const Icon(
-                                                  Icons.question_answer)),
+                                              : Image.asset(
+                                                  "assets/locked-achievement.png")),
                                     ))))
                       ]),
-                      Text(achievement.title)
+                      Text(achievement.title, style: achievementsTitleTextStyle)
                     ],
                   );
                 }).toList(),
               ),
-            ));
+            )));
   }
 }

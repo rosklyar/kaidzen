@@ -34,18 +34,21 @@ const unselectedToggleColor = Colors.grey;
 
 const TextStyle smallTextStyle = TextStyle(
   fontSize: 8,
+  fontFamily: "Montserrat",
   color: Colors.black,
 );
 
 const TextStyle mediumTextStyle = TextStyle(
   fontSize: 12,
+  fontFamily: "Montserrat",
   color: Colors.black,
 );
 
 const TextStyle largeTextStyle = TextStyle(
   fontSize: 16,
+  fontFamily: "Montserrat",
   color: Colors.black,
 );
 
 const TextStyle mediumWhiteTextStyle =
-    TextStyle(fontSize: 12, color: Colors.white);
+    TextStyle(fontSize: 12, fontFamily: "Montserrat", color: Colors.white);
