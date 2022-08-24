@@ -38,8 +38,10 @@ class ProfilePanelState extends State<ProfilePanel> {
                             bottom: 80.0,
                             child: Container(
                               decoration: BoxDecoration(
-                                border:
-                                    Border.all(width: 2, color: Colors.grey),
+                                border: Border.all(
+                                    width: 2,
+                                    color: const Color.fromARGB(
+                                        255, 199, 192, 192)),
                                 shape: BoxShape.circle,
                                 // You can use like this way or like the below line
                                 //borderRadius: new BorderRadius.circular(30.0),
@@ -50,9 +52,8 @@ class ProfilePanelState extends State<ProfilePanel> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(progressState.getTotalLevel().toString(),
-                                      style: const TextStyle(fontSize: 12)),
-                                  const Text('LVL',
-                                      style: TextStyle(fontSize: 8))
+                                      style: mediumTextStyle),
+                                  const Text('LVL', style: smallTextStyle)
                                 ],
                               ),
                             )),
@@ -153,7 +154,7 @@ class ProfilePanelState extends State<ProfilePanel> {
                                             DevelopmentCategory.RELATIONS.name,
                                         progressColor: DevelopmentCategory
                                             .RELATIONS.color),
-                                    const SizedBox(height: 30.0),
+                                    const SizedBox(height: 32.0),
                                   ],
                                 ),
                                 flex: 5)
@@ -193,24 +194,25 @@ class ProgressIndicator extends StatelessWidget {
                   children: [
                     Text(
                       " $title",
-                      style: const TextStyle(fontSize: 12),
+                      style: mediumTextStyle,
                     ),
                     Row(children: [
                       const Text(
                         "LVL   ",
-                        style: TextStyle(fontSize: 7),
+                        style: smallTextStyle,
                       ),
                       Text(
                         "$level",
-                        style: const TextStyle(fontSize: 12),
+                        style: mediumTextStyle,
                       ),
                     ]),
                   ])),
           LinearPercentIndicator(
-            lineHeight: 6.0,
+            animateFromLastPercent: true,
+            lineHeight: 8.0,
             percent: percent,
             animation: true,
-            barRadius: const Radius.circular(1.0),
+            barRadius: const Radius.circular(3.0),
             backgroundColor: const Color.fromRGBO(225, 218, 218, 1.0),
             progressColor: progressColor,
           )
