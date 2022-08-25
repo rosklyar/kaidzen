@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
 import '../service/ProgressState.dart';
+import '../utils/dashSeparator.dart';
 import 'ListViewTaskItem.dart';
 import 'createTask.dart';
 
@@ -27,8 +28,9 @@ class ListViewComplexTaskItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
+      tilePadding: EdgeInsets.only(right: 20),
       title: ListViewTaskItem(task: task),
-      tilePadding: const EdgeInsets.all(5),
+      //tilePadding: const EdgeInsets.all(5),
       children: <Widget>[
         Column(
           children: buildExpandableContent(context, task),
@@ -41,11 +43,14 @@ class ListViewComplexTaskItem extends StatelessWidget {
 List<Widget> buildExpandableContent(BuildContext context, Task task) {
   List<Widget> columnContent = [];
 
+  columnContent.add(const DashSeparator());
+  var divider = Container(child: const DashSeparator(), padding: const EdgeInsets.only(left: 40),);
   for (Task subtask in task.subtasks) {
     if (subtask.status == task.status) {
       columnContent.add(Container(
           padding: const EdgeInsets.fromLTRB(25, 10, 5, 5),
           child: ListViewTaskItem(task: subtask)));
+      columnContent.add(divider);
     }
   }
 

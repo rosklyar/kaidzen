@@ -54,13 +54,6 @@ class BoardState extends State<Board> {
               height: context.screenHeight(1),
               width: context.screenWidth(1),
               margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 255, 255, 255),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(0),
-                ),
-              ),
               child: ReorderableListView(
                 padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
                 onReorder: _onReorder,
@@ -74,15 +67,19 @@ class BoardState extends State<Board> {
                         await Provider.of<TasksState>(context, listen: false)
                             .deleteTask(widget.list[index]);
                       },
-                      // Show a red background as the item is swiped away.
-                      background: Container(color: Colors.red),
-                      child: Column(key: Key('$index'), children: [
-                        Container(
-                          color: const Color.fromARGB(255, 232, 237, 235),
-                          child: listItem(widget.list[index]),
-                        ),
-                        Container(padding: const EdgeInsets.all(5)),
-                      ]),
+                      child: Column(key: Key('$index'),
+                          children: [
+                            Card(
+                                child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: AssetImage("assets/test.png"),
+                                ),
+                              ),
+                              child: listItem(widget.list[index]),
+                            ))
+                          ]),
                     );
                   },
                 ),
