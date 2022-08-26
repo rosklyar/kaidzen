@@ -107,7 +107,7 @@ class KaizenDb {
                 (0, 0, 'Frog', 'Create 5 tasks', 'Frog.svg', 0, false, 0.0),
                 (1, 0, 'Crane', 'Create 25 tasks', 'Crane.svg', 0, false, 0.0),
                 (2, 0, 'Elephant', 'Create 100 tasks', 'Elephant.svg', 0, false, 0.0),
-                (3, 0, 'Collibri', 'Complete 5 tasks in any sphere', 'Collibri.svg', 0, false, 0.0),
+                (3, 0, 'Collibri', 'Complete 5 tasks in any sphere', 'Bird.svg', 0, false, 0.0),
                 (4, 0, 'Dino', 'Complete 50 tasks in any sphere', 'Dino.svg', 0, false, 0.0),
                 (5, 0, 'Dragon', 'Complete 150 tasks in any sphere', 'Dragon.svg', 0, false, 0.0),
                 (6, 0, 'Fish', 'Complete 5 tasks in each sphere', 'Fish.svg', 0, false, 0.0),

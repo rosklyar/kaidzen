@@ -65,9 +65,9 @@ class AchievementDetailsScreen extends StatelessWidget {
                             child: achievementSnapshot.status !=
                                     AchievementStatus.notCompleted
                                 ? SvgPicture.asset(
-                                    "assets/sets/${achievementSnapshot.setId}/${achievementSnapshot.iconName}")
-                                : Image.asset(
-                                    "assets/locked-achievement-big.png"))))
+                                    "assets/achievements/sets/${achievementSnapshot.setId}/${achievementSnapshot.iconName}")
+                                : SvgPicture.asset(
+                                    "assets/achievements/origami_grey_placeholder.svg"))))
               ]),
               flex: 3),
           Expanded(
