@@ -104,15 +104,15 @@ class KaizenDb {
 
     await db.execute('''
             insert into $tableAchievements values
-                (0, 0, 'Rabbit', 'Create 5 tasks', 'rabbit.png', 0, false, 0.0),
-                (1, 0, 'Elephant', 'Create 25 tasks', 'elephant.png', 0, false, 0.0),
-                (2, 0, 'Whale', 'Create 100 tasks', 'whale.png', 0, false, 0.0),
-                (3, 0, 'Fox', 'Complete 5 tasks in any sphere', 'fox.png', 0, false, 0.0),
-                (4, 0, 'Duck', 'Complete 50 tasks in any sphere', 'duck.png', 0, false, 0.0),
-                (5, 0, 'Pig', 'Complete 150 tasks in any sphere', 'pig.png', 0, false, 0.0),
-                (6, 0, 'Frog', 'Complete 5 tasks in each sphere', 'frog.png', 0, false, 0.0),
-                (7, 0, 'Parrot', 'Complete 10 tasks in each sphere', 'parrot.png', 0, false, 0.0),
-                (8, 0, 'Swan', 'Complete 30 tasks in each sphere', 'swan.png', 0, false, 0.0);
+                (0, 0, 'Frog', 'Create 5 tasks', 'Frog.svg', 0, false, 0.0),
+                (1, 0, 'Crane', 'Create 25 tasks', 'Crane.svg', 0, false, 0.0),
+                (2, 0, 'Elephant', 'Create 100 tasks', 'Elephant.svg', 0, false, 0.0),
+                (3, 0, 'Collibri', 'Complete 5 tasks in any sphere', 'Bird.svg', 0, false, 0.0),
+                (4, 0, 'Dino', 'Complete 50 tasks in any sphere', 'Dino.svg', 0, false, 0.0),
+                (5, 0, 'Dragon', 'Complete 150 tasks in any sphere', 'Dragon.svg', 0, false, 0.0),
+                (6, 0, 'Fish', 'Complete 5 tasks in each sphere', 'Fish.svg', 0, false, 0.0),
+                (7, 0, 'Duck', 'Complete 10 tasks in each sphere', 'Duck.svg', 0, false, 0.0),
+                (8, 0, 'Boat', 'Complete 30 tasks in each sphere', 'Boat.svg', 0, false, 0.0);
           ''');
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'package:kaidzen_app/achievements/style.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -63,10 +64,10 @@ class AchievementDetailsScreen extends StatelessWidget {
                                     notCompletedAchievementScreenBackgroundColor),
                             child: achievementSnapshot.status !=
                                     AchievementStatus.notCompleted
-                                ? Image.asset(
-                                    "assets/sets/${achievementSnapshot.setId}/${achievementSnapshot.iconName}")
-                                : Image.asset(
-                                    "assets/locked-achievement-big.png"))))
+                                ? SvgPicture.asset(
+                                    "assets/achievements/sets/${achievementSnapshot.setId}/${achievementSnapshot.iconName}")
+                                : SvgPicture.asset(
+                                    "assets/achievements/origami_grey_placeholder.svg"))))
               ]),
               flex: 3),
           Expanded(
