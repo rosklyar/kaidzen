@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       )),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.black,
         onPressed: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const CreateTask()));
@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
         tooltip: 'Add task',
         child: const Icon(
           Icons.add,
-          color: Colors.black,
+          color: Colors.white,
         ),
       ),
     );

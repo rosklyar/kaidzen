@@ -12,7 +12,9 @@ const TextStyle achievementsDescriptionTextStyle =
 const TextStyle achievementsTitleTextStyle =
     TextStyle(fontSize: 14, color: Colors.white, fontFamily: 'Lato');
 
+
 const Color achievementScreenBackgroundColor = Color.fromRGBO(45, 45, 45, 1);
+
 const Color notCompletedAchievementScreenBackgroundColor =
     Color.fromRGBO(189, 188, 199, 1);
 const Color completedAchievementScreenBackgroundColor =
