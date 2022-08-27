@@ -41,6 +41,15 @@ class AchievementsState extends ChangeNotifier {
     var thirtyTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
         8, 30,
         eventsRepository: eventsRepository);
+    var fiftyTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
+        9, 50,
+        eventsRepository: eventsRepository);
+    var hundredTasksCompletedInEachSphere =
+        TaskCompletedInAllSpheresAchievement(10, 100,
+            eventsRepository: eventsRepository);
+    var oneHundredAndFiftyTasksCompletedInEachSphere =
+        TaskCompletedInAllSpheresAchievement(11, 150,
+            eventsRepository: eventsRepository);
 
     achievements = {
       fiveTasksCreatedAchievement.id: fiveTasksCreatedAchievement,
@@ -54,7 +63,11 @@ class AchievementsState extends ChangeNotifier {
           hundredAndFiftyTasksCompletedInSomeSphereAchievement,
       fiveTasksCompletedInEachSphere.id: fiveTasksCompletedInEachSphere,
       tenTasksCompletedInEachSphere.id: tenTasksCompletedInEachSphere,
-      thirtyTasksCompletedInEachSphere.id: thirtyTasksCompletedInEachSphere
+      thirtyTasksCompletedInEachSphere.id: thirtyTasksCompletedInEachSphere,
+      fiftyTasksCompletedInEachSphere.id: fiftyTasksCompletedInEachSphere,
+      hundredTasksCompletedInEachSphere.id: hundredTasksCompletedInEachSphere,
+      oneHundredAndFiftyTasksCompletedInEachSphere.id:
+          oneHundredAndFiftyTasksCompletedInEachSphere
     };
   }
 

@@ -112,7 +112,10 @@ class KaizenDb {
                 (5, 0, 'Dragon', 'Complete 150 tasks in any sphere', 'Dragon.svg', 0, false, 0.0),
                 (6, 0, 'Fish', 'Complete 5 tasks in each sphere', 'Fish.svg', 0, false, 0.0),
                 (7, 0, 'Duck', 'Complete 10 tasks in each sphere', 'Duck.svg', 0, false, 0.0),
-                (8, 0, 'Boat', 'Complete 30 tasks in each sphere', 'Boat.svg', 0, false, 0.0);
+                (8, 0, 'Boat', 'Complete 30 tasks in each sphere', 'Boat.svg', 0, false, 0.0),
+                (9, 0, 'Cat', 'Complete 30 tasks in each sphere', 'Cat.svg', 0, false, 0.0),
+                (10, 0, 'Unicorn', 'Complete 30 tasks in each sphere', 'Unicorn.svg', 0, false, 0.0),
+                (11, 0, 'Secret', 'Do smth secret', 'Dog.svg', 0, true, 0.0);
           ''');
   }
 }

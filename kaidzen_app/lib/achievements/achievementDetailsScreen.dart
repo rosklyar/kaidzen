@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
+import 'package:kaidzen_app/achievements/eggWidget.dart';
 import 'package:kaidzen_app/achievements/style.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -36,39 +37,28 @@ class AchievementDetailsScreen extends StatelessWidget {
         body: Column(children: [
           const SizedBox(height: 25),
           Expanded(
-              child: Stack(children: [
-                Center(
-                    child: SizedBox(
-                        width: 310,
-                        height: 310,
-                        child: CircularPercentIndicator(
-                          radius: 150,
-                          lineWidth: 10,
-                          percent: achievementSnapshot.progress,
-                          progressColor: achievementDetailsProgressColor,
-                          circularStrokeCap: CircularStrokeCap.round,
-                          backgroundColor:
-                              notCompletedAchievementScreenBackgroundColor,
-                        ))),
-                Center(
-                    child: SizedBox(
-                        width: 280,
-                        height: 280,
-                        child: Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 10,
-                                    color: achievementScreenBackgroundColor),
-                                shape: BoxShape.circle,
-                                color:
-                                    notCompletedAchievementScreenBackgroundColor),
-                            child: achievementSnapshot.status !=
-                                    AchievementStatus.notCompleted
-                                ? SvgPicture.asset(
-                                    "assets/achievements/sets/${achievementSnapshot.setId}/${achievementSnapshot.iconName}")
-                                : SvgPicture.asset(
-                                    "assets/achievements/origami_grey_placeholder.svg"))))
-              ]),
+              child: Center(
+                  child: Stack(children: [
+                achievementSnapshot.status != AchievementStatus.notCompleted
+                    ? SvgPicture.asset(
+                        width: double.infinity,
+                        height: double.infinity,
+                        "assets/achievements/completed_egg.svg")
+                    : SvgPicture.asset(
+                        width: double.infinity,
+                        height: double.infinity,
+                        "assets/achievements/egg.svg"),
+                EggWidget.getProgress(achievementSnapshot.progress),
+                achievementSnapshot.status != AchievementStatus.notCompleted
+                    ? SvgPicture.asset(
+                        width: double.infinity,
+                        height: double.infinity,
+                        "assets/achievements/sets/${achievementSnapshot.setId}/${achievementSnapshot.iconName}")
+                    : SvgPicture.asset(
+                        width: double.infinity,
+                        height: double.infinity,
+                        "assets/achievements/origami_grey_placeholder.svg")
+              ])),
               flex: 3),
           Expanded(
               child: Column(children: [
@@ -76,8 +66,10 @@ class AchievementDetailsScreen extends StatelessWidget {
                 Text(achievementSnapshot.title,
                     style: achievementsAppBarTextStyle),
                 const SizedBox(height: 35),
-                Text(achievementSnapshot.description,
-                    style: achievementsDescriptionTextStyle)
+                Visibility(
+                    visible: !achievementSnapshot.isSecret,
+                    child: Text(achievementSnapshot.description,
+                        style: achievementsDescriptionTextStyle))
               ]),
               flex: 2),
         ]));

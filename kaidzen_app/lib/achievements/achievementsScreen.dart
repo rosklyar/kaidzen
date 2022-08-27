@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/achievements/achievementDetailsScreen.dart';
+import 'package:kaidzen_app/achievements/eggWidget.dart';
 import 'package:kaidzen_app/achievements/style.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -12,8 +13,6 @@ import 'dart:math';
 import 'achievementSnaphot.dart';
 
 class AchievementsScreen extends StatelessWidget {
-  static int step = 25;
-  static List<int> percents = [for (var i = 0; i <= 100; i = i + step) i];
   const AchievementsScreen({Key? key}) : super(key: key);
 
   @override
@@ -62,43 +61,12 @@ class AchievementsScreen extends StatelessWidget {
                       return Column(
                         children: [
                           Expanded(
-                              child: Stack(children: [
-                                achievement.status ==
-                                        AchievementStatus.completedAndShown
-                                    ? SvgPicture.asset(
-                                        "assets/achievements/completed_egg.svg")
-                                    : SvgPicture.asset(
-                                        "assets/achievements/egg.svg"),
-                                getProgress(achievement.progress),
-                                InkWell(
-                                    child: getOrigami(achievement),
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AchievementDetailsScreen(
-                                                      achievementSnapshot:
-                                                          achievement)));
-                                      if (achievement.status ==
-                                          AchievementStatus.completed) {
-                                        achievementsState
-                                            .updateAchievementSnapshot(
-                                                AchievementSnapshot.updateStatus(
-                                                    achievement,
-                                                    AchievementStatus
-                                                        .completedAndShown));
-                                      }
-                                    }),
-                                Visibility(
-                                    visible: achievement.status ==
-                                        AchievementStatus.completed,
-                                    child: Positioned(
-                                        top: 5,
-                                        right: 0,
-                                        child: SvgPicture.asset(
-                                            "assets/achievements/new_label.svg")))
-                              ]),
+                              child: achievement.isSecret
+                                  ? buildSecretEgg(
+                                      achievement, context, achievementsState)
+                                  : EggWidget(
+                                      achievement: achievement,
+                                      achievementsState: achievementsState),
                               flex: 10),
                           const Expanded(child: SizedBox(), flex: 1),
                           Expanded(
@@ -109,22 +77,8 @@ class AchievementsScreen extends StatelessWidget {
                       );
                     }).toList(),
                   ),
-                  flex: 8),
+                  flex: 10),
             ])));
-  }
-
-  SvgPicture getOrigami(AchievementSnapshot snapshot) {
-    return snapshot.status == AchievementStatus.completedAndShown
-        ? SvgPicture.asset(
-            "assets/achievements/sets/${snapshot.setId}/${snapshot.iconName}")
-        : SvgPicture.asset("assets/achievements/origami_grey_placeholder.svg");
-  }
-
-  Widget getProgress(double progress) {
-    int res = percents.lastWhere(
-        (element) => (progress * 100).toInt() >= element,
-        orElse: () => 0);
-    return SvgPicture.asset("assets/achievements/progress/$res%.svg");
   }
 
   Widget getNewAchievementsComponent(AchievementsState achievementsState) {
@@ -157,5 +111,33 @@ class AchievementsScreen extends StatelessWidget {
         : const Text("Gain\nachievements\nby reaching\nyour goals",
             style: achievementsDescriptionTextStyle,
             textAlign: TextAlign.center);
+  }
+
+  Widget buildSecretEgg(AchievementSnapshot achievement, BuildContext context,
+      AchievementsState achievementsState) {
+    if (achievement.status == AchievementStatus.completedAndShown) {
+      return EggWidget(
+          achievement: achievement, achievementsState: achievementsState);
+    } else if (achievement.status == AchievementStatus.notCompleted) {
+      return SvgPicture.asset(
+          "assets/achievements/secret/hidden_not_completed.svg");
+    } else if (achievement.status == AchievementStatus.completed) {
+      return InkWell(
+          child: SvgPicture.asset(
+              "assets/achievements/secret/hidden_completed.svg"),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AchievementDetailsScreen(
+                        achievementSnapshot: achievement)));
+            if (achievement.status == AchievementStatus.completed) {
+              achievementsState.updateAchievementSnapshot(
+                  AchievementSnapshot.updateStatus(
+                      achievement, AchievementStatus.completedAndShown));
+            }
+          });
+    }
+    return const SizedBox.shrink();
   }
 }

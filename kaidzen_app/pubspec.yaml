@@ -72,8 +72,9 @@ flutter:
   assets:
     - assets/achievements/sets/0/
     - assets/achievements/progress/
-    - assets/
+    - assets/achievements/secret/
     - assets/achievements/
+    - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
