@@ -21,9 +21,11 @@ class ProgressState extends ChangeNotifier {
   updateProgress(Task task) async {
     var currentProgress = _progress[task.category]!;
     var updatedProgress = ProgressCalculator.progress(currentProgress, task);
-    await repository.updateProgress(task.category, updatedProgress);
-    _progress[task.category] = updatedProgress;
-    notifyListeners();
+    if (updatedProgress != currentProgress) {
+      await repository.updateProgress(task.category, updatedProgress);
+      _progress[task.category] = updatedProgress;
+      notifyListeners();
+    }
   }
 
   int getTotalLevel() {

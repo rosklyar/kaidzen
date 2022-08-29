@@ -130,7 +130,9 @@ class AchievementsScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => AchievementDetailsScreen(
-                        achievementSnapshot: achievement)));
+                        achievementSnapshot: achievement,
+                        details: achievementsState
+                            .getDetailsWidget(achievement.id))));
             if (achievement.status == AchievementStatus.completed) {
               achievementsState.updateAchievementSnapshot(
                   AchievementSnapshot.updateStatus(

@@ -1,10 +1,14 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:kaidzen_app/achievements/event.dart';
+import 'package:kaidzen_app/achievements/style.dart';
 
 import '../../achievement.dart';
 
 class TaskCreatedAchievement extends Achievement {
   final int numberOfTasks;
   final int achievementId;
+
   TaskCreatedAchievement(this.achievementId, this.numberOfTasks,
       {required super.eventsRepository});
 
@@ -18,4 +22,14 @@ class TaskCreatedAchievement extends Achievement {
 
   @override
   int get id => achievementId;
+
+  @override
+  Future<Widget> get detailsWidget async {
+    var createdTasks =
+        await eventsRepository.getEventsNumberByType(EventType.taskCreated);
+    return Center(
+      child: Text('Created $createdTasks/$numberOfTasks',
+          style: achievementsDetailsTextStyle),
+    );
+  }
 }

@@ -12,6 +12,14 @@ const TextStyle achievementsDescriptionTextStyle =
 const TextStyle achievementsTitleTextStyle =
     TextStyle(fontSize: 14, color: Colors.white, fontFamily: 'Lato');
 
+const TextStyle achievementsDetailsTextStyle = TextStyle(
+    fontSize: 16,
+    color: Color.fromRGBO(86, 92, 95, 1),
+    fontFamily: 'Montserrat');
+const TextStyle achievementsDetailsAchievedTextStyle = TextStyle(
+    fontSize: 16,
+    color: Color.fromRGBO(186, 169, 255, 1),
+    fontFamily: 'Montserrat');
 
 const Color achievementScreenBackgroundColor = Color.fromRGBO(45, 45, 45, 1);
 

@@ -41,24 +41,14 @@ class EventsRepository {
     return maps.isNotEmpty ? maps.first['COUNT(*)'] as int : 0;
   }
 
-  Future<int> getMaxEventsNumberAmongAllCategories(EventType eventType) async {
+  Future<int> getEventsCountByCategory(
+      EventType eventType, int category) async {
     if (db == null) {
       await open();
     }
     final List<Map<String, dynamic>> maps = await db!.rawQuery(
-        'SELECT COUNT(*) FROM $tableEvents WHERE $columnEventType = ${eventType.id} GROUP BY $columnEventTaskCategory ORDER BY COUNT(*) DESC LIMIT 1');
+        'SELECT COUNT(*) FROM $tableEvents WHERE $columnEventType = ${eventType.id} AND $columnEventTaskCategory = $category');
     return maps.isNotEmpty ? maps.first['COUNT(*)'] as int : 0;
-  }
-
-  Future<int> getMinEventsNumberAmongAllCategories(EventType eventType) async {
-    if (db == null) {
-      await open();
-    }
-    final List<Map<String, dynamic>> maps = await db!.rawQuery(
-        'SELECT COUNT(*) FROM $tableEvents WHERE $columnEventType = ${eventType.id} GROUP BY $columnEventTaskCategory ORDER BY COUNT(*) ASC');
-    return maps.length >= DevelopmentCategory.values.length
-        ? maps.first['COUNT(*)'] as int
-        : 0;
   }
 
   Future<int> addEvent(Event event) async {

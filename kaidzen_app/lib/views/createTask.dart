@@ -111,14 +111,14 @@ class _CreateTaskState extends State<CreateTask> {
   }
 
   void submit() {
-    var category = DevelopmentCategory.values
+    var category = activeCategories
         .firstWhere((element) => element.id == _currentCategory);
     Provider.of<TasksState>(context, listen: false).addTask(Task(
         newTaskController.text,
         category,
         Difficulty.values
             .firstWhere((element) => element.id == _currentDifficulty),
-            parent: widget.parent != null ? widget.parent!.id : null));
+        parent: widget.parent != null ? widget.parent!.id : null));
     Provider.of<AchievementsState>(context, listen: false)
         .addEvent(Event(EventType.taskCreated, DateTime.now(), category));
     Navigator.pop(context);
@@ -164,7 +164,7 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
         width: double.infinity,
         child: Wrap(
             spacing: 10,
-            children: DevelopmentCategory.values
+            children: activeCategories
                 .map((cat) => ChoiceChip(
                       selectedColor: selectedToggleColor,
                       disabledColor: unselectedToggleColor,

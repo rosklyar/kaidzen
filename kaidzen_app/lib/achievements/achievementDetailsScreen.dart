@@ -9,33 +9,32 @@ import '../assets/constants.dart';
 
 class AchievementDetailsScreen extends StatelessWidget {
   final AchievementSnapshot achievementSnapshot;
-
-  const AchievementDetailsScreen({Key? key, required this.achievementSnapshot})
+  final Widget details;
+  const AchievementDetailsScreen(
+      {Key? key, required this.achievementSnapshot, required this.details})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: achievementScreenBackgroundColor,
-        appBar: AppBar(
-          backgroundColor: achievementScreenBackgroundColor,
-          leading: IconButton(
-            icon: Image.asset("assets/shevron-left.png"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          actions: [
-            IconButton(
-              icon: Image.asset("assets/close_icon.png"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
         body: Column(children: [
-          const SizedBox(height: 25),
+          Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Row(children: [
+                IconButton(
+                  icon: Image.asset("assets/shevron-left.png"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                IconButton(
+                  icon: Image.asset("assets/close_icon.png"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ], mainAxisAlignment: MainAxisAlignment.spaceBetween)),
           Expanded(
               child: Center(
                   child: Stack(children: [
@@ -59,19 +58,20 @@ class AchievementDetailsScreen extends StatelessWidget {
                         height: double.infinity,
                         "assets/achievements/origami_grey_placeholder.svg")
               ])),
-              flex: 3),
+              flex: 1),
           Expanded(
               child: Column(children: [
-                const SizedBox(height: 25),
-                Text(achievementSnapshot.title,
-                    style: achievementsAppBarTextStyle),
-                const SizedBox(height: 35),
+                Padding(
+                    padding: const EdgeInsets.only(top: 25, bottom: 25),
+                    child: Text(achievementSnapshot.title,
+                        style: achievementsAppBarTextStyle)),
                 Visibility(
                     visible: !achievementSnapshot.isSecret,
                     child: Text(achievementSnapshot.description,
-                        style: achievementsDescriptionTextStyle))
+                        style: achievementsDescriptionTextStyle)),
+                Padding(padding: const EdgeInsets.only(top: 10), child: details)
               ]),
-              flex: 2),
+              flex: 1),
         ]));
   }
 }

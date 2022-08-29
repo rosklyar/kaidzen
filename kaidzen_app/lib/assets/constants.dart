@@ -10,8 +10,9 @@ enum DevelopmentCategory {
   MIND(0, "Mind", "mind", Color.fromRGBO(69, 131, 151, 1.0)),
   HEALTH(1, "Health", "health", Color.fromRGBO(166, 187, 31, 1.0)),
   ENERGY(2, "Energy", "energy", Color.fromRGBO(242, 202, 0, 1.0)),
-  RELATIONS(3, "Relations", "relations",Color.fromRGBO(234, 125, 98, 1.0)),
-  WEALTH(4, "Wealth", "wealth", Color.fromRGBO(138, 94, 176, 1.0));
+  RELATIONS(3, "Relations", "relations", Color.fromRGBO(234, 125, 98, 1.0)),
+  WEALTH(4, "Wealth", "wealth", Color.fromRGBO(138, 94, 176, 1.0)),
+  NO_CATEGORY(-1, "No category", "no_category", Colors.white);
 
   const DevelopmentCategory(this.id, this.name, this.nameLowercase, this.color);
   final int id;
@@ -19,6 +20,14 @@ enum DevelopmentCategory {
   final String nameLowercase;
   final Color color;
 }
+
+const List<DevelopmentCategory> activeCategories = [
+  DevelopmentCategory.MIND,
+  DevelopmentCategory.HEALTH,
+  DevelopmentCategory.ENERGY,
+  DevelopmentCategory.RELATIONS,
+  DevelopmentCategory.WEALTH
+];
 
 enum Difficulty {
   EASY(0, "A little"),
