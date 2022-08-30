@@ -39,8 +39,12 @@ enum Difficulty {
   final String name;
 }
 
-const selectedToggleColor = Colors.black;
-const unselectedToggleColor = Colors.white;
+const selectedToggleColor = Color.fromRGBO(86, 92, 95, 1);
+const unselectedToggleColor = Color.fromRGBO(231, 233, 234, 1);
+const inputInactiveBorderColor = Color.fromRGBO(114, 118, 121, 1);
+const inputHintTextStyle = TextStyle(
+    fontSize: 16, color: inputInactiveBorderColor, fontFamily: 'Montserrat');
+const activeButtonColor = Color.fromRGBO(18, 17, 17, 1);
 
 const TextStyle smallTextStyle = TextStyle(
   fontSize: 8,
@@ -57,6 +61,19 @@ const TextStyle mediumTextStyle = TextStyle(
 const TextStyle largeTextStyle = TextStyle(
   fontSize: 16,
   fontFamily: "Montserrat",
+  color: Colors.black,
+);
+
+const TextStyle largeTextStyle20 = TextStyle(
+  fontSize: 20,
+  fontFamily: "Montserrat",
+  color: Colors.black,
+);
+
+const TextStyle screenTytleTextStyle = TextStyle(
+  fontSize: 24,
+  fontFamily: "Montserrat",
+  fontWeight: FontWeight.bold,
   color: Colors.black,
 );
 

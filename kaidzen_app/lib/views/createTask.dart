@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
@@ -29,64 +30,88 @@ class _CreateTaskState extends State<CreateTask> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Create goal'),
-      ),
       body: Column(children: [
+        Expanded(
+            child: Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Row(children: [
+                  Expanded(
+                      child: IconButton(
+                        icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      flex: 1),
+                  const Expanded(
+                      child: Center(
+                          child: Text(
+                        "Goal",
+                        style: screenTytleTextStyle,
+                      )),
+                      flex: 9),
+                  const Expanded(child: SizedBox(), flex: 1)
+                ])),
+            flex: 3),
+        Expanded(
+            child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: TextField(
+                  autofocus: true,
+                  decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                          onPressed: newTaskController.clear,
+                          icon: Visibility(
+                              visible: newTaskController.text.isNotEmpty,
+                              child:
+                                  SvgPicture.asset("assets/close-grey.svg"))),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                              color: inputInactiveBorderColor)),
+                      hintText: 'Goal title',
+                      hintStyle: inputHintTextStyle),
+                  controller: newTaskController,
+                )),
+            flex: 3),
+        const Expanded(
+            child: Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: SizedBox(
+                    width: double.infinity,
+                    child: Text("Life sphere to be affected",
+                        textAlign: TextAlign.left, style: largeTextStyle))),
+            flex: 1),
+        Expanded(
+            child: Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child: TaskTypeWidget(
+                    callback: (value) => setState(() {
+                          _currentCategory = value!;
+                          _isCreateButtonActive =
+                              newTaskController.text.isNotEmpty &&
+                                  _currentCategory >= 0;
+                        }))),
+            flex: 4),
         Expanded(
             child: Column(children: [
               Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-                  child: TextField(
-                    autofocus: true,
-                    decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                            onPressed: newTaskController.clear,
-                            icon: const Icon(Icons.clear)),
-                        border: const OutlineInputBorder(),
-                        hintText: 'Goal title',
-                        labelText: 'Goal title'),
-                    controller: newTaskController,
-                  )),
-              const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: SizedBox(
                       width: double.infinity,
-                      child: Text("Life sphere to be affected",
-                          textAlign: TextAlign.left, style: mediumTextStyle))),
+                      child: Text(
+                        "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
+                        style: largeTextStyle,
+                      ))),
               Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                  child: TaskTypeWidget(
-                      callback: (value) => setState(() {
-                            _currentCategory = value!;
-                            _isCreateButtonActive =
-                                newTaskController.text.isNotEmpty &&
-                                    _currentCategory >= 0;
-                          }))),
-              Visibility(
-                  visible: _currentCategory >= 0,
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 0),
-                      child: SizedBox(
-                          width: double.infinity,
-                          child: Text(
-                            "Reaching this goal will improve my ${_currentCategory >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}",
-                            style: mediumTextStyle,
-                          )))),
-              const SizedBox(height: 10),
-              Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                  child: Visibility(
-                      visible: _currentCategory >= 0,
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
+                  child: SizedBox(
+                      width: double.infinity,
                       child: TaskDifficultyWidget(
                           callback: (value) => _currentDifficulty = value!)))
             ]),
-            flex: 7),
+            flex: 5),
         Expanded(
             child: Padding(
                 padding:
@@ -102,10 +127,16 @@ class _CreateTaskState extends State<CreateTask> {
                               submit();
                             }
                           : null,
-                      child:
-                          const Text('Create', style: TextStyle(fontSize: 20)),
+                      child: Text('Create',
+                          style: _isCreateButtonActive
+                              ? largeTextStyle20.copyWith(color: Colors.white)
+                              : largeTextStyle20),
+                      style: ElevatedButton.styleFrom(
+                          primary: _isCreateButtonActive
+                              ? activeButtonColor
+                              : unselectedToggleColor),
                     ))),
-            flex: 1)
+            flex: 2),
       ]),
     );
   }
@@ -215,10 +246,11 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
       activeBgColor: const [selectedToggleColor],
       activeFgColor: Colors.white,
       inactiveBgColor: unselectedToggleColor,
-      inactiveFgColor: Colors.black,
+      inactiveFgColor: activeButtonColor,
       initialLabelIndex: _currentDifficulty,
-      dividerColor: const Color.fromARGB(255, 76, 80, 82),
+      dividerColor: selectedToggleColor,
       totalSwitches: 3,
+      cornerRadius: 5,
       labels: [
         Difficulty.EASY.name,
         Difficulty.MEDIUM.name,
