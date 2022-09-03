@@ -30,6 +30,8 @@ class Board extends StatefulWidget {
 }
 
 class BoardState extends State<Board> {
+  final _random = new Random();
+
   void _onReorder(int oldIndex, int newIndex) {
     setState(
       () {
@@ -67,19 +69,9 @@ class BoardState extends State<Board> {
                         await Provider.of<TasksState>(context, listen: false)
                             .deleteTask(widget.list[index]);
                       },
-                      child: Column(key: Key('$index'),
-                          children: [
-                            Card(
-                                child: Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: AssetImage("assets/test.png"),
-                                ),
-                              ),
-                              child: listItem(widget.list[index]),
-                            ))
-                          ]),
+                      child: Column(
+                          key: Key('$index'),
+                          children: [taskCard(widget.list[index])]),
                     );
                   },
                 ),
@@ -89,6 +81,27 @@ class BoardState extends State<Board> {
         ),
       ],
     ));
+  }
+
+  Card taskCard(Task task) {
+    if (task.status == Status.TODO) {
+      return Card(elevation: 8, child: listItem(task));
+    }
+    var background = task.status == Status.DOING
+        ? AssetImage("assets/doing" + ((_random.nextInt(2) + 1)).toString() + ".png")
+        : AssetImage(task.category.backgroundLink + ((_random.nextInt(2) + 1)).toString() + ".png");
+
+    return Card(
+        elevation: 8,
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: background,
+            ),
+          ),
+          child: listItem(task),
+        ));
   }
 
   Widget listItem(Task task) => task.hasSubtasks()

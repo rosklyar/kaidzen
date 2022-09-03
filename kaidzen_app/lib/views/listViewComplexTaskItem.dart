@@ -28,7 +28,7 @@ class ListViewComplexTaskItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExpansionTile(
-      tilePadding: EdgeInsets.only(right: 20),
+      tilePadding: EdgeInsets.only(right: 30),
       title: ListViewTaskItem(task: task),
       //tilePadding: const EdgeInsets.all(5),
       children: <Widget>[
@@ -56,8 +56,19 @@ List<Widget> buildExpandableContent(BuildContext context, Task task) {
 
   if (task.status == Status.TODO && task.parent == null) {
     columnContent.add(Container(
-      padding: const EdgeInsets.fromLTRB(25, 10, 5, 5),
+      padding: const EdgeInsets.fromLTRB(10, 10, 5, 5),
       child: ListTile(
+        horizontalTitleGap: 1,
+        leading: IconButton(
+          icon: Image.asset("assets/plus_in_circle.png"),
+          color: Theme.of(context).errorColor,
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CreateSubTask(parent: task)));
+          },
+        ),
         title: const Text('Add subtask',
             style: TextStyle(decoration: TextDecoration.underline)),
         onTap: () {

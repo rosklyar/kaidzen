@@ -19,7 +19,7 @@ class MoveTaskIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        icon: Icon(direction == Direction.FORWARD ? Icons.arrow_forward : Icons.arrow_back, color: black),
+        icon: direction == Direction.FORWARD ? Image.asset("assets/right_active.png") : Image.asset("assets/left_active.png"),
         color: Theme.of(context).errorColor,
         onPressed: () async {
           await moveTask(context, task);
