@@ -41,7 +41,7 @@ class SwitchableBoardState extends State<SwitchableBoard> {
         child: SingleChildScrollView(
             child: Stack(children: [
           Positioned(
-              child: Image.asset("assets/mountains.png",
+              child: Image.asset("assets/mountains_big.png",
                   width: MediaQuery.of(context).size.width),
               top: 0),
           Padding(

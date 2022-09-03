@@ -30,8 +30,7 @@ class ListViewTaskItem extends ListTile {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(Icons.circle_rounded,
-              color: task.category.color,
-              size: 10.0 + task.difficulty.id * 3),
+              color: task.category.color, size: 10.0 + task.difficulty.id * 3),
         ],
       ),
       title: Text(
@@ -48,38 +47,6 @@ class ListViewTaskItem extends ListTile {
     );
   }
 }
-
-ExpandablePanel taskWithSubtasks(Task task) {
-  debugPrint("ExpandablePanel: rebuild");
-  List<Task> subtasks = task.subtasks;
-  debugPrint("ExpandablePanel: $subtasks");
-  return ExpandablePanel(
-      header: ListViewTaskItem(task: task),
-      collapsed: const SizedBox.shrink(),
-      expanded: ReorderableListView(
-        padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
-        scrollController: ScrollController(),
-        onReorder: (int oldIndex, int newIndex) {},
-        children: List.generate(
-          subtasks.length,
-          (index) {
-            return Dismissible(
-              key: Key(subtasks[index].id.toString()),
-              // Show a red background as the item is swiped away.
-              background: Container(color: Colors.red),
-              child: Column(key: Key('$index'), children: [
-                Container(
-                  color: Color.fromARGB(255, 138, 192, 170),
-                  child: ListViewTaskItem(task: subtasks[index]),
-                ),
-                Container(padding: const EdgeInsets.all(5)),
-              ]),
-            );
-          },
-        ),
-      ));
-}
-
 class ListTileTrail extends StatelessWidget {
   const ListTileTrail({
     Key? key,

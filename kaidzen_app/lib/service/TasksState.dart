@@ -54,8 +54,8 @@ class TasksState extends ChangeNotifier {
     return tasks;
   }
 
-  Task getById(int id) {
-    return _tasksMap[id]!;
+  Task? getById(int id) {
+    return _tasksMap[id];
   }
 
   addTask(Task newTask) async {
