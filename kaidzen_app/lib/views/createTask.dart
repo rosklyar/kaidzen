@@ -96,6 +96,7 @@ class _CreateTaskState extends State<CreateTask> {
             flex: 4),
         Expanded(
             child: Column(children: [
+              const SizedBox(height: 10),
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: SizedBox(

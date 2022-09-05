@@ -214,6 +214,7 @@ class ProgressIndicator extends StatelessWidget {
             animation: true,
             barRadius: const Radius.circular(3.0),
             backgroundColor: const Color.fromRGBO(225, 218, 218, 1.0),
+            animationDuration: 1000,
             progressColor: progressColor,
           )
         ]));
