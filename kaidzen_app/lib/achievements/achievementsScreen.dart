@@ -23,7 +23,7 @@ class AchievementsScreen extends StatelessWidget {
             body: Column(children: [
               Expanded(
                   child: Padding(
-                      padding: const EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.only(top: 20),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -47,9 +47,9 @@ class AchievementsScreen extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 40),
                             child: Image.asset("assets/dragon.png")),
                         Padding(
-                            padding: const EdgeInsets.only(right: 40),
-                            child:
-                                getNewAchievementsComponent(achievementsState))
+                            padding: const EdgeInsets.only(right: 20),
+                            child: getNewAchievementsComponent(
+                                achievementsState, context))
                       ]),
                   flex: 2),
               Expanded(
@@ -81,7 +81,8 @@ class AchievementsScreen extends StatelessWidget {
             ])));
   }
 
-  Widget getNewAchievementsComponent(AchievementsState achievementsState) {
+  Widget getNewAchievementsComponent(
+      AchievementsState achievementsState, BuildContext context) {
     var completedAchievementsCount =
         achievementsState.getCompletedAchievementsCount();
     return completedAchievementsCount > 0
@@ -89,7 +90,7 @@ class AchievementsScreen extends StatelessWidget {
             Expanded(
                 child: Stack(children: [
                   SvgPicture.asset(
-                      "assets/achievements/new_origami_text_$completedAchievementsCount.svg")
+                      "assets/achievements/new_origami_text/new_origami_text_${completedAchievementsCount % 10}.svg")
                 ]),
                 flex: 2),
             const SizedBox(height: 10),
@@ -101,7 +102,22 @@ class AchievementsScreen extends StatelessWidget {
                 child: InkWell(
                     child: SvgPicture.asset(
                         "assets/achievements/origami_collect_button.svg"),
-                    onTap: null),
+                    onTap: () {
+                      AchievementSnapshot achievement =
+                          achievementsState.getCompletedAchievement();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AchievementDetailsScreen(
+                                  achievementSnapshot: achievement,
+                                  details: achievementsState
+                                      .getDetailsWidget(achievement.id))));
+                      if (achievement.status == AchievementStatus.completed) {
+                        achievementsState.updateAchievementSnapshot(
+                            AchievementSnapshot.updateStatus(achievement,
+                                AchievementStatus.completedAndShown));
+                      }
+                    }),
                 flex: 1)
           ])
         : const Text("Gain\nachievements\nby reaching\nyour goals",

@@ -96,6 +96,11 @@ class AchievementsState extends ChangeNotifier {
     return _snaphots.values.toList();
   }
 
+  AchievementSnapshot getCompletedAchievement() {
+    return _snaphots.values
+        .firstWhere((s) => s.status == AchievementStatus.completed);
+  }
+
   int getCompletedAchievementsCount() {
     return _snaphots.values
         .where((s) => s.status == AchievementStatus.completed)
