@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:kaidzen_app/models/insparation.dart';
+import 'package:kaidzen_app/views/listViewTaskItem.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 import '../achievements/AchievementsState.dart';
@@ -26,6 +30,29 @@ class _CreateTaskState extends State<CreateTask> {
   int _currentCategory = -1;
   int _currentDifficulty = 0;
   bool _isCreateButtonActive = false;
+  late Future<List<Inspiration>>? _inspirationsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _inspirationsFuture = getInspirations(context);
+    newTaskController = TextEditingController();
+    newTaskController.addListener(() {
+      final _isCreateButtonActive =
+          newTaskController.text.isNotEmpty && _currentCategory >= 0;
+      setState(() {
+        this._isCreateButtonActive = _isCreateButtonActive;
+      });
+    });
+  }
+
+  static Future<List<Inspiration>> getInspirations(BuildContext context) async {
+    final assetBundle = DefaultAssetBundle.of(context);
+    final data =
+        await assetBundle.loadString('assets/inspiration/inspirations.json');
+    final body = json.decode(data);
+    return body.map<Inspiration>((json) => Inspiration.fromJson(json)).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,24 +122,12 @@ class _CreateTaskState extends State<CreateTask> {
                         }))),
             flex: 4),
         Expanded(
-            child: Column(children: [
-              const SizedBox(height: 10),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
-                        style: largeTextStyle,
-                      ))),
-              Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
-                  child: SizedBox(
-                      width: double.infinity,
-                      child: TaskDifficultyWidget(
-                          callback: (value) => _currentDifficulty = value!)))
-            ]),
-            flex: 5),
+            child: FutureBuilder<List<Inspiration>>(
+                future: _inspirationsFuture,
+                builder: (ctx, snapshot) {
+                  return getParameters(snapshot.hasData ? snapshot.data! : []);
+                }),
+            flex: 7),
         Expanded(
             child: Padding(
                 padding:
@@ -142,6 +157,55 @@ class _CreateTaskState extends State<CreateTask> {
     );
   }
 
+  Stack getParameters(List<Inspiration> inspirations) {
+    return Stack(children: [
+      Visibility(
+          visible: newTaskController.text.isNotEmpty,
+          child: Column(children: [
+            const SizedBox(height: 10),
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
+                      style: largeTextStyle,
+                    ))),
+            Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
+                child: SizedBox(
+                    width: double.infinity,
+                    child: TaskDifficultyWidget(
+                        callback: (value) => _currentDifficulty = value!)))
+          ])),
+      Visibility(
+          visible: newTaskController.text.isEmpty,
+          child: ListView.builder(
+              itemCount: inspirations.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(Icons.circle_rounded,
+                          color: inspirations[index].category.color,
+                          size: 10.0 + inspirations[index].difficulty.id * 3),
+                    ],
+                  ),
+                  title: Text(
+                    inspirations[index].title,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 15.0),
+                  ),
+                  subtitle:
+                      Text('For ' + inspirations[index].category.nameLowercase),
+                  onTap: () {},
+                  selected: false,
+                );
+              }))
+    ]);
+  }
+
   void submit() {
     var category = activeCategories
         .firstWhere((element) => element.id == _currentCategory);
@@ -160,19 +224,6 @@ class _CreateTaskState extends State<CreateTask> {
   void dispose() {
     newTaskController.dispose();
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    newTaskController = TextEditingController();
-    newTaskController.addListener(() {
-      final _isCreateButtonActive =
-          newTaskController.text.isNotEmpty && _currentCategory >= 0;
-      setState(() {
-        this._isCreateButtonActive = _isCreateButtonActive;
-      });
-    });
   }
 }
 

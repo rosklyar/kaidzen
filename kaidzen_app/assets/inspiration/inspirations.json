@@ -1,0 +1,52 @@
+[
+    {
+        "title": "Read a book",
+        "category": "Mind",
+        "size": 0
+    },
+    {
+        "title": "Learn foreign language",
+        "category": "Mind",
+        "size": 2
+    },
+    {
+        "title": "Go outside",
+        "category": "Health",
+        "size": 0
+    },
+    {
+        "title": "Work out",
+        "category": "Health",
+        "size": 1
+    },
+    {
+        "title": "Meditate",
+        "category": "Energy",
+        "size": 0
+    },
+    {
+        "title": "Try one new home cooked meal",
+        "category": "Energy",
+        "size": 0
+    },
+    {
+        "title": "Find a career that you love",
+        "category": "Wealth",
+        "size": 2
+    },
+    {
+        "title": "Read book on presonal finance",
+        "category": "Wealth",
+        "size": 0
+    },
+    {
+        "title": "Go on a trip with your best friends",
+        "category": "Relations",
+        "size": 1
+    },
+    {
+        "title": "Call parents",
+        "category": "Relations",
+        "size": 0
+    }
+]
