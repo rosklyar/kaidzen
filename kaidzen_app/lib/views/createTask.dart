@@ -59,75 +59,133 @@ class _CreateTaskState extends State<CreateTask> {
     return Scaffold(
       body: Column(children: [
         Expanded(
-            child: Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Row(children: [
-                  Expanded(
-                      child: IconButton(
-                        icon: SvgPicture.asset("assets/shevron-left-black.svg"),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      flex: 1),
-                  const Expanded(
-                      child: Center(
-                          child: Text(
-                        "Goal",
-                        style: screenTytleTextStyle,
-                      )),
-                      flex: 9),
-                  const Expanded(child: SizedBox(), flex: 1)
-                ])),
-            flex: 3),
-        Expanded(
-            child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: TextField(
-                  autofocus: true,
-                  decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                          onPressed: newTaskController.clear,
-                          icon: Visibility(
+            child: Stack(fit: StackFit.expand, children: [
+              Column(children: [
+                Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Row(children: [
+                          Expanded(
+                              child: IconButton(
+                                icon: SvgPicture.asset(
+                                    "assets/shevron-left-black.svg"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              flex: 1),
+                          const Expanded(
+                              child: Center(
+                                  child: Text(
+                                "Goal",
+                                style: screenTytleTextStyle,
+                              )),
+                              flex: 9),
+                          const Expanded(child: SizedBox(), flex: 1)
+                        ])),
+                    flex: 3),
+                Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        child: TextField(
+                          autofocus: true,
+                          decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                  onPressed: newTaskController.clear,
+                                  icon: Visibility(
+                                      visible:
+                                          newTaskController.text.isNotEmpty,
+                                      child: SvgPicture.asset(
+                                          "assets/close-grey.svg"))),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: const BorderSide(
+                                      color: inputInactiveBorderColor)),
+                              hintText: 'Goal title',
+                              hintStyle: inputHintTextStyle),
+                          controller: newTaskController,
+                        )),
+                    flex: 3),
+                const Expanded(
+                    child: Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: SizedBox(
+                            width: double.infinity,
+                            child: Text("Life sphere to be affected",
+                                textAlign: TextAlign.left,
+                                style: largeTextStyle))),
+                    flex: 1),
+                Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: TaskTypeWidget(
+                            callback: (value) => setState(() {
+                                  _currentCategory = value!;
+                                  _isCreateButtonActive =
+                                      newTaskController.text.isNotEmpty &&
+                                          _currentCategory >= 0;
+                                }))),
+                    flex: 4),
+                Expanded(
+                    child: FutureBuilder<List<Inspiration>>(
+                        future: _inspirationsFuture,
+                        builder: (ctx, snapshot) {
+                          return Visibility(
                               visible: newTaskController.text.isNotEmpty,
-                              child:
-                                  SvgPicture.asset("assets/close-grey.svg"))),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: const BorderSide(
-                              color: inputInactiveBorderColor)),
-                      hintText: 'Goal title',
-                      hintStyle: inputHintTextStyle),
-                  controller: newTaskController,
-                )),
-            flex: 3),
-        const Expanded(
-            child: Padding(
-                padding: EdgeInsets.only(left: 10),
-                child: SizedBox(
-                    width: double.infinity,
-                    child: Text("Life sphere to be affected",
-                        textAlign: TextAlign.left, style: largeTextStyle))),
-            flex: 1),
-        Expanded(
-            child: Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: TaskTypeWidget(
-                    callback: (value) => setState(() {
-                          _currentCategory = value!;
-                          _isCreateButtonActive =
-                              newTaskController.text.isNotEmpty &&
-                                  _currentCategory >= 0;
-                        }))),
-            flex: 4),
-        Expanded(
-            child: FutureBuilder<List<Inspiration>>(
-                future: _inspirationsFuture,
-                builder: (ctx, snapshot) {
-                  return getParameters(snapshot.hasData ? snapshot.data! : []);
-                }),
-            flex: 7),
+                              child: getDiff());
+                        }),
+                    flex: 7),
+              ]),
+              Visibility(
+                  visible: newTaskController.text.isEmpty,
+                  child: DraggableScrollableSheet(
+                      initialChildSize: 0.4,
+                      minChildSize: 0.1,
+                      maxChildSize: 1.0,
+                      builder: (context, scrollController) {
+                        return FutureBuilder<List<Inspiration>>(
+                            future: _inspirationsFuture,
+                            builder: (ctx, snapshot) {
+                              final inspirations =
+                                  snapshot.hasData ? snapshot.data! : [];
+                              return ListView.builder(
+                                  itemCount: inspirations.length,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      leading: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Icon(Icons.circle_rounded,
+                                              color: inspirations[index]
+                                                  .category
+                                                  .color,
+                                              size: 10.0 +
+                                                  inspirations[index]
+                                                          .difficulty
+                                                          .id *
+                                                      3),
+                                        ],
+                                      ),
+                                      title: Text(
+                                        inspirations[index].title,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15.0),
+                                      ),
+                                      subtitle: Text('For ' +
+                                          inspirations[index]
+                                              .category
+                                              .nameLowercase),
+                                      onTap: () {},
+                                      selected: false,
+                                    );
+                                  });
+                            });
+                      }))
+            ]),
+            flex: 9),
         Expanded(
             child: Padding(
                 padding:
@@ -152,57 +210,28 @@ class _CreateTaskState extends State<CreateTask> {
                               ? activeButtonColor
                               : unselectedToggleColor),
                     ))),
-            flex: 2),
+            flex: 1)
       ]),
     );
   }
 
-  Stack getParameters(List<Inspiration> inspirations) {
-    return Stack(children: [
-      Visibility(
-          visible: newTaskController.text.isNotEmpty,
-          child: Column(children: [
-            const SizedBox(height: 10),
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: SizedBox(
-                    width: double.infinity,
-                    child: Text(
-                      "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
-                      style: largeTextStyle,
-                    ))),
-            Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
-                child: SizedBox(
-                    width: double.infinity,
-                    child: TaskDifficultyWidget(
-                        callback: (value) => _currentDifficulty = value!)))
-          ])),
-      Visibility(
-          visible: newTaskController.text.isEmpty,
-          child: ListView.builder(
-              itemCount: inspirations.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(Icons.circle_rounded,
-                          color: inspirations[index].category.color,
-                          size: 10.0 + inspirations[index].difficulty.id * 3),
-                    ],
-                  ),
-                  title: Text(
-                    inspirations[index].title,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 15.0),
-                  ),
-                  subtitle:
-                      Text('For ' + inspirations[index].category.nameLowercase),
-                  onTap: () {},
-                  selected: false,
-                );
-              }))
+  Widget getDiff() {
+    return Column(children: [
+      const SizedBox(height: 10),
+      Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: SizedBox(
+              width: double.infinity,
+              child: Text(
+                "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
+                style: largeTextStyle,
+              ))),
+      Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
+          child: SizedBox(
+              width: double.infinity,
+              child: TaskDifficultyWidget(
+                  callback: (value) => _currentDifficulty = value!)))
     ]);
   }
 
