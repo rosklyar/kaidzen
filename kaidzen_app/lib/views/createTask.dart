@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/models/insparation.dart';
 import 'package:kaidzen_app/views/listViewTaskItem.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 import '../achievements/AchievementsState.dart';
@@ -31,6 +32,9 @@ class _CreateTaskState extends State<CreateTask> {
   int _currentDifficulty = 0;
   bool _isCreateButtonActive = false;
   late Future<List<Inspiration>>? _inspirationsFuture;
+  final GlobalKey<_TaskTypeWidgetState> _taskTypeWidgetKey = GlobalKey();
+  final GlobalKey<_TaskDifficultyWidgetState> _taskDifficultyWidgetKey =
+      GlobalKey();
 
   @override
   void initState() {
@@ -92,7 +96,11 @@ class _CreateTaskState extends State<CreateTask> {
                           autofocus: true,
                           decoration: InputDecoration(
                               suffixIcon: IconButton(
-                                  onPressed: newTaskController.clear,
+                                  onPressed: () {
+                                    newTaskController.clear();
+                                    _taskTypeWidgetKey.currentState!._value =
+                                        -1;
+                                  },
                                   icon: Visibility(
                                       visible:
                                           newTaskController.text.isNotEmpty,
@@ -120,70 +128,24 @@ class _CreateTaskState extends State<CreateTask> {
                     child: Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
                         child: TaskTypeWidget(
+                            key: _taskTypeWidgetKey,
                             callback: (value) => setState(() {
                                   _currentCategory = value!;
                                   _isCreateButtonActive =
-                                      newTaskController.text.isNotEmpty &&
-                                          _currentCategory >= 0;
+                                      newTaskController.text.isNotEmpty;
                                 }))),
                     flex: 4),
                 Expanded(
-                    child: FutureBuilder<List<Inspiration>>(
-                        future: _inspirationsFuture,
-                        builder: (ctx, snapshot) {
-                          return Visibility(
-                              visible: newTaskController.text.isNotEmpty,
-                              child: getDiff());
-                        }),
+                    child: Visibility(
+                        visible: newTaskController.text.isNotEmpty,
+                        child: getDiff()),
                     flex: 7),
               ]),
               Visibility(
                   visible: newTaskController.text.isEmpty,
-                  child: DraggableScrollableSheet(
-                      initialChildSize: 0.4,
-                      minChildSize: 0.1,
-                      maxChildSize: 1.0,
-                      builder: (context, scrollController) {
-                        return FutureBuilder<List<Inspiration>>(
-                            future: _inspirationsFuture,
-                            builder: (ctx, snapshot) {
-                              final inspirations =
-                                  snapshot.hasData ? snapshot.data! : [];
-                              return ListView.builder(
-                                  itemCount: inspirations.length,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      leading: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(Icons.circle_rounded,
-                                              color: inspirations[index]
-                                                  .category
-                                                  .color,
-                                              size: 10.0 +
-                                                  inspirations[index]
-                                                          .difficulty
-                                                          .id *
-                                                      3),
-                                        ],
-                                      ),
-                                      title: Text(
-                                        inspirations[index].title,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15.0),
-                                      ),
-                                      subtitle: Text('For ' +
-                                          inspirations[index]
-                                              .category
-                                              .nameLowercase),
-                                      onTap: () {},
-                                      selected: false,
-                                    );
-                                  });
-                            });
-                      }))
+                  child: SlidingUpPanel(
+                      minHeight: MediaQuery.of(context).size.height * 0.25,
+                      panelBuilder: (sc) => inspirationsWidget(context)))
             ]),
             flex: 9),
         Expanded(
@@ -215,6 +177,54 @@ class _CreateTaskState extends State<CreateTask> {
     );
   }
 
+  Widget inspirationsWidget(BuildContext context) {
+    return FutureBuilder<List<Inspiration>>(
+        future: _inspirationsFuture,
+        builder: (ctx, snapshot) {
+          final inspirations = snapshot.hasData ? snapshot.data! : [];
+          return Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: ListView.separated(
+                  separatorBuilder: (context, index) {
+                    return const Divider();
+                  },
+                  itemCount: inspirations.length,
+                  itemBuilder: (context, index) {
+                    return SizedBox(
+                        height: 30,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(children: [
+                                Icon(Icons.circle_rounded,
+                                    color: inspirations[index].category.color,
+                                    size: 10.0),
+                                const SizedBox(width: 5),
+                                Text(
+                                  inspirations[index].title,
+                                  style: mediumTextStyle,
+                                  textAlign: TextAlign.left,
+                                )
+                              ]),
+                              IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      newTaskController.text =
+                                          inspirations[index].title;
+                                      _taskTypeWidgetKey.currentState!._value =
+                                          inspirations[index].category.id;
+                                      _taskDifficultyWidgetKey.currentState!
+                                              ._currentDifficulty =
+                                          inspirations[index].difficulty;
+                                    });
+                                  },
+                                  icon: SvgPicture.asset(
+                                      "assets/shevron-right-black.svg"))
+                            ]));
+                  }));
+        });
+  }
+
   Widget getDiff() {
     return Column(children: [
       const SizedBox(height: 10),
@@ -231,6 +241,7 @@ class _CreateTaskState extends State<CreateTask> {
           child: SizedBox(
               width: double.infinity,
               child: TaskDifficultyWidget(
+                  key: _taskDifficultyWidgetKey,
                   callback: (value) => _currentDifficulty = value!)))
     ]);
   }
