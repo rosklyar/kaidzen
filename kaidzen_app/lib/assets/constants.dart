@@ -12,7 +12,7 @@ enum DevelopmentCategory {
   ENERGY(2, "Energy", "energy", Color.fromRGBO(242, 202, 0, 1.0)),
   RELATIONS(3, "Relations", "relations", Color.fromRGBO(234, 125, 98, 1.0)),
   WEALTH(4, "Wealth", "wealth", Color.fromRGBO(138, 94, 176, 1.0)),
-  NO_CATEGORY(-1, "No category", "no_category", Colors.white);
+  NO_CATEGORY(-1, "No category", "", Colors.white);
 
   const DevelopmentCategory(this.id, this.name, this.nameLowercase, this.color);
   final int id;

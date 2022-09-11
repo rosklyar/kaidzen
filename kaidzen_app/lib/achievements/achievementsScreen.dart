@@ -37,17 +37,25 @@ class AchievementsScreen extends StatelessWidget {
                           ])),
                   flex: 1),
               Expanded(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                            padding: const EdgeInsets.only(left: 40),
-                            child: Image.asset("assets/dragon.png")),
-                        Padding(
-                            padding: const EdgeInsets.only(right: 20),
-                            child: getNewAchievementsComponent(
-                                achievementsState, context))
-                      ]),
+                  child: Stack(children: [
+                    Positioned(
+                        bottom: 0,
+                        child: SvgPicture.asset(
+                            "assets/achievements/dotted_line_ach.svg")),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(children: [
+                            const SizedBox(width: 20),
+                            Image.asset("assets/dragon.png")
+                          ]),
+                          Row(children: [
+                            getNewAchievementsComponent(
+                                achievementsState, context),
+                            const SizedBox(width: 20)
+                          ])
+                        ])
+                  ]),
                   flex: 2),
               Expanded(
                   child: GridView.count(

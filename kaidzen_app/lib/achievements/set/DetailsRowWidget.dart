@@ -21,31 +21,36 @@ class DetailsRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      LinearProgressIndicator(
-          value: progress,
-          valueColor: AlwaysStoppedAnimation<Color>(progressColor),
-          backgroundColor: achievementDetailsBackgroundProgressColor),
-      Row(
-        children: [
-          Expanded(
-              child: Text(leadingText,
-                  style: achievementsDetailsLeadingTextStyle,
-                  textAlign: TextAlign.left),
-              flex: 1),
-          Expanded(
-              child: Text(centerText,
-                  style: achievementsDetailsCenterTextStyle,
-                  textAlign: TextAlign.center),
-              flex: 1),
-          Expanded(
-              child: Text(trailingText ?? "",
-                  style: TextStyle(color: trailingColor ?? Colors.white),
-                  textAlign: TextAlign.right),
-              flex: 1),
-        ],
-      )
-    ]);
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Column(children: [
+          ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              child: LinearProgressIndicator(
+                  value: progress,
+                  valueColor: AlwaysStoppedAnimation<Color>(progressColor),
+                  backgroundColor: achievementDetailsBackgroundProgressColor)),
+          const SizedBox(height: 5),
+          Row(
+            children: [
+              Expanded(
+                  child: Text(leadingText,
+                      style: achievementsDetailsLeadingTextStyle,
+                      textAlign: TextAlign.left),
+                  flex: 1),
+              Expanded(
+                  child: Text(centerText,
+                      style: achievementsDetailsCenterTextStyle,
+                      textAlign: TextAlign.center),
+                  flex: 1),
+              Expanded(
+                  child: Text(trailingText ?? "",
+                      style: TextStyle(color: trailingColor ?? Colors.white),
+                      textAlign: TextAlign.right),
+                  flex: 1),
+            ],
+          )
+        ]));
   }
 
   static TextStyle achievementsDetailsLeadingTextStyle = const TextStyle(

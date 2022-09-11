@@ -16,60 +16,67 @@ class AchievementDetailsScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: achievementScreenBackgroundColor,
         body: Column(children: [
-          Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Row(children: [
-                IconButton(
-                  icon: Image.asset("assets/shevron-left.png"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                IconButton(
-                  icon: Image.asset("assets/close_icon.png"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                )
-              ], mainAxisAlignment: MainAxisAlignment.spaceBetween)),
           Expanded(
-              child: Center(
-                  child: Stack(children: [
-                achievementSnapshot.status != AchievementStatus.notCompleted
-                    ? SvgPicture.asset(
-                        width: double.infinity,
-                        height: double.infinity,
-                        "assets/achievements/${EggWidget.getSubFolder(achievementSnapshot.isSecret)}/completed_egg.svg")
-                    : EggWidget.getEggCrack(achievementSnapshot),
-                EggWidget.getProgress(
-                    achievementSnapshot.progress, achievementSnapshot.isSecret),
-                Visibility(
-                    visible: achievementSnapshot.status !=
-                        AchievementStatus.notCompleted,
-                    child: SvgPicture.asset(
-                        width: double.infinity,
-                        height: double.infinity,
-                        "assets/achievements/sets/${achievementSnapshot.setId}/${achievementSnapshot.iconName}"))
-              ])),
+              child: Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Row(children: [
+                    IconButton(
+                      icon: Image.asset("assets/shevron-left.png"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    IconButton(
+                      icon: Image.asset("assets/close_icon.png"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ], mainAxisAlignment: MainAxisAlignment.spaceBetween)),
               flex: 1),
           Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: Center(
+                      child: Stack(children: [
+                    achievementSnapshot.status != AchievementStatus.notCompleted
+                        ? SvgPicture.asset(
+                            width: double.infinity,
+                            height: double.infinity,
+                            "assets/achievements/${EggWidget.getSubFolder(achievementSnapshot.isSecret)}/completed_egg.svg")
+                        : EggWidget.getEggCrack(achievementSnapshot),
+                    EggWidget.getProgress(achievementSnapshot.progress,
+                        achievementSnapshot.isSecret),
+                    Visibility(
+                        visible: achievementSnapshot.status !=
+                            AchievementStatus.notCompleted,
+                        child: SvgPicture.asset(
+                            width: double.infinity,
+                            height: double.infinity,
+                            "assets/achievements/sets/${achievementSnapshot.setId}/${achievementSnapshot.iconName}"))
+                  ]))),
+              flex: 4),
+          Expanded(
               child: Column(children: [
-                Padding(
-                    padding: const EdgeInsets.only(top: 25, bottom: 25),
-                    child: Text(achievementSnapshot.title,
-                        style: achievementsAppBarTextStyle)),
-                Visibility(
-                    visible: !achievementSnapshot.isSecret,
-                    child: Text(achievementSnapshot.description,
-                        style: achievementsDescriptionTextStyle)),
-                Padding(
-                    padding: const EdgeInsets.only(top: 10),
+                Expanded(
+                    child: Center(
+                        child: Text(achievementSnapshot.title,
+                            style: achievementsAppBarTextStyle)),
+                    flex: 1),
+                Expanded(
+                    child: Visibility(
+                        visible: !achievementSnapshot.isSecret,
+                        child: Text(achievementSnapshot.description,
+                            style: achievementsDescriptionTextStyle)),
+                    flex: 1),
+                Expanded(
                     child: achievementSnapshot.status ==
                             AchievementStatus.notCompleted
                         ? details
-                        : Container())
+                        : Container(),
+                    flex: 6)
               ]),
-              flex: 1),
+              flex: 6),
         ]));
   }
 }

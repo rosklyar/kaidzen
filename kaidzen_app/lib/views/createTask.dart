@@ -206,8 +206,12 @@ class _CreateTaskState extends State<CreateTask> {
                                           inspirations[index].title;
                                       _taskTypeWidgetKey.currentState!._value =
                                           inspirations[index].category.id;
+                                      _currentCategory =
+                                          inspirations[index].category.id;
                                       _taskDifficultyWidgetKey.currentState!
                                               ._currentDifficulty =
+                                          inspirations[index].difficulty;
+                                      _currentDifficulty =
                                           inspirations[index].difficulty;
                                     });
                                   },
@@ -240,7 +244,7 @@ class _CreateTaskState extends State<CreateTask> {
   }
 
   void submit() {
-    var category = activeCategories
+    var category = DevelopmentCategory.values
         .firstWhere((element) => element.id == _currentCategory);
     Provider.of<TasksState>(context, listen: false).addTask(Task(
         newTaskController.text,

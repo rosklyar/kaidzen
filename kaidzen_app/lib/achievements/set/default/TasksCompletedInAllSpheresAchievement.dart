@@ -35,15 +35,17 @@ class TaskCompletedInAllSpheresAchievement extends Achievement {
 
     return Column(
         children: activeCategories.map((e) {
-      return DetailsRowWidget(
-          progress: completedTasks[e.id] / numberOfTasks,
-          progressColor: achievementDetailsActiveProgressColor,
-          leadingText: e.name,
-          centerText: completedTasks[e.id] > 0
-              ? completedTasks[e.id] >= numberOfTasks
-                  ? "Completed"
-                  : "${numberOfTasks - completedTasks[e.id]} goals ahead"
-              : "No goals so far");
+      return Expanded(
+          child: DetailsRowWidget(
+              progress: completedTasks[e.id] / numberOfTasks,
+              progressColor: achievementDetailsActiveProgressColor,
+              leadingText: e.name,
+              centerText: completedTasks[e.id] > 0
+                  ? completedTasks[e.id] >= numberOfTasks
+                      ? "Completed"
+                      : "${numberOfTasks - completedTasks[e.id]} goals ahead"
+                  : "No goals so far"),
+          flex: 1);
     }).toList());
   }
 }

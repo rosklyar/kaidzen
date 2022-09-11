@@ -38,18 +38,21 @@ class TaskCompletedInSomeSphereAchievement extends Achievement {
 
     return Column(
         children: activeCategories.map((e) {
-      return DetailsRowWidget(
-          progress: completedTasks[e.id] / numberOfTasks,
-          progressColor: e.id == maxIndex
-              ? achievementDetailsActiveProgressColor
-              : achievementDetailsNotActiveProgressColor,
-          leadingText: e.name,
-          centerText: completedTasks[e.id] > 0
-              ? "${numberOfTasks - completedTasks[e.id]} goals ahead"
-              : "No goals so far",
-          trailingText: e.id == maxIndex ? "Top sphere" : null,
-          trailingColor:
-              e.id == maxIndex ? const Color.fromRGBO(192, 216, 39, 1) : null);
+      return Expanded(
+          child: DetailsRowWidget(
+              progress: completedTasks[e.id] / numberOfTasks,
+              progressColor: e.id == maxIndex
+                  ? achievementDetailsActiveProgressColor
+                  : achievementDetailsNotActiveProgressColor,
+              leadingText: e.name,
+              centerText: completedTasks[e.id] > 0
+                  ? "${numberOfTasks - completedTasks[e.id]} goals ahead"
+                  : "No goals so far",
+              trailingText: e.id == maxIndex ? "Top sphere" : null,
+              trailingColor: e.id == maxIndex
+                  ? const Color.fromRGBO(192, 216, 39, 1)
+                  : null),
+          flex: 1);
     }).toList());
   }
 }
