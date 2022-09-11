@@ -14,11 +14,13 @@ enum DevelopmentCategory {
   WEALTH(4, "Wealth", "wealth", Color.fromRGBO(138, 94, 176, 1.0)),
   NO_CATEGORY(-1, "No category", "", Colors.white);
 
-  const DevelopmentCategory(this.id, this.name, this.nameLowercase, this.color);
+  const DevelopmentCategory(this.id, this.name, this.nameLowercase, this.color, this.backgroundLink, this.backgroundColor);
   final int id;
   final String name;
   final String nameLowercase;
   final Color color;
+  final String backgroundLink;
+  final int backgroundColor;
 }
 
 const List<DevelopmentCategory> activeCategories = [
@@ -30,13 +32,14 @@ const List<DevelopmentCategory> activeCategories = [
 ];
 
 enum Difficulty {
-  EASY(0, "A little"),
-  MEDIUM(1, "Average"),
-  HARD(2, "Hugely");
+  EASY(0, "A little", "Little"),
+  MEDIUM(1, "Average", "Avarage"),
+  HARD(2, "Hugely", "Huge");
 
-  const Difficulty(this.id, this.name);
+  const Difficulty(this.id, this.name, this.noun);
   final int id;
   final String name;
+  final String noun;
 }
 
 const selectedToggleColor = Color.fromRGBO(86, 92, 95, 1);

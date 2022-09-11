@@ -57,6 +57,9 @@ class ProfilePanelState extends State<ProfilePanel> {
                                 ],
                               ),
                             )),
+                            Padding(
+                              padding: EdgeInsets.only(left: 30, top: 6),
+                              child: Image.asset("assets/dragon.png", width: 100)) 
                       ]),
                       flex: 4),
                   Expanded(
