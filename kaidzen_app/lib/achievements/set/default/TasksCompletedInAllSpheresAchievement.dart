@@ -1,13 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'package:kaidzen_app/achievements/event.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 
 import '../../achievement.dart';
 import '../../style.dart';
+import '../DetailsRowWidget.dart';
 
 class TaskCompletedInAllSpheresAchievement extends Achievement {
   final int numberOfTasks;
@@ -29,40 +28,22 @@ class TaskCompletedInAllSpheresAchievement extends Achievement {
 
   @override
   Future<Widget> get detailsWidget async {
-    return Center(
-        child: Column(children: [
-      getDetailsRow(
-          await eventsRepository.getEventsCountByCategory(
-              EventType.taskCompleted, DevelopmentCategory.MIND.id),
-          numberOfTasks,
-          DevelopmentCategory.MIND),
-      getDetailsRow(
-          await eventsRepository.getEventsCountByCategory(
-              EventType.taskCompleted, DevelopmentCategory.HEALTH.id),
-          numberOfTasks,
-          DevelopmentCategory.HEALTH),
-      getDetailsRow(
-          await eventsRepository.getEventsCountByCategory(
-              EventType.taskCompleted, DevelopmentCategory.RELATIONS.id),
-          numberOfTasks,
-          DevelopmentCategory.RELATIONS),
-      getDetailsRow(
-          await eventsRepository.getEventsCountByCategory(
-              EventType.taskCompleted, DevelopmentCategory.ENERGY.id),
-          numberOfTasks,
-          DevelopmentCategory.ENERGY),
-      getDetailsRow(
-          await eventsRepository.getEventsCountByCategory(
-              EventType.taskCompleted, DevelopmentCategory.WEALTH.id),
-          numberOfTasks,
-          DevelopmentCategory.WEALTH)
-    ]));
-  }
+    final completedTasks = await Future.wait(activeCategories.map((e) async {
+      return eventsRepository.getEventsCountByCategory(
+          EventType.taskCompleted, e.id);
+    }).toList());
 
-  Text getDetailsRow(int completed, int needed, DevelopmentCategory category) {
-    return Text("$completed / $needed for ${category.name}",
-        style: completed >= needed
-            ? achievementsDetailsAchievedTextStyle
-            : achievementsDetailsTextStyle);
+    return Column(
+        children: activeCategories.map((e) {
+      return DetailsRowWidget(
+          progress: completedTasks[e.id] / numberOfTasks,
+          progressColor: achievementDetailsActiveProgressColor,
+          leadingText: e.name,
+          centerText: completedTasks[e.id] > 0
+              ? completedTasks[e.id] >= numberOfTasks
+                  ? "Completed"
+                  : "${numberOfTasks - completedTasks[e.id]} goals ahead"
+              : "No goals so far");
+    }).toList());
   }
 }

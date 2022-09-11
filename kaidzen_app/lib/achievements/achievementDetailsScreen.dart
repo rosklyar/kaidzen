@@ -3,9 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'package:kaidzen_app/achievements/eggWidget.dart';
 import 'package:kaidzen_app/achievements/style.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-
-import '../assets/constants.dart';
 
 class AchievementDetailsScreen extends StatelessWidget {
   final AchievementSnapshot achievementSnapshot;
@@ -42,21 +39,17 @@ class AchievementDetailsScreen extends StatelessWidget {
                     ? SvgPicture.asset(
                         width: double.infinity,
                         height: double.infinity,
-                        "assets/achievements/completed_egg.svg")
-                    : SvgPicture.asset(
+                        "assets/achievements/${EggWidget.getSubFolder(achievementSnapshot.isSecret)}/completed_egg.svg")
+                    : EggWidget.getEggCrack(achievementSnapshot),
+                EggWidget.getProgress(
+                    achievementSnapshot.progress, achievementSnapshot.isSecret),
+                Visibility(
+                    visible: achievementSnapshot.status !=
+                        AchievementStatus.notCompleted,
+                    child: SvgPicture.asset(
                         width: double.infinity,
                         height: double.infinity,
-                        "assets/achievements/egg.svg"),
-                EggWidget.getProgress(achievementSnapshot.progress),
-                achievementSnapshot.status != AchievementStatus.notCompleted
-                    ? SvgPicture.asset(
-                        width: double.infinity,
-                        height: double.infinity,
-                        "assets/achievements/sets/${achievementSnapshot.setId}/${achievementSnapshot.iconName}")
-                    : SvgPicture.asset(
-                        width: double.infinity,
-                        height: double.infinity,
-                        "assets/achievements/origami_grey_placeholder.svg")
+                        "assets/achievements/sets/${achievementSnapshot.setId}/${achievementSnapshot.iconName}"))
               ])),
               flex: 1),
           Expanded(
@@ -69,7 +62,12 @@ class AchievementDetailsScreen extends StatelessWidget {
                     visible: !achievementSnapshot.isSecret,
                     child: Text(achievementSnapshot.description,
                         style: achievementsDescriptionTextStyle)),
-                Padding(padding: const EdgeInsets.only(top: 10), child: details)
+                Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: achievementSnapshot.status ==
+                            AchievementStatus.notCompleted
+                        ? details
+                        : Container())
               ]),
               flex: 1),
         ]));

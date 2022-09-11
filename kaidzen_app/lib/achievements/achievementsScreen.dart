@@ -6,10 +6,7 @@ import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/achievements/achievementDetailsScreen.dart';
 import 'package:kaidzen_app/achievements/eggWidget.dart';
 import 'package:kaidzen_app/achievements/style.dart';
-import 'package:kaidzen_app/assets/constants.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
-import 'dart:math';
 import 'achievementSnaphot.dart';
 
 class AchievementsScreen extends StatelessWidget {
@@ -61,12 +58,9 @@ class AchievementsScreen extends StatelessWidget {
                       return Column(
                         children: [
                           Expanded(
-                              child: achievement.isSecret
-                                  ? buildSecretEgg(
-                                      achievement, context, achievementsState)
-                                  : EggWidget(
-                                      achievement: achievement,
-                                      achievementsState: achievementsState),
+                              child: EggWidget(
+                                  achievement: achievement,
+                                  achievementsState: achievementsState),
                               flex: 10),
                           const Expanded(child: SizedBox(), flex: 1),
                           Expanded(
@@ -123,35 +117,5 @@ class AchievementsScreen extends StatelessWidget {
         : const Text("Gain\nachievements\nby reaching\nyour goals",
             style: achievementsDescriptionTextStyle,
             textAlign: TextAlign.center);
-  }
-
-  Widget buildSecretEgg(AchievementSnapshot achievement, BuildContext context,
-      AchievementsState achievementsState) {
-    if (achievement.status == AchievementStatus.completedAndShown) {
-      return EggWidget(
-          achievement: achievement, achievementsState: achievementsState);
-    } else if (achievement.status == AchievementStatus.notCompleted) {
-      return SvgPicture.asset(
-          "assets/achievements/secret/hidden_not_completed.svg");
-    } else if (achievement.status == AchievementStatus.completed) {
-      return InkWell(
-          child: SvgPicture.asset(
-              "assets/achievements/secret/hidden_completed.svg"),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => AchievementDetailsScreen(
-                        achievementSnapshot: achievement,
-                        details: achievementsState
-                            .getDetailsWidget(achievement.id))));
-            if (achievement.status == AchievementStatus.completed) {
-              achievementsState.updateAchievementSnapshot(
-                  AchievementSnapshot.updateStatus(
-                      achievement, AchievementStatus.completedAndShown));
-            }
-          });
-    }
-    return const SizedBox.shrink();
   }
 }

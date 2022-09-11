@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:kaidzen_app/achievements/event.dart';
+import 'package:kaidzen_app/achievements/set/DetailsRowWidget.dart';
 import 'package:kaidzen_app/achievements/style.dart';
 
 import '../../achievement.dart';
@@ -27,9 +27,10 @@ class TaskCreatedAchievement extends Achievement {
   Future<Widget> get detailsWidget async {
     var createdTasks =
         await eventsRepository.getEventsNumberByType(EventType.taskCreated);
-    return Center(
-      child: Text('Created $createdTasks/$numberOfTasks',
-          style: achievementsDetailsTextStyle),
-    );
+    return DetailsRowWidget(
+        progress: (createdTasks / numberOfTasks).clamp(0.0, 1.0),
+        progressColor: achievementDetailsActiveProgressColor,
+        leadingText: "All spheres",
+        centerText: "${numberOfTasks - createdTasks} goals ahead");
   }
 }

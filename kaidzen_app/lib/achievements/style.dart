@@ -30,5 +30,11 @@ const Color completedAchievementScreenBackgroundColor =
 
 const Color notCompletedAchievementScreenProgressColor =
     Color.fromARGB(255, 151, 146, 132);
-const Color achievementDetailsProgressColor =
-    Color.fromARGB(255, 171, 101, 203);
+
+const Color achievementDetailsActiveProgressColor =
+    Color.fromRGBO(195, 184, 239, 1);
+const Color achievementDetailsNotActiveProgressColor =
+    Color.fromRGBO(141, 140, 148, 1);
+
+const Color achievementDetailsBackgroundProgressColor =
+    Color.fromRGBO(108, 107, 107, 1);

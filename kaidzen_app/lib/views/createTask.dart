@@ -42,10 +42,8 @@ class _CreateTaskState extends State<CreateTask> {
     _inspirationsFuture = getInspirations(context);
     newTaskController = TextEditingController();
     newTaskController.addListener(() {
-      final _isCreateButtonActive =
-          newTaskController.text.isNotEmpty && _currentCategory >= 0;
       setState(() {
-        this._isCreateButtonActive = _isCreateButtonActive;
+        _isCreateButtonActive = newTaskController.text.isNotEmpty;
       });
     });
   }
@@ -131,8 +129,6 @@ class _CreateTaskState extends State<CreateTask> {
                             key: _taskTypeWidgetKey,
                             callback: (value) => setState(() {
                                   _currentCategory = value!;
-                                  _isCreateButtonActive =
-                                      newTaskController.text.isNotEmpty;
                                 }))),
                     flex: 4),
                 Expanded(
@@ -157,9 +153,6 @@ class _CreateTaskState extends State<CreateTask> {
                     child: ElevatedButton(
                       onPressed: _isCreateButtonActive
                           ? () {
-                              setState(() {
-                                _isCreateButtonActive = false;
-                              });
                               submit();
                             }
                           : null,
