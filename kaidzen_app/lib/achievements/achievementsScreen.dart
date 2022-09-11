@@ -4,16 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/achievements/achievementDetailsScreen.dart';
+import 'package:kaidzen_app/achievements/eggWidget.dart';
 import 'package:kaidzen_app/achievements/style.dart';
-import 'package:kaidzen_app/assets/constants.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
-import 'dart:math';
 import 'achievementSnaphot.dart';
 
 class AchievementsScreen extends StatelessWidget {
-  static int step = 25;
-  static List<int> percents = [for (var i = 0; i <= 100; i = i + step) i];
   const AchievementsScreen({Key? key}) : super(key: key);
 
   @override
@@ -24,7 +20,7 @@ class AchievementsScreen extends StatelessWidget {
             body: Column(children: [
               Expanded(
                   child: Padding(
-                      padding: const EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.only(top: 20),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -41,17 +37,25 @@ class AchievementsScreen extends StatelessWidget {
                           ])),
                   flex: 1),
               Expanded(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                            padding: const EdgeInsets.only(left: 40),
-                            child: Image.asset("assets/dragon.png")),
-                        Padding(
-                            padding: const EdgeInsets.only(right: 40),
-                            child:
-                                getNewAchievementsComponent(achievementsState))
-                      ]),
+                  child: Stack(children: [
+                    Positioned(
+                        bottom: 0,
+                        child: SvgPicture.asset(
+                            "assets/achievements/dotted_line_ach.svg")),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(children: [
+                            const SizedBox(width: 20),
+                            Image.asset("assets/dragon.png")
+                          ]),
+                          Row(children: [
+                            getNewAchievementsComponent(
+                                achievementsState, context),
+                            const SizedBox(width: 20)
+                          ])
+                        ])
+                  ]),
                   flex: 2),
               Expanded(
                   child: GridView.count(
@@ -62,43 +66,9 @@ class AchievementsScreen extends StatelessWidget {
                       return Column(
                         children: [
                           Expanded(
-                              child: Stack(children: [
-                                achievement.status ==
-                                        AchievementStatus.completedAndShown
-                                    ? SvgPicture.asset(
-                                        "assets/achievements/completed_egg.svg")
-                                    : SvgPicture.asset(
-                                        "assets/achievements/egg.svg"),
-                                getProgress(achievement.progress),
-                                InkWell(
-                                    child: getOrigami(achievement),
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AchievementDetailsScreen(
-                                                      achievementSnapshot:
-                                                          achievement)));
-                                      if (achievement.status ==
-                                          AchievementStatus.completed) {
-                                        achievementsState
-                                            .updateAchievementSnapshot(
-                                                AchievementSnapshot.updateStatus(
-                                                    achievement,
-                                                    AchievementStatus
-                                                        .completedAndShown));
-                                      }
-                                    }),
-                                Visibility(
-                                    visible: achievement.status ==
-                                        AchievementStatus.completed,
-                                    child: Positioned(
-                                        top: 5,
-                                        right: 0,
-                                        child: SvgPicture.asset(
-                                            "assets/achievements/new_label.svg")))
-                              ]),
+                              child: EggWidget(
+                                  achievement: achievement,
+                                  achievementsState: achievementsState),
                               flex: 10),
                           const Expanded(child: SizedBox(), flex: 1),
                           Expanded(
@@ -109,37 +79,20 @@ class AchievementsScreen extends StatelessWidget {
                       );
                     }).toList(),
                   ),
-                  flex: 8),
+                  flex: 10),
             ])));
   }
 
-  SvgPicture getOrigami(AchievementSnapshot snapshot) {
-    return snapshot.status == AchievementStatus.completedAndShown
-        ? SvgPicture.asset(
-            "assets/achievements/sets/${snapshot.setId}/${snapshot.iconName}")
-        : SvgPicture.asset("assets/achievements/origami_grey_placeholder.svg");
-  }
-
-  Widget getProgress(double progress) {
-    int res = percents.lastWhere(
-        (element) => (progress * 100).toInt() >= element,
-        orElse: () => 0);
-    return SvgPicture.asset("assets/achievements/progress/$res%.svg");
-  }
-
-  Widget getNewAchievementsComponent(AchievementsState achievementsState) {
+  Widget getNewAchievementsComponent(
+      AchievementsState achievementsState, BuildContext context) {
     var completedAchievementsCount =
         achievementsState.getCompletedAchievementsCount();
     return completedAchievementsCount > 0
         ? Column(children: [
             Expanded(
                 child: Stack(children: [
-                  SvgPicture.asset("assets/achievements/new_origami_text.svg"),
-                  Positioned(
-                      top: 3.4,
-                      right: 28.0,
-                      child: Text(completedAchievementsCount.toString(),
-                          style: achievementsTitleTextStyle))
+                  SvgPicture.asset(
+                      "assets/achievements/new_origami_text/new_origami_text_${completedAchievementsCount % 10}.svg")
                 ]),
                 flex: 2),
             const SizedBox(height: 10),
@@ -151,7 +104,22 @@ class AchievementsScreen extends StatelessWidget {
                 child: InkWell(
                     child: SvgPicture.asset(
                         "assets/achievements/origami_collect_button.svg"),
-                    onTap: null),
+                    onTap: () {
+                      AchievementSnapshot achievement =
+                          achievementsState.getCompletedAchievement();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AchievementDetailsScreen(
+                                  achievementSnapshot: achievement,
+                                  details: achievementsState
+                                      .getDetailsWidget(achievement.id))));
+                      if (achievement.status == AchievementStatus.completed) {
+                        achievementsState.updateAchievementSnapshot(
+                            AchievementSnapshot.updateStatus(achievement,
+                                AchievementStatus.completedAndShown));
+                      }
+                    }),
                 flex: 1)
           ])
         : const Text("Gain\nachievements\nby reaching\nyour goals",

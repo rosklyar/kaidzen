@@ -14,6 +14,7 @@ class AchievementsState extends ChangeNotifier {
   EventsRepository eventsRepository;
   Map<int, Achievement>? achievements;
   Map<int, AchievementSnapshot> _snaphots = {};
+  Map<int, Widget> detailsWidgets = {};
 
   AchievementsState(
       {required this.eventsRepository, required this.achievementsRepository}) {
@@ -41,6 +42,14 @@ class AchievementsState extends ChangeNotifier {
     var thirtyTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
         8, 30,
         eventsRepository: eventsRepository);
+    var fiftyTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
+        9, 50,
+        eventsRepository: eventsRepository);
+    var hundredTasksCompletedInEachSphere =
+        TaskCompletedInAllSpheresAchievement(10, 100,
+            eventsRepository: eventsRepository);
+    var secretAchievement =
+        TaskCreatedAchievement(11, 10, eventsRepository: eventsRepository);
 
     achievements = {
       fiveTasksCreatedAchievement.id: fiveTasksCreatedAchievement,
@@ -54,7 +63,10 @@ class AchievementsState extends ChangeNotifier {
           hundredAndFiftyTasksCompletedInSomeSphereAchievement,
       fiveTasksCompletedInEachSphere.id: fiveTasksCompletedInEachSphere,
       tenTasksCompletedInEachSphere.id: tenTasksCompletedInEachSphere,
-      thirtyTasksCompletedInEachSphere.id: thirtyTasksCompletedInEachSphere
+      thirtyTasksCompletedInEachSphere.id: thirtyTasksCompletedInEachSphere,
+      fiftyTasksCompletedInEachSphere.id: fiftyTasksCompletedInEachSphere,
+      hundredTasksCompletedInEachSphere.id: hundredTasksCompletedInEachSphere,
+      secretAchievement.id: secretAchievement
     };
   }
 
@@ -66,6 +78,15 @@ class AchievementsState extends ChangeNotifier {
                 s, achievements![s.id]!.progress))
             .toList()));
     _snaphots = Map.fromEntries(snapshotsList.map((s) => MapEntry(s.id, s)));
+
+    final widgetsFutures = achievements!.entries
+        .map((e) => MapEntry(e.key, e.value.detailsWidget))
+        .toList();
+    for (var i = 0; i < widgetsFutures.length; i++) {
+      final widget = await widgetsFutures[i].value;
+      detailsWidgets[widgetsFutures[i].key] = widget;
+    }
+
     notifyListeners();
   }
 
@@ -73,10 +94,19 @@ class AchievementsState extends ChangeNotifier {
     return _snaphots.values.toList();
   }
 
+  AchievementSnapshot getCompletedAchievement() {
+    return _snaphots.values
+        .firstWhere((s) => s.status == AchievementStatus.completed);
+  }
+
   int getCompletedAchievementsCount() {
     return _snaphots.values
         .where((s) => s.status == AchievementStatus.completed)
         .length;
+  }
+
+  Widget getDetailsWidget(int id) {
+    return detailsWidgets[id]!;
   }
 
   addEvent(Event event) async {

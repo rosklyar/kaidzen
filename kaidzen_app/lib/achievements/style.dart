@@ -12,6 +12,14 @@ const TextStyle achievementsDescriptionTextStyle =
 const TextStyle achievementsTitleTextStyle =
     TextStyle(fontSize: 14, color: Colors.white, fontFamily: 'Lato');
 
+const TextStyle achievementsDetailsTextStyle = TextStyle(
+    fontSize: 16,
+    color: Color.fromRGBO(86, 92, 95, 1),
+    fontFamily: 'Montserrat');
+const TextStyle achievementsDetailsAchievedTextStyle = TextStyle(
+    fontSize: 16,
+    color: Color.fromRGBO(186, 169, 255, 1),
+    fontFamily: 'Montserrat');
 
 const Color achievementScreenBackgroundColor = Color.fromRGBO(45, 45, 45, 1);
 
@@ -22,5 +30,11 @@ const Color completedAchievementScreenBackgroundColor =
 
 const Color notCompletedAchievementScreenProgressColor =
     Color.fromARGB(255, 151, 146, 132);
-const Color achievementDetailsProgressColor =
-    Color.fromARGB(255, 171, 101, 203);
+
+const Color achievementDetailsActiveProgressColor =
+    Color.fromRGBO(195, 184, 239, 1);
+const Color achievementDetailsNotActiveProgressColor =
+    Color.fromRGBO(141, 140, 148, 1);
+
+const Color achievementDetailsBackgroundProgressColor =
+    Color.fromRGBO(108, 107, 107, 1);

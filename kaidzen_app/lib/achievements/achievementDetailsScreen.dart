@@ -1,85 +1,82 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
+import 'package:kaidzen_app/achievements/eggWidget.dart';
 import 'package:kaidzen_app/achievements/style.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-
-import '../assets/constants.dart';
 
 class AchievementDetailsScreen extends StatelessWidget {
   final AchievementSnapshot achievementSnapshot;
-
-  const AchievementDetailsScreen({Key? key, required this.achievementSnapshot})
+  final Widget details;
+  const AchievementDetailsScreen(
+      {Key? key, required this.achievementSnapshot, required this.details})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: achievementScreenBackgroundColor,
-        appBar: AppBar(
-          backgroundColor: achievementScreenBackgroundColor,
-          leading: IconButton(
-            icon: Image.asset("assets/shevron-left.png"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          actions: [
-            IconButton(
-              icon: Image.asset("assets/close_icon.png"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        ),
         body: Column(children: [
-          const SizedBox(height: 25),
           Expanded(
-              child: Stack(children: [
-                Center(
-                    child: SizedBox(
-                        width: 310,
-                        height: 310,
-                        child: CircularPercentIndicator(
-                          radius: 150,
-                          lineWidth: 10,
-                          percent: achievementSnapshot.progress,
-                          progressColor: achievementDetailsProgressColor,
-                          circularStrokeCap: CircularStrokeCap.round,
-                          backgroundColor:
-                              notCompletedAchievementScreenBackgroundColor,
-                        ))),
-                Center(
-                    child: SizedBox(
-                        width: 280,
-                        height: 280,
-                        child: Container(
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 10,
-                                    color: achievementScreenBackgroundColor),
-                                shape: BoxShape.circle,
-                                color:
-                                    notCompletedAchievementScreenBackgroundColor),
-                            child: achievementSnapshot.status !=
-                                    AchievementStatus.notCompleted
-                                ? SvgPicture.asset(
-                                    "assets/achievements/sets/${achievementSnapshot.setId}/${achievementSnapshot.iconName}")
-                                : SvgPicture.asset(
-                                    "assets/achievements/origami_grey_placeholder.svg"))))
-              ]),
-              flex: 3),
+              child: Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Row(children: [
+                    IconButton(
+                      icon: Image.asset("assets/shevron-left.png"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    IconButton(
+                      icon: Image.asset("assets/close_icon.png"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  ], mainAxisAlignment: MainAxisAlignment.spaceBetween)),
+              flex: 1),
+          Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: Center(
+                      child: Stack(children: [
+                    achievementSnapshot.status != AchievementStatus.notCompleted
+                        ? SvgPicture.asset(
+                            width: double.infinity,
+                            height: double.infinity,
+                            "assets/achievements/${EggWidget.getSubFolder(achievementSnapshot.isSecret)}/completed_egg.svg")
+                        : EggWidget.getEggCrack(achievementSnapshot),
+                    EggWidget.getProgress(achievementSnapshot.progress,
+                        achievementSnapshot.isSecret),
+                    Visibility(
+                        visible: achievementSnapshot.status !=
+                            AchievementStatus.notCompleted,
+                        child: SvgPicture.asset(
+                            width: double.infinity,
+                            height: double.infinity,
+                            "assets/achievements/sets/${achievementSnapshot.setId}/${achievementSnapshot.iconName}"))
+                  ]))),
+              flex: 4),
           Expanded(
               child: Column(children: [
-                const SizedBox(height: 25),
-                Text(achievementSnapshot.title,
-                    style: achievementsAppBarTextStyle),
-                const SizedBox(height: 35),
-                Text(achievementSnapshot.description,
-                    style: achievementsDescriptionTextStyle)
+                Expanded(
+                    child: Center(
+                        child: Text(achievementSnapshot.title,
+                            style: achievementsAppBarTextStyle)),
+                    flex: 1),
+                Expanded(
+                    child: Visibility(
+                        visible: !achievementSnapshot.isSecret,
+                        child: Text(achievementSnapshot.description,
+                            style: achievementsDescriptionTextStyle)),
+                    flex: 1),
+                Expanded(
+                    child: achievementSnapshot.status ==
+                            AchievementStatus.notCompleted
+                        ? details
+                        : Container(),
+                    flex: 6)
               ]),
-              flex: 2),
+              flex: 6),
         ]));
   }
 }

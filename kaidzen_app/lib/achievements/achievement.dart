@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/EventsRepository.dart';
 
 abstract class Achievement {
@@ -7,4 +8,6 @@ abstract class Achievement {
 
   int get id;
   Future<double> get progress;
+
+  Future<Widget> get detailsWidget;
 }

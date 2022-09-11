@@ -13,9 +13,7 @@ class Task extends Equatable {
   int? parent;
 
   Task(this.name, this.category, this.difficulty,
-      {this.status = Status.TODO,
-      this.id,
-      this.parent});
+      {this.status = Status.TODO, this.id, this.parent});
 
   void addSubTask(Task subTask) {
     subtasks.add(subTask);
