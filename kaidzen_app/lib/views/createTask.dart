@@ -131,11 +131,7 @@ class _CreateTaskState extends State<CreateTask> {
                                   _currentCategory = value!;
                                 }))),
                     flex: 4),
-                Expanded(
-                    child: Visibility(
-                        visible: newTaskController.text.isNotEmpty,
-                        child: getDiff()),
-                    flex: 7),
+                Expanded(child: getDiff(), flex: 7),
               ]),
               Visibility(
                   visible: newTaskController.text.isEmpty,
@@ -210,9 +206,9 @@ class _CreateTaskState extends State<CreateTask> {
                                           inspirations[index].category.id;
                                       _taskDifficultyWidgetKey.currentState!
                                               ._currentDifficulty =
-                                          inspirations[index].difficulty;
+                                          inspirations[index].difficulty.id;
                                       _currentDifficulty =
-                                          inspirations[index].difficulty;
+                                          inspirations[index].difficulty.id;
                                     });
                                   },
                                   icon: SvgPicture.asset(

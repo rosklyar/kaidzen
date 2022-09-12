@@ -71,13 +71,34 @@ class AchievementsState extends ChangeNotifier {
   }
 
   loadAll() async {
-    final snapshotsList = await achievementsRepository
-        .getAchievementSnapshots()
-        .then((snapshots) => Future.wait(snapshots
-            .map((s) => AchievementSnapshot.updateProgress(
-                s, achievements![s.id]!.progress))
-            .toList()));
-    _snaphots = Map.fromEntries(snapshotsList.map((s) => MapEntry(s.id, s)));
+    final achievementsState =
+        await achievementsRepository.getAchievementSnapshots();
+
+    final updatedAchievementsState =
+        await Future.wait(achievementsState.map((s) {
+      if (s.status == AchievementStatus.notCompleted) {
+        return AchievementSnapshot.updateProgress(
+            s, achievements![s.id]!.progress);
+      } else {
+        return Future.value(s);
+      }
+    }));
+
+    // update newly completed achievements in db
+    final notCompletedAchievementsIds = achievementsState
+        .where((element) => element.status == AchievementStatus.notCompleted)
+        .map((e) => e.id)
+        .toSet();
+    updatedAchievementsState
+        .where((ach) =>
+            ach.status == AchievementStatus.completed &&
+            notCompletedAchievementsIds.contains(ach.id))
+        .forEach((element) {
+      achievementsRepository.updateAchievementSnapshot(element);
+    });
+
+    _snaphots =
+        Map.fromEntries(updatedAchievementsState.map((s) => MapEntry(s.id, s)));
 
     final widgetsFutures = achievements!.entries
         .map((e) => MapEntry(e.key, e.value.detailsWidget))

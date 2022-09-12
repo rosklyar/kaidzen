@@ -16,42 +16,60 @@ class EggWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      achievement.status == AchievementStatus.completedAndShown
-          ? SvgPicture.asset(
-              width: double.infinity,
-              height: double.infinity,
-              "assets/achievements/${getSubFolder(achievement.isSecret)}/completed_egg.svg")
-          : InkWell(child: getEggCrack(achievement)),
-      getProgress(achievement.progress, achievement.isSecret),
-      InkWell(
-          child: getOrigami(achievement),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => AchievementDetailsScreen(
-                        achievementSnapshot: achievement,
-                        details: achievementsState
-                            .getDetailsWidget(achievement.id))));
-            if (achievement.status == AchievementStatus.completed) {
-              achievementsState.updateAchievementSnapshot(
-                  AchievementSnapshot.updateStatus(
-                      achievement, AchievementStatus.completedAndShown));
-            }
-          }),
-      Visibility(
-          visible: achievement.status == AchievementStatus.completed,
-          child: Positioned(
-              top: 5,
-              right: 0,
-              child: SvgPicture.asset(
-                  "assets/achievements/${getSubFolder(achievement.isSecret)}/new_label.svg")))
-    ]);
+    if (achievement.status == AchievementStatus.completedAndShown) {
+      return Stack(children: [
+        SvgPicture.asset(
+            width: double.infinity,
+            height: double.infinity,
+            "assets/achievements/${getSubFolder(achievement.isSecret)}/completed_egg.svg"),
+        getProgress(achievement.progress, achievement.isSecret),
+        InkWell(
+            child: SvgPicture.asset(
+                width: double.infinity,
+                height: double.infinity,
+                "assets/achievements/sets/${achievement.setId}/${achievement.iconName}"),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AchievementDetailsScreen(
+                          achievementSnapshot: achievement,
+                          details: achievementsState
+                              .getDetailsWidget(achievement.id))));
+            })
+      ]);
+    } else {
+      return Stack(children: [
+        getEggCrack(achievement),
+        InkWell(
+            child: getProgress(achievement.progress, achievement.isSecret),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AchievementDetailsScreen(
+                          achievementSnapshot: achievement,
+                          details: achievementsState
+                              .getDetailsWidget(achievement.id))));
+              if (achievement.status == AchievementStatus.completed) {
+                achievementsState.updateAchievementSnapshot(
+                    AchievementSnapshot.updateStatus(
+                        achievement, AchievementStatus.completedAndShown));
+              }
+            }),
+        Visibility(
+            visible: achievement.status == AchievementStatus.completed,
+            child: Positioned(
+                top: 5,
+                right: 0,
+                child: SvgPicture.asset(
+                    "assets/achievements/${getSubFolder(achievement.isSecret)}/new_label.svg")))
+      ]);
+    }
   }
 
   static SvgPicture getEggCrack(AchievementSnapshot achievementSnapshot) {
-    int part = (achievementSnapshot.progress * 3).floor();
+    int part = (achievementSnapshot.progress * 3).floor().clamp(0, 2);
     return SvgPicture.asset(
         width: double.infinity,
         height: double.infinity,
@@ -67,15 +85,6 @@ class EggWidget extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         "assets/achievements/$subFolder/progress/$res%.svg");
-  }
-
-  static Widget getOrigami(AchievementSnapshot snapshot) {
-    return snapshot.status == AchievementStatus.completedAndShown
-        ? SvgPicture.asset(
-            width: double.infinity,
-            height: double.infinity,
-            "assets/achievements/sets/${snapshot.setId}/${snapshot.iconName}")
-        : Container();
   }
 
   static getSubFolder(bool isSecret) {
