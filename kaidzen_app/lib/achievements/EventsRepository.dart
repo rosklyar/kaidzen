@@ -1,4 +1,6 @@
-import 'package:kaidzen_app/assets/constants.dart';
+import 'dart:developer';
+
+import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'package:kaidzen_app/service/KaizenState.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:kaidzen_app/achievements/event.dart';
@@ -64,6 +66,81 @@ class EventsRepository {
     if (db == null) {
       await open();
     }
-    return await db!.insert(tableEvents, Event.toMap(event));
+    var createdId = await db!.insert(tableEvents, Event.toMap(event));
+    await startPeriodAchievementsIfNeeded(event.type, createdId);
+    return createdId;
+  }
+
+  Future<int> startPeriodAchievementsIfNeeded(
+      EventType eventType, int eventId) async {
+    if (db == null) {
+      await open();
+    }
+    if (eventType == EventType.taskCompleted) {
+      return await db!.update(tablePeriodAchievementInfo,
+          {columnPeriodAchievementInfoStartEventId: eventId},
+          where: '$columnPeriodAchievementInfoStartEventId = ?',
+          whereArgs: [-1]);
+    }
+    return 0;
+  }
+
+  Future<PeriodAchievementInfo> getPeriodAchievementInfo(
+      int achievementId) async {
+    if (db == null) {
+      await open();
+    }
+    final List<Map<String, dynamic>> maps = await db!.rawQuery(
+        'SELECT * FROM $tablePeriodAchievementInfo WHERE $columnPeriodAchievementInfoAchId = $achievementId');
+    return PeriodAchievementInfo.fromMap(maps.first);
+  }
+
+  Future<List<PeriodAchievementInfo>> getAllPeriodAchievementInfo() async {
+    if (db == null) {
+      await open();
+    }
+    List<Map> maps = await db!.query(tablePeriodAchievementInfo, columns: [
+      columnPeriodAchievementInfoId,
+      columnPeriodAchievementInfoAchId,
+      columnPeriodAchievementInfoStartEventId
+    ]);
+    List<PeriodAchievementInfo> infos = maps
+        .map((element) =>
+            PeriodAchievementInfo.fromMap(element as Map<String, Object?>))
+        .toList();
+    return infos;
+  }
+
+  Future<Event> getEventById(int eventId) async {
+    if (db == null) {
+      await open();
+    }
+    final List<Map<String, dynamic>> maps = await db!.rawQuery(
+        'SELECT * FROM $tableEvents WHERE $columnEventtId = $eventId');
+    return Event.fromMap(maps.first);
+  }
+
+  Future<int> getNumberOfTasksCompletedInPeriod(
+      DateTime tsFrom, DateTime tsTo) async {
+    if (db == null) {
+      await open();
+    }
+    final List<Map<String, dynamic>> maps = await db!.rawQuery(
+        'SELECT COUNT(*) FROM $tableEvents WHERE $columnEventType = ${EventType.taskCompleted.id} AND $columnEventTs BETWEEN \'${tsFrom.toString()}\' AND \'${tsTo.toString()}\'');
+    return maps.isNotEmpty ? maps.first['COUNT(*)'] as int : 0;
+  }
+
+  Future<int> breakPeriodAchievement(
+      PeriodAchievementInfo periodAchievementInfo) async {
+    if (db == null) {
+      await open();
+    }
+
+    return await db!.update(
+        tablePeriodAchievementInfo,
+        PeriodAchievementInfo.toMap(PeriodAchievementInfo(
+            periodAchievementInfo.id, periodAchievementInfo.achievementId, -1)),
+        where: '$columnPeriodAchievementInfoId = ?',
+        whereArgs: [periodAchievementInfo.id]);
   }
 }

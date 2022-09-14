@@ -5,6 +5,7 @@ import 'package:kaidzen_app/achievements/EventsRepository.dart';
 import 'package:kaidzen_app/achievements/achievement.dart';
 import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'package:kaidzen_app/achievements/event.dart';
+import 'package:kaidzen_app/achievements/set/default/NTasksCompletedEachKDaysForMPeriodsAchievement.dart';
 import 'package:kaidzen_app/achievements/set/default/TaskCompletedInSomeSphereAchievement.dart';
 import 'package:kaidzen_app/achievements/set/default/TaskCreatedAchievement.dart';
 import 'package:kaidzen_app/achievements/set/default/TasksCompletedInAllSpheresAchievement.dart';
@@ -37,16 +38,16 @@ class AchievementsState extends ChangeNotifier {
         6, 5,
         eventsRepository: eventsRepository);
     var tenTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
-        7, 10,
+        7, 15,
         eventsRepository: eventsRepository);
     var thirtyTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
-        8, 30,
+        8, 40,
         eventsRepository: eventsRepository);
-    var fiftyTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
-        9, 50,
-        eventsRepository: eventsRepository);
-    var hundredTasksCompletedInEachSphere =
-        TaskCompletedInAllSpheresAchievement(10, 100,
+    var fourWeeks5tasksCompletedAchievement =
+        NTasksCompletedEachKDaysForMPeriodsAchievement(9, 5, 7, 4,
+            eventsRepository: eventsRepository);
+    var fourWeeks10tasksCompletedAchievement =
+        NTasksCompletedEachKDaysForMPeriodsAchievement(10, 10, 7, 4,
             eventsRepository: eventsRepository);
     var secretAchievement =
         TaskCreatedAchievement(11, 10, eventsRepository: eventsRepository);
@@ -64,8 +65,10 @@ class AchievementsState extends ChangeNotifier {
       fiveTasksCompletedInEachSphere.id: fiveTasksCompletedInEachSphere,
       tenTasksCompletedInEachSphere.id: tenTasksCompletedInEachSphere,
       thirtyTasksCompletedInEachSphere.id: thirtyTasksCompletedInEachSphere,
-      fiftyTasksCompletedInEachSphere.id: fiftyTasksCompletedInEachSphere,
-      hundredTasksCompletedInEachSphere.id: hundredTasksCompletedInEachSphere,
+      fourWeeks5tasksCompletedAchievement.id:
+          fourWeeks5tasksCompletedAchievement,
+      fourWeeks10tasksCompletedAchievement.id:
+          fourWeeks10tasksCompletedAchievement,
       secretAchievement.id: secretAchievement
     };
   }

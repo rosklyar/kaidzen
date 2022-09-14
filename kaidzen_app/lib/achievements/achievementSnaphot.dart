@@ -88,3 +88,33 @@ enum AchievementStatus {
   const AchievementStatus(this.id);
   final int id;
 }
+
+class PeriodAchievementInfo {
+  final int id;
+  final int achievementId;
+  final int startEventId;
+
+  PeriodAchievementInfo(this.id, this.achievementId, this.startEventId);
+
+  @override
+  String toString() {
+    return "id: $id, achievementId: $achievementId, startEventId: $startEventId";
+  }
+
+  static Map<String, Object?> toMap(
+      PeriodAchievementInfo periodAchievementInfo) {
+    return {
+      columnPeriodAchievementInfoId: periodAchievementInfo.id,
+      columnPeriodAchievementInfoAchId: periodAchievementInfo.achievementId,
+      columnPeriodAchievementInfoStartEventId:
+          periodAchievementInfo.startEventId
+    };
+  }
+
+  static PeriodAchievementInfo fromMap(Map<String, dynamic> map) {
+    return PeriodAchievementInfo(
+        map[columnPeriodAchievementInfoId] as int,
+        map[columnPeriodAchievementInfoAchId] as int,
+        map[columnPeriodAchievementInfoStartEventId] as int);
+  }
+}

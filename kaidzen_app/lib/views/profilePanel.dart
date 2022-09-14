@@ -3,7 +3,6 @@ import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/service/ProgressState.dart';
 import 'package:kaidzen_app/achievements/achievementsScreen.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePanel extends StatefulWidget {
@@ -57,9 +56,9 @@ class ProfilePanelState extends State<ProfilePanel> {
                                 ],
                               ),
                             )),
-                            Padding(
-                              padding: EdgeInsets.only(left: 30, top: 6),
-                              child: Image.asset("assets/dragon.png", width: 100)) 
+                        Padding(
+                            padding: const EdgeInsets.only(left: 30, top: 6),
+                            child: Image.asset("assets/dragon.png", width: 100))
                       ]),
                       flex: 4),
                   Expanded(
@@ -70,6 +69,7 @@ class ProfilePanelState extends State<ProfilePanel> {
                           children: [
                             Stack(children: [
                               IconButton(
+                                padding: EdgeInsets.zero,
                                 onPressed: () {
                                   Navigator.push(
                                       context,
@@ -94,6 +94,7 @@ class ProfilePanelState extends State<ProfilePanel> {
                                           style: mediumTextStyle)))
                             ]),
                             IconButton(
+                              padding: EdgeInsets.zero,
                               onPressed: () {},
                               icon: Image.asset("assets/burger_icon.png"),
                             )
@@ -171,7 +172,12 @@ class ProfilePanelState extends State<ProfilePanel> {
   }
 }
 
-class ProgressIndicator extends StatelessWidget {
+class ProgressIndicator extends StatefulWidget {
+  final double percent;
+  final int level;
+  final String title;
+  final Color progressColor;
+
   const ProgressIndicator(
       {Key? key,
       required this.percent,
@@ -180,10 +186,36 @@ class ProgressIndicator extends StatelessWidget {
       required this.progressColor})
       : super(key: key);
 
-  final double percent;
-  final int level;
-  final String title;
-  final Color progressColor;
+  @override
+  _ProgressIndicatorState createState() => _ProgressIndicatorState();
+}
+
+class _ProgressIndicatorState extends State<ProgressIndicator>
+    with TickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+        vsync: this, animationBehavior: AnimationBehavior.preserve);
+    _controller.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void didUpdateWidget(covariant ProgressIndicator oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.percent <= widget.percent) {
+      _controller.animateTo(widget.percent,
+          duration: const Duration(seconds: 1));
+    } else {
+      _controller.animateTo(1.0, duration: const Duration(milliseconds: 500));
+      _controller.animateTo(widget.percent,
+          duration: const Duration(milliseconds: 500));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +228,7 @@ class ProgressIndicator extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      " $title",
+                      " ${widget.title}",
                       style: mediumTextStyle,
                     ),
                     Row(children: [
@@ -205,21 +237,20 @@ class ProgressIndicator extends StatelessWidget {
                         style: smallTextStyle,
                       ),
                       Text(
-                        "$level",
+                        "${widget.level}",
                         style: mediumTextStyle,
                       ),
                     ]),
                   ])),
-          LinearPercentIndicator(
-            animateFromLastPercent: true,
-            lineHeight: 8.0,
-            percent: percent,
-            animation: true,
-            barRadius: const Radius.circular(3.0),
-            backgroundColor: const Color.fromRGBO(225, 218, 218, 1.0),
-            animationDuration: 1000,
-            progressColor: progressColor,
-          )
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 7),
+              child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(3.0)),
+                  child: LinearProgressIndicator(
+                      minHeight: 8.0,
+                      value: _controller.value,
+                      backgroundColor: const Color.fromRGBO(225, 218, 218, 1.0),
+                      color: widget.progressColor)))
         ]));
   }
 }

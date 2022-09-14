@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/models/insparation.dart';
-import 'package:kaidzen_app/views/listViewTaskItem.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
@@ -137,7 +136,7 @@ class _CreateTaskState extends State<CreateTask> {
                   visible: newTaskController.text.isEmpty,
                   child: SlidingUpPanel(
                       minHeight: MediaQuery.of(context).size.height * 0.25,
-                      panelBuilder: (sc) => inspirationsWidget(context)))
+                      panelBuilder: (sc) => inspirationsWidget(context, sc)))
             ]),
             flex: 9),
         Expanded(
@@ -149,7 +148,85 @@ class _CreateTaskState extends State<CreateTask> {
                     child: ElevatedButton(
                       onPressed: _isCreateButtonActive
                           ? () {
-                              submit();
+                              if (_currentCategory == -1) {
+                                showModalBottomSheet<void>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return SizedBox(
+                                      height: 400,
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            const Expanded(
+                                                child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                        top: 15),
+                                                    child: Text(
+                                                        'Choose the life sphere to\nreinforce your motivation',
+                                                        style:
+                                                            screenTytleTextStyle)),
+                                                flex: 4),
+                                            const Expanded(
+                                                child: Text(
+                                                    "Sometimes we set goals we don’t need.\nChoosing the sphere helps to\nunderstand why this goal is important\n— will it improve your goal, health,\nrelationships, make you more wealthy,\nor fulfill with energy.\n\n\nAnd adds you some extra points.",
+                                                    style: largeTextStyle),
+                                                flex: 10),
+                                            Expanded(
+                                                child: GestureDetector(
+                                                    child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                bottom: 15),
+                                                        child: Text(
+                                                            'Create without sphere',
+                                                            style: largeTextStyle
+                                                                .copyWith(
+                                                                    decoration:
+                                                                        TextDecoration
+                                                                            .underline))),
+                                                    onTap: () {
+                                                      Navigator.pop(context);
+                                                      submit();
+                                                    }),
+                                                flex: 2),
+                                            Expanded(
+                                                child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 10,
+                                                            right: 10,
+                                                            bottom: 10),
+                                                    child: SizedBox(
+                                                        width: double.infinity,
+                                                        child: ElevatedButton(
+                                                          child: Text(
+                                                              'Choose from the spheres',
+                                                              style: largeTextStyle20
+                                                                  .copyWith(
+                                                                      color: Colors
+                                                                          .white)),
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context),
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                                  primary:
+                                                                      activeButtonColor),
+                                                        ))),
+                                                flex: 3),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              } else {
+                                submit();
+                              }
                             }
                           : null,
                       child: Text('Create',
@@ -166,7 +243,8 @@ class _CreateTaskState extends State<CreateTask> {
     );
   }
 
-  Widget inspirationsWidget(BuildContext context) {
+  Widget inspirationsWidget(
+      BuildContext context, ScrollController scrollController) {
     return FutureBuilder<List<Inspiration>>(
         future: _inspirationsFuture,
         builder: (ctx, snapshot) {
@@ -177,25 +255,27 @@ class _CreateTaskState extends State<CreateTask> {
                   separatorBuilder: (context, index) {
                     return const Divider();
                   },
+                  controller: scrollController,
                   itemCount: inspirations.length,
                   itemBuilder: (context, index) {
                     return SizedBox(
-                        height: 30,
+                        height: 35,
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(children: [
                                 Icon(Icons.circle_rounded,
                                     color: inspirations[index].category.color,
-                                    size: 10.0),
+                                    size: 15.0),
                                 const SizedBox(width: 5),
                                 Text(
                                   inspirations[index].title,
-                                  style: mediumTextStyle,
+                                  style: largeTextStyle,
                                   textAlign: TextAlign.left,
                                 )
                               ]),
                               IconButton(
+                                  padding: EdgeInsets.zero,
                                   onPressed: () {
                                     setState(() {
                                       newTaskController.text =
@@ -299,7 +379,7 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
                       selected: _value == cat.index,
                       onSelected: (bool selected) {
                         setState(() {
-                          _value = selected ? cat.index : _value;
+                          _value = selected ? cat.index : -1;
                         });
                         callback?.call(_value);
                       },
