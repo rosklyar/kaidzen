@@ -70,8 +70,9 @@ class AchievementDetailsScreen extends StatelessWidget {
                             style: achievementsDescriptionTextStyle)),
                     flex: 1),
                 Expanded(
-                    child: achievementSnapshot.status ==
-                            AchievementStatus.notCompleted
+                    child: !achievementSnapshot.isSecret &&
+                            achievementSnapshot.status ==
+                                AchievementStatus.notCompleted
                         ? details
                         : Container(),
                     flex: 6)

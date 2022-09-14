@@ -5,6 +5,7 @@ import 'package:kaidzen_app/achievements/EventsRepository.dart';
 import 'package:kaidzen_app/achievements/achievement.dart';
 import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'package:kaidzen_app/achievements/event.dart';
+import 'package:kaidzen_app/achievements/set/default/NTasksCompletedEachKDaysForMPeriodsAchievement.dart';
 import 'package:kaidzen_app/achievements/set/default/TaskCompletedInSomeSphereAchievement.dart';
 import 'package:kaidzen_app/achievements/set/default/TaskCreatedAchievement.dart';
 import 'package:kaidzen_app/achievements/set/default/TasksCompletedInAllSpheresAchievement.dart';
@@ -37,16 +38,16 @@ class AchievementsState extends ChangeNotifier {
         6, 5,
         eventsRepository: eventsRepository);
     var tenTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
-        7, 10,
+        7, 15,
         eventsRepository: eventsRepository);
     var thirtyTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
-        8, 30,
+        8, 40,
         eventsRepository: eventsRepository);
-    var fiftyTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
-        9, 50,
-        eventsRepository: eventsRepository);
-    var hundredTasksCompletedInEachSphere =
-        TaskCompletedInAllSpheresAchievement(10, 100,
+    var fourWeeks5tasksCompletedAchievement =
+        NTasksCompletedEachKDaysForMPeriodsAchievement(9, 5, 7, 4,
+            eventsRepository: eventsRepository);
+    var fourWeeks10tasksCompletedAchievement =
+        NTasksCompletedEachKDaysForMPeriodsAchievement(10, 10, 7, 4,
             eventsRepository: eventsRepository);
     var secretAchievement =
         TaskCreatedAchievement(11, 10, eventsRepository: eventsRepository);
@@ -64,20 +65,43 @@ class AchievementsState extends ChangeNotifier {
       fiveTasksCompletedInEachSphere.id: fiveTasksCompletedInEachSphere,
       tenTasksCompletedInEachSphere.id: tenTasksCompletedInEachSphere,
       thirtyTasksCompletedInEachSphere.id: thirtyTasksCompletedInEachSphere,
-      fiftyTasksCompletedInEachSphere.id: fiftyTasksCompletedInEachSphere,
-      hundredTasksCompletedInEachSphere.id: hundredTasksCompletedInEachSphere,
+      fourWeeks5tasksCompletedAchievement.id:
+          fourWeeks5tasksCompletedAchievement,
+      fourWeeks10tasksCompletedAchievement.id:
+          fourWeeks10tasksCompletedAchievement,
       secretAchievement.id: secretAchievement
     };
   }
 
   loadAll() async {
-    final snapshotsList = await achievementsRepository
-        .getAchievementSnapshots()
-        .then((snapshots) => Future.wait(snapshots
-            .map((s) => AchievementSnapshot.updateProgress(
-                s, achievements![s.id]!.progress))
-            .toList()));
-    _snaphots = Map.fromEntries(snapshotsList.map((s) => MapEntry(s.id, s)));
+    final achievementsState =
+        await achievementsRepository.getAchievementSnapshots();
+
+    final updatedAchievementsState =
+        await Future.wait(achievementsState.map((s) {
+      if (s.status == AchievementStatus.notCompleted) {
+        return AchievementSnapshot.updateProgress(
+            s, achievements![s.id]!.progress);
+      } else {
+        return Future.value(s);
+      }
+    }));
+
+    // update newly completed achievements in db
+    final notCompletedAchievementsIds = achievementsState
+        .where((element) => element.status == AchievementStatus.notCompleted)
+        .map((e) => e.id)
+        .toSet();
+    updatedAchievementsState
+        .where((ach) =>
+            ach.status == AchievementStatus.completed &&
+            notCompletedAchievementsIds.contains(ach.id))
+        .forEach((element) {
+      achievementsRepository.updateAchievementSnapshot(element);
+    });
+
+    _snaphots =
+        Map.fromEntries(updatedAchievementsState.map((s) => MapEntry(s.id, s)));
 
     final widgetsFutures = achievements!.entries
         .map((e) => MapEntry(e.key, e.value.detailsWidget))

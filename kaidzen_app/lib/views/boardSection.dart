@@ -9,7 +9,6 @@ import 'package:kaidzen_app/utils/margin.dart';
 import 'package:kaidzen_app/views/listViewComplexTaskItem.dart';
 import 'package:provider/provider.dart';
 import '../assets/constants.dart';
-import '../service/ProgressState.dart';
 import 'ListViewTaskItem.dart';
 
 class Board extends StatefulWidget {
@@ -30,7 +29,7 @@ class Board extends StatefulWidget {
 }
 
 class BoardState extends State<Board> {
-  final _random = new Random();
+  final _random = Random();
 
   void _onReorder(int oldIndex, int newIndex) {
     setState(
@@ -88,8 +87,11 @@ class BoardState extends State<Board> {
       return Card(elevation: 8, child: listItem(task));
     }
     var background = task.status == Status.DOING
-        ? AssetImage("assets/doing" + ((_random.nextInt(2) + 1)).toString() + ".png")
-        : AssetImage(task.category.backgroundLink + ((_random.nextInt(2) + 1)).toString() + ".png");
+        ? AssetImage(
+            "assets/doing" + ((_random.nextInt(2) + 1)).toString() + ".png")
+        : AssetImage(task.category.backgroundLink +
+            ((_random.nextInt(2) + 1)).toString() +
+            ".png");
 
     return Card(
         elevation: 8,

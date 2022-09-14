@@ -35,6 +35,11 @@ const String columnAchievementSetId = 'set_id';
 const String columnAchievementIsSecret = 'is_secret';
 const String columnAchievementProgress = 'progress';
 
+const String tablePeriodAchievementInfo = 'period_achievements_info';
+const String columnPeriodAchievementInfoId = '_id';
+const String columnPeriodAchievementInfoAchId = 'achievement_id';
+const String columnPeriodAchievementInfoStartEventId = 'start_event_id';
+
 class KaizenDb {
   static Database? _db;
 
@@ -105,18 +110,31 @@ class KaizenDb {
 
     await db.execute('''
             insert into $tableAchievements values
-                (0, 0, 'Frog', 'Create 5 tasks', 'Frog.svg', 0, false, 0.0),
-                (1, 0, 'Crane', 'Create 25 tasks', 'Crane.svg', 0, false, 0.0),
-                (2, 0, 'Elephant', 'Create 100 tasks', 'Elephant.svg', 0, false, 0.0),
-                (3, 0, 'Colibri', 'Complete 5 tasks in any sphere', 'Bird.svg', 0, false, 0.0),
-                (4, 0, 'Dino', 'Complete 50 tasks in any sphere', 'Dino.svg', 0, false, 0.0),
-                (5, 0, 'Dragon', 'Complete 150 tasks in any sphere', 'Dragon.svg', 0, false, 0.0),
-                (6, 0, 'Fish', 'Complete 5 tasks in each sphere', 'Fish.svg', 0, false, 0.0),
-                (7, 0, 'Duck', 'Complete 10 tasks in each sphere', 'Duck.svg', 0, false, 0.0),
-                (8, 0, 'Boat', 'Complete 30 tasks in each sphere', 'Boat.svg', 0, false, 0.0),
-                (9, 0, 'Cat', 'Complete 50 tasks in each sphere', 'Cat.svg', 0, false, 0.0),
-                (10, 0, 'Unicorn', 'Complete 100 tasks in each sphere', 'Unicorn.svg', 0, false, 0.0),
+                (0, 0, 'Initiator', 'Create 5 tasks', 'Frog.svg', 0, false, 0.0),
+                (1, 0, 'Composer', 'Create 25 tasks', 'Crane.svg', 0, false, 0.0),
+                (2, 0, 'Writer', 'Create 100 tasks', 'Elephant.svg', 0, false, 0.0),
+                (3, 0, 'Trainee', 'Complete 5 tasks in any sphere', 'Bird.svg', 0, false, 0.0),
+                (4, 0, 'Master', 'Complete 50 tasks in any sphere', 'Dino.svg', 0, false, 0.0),
+                (5, 0, 'Adept', 'Complete 150 tasks in any sphere', 'Dragon.svg', 0, false, 0.0),
+                (6, 0, 'Toddler', 'Complete 5 tasks in each sphere', 'Fish.svg', 0, false, 0.0),
+                (7, 0, 'Teenager', 'Complete 15 tasks in each sphere', 'Duck.svg', 0, false, 0.0),
+                (8, 0, 'Adult', 'Complete 40 tasks in each sphere', 'Boat.svg', 0, false, 0.0),
+                (9, 0, 'Sprinter', '4 weeks in a row close at least 5 tasks', 'Cat.svg', 0, false, 0.0),
+                (10, 0, 'Stayer', '4 weeks in a row close at least 10 tasks', 'Unicorn.svg', 0, false, 0.0),
                 (11, 0, 'Secret', 'Do smth secret', 'Dog.svg', 0, true, 0.0);
+          ''');
+
+    await db.execute('''
+            create table $tablePeriodAchievementInfo ( 
+            $columnPeriodAchievementInfoId integer primary key autoincrement, 
+            $columnPeriodAchievementInfoAchId integer not null,
+            $columnPeriodAchievementInfoStartEventId integer not null)
+          ''');
+
+    await db.execute('''
+            insert into $tablePeriodAchievementInfo values
+                (0, 9, -1),
+                (1, 10, -1);
           ''');
   }
 }
