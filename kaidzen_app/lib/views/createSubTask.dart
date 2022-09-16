@@ -24,12 +24,21 @@ class _CreateSubTaskState extends State<CreateSubTask> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Create a subtask'),
-      ),
+``          backgroundColor: Color(widget.parent.category.backgroundColor),
+          centerTitle: true,
+          title: Wrap(children: [
+            Padding(
+              padding: EdgeInsets.only(top: 5, right: 15),
+              child: Icon(Icons.circle_rounded,
+                  color: widget.parent.category.color,
+                  size: 10.0 + Difficulty.EASY.id * 3),
+            ),
+            const Text('Subtask'),
+          ])),
       body: Column(children: [
         Expanded(
-            child: Column(children: [
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
@@ -37,22 +46,38 @@ class _CreateSubTaskState extends State<CreateSubTask> {
                     autofocus: true,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        hintText: 'Goal title',
-                        labelText: 'Goal title'),
+                        hintText: 'Subtask title',
+                        labelText: 'Subtask title'),
                     controller: newTaskController,
                   )),
+              Wrap(
+                alignment: WrapAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 5),
+                    child: Image.asset("assets/back_arrow.png"),
+                  ),
+                  Text(
+                      style: const TextStyle(color: Colors.grey),
+                      widget.parent.name)
+                ],
+              )
             ]),
             flex: 7),
         Expanded(
             child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                 child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: Colors.black,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 50, vertical: 20)),
                       onPressed: submit,
-                      child:
-                          const Text('Create', style: TextStyle(fontSize: 20)),
+                      child: const Text('Create',
+                          style: TextStyle(color: Colors.white, fontSize: 20)),
                     ))),
             flex: 1)
       ]),
