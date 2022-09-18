@@ -1,4 +1,4 @@
-package com.example.kaidzen_app
+package com.funworkstudio.stickygoals.android
 
 import io.flutter.embedding.android.FlutterActivity
 

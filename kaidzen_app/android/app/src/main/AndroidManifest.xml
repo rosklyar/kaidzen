@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.kaidzen_app">
+    package="com.funworkstudio.stickygoals.android">
    <application
         android:label="kaidzen_app"
         android:name="${applicationName}"

@@ -6,7 +6,7 @@ import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'achievementDetailsScreen.dart';
 
 class EggWidget extends StatelessWidget {
-  static int step = 25;
+  static int step = 5;
   static List<int> percents = [for (var i = 0; i <= 100; i = i + step) i];
   final AchievementSnapshot achievement;
   final AchievementsState achievementsState;
