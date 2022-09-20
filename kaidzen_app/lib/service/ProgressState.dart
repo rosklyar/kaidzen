@@ -37,6 +37,10 @@ class ProgressState extends ChangeNotifier {
     return _progress[category]?.level ?? 0;
   }
 
+  int getPoints(DevelopmentCategory category) {
+    return _progress[category]?.points ?? 0;
+  }
+
   double getLevelProgressFraction(DevelopmentCategory category) {
     return _progress[category] != null
         ? ProgressCalculator.getLevelFraction(category, _progress[category]!)

@@ -1,15 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
-import 'package:kaidzen_app/models/insparation.dart';
 import 'package:kaidzen_app/models/task.dart';
 import "package:collection/collection.dart";
 import 'package:kaidzen_app/service/TaskRepository.dart';
-import 'package:provider/provider.dart';
 
 import '../achievements/event.dart';
-import 'ProgressState.dart';
-
 import 'ProgressState.dart';
 
 class TasksState extends ChangeNotifier {
@@ -19,11 +15,11 @@ class TasksState extends ChangeNotifier {
   Map<String, List<Task>> _tasks;
   Map<int, Task> _tasksMap;
 
-  TasksState({
-    required this.repository,
-    required this.progressState,
-    required this.achievementsState,
-  })  : _tasks = {},
+  TasksState(
+      {required this.repository,
+      required this.progressState,
+      required this.achievementsState})
+      : _tasks = {},
         _tasksMap = {};
 
   Future loadAll() async {
@@ -57,6 +53,10 @@ class TasksState extends ChangeNotifier {
 
   Task? getById(int id) {
     return _tasksMap[id];
+  }
+
+  int count() {
+    return _tasks.length;
   }
 
   addTask(Task newTask) async {
