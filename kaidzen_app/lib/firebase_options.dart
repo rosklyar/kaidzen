@@ -44,12 +44,10 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAAYWVJlw1FwcK4xSP-h5I5ognv4x4mxNw',
-    appId: '1:16476665240:android:7581584637f0ff9bca67ed',
-    messagingSenderId: 'com.funworkstudio.stickygoals.android',
-    projectId: 'funworkstudiostickygoals',
-    storageBucket: 'funworkstudiostickygoals.appspot.com',
-  );
+      apiKey: 'AIzaSyAAYWVJlw1FwcK4xSP-h5I5ognv4x4mxNw',
+      appId: '1:16476665240:android:7581584637f0ff9bca67ed',
+      messagingSenderId: '16476665240',
+      projectId: 'funworkstudiostickygoals');
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'xxxxxxxxxxxxxxxxxxx',

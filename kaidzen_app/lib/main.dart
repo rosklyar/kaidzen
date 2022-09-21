@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/AchievementsRepository.dart';
 import 'package:kaidzen_app/achievements/EventsRepository.dart';
@@ -24,7 +26,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   ProgressState progressState = ProgressState(
     repository: ProgressRepository(),
   );
@@ -37,12 +38,10 @@ void main() async {
       progressState: progressState,
       achievementsState: achievementsState);
 
-  AnalyticsService analyticsService =
-      AnalyticsService(analytics, progressState, achievementsState, taskState);
-
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) {
       taskState.loadAll();
+      AnalyticsService.initUserProperties(taskState);
       return taskState;
     }),
     ChangeNotifierProvider(create: (context) {
@@ -53,12 +52,12 @@ void main() async {
       achievementsState.loadAll();
       return achievementsState;
     }),
-  ], child: MyApp(analyticsService: analyticsService)));
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, required this.analyticsService}) : super(key: key);
-  final AnalyticsService analyticsService;
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -66,16 +65,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
-      home: HomeScreen(analyticsService: analyticsService),
+      home: const HomeScreen(),
     );
   }
 }
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key, required this.analyticsService})
-      : super(key: key);
-
-  final AnalyticsService analyticsService;
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -100,11 +96,11 @@ class _HomeScreenState extends State<HomeScreen> {
       )),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
-        onPressed: () {
-          widget.analyticsService
-              .logEvent(AnalyticsEventType.CREATE_TASK_BUTTON_PRESSED);
+        onPressed: () async {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const CreateTask()));
+          await FirebaseAnalytics.instance.logEvent(
+              name: AnalyticsEventType.CREATE_TASK_BUTTON_PRESSED.name);
         },
         tooltip: 'Add task',
         child: const Icon(

@@ -56,7 +56,7 @@ class TasksState extends ChangeNotifier {
   }
 
   int count() {
-    return _tasks.length;
+    return _tasks.values.map((value) => value.length).sum;
   }
 
   addTask(Task newTask) async {
