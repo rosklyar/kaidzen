@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:kaidzen_app/achievements/AchievementsRepository.dart';
 
@@ -9,6 +10,7 @@ import 'package:kaidzen_app/achievements/set/default/NTasksCompletedEachKDaysFor
 import 'package:kaidzen_app/achievements/set/default/TaskCompletedInSomeSphereAchievement.dart';
 import 'package:kaidzen_app/achievements/set/default/TaskCreatedAchievement.dart';
 import 'package:kaidzen_app/achievements/set/default/TasksCompletedInAllSpheresAchievement.dart';
+import 'package:kaidzen_app/service/AnalyticsService.dart';
 
 class AchievementsState extends ChangeNotifier {
   AchievementsRepository achievementsRepository;
@@ -110,6 +112,10 @@ class AchievementsState extends ChangeNotifier {
       final widget = await widgetsFutures[i].value;
       detailsWidgets[widgetsFutures[i].key] = widget;
     }
+
+    await FirebaseAnalytics.instance.setUserProperty(
+        name: AnalyticsUserProperties.ACHIEVEMENTS_COMPLETED.name.toLowerCase(),
+        value: getCompletedAchievementsCount().toString());
 
     notifyListeners();
   }

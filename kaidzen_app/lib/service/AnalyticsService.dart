@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
@@ -75,7 +77,13 @@ class AnalyticsService {
 }
 
 enum AnalyticsEventType {
-  CREATE_TASK_BUTTON_PRESSED;
+  CREATE_GOAL_BUTTON_PRESSED,
+  CREATE_GOAL_SCREEN_BACK_BUTTON,
+  CREATE_GOAL_SCREEN_CREATE_BUTTON,
+  ACHIEVEMENTS_SCREEN_OPENED,
+  SETTINGS_SCREEN_OPENED,
+  GOAL_ACTION,
+  LEVEL_UP;
 }
 
 enum AnalyticsUserProperties {

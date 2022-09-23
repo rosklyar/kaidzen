@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/AchievementsRepository.dart';
 import 'package:kaidzen_app/achievements/EventsRepository.dart';
@@ -97,10 +98,11 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
         onPressed: () async {
+          await FirebaseAnalytics.instance.logEvent(
+              name: AnalyticsEventType.CREATE_GOAL_BUTTON_PRESSED.name);
+
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const CreateTask()));
-          await FirebaseAnalytics.instance.logEvent(
-              name: AnalyticsEventType.CREATE_TASK_BUTTON_PRESSED.name);
         },
         tooltip: 'Add task',
         child: const Icon(
