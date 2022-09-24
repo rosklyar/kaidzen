@@ -85,13 +85,14 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         toolbarHeight: 0.0,
       ),
-      body: SingleChildScrollView(
-          child: Column(
-        children: [
+      body: Stack(children: [
+        Column(children: [
           ProfilePanel(key: _profilePanelKey),
-          SwitchableBoard(key: _switchableBoardKey),
-        ],
-      )),
+          Image.asset("assets/mountains_big.png",
+              width: MediaQuery.of(context).size.width),
+        ]),
+        SwitchableBoard(key: _switchableBoardKey),
+      ]),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
         onPressed: () async {

@@ -24,7 +24,7 @@ class _CreateSubTaskState extends State<CreateSubTask> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-``          backgroundColor: Color(widget.parent.category.backgroundColor),
+          backgroundColor: Color(widget.parent.category.backgroundColor),
           centerTitle: true,
           title: Wrap(children: [
             Padding(

@@ -14,10 +14,12 @@ class Board extends StatefulWidget {
     Key? key,
     required this.name,
     required this.list,
+    required this.sc,
   }) : super(key: key);
 
   final List<Task> list;
   final String name;
+  final ScrollController sc;
 
   @override
   // ignore: no_logic_in_create_state
@@ -43,41 +45,26 @@ class BoardState extends State<Board> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Row(
-          children: [
-            Container(
-              height: context.screenHeight(1),
-              width: context.screenWidth(1),
-              margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: ReorderableListView(
-                padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
-                onReorder: _onReorder,
-                scrollController: ScrollController(),
-                children: List.generate(
-                  widget.list.length,
-                  (index) {
-                    return Dismissible(
-                      key: Key(widget.list[index].id.toString()),
-                      onDismissed: (direction) async {
-                        await Provider.of<TasksState>(context, listen: false)
-                            .deleteTask(widget.list[index]);
-                      },
-                      child: Column(
-                          key: Key('$index'),
-                          children: [taskCard(widget.list[index])]),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    ));
+    return ReorderableListView(
+      padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
+      onReorder: _onReorder,
+      scrollController: widget.sc,
+      children: List.generate(
+        widget.list.length,
+        (index) {
+          return Dismissible(
+            key: Key(widget.list[index].id.toString()),
+            onDismissed: (direction) async {
+              await Provider.of<TasksState>(context, listen: false)
+                  .deleteTask(widget.list[index]);
+            },
+            child: Column(
+                key: Key('$index'),
+                children: [taskCard(widget.list[index])]),
+          );
+        },
+      ),
+    );
   }
 
   Card taskCard(Task task) {
