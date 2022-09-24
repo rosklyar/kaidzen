@@ -1,15 +1,13 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
-import 'package:kaidzen_app/models/insparation.dart';
 import 'package:kaidzen_app/models/task.dart';
 import "package:collection/collection.dart";
+import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
-import 'package:provider/provider.dart';
 
 import '../achievements/event.dart';
-import 'ProgressState.dart';
-
 import 'ProgressState.dart';
 
 class TasksState extends ChangeNotifier {
@@ -19,11 +17,11 @@ class TasksState extends ChangeNotifier {
   Map<String, List<Task>> _tasks;
   Map<int, Task> _tasksMap;
 
-  TasksState({
-    required this.repository,
-    required this.progressState,
-    required this.achievementsState,
-  })  : _tasks = {},
+  TasksState(
+      {required this.repository,
+      required this.progressState,
+      required this.achievementsState})
+      : _tasks = {},
         _tasksMap = {};
 
   Future loadAll() async {
@@ -59,10 +57,24 @@ class TasksState extends ChangeNotifier {
     return _tasksMap[id];
   }
 
+  int count() {
+    return _tasks.values.map((value) => value.length).sum;
+  }
+
   addTask(Task newTask) async {
     await repository.insert(newTask);
     await loadAll();
+    await updatePropertyAfterTaskAdded();
     notifyListeners();
+  }
+
+  Future<void> updatePropertyAfterTaskAdded() async {
+    await FirebaseAnalytics.instance.setUserProperty(
+        name: AnalyticsUserProperties.GOALS_CREATED.name.toLowerCase(),
+        value: count().toString());
+    await FirebaseAnalytics.instance.setUserProperty(
+        name: AnalyticsUserProperties.CURRENT_GOALS_DO.name.toLowerCase(),
+        value: getByStatus(Status.TODO).length.toString());
   }
 
   deleteTask(Task task) async {
@@ -80,10 +92,24 @@ class TasksState extends ChangeNotifier {
       }
     }
     await loadAll();
+    await updatePropertiesAfterTaskMoved();
     notifyListeners();
   }
 
+  Future<void> updatePropertiesAfterTaskMoved() async {
+    await FirebaseAnalytics.instance.setUserProperty(
+        name: AnalyticsUserProperties.CURRENT_GOALS_DO.name.toLowerCase(),
+        value: getByStatus(Status.TODO).length.toString());
+    await FirebaseAnalytics.instance.setUserProperty(
+        name: AnalyticsUserProperties.CURRENT_GOALS_DOING.name.toLowerCase(),
+        value: getByStatus(Status.DOING).length.toString());
+    await FirebaseAnalytics.instance.setUserProperty(
+        name: AnalyticsUserProperties.CURRENT_GOALS_DONE.name.toLowerCase(),
+        value: getByStatus(Status.DONE).length.toString());
+  }
+
   Future<void> moveTask(Task task, String newStatus) async {
+    String oldStatus = task.status;
     task.status = newStatus;
     await repository.update(task);
     if (newStatus == Status.DONE) {
@@ -91,5 +117,15 @@ class TasksState extends ChangeNotifier {
       await achievementsState.addEvent(
           Event(EventType.taskCompleted, DateTime.now(), task.category));
     }
+    await FirebaseAnalytics.instance
+        .logEvent(name: AnalyticsEventType.GOAL_ACTION.name, parameters: {
+      "goal_id": task.id,
+      "goal_name": task.name,
+      "goal_sphere": task.category.id,
+      "goal_impact": task.difficulty.id,
+      "goal_status": newStatus,
+      "goal_previous_status": oldStatus,
+      "goal_type": task.subtasks.isNotEmpty ? "WITH_SUB_GOALS" : "SIMPLE"
+    });
   }
 }

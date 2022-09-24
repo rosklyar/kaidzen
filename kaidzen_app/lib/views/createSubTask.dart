@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 
 import '../models/task.dart';
 import 'package:provider/provider.dart';
 
 import '../service/TasksState.dart';
-import 'package:chip_list/chip_list.dart';
 
 class CreateSubTask extends StatefulWidget {
   final Task parent;
@@ -63,9 +61,7 @@ class _CreateSubTaskState extends State<CreateSubTask> {
 
   void submit() {
     Provider.of<TasksState>(context, listen: false).addTask(Task(
-        newTaskController.text,
-        widget.parent.category,
-        Difficulty.EASY,
+        newTaskController.text, widget.parent.category, Difficulty.EASY,
         parent: widget.parent.id));
     Navigator.pop(context);
   }

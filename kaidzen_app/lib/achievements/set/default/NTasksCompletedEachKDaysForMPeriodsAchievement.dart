@@ -1,12 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'package:kaidzen_app/achievements/event.dart';
 import 'package:kaidzen_app/achievements/set/DetailsRowWidget.dart';
-import 'package:kaidzen_app/achievements/style.dart';
 
 import '../../achievement.dart';
+import '../../style.dart';
 
 class NTasksCompletedEachKDaysForMPeriodsAchievement extends Achievement {
   final int achievementId;
@@ -81,7 +79,8 @@ class NTasksCompletedEachKDaysForMPeriodsAchievement extends Achievement {
         if (completedTasks >= numberOfTasks) {
           detailsRows.add(DetailsRowWidget(
               progress: 1.0,
-              progressColor: achievementDetailsActiveProgressColor,
+              progressColor:
+                  AchievementsStyle.achievementDetailsActiveProgressColor,
               leadingText:
                   "Days ${i * numberOfDays} - ${(i + 1) * numberOfDays}",
               centerText: "Completed"));
@@ -92,7 +91,8 @@ class NTasksCompletedEachKDaysForMPeriodsAchievement extends Achievement {
           detailsRows.add(
             DetailsRowWidget(
                 progress: (completedTasks / numberOfTasks).clamp(0.0, 1.0),
-                progressColor: achievementDetailsActiveProgressColor,
+                progressColor:
+                    AchievementsStyle.achievementDetailsActiveProgressColor,
                 leadingText:
                     "Days ${i * numberOfDays} - ${(i + 1) * numberOfDays}",
                 centerText: "${numberOfTasks - completedTasks} goals ahead",
@@ -127,7 +127,7 @@ class NTasksCompletedEachKDaysForMPeriodsAchievement extends Achievement {
   DetailsRowWidget notCompletedDetailsRowWidget(int from, int to) {
     return DetailsRowWidget(
         progress: 0.0,
-        progressColor: achievementDetailsActiveProgressColor,
+        progressColor: AchievementsStyle.achievementDetailsActiveProgressColor,
         leadingText: "Days $from - $to",
         centerText: "Not started");
   }

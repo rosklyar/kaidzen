@@ -1,21 +1,12 @@
 import 'dart:math';
 
-import 'package:expandable/expandable.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
-import 'package:kaidzen_app/service/TasksState.dart';
-import 'package:kaidzen_app/utils/margin.dart';
-import 'package:kaidzen_app/utils/theme.dart';
 import 'package:kaidzen_app/views/createSubTask.dart';
-import 'package:kaidzen_app/views/viewTask.dart';
-import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
-import '../service/ProgressState.dart';
 import '../utils/dashSeparator.dart';
 import 'ListViewTaskItem.dart';
-import 'createTask.dart';
 
 class ListViewComplexTaskItem extends StatelessWidget {
   ListViewComplexTaskItem({
@@ -44,7 +35,10 @@ List<Widget> buildExpandableContent(BuildContext context, Task task) {
   List<Widget> columnContent = [];
 
   columnContent.add(const DashSeparator());
-  var divider = Container(child: const DashSeparator(), padding: const EdgeInsets.only(left: 40),);
+  var divider = Container(
+    child: const DashSeparator(),
+    padding: const EdgeInsets.only(left: 40),
+  );
   for (Task subtask in task.subtasks) {
     if (subtask.status == task.status) {
       columnContent.add(Container(

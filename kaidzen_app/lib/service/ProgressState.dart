@@ -1,9 +1,12 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/models/progress.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/ProgressCalculator.dart';
 import 'package:kaidzen_app/service/ProgressRepository.dart';
+
+import 'AnalyticsService.dart';
 
 class ProgressState extends ChangeNotifier {
   final ProgressRepository repository;
@@ -24,6 +27,20 @@ class ProgressState extends ChangeNotifier {
     if (updatedProgress != currentProgress) {
       await repository.updateProgress(task.category, updatedProgress);
       _progress[task.category] = updatedProgress;
+      await FirebaseAnalytics.instance.setUserProperty(
+          name: levelPropertiesMap[task.category]!.name.toLowerCase(),
+          value: updatedProgress.level.toString());
+      await FirebaseAnalytics.instance.setUserProperty(
+          name: pointsPropertiesMap[task.category]!.name.toLowerCase(),
+          value: updatedProgress.points.toString());
+      if (updatedProgress.level > currentProgress.level) {
+        await FirebaseAnalytics.instance.logEvent(
+            name: AnalyticsEventType.LEVEL_UP.name,
+            parameters: {
+              "sphere": task.category.id,
+              "level": updatedProgress.level
+            });
+      }
       notifyListeners();
     }
   }
@@ -35,6 +52,10 @@ class ProgressState extends ChangeNotifier {
 
   int getLevel(DevelopmentCategory category) {
     return _progress[category]?.level ?? 0;
+  }
+
+  int getPoints(DevelopmentCategory category) {
+    return _progress[category]?.points ?? 0;
   }
 
   double getLevelProgressFraction(DevelopmentCategory category) {

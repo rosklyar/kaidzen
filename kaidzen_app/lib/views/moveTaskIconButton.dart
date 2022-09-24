@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
-import 'package:kaidzen_app/utils/theme.dart';
 import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
@@ -19,7 +18,9 @@ class MoveTaskIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        icon: direction == Direction.FORWARD ? Image.asset("assets/right_active.png") : Image.asset("assets/left_active.png"),
+        icon: direction == Direction.FORWARD
+            ? Image.asset("assets/right_active.png")
+            : Image.asset("assets/left_active.png"),
         color: Theme.of(context).errorColor,
         onPressed: () async {
           await moveTask(context, task);

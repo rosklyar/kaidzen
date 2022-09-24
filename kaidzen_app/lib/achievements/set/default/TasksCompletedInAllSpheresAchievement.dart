@@ -38,7 +38,8 @@ class TaskCompletedInAllSpheresAchievement extends Achievement {
       return Expanded(
           child: DetailsRowWidget(
               progress: completedTasks[e.id] / numberOfTasks,
-              progressColor: achievementDetailsActiveProgressColor,
+              progressColor:
+                  AchievementsStyle.achievementDetailsActiveProgressColor,
               leadingText: e.name,
               centerText: completedTasks[e.id] > 0
                   ? completedTasks[e.id] >= numberOfTasks

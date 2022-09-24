@@ -3,6 +3,7 @@ import 'package:kaidzen_app/achievements/AchievementsRepository.dart';
 import 'package:kaidzen_app/achievements/EventsRepository.dart';
 
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
+import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/views/createTask.dart';
@@ -12,8 +13,17 @@ import 'package:provider/provider.dart';
 
 import 'service/ProgressRepository.dart';
 import 'service/ProgressState.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   ProgressState progressState = ProgressState(
     repository: ProgressRepository(),
   );
@@ -29,6 +39,7 @@ void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) {
       taskState.loadAll();
+      AnalyticsService.initUserProperties(taskState);
       return taskState;
     }),
     ChangeNotifierProvider(create: (context) {
@@ -52,15 +63,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
-      home: const HomeScreen(title: 'Kaizen App'),
+      home: const HomeScreen(),
     );
   }
 }
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -85,7 +94,10 @@ class _HomeScreenState extends State<HomeScreen> {
       )),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
-        onPressed: () {
+        onPressed: () async {
+          await FirebaseAnalytics.instance.logEvent(
+              name: AnalyticsEventType.CREATE_GOAL_BUTTON_PRESSED.name);
+
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const CreateTask()));
         },

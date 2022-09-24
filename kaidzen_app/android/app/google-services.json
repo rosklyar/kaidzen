@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "16476665240",
+    "project_id": "funworkstudiostickygoals",
+    "storage_bucket": "funworkstudiostickygoals.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:16476665240:android:7581584637f0ff9bca67ed",
+        "android_client_info": {
+          "package_name": "com.funworkstudio.stickygoals.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "16476665240-9mj5mbs14hpeoh5c7sle99p13tjpdh6o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAYWVJlw1FwcK4xSP-h5I5ognv4x4mxNw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "16476665240-9mj5mbs14hpeoh5c7sle99p13tjpdh6o.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "16476665240-ih9fnn4ufva7ebqsqoq6s9gurvme73ik.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.funworkstudio.stickygoals.ios"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

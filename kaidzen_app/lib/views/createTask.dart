@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
-import 'package:kaidzen_app/models/insparation.dart';
+import 'package:kaidzen_app/models/inspiration.dart';
+import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
@@ -70,16 +72,19 @@ class _CreateTaskState extends State<CreateTask> {
                               child: IconButton(
                                 icon: SvgPicture.asset(
                                     "assets/shevron-left-black.svg"),
-                                onPressed: () {
+                                onPressed: () async {
+                                  await FirebaseAnalytics.instance.logEvent(
+                                      name: AnalyticsEventType
+                                          .CREATE_GOAL_SCREEN_BACK_BUTTON.name);
                                   Navigator.of(context).pop();
                                 },
                               ),
                               flex: 1),
-                          const Expanded(
+                          Expanded(
                               child: Center(
                                   child: Text(
                                 "Goal",
-                                style: screenTytleTextStyle,
+                                style: Fonts.screenTytleTextStyle,
                               )),
                               flex: 9),
                           const Expanded(child: SizedBox(), flex: 1)
@@ -112,14 +117,14 @@ class _CreateTaskState extends State<CreateTask> {
                           controller: newTaskController,
                         )),
                     flex: 3),
-                const Expanded(
+                Expanded(
                     child: Padding(
-                        padding: EdgeInsets.only(left: 10),
+                        padding: const EdgeInsets.only(left: 10),
                         child: SizedBox(
                             width: double.infinity,
                             child: Text("Life sphere to be affected",
                                 textAlign: TextAlign.left,
-                                style: largeTextStyle))),
+                                style: Fonts.largeTextStyle))),
                     flex: 1),
                 Expanded(
                     child: Padding(
@@ -147,47 +152,53 @@ class _CreateTaskState extends State<CreateTask> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: _isCreateButtonActive
-                          ? () {
+                          ? () async {
                               if (_currentCategory == -1) {
                                 showModalBottomSheet<void>(
                                   context: context,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(20),
+                                    ),
+                                  ),
                                   builder: (BuildContext context) {
                                     return SizedBox(
-                                      height: 400,
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.6,
                                       child: Center(
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
                                           children: <Widget>[
-                                            const Expanded(
+                                            Expanded(
                                                 child: Padding(
-                                                    padding: EdgeInsets.only(
-                                                        top: 15),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 15),
                                                     child: Text(
                                                         'Choose the life sphere to\nreinforce your motivation',
-                                                        style:
-                                                            screenTytleTextStyle)),
+                                                        style: Fonts
+                                                            .screenTytleTextStyle)),
                                                 flex: 4),
                                             const Expanded(
+                                                child: SizedBox(), flex: 1),
+                                            Expanded(
                                                 child: Text(
                                                     "Sometimes we set goals we don’t need.\nChoosing the sphere helps to\nunderstand why this goal is important\n— will it improve your goal, health,\nrelationships, make you more wealthy,\nor fulfill with energy.\n\n\nAnd adds you some extra points.",
-                                                    style: largeTextStyle),
+                                                    style:
+                                                        Fonts.largeTextStyle),
                                                 flex: 10),
+                                            const Expanded(
+                                                child: SizedBox(), flex: 1),
                                             Expanded(
                                                 child: GestureDetector(
-                                                    child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                bottom: 15),
-                                                        child: Text(
-                                                            'Create without sphere',
-                                                            style: largeTextStyle
-                                                                .copyWith(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline))),
+                                                    child: Text(
+                                                        'Create without sphere',
+                                                        style: Fonts
+                                                            .largeTextStyle
+                                                            .copyWith(
+                                                                decoration:
+                                                                    TextDecoration
+                                                                        .underline)),
                                                     onTap: () {
                                                       Navigator.pop(context);
                                                       submit();
@@ -205,7 +216,8 @@ class _CreateTaskState extends State<CreateTask> {
                                                         child: ElevatedButton(
                                                           child: Text(
                                                               'Choose from the spheres',
-                                                              style: largeTextStyle20
+                                                              style: Fonts
+                                                                  .largeTextStyle20
                                                                   .copyWith(
                                                                       color: Colors
                                                                           .white)),
@@ -227,12 +239,20 @@ class _CreateTaskState extends State<CreateTask> {
                               } else {
                                 submit();
                               }
+                              await FirebaseAnalytics.instance.logEvent(
+                                  name: AnalyticsEventType
+                                      .CREATE_GOAL_SCREEN_CREATE_BUTTON.name,
+                                  parameters: {
+                                    "sphere": _currentCategory,
+                                    "impact": _currentDifficulty
+                                  });
                             }
                           : null,
                       child: Text('Create',
                           style: _isCreateButtonActive
-                              ? largeTextStyle20.copyWith(color: Colors.white)
-                              : largeTextStyle20),
+                              ? Fonts.largeTextStyle20
+                                  .copyWith(color: Colors.white)
+                              : Fonts.largeTextStyle20),
                       style: ElevatedButton.styleFrom(
                           primary: _isCreateButtonActive
                               ? activeButtonColor
@@ -270,7 +290,7 @@ class _CreateTaskState extends State<CreateTask> {
                                 const SizedBox(width: 5),
                                 Text(
                                   inspirations[index].title,
-                                  style: largeTextStyle,
+                                  style: Fonts.largeTextStyle,
                                   textAlign: TextAlign.left,
                                 )
                               ]),
@@ -307,7 +327,7 @@ class _CreateTaskState extends State<CreateTask> {
               width: double.infinity,
               child: Text(
                 "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
-                style: largeTextStyle,
+                style: Fonts.largeTextStyle,
               ))),
       Padding(
           padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
@@ -356,35 +376,61 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: double.infinity,
-        child: Wrap(
-            spacing: 10,
-            children: activeCategories
-                .map((cat) => ChoiceChip(
-                      selectedColor: selectedToggleColor,
-                      disabledColor: unselectedToggleColor,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
-                      label: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(mainAxisSize: MainAxisSize.min, children: [
-                            Icon(Icons.circle, color: cat.color, size: 7),
-                            const SizedBox(width: 5),
-                            Text(cat.name,
-                                style: cat.index == _value
-                                    ? mediumWhiteTextStyle
-                                    : mediumTextStyle)
-                          ])),
-                      selected: _value == cat.index,
-                      onSelected: (bool selected) {
-                        setState(() {
-                          _value = selected ? cat.index : -1;
-                        });
-                        callback?.call(_value);
-                      },
-                    ))
-                .toList()));
+    return Column(children: [
+      Expanded(
+          child: Row(children: [
+            Expanded(child: categoryChoice(DevelopmentCategory.MIND), flex: 10),
+            const Expanded(child: SizedBox(), flex: 1),
+            Expanded(
+                child: categoryChoice(DevelopmentCategory.HEALTH), flex: 10),
+            const Expanded(child: SizedBox(), flex: 1),
+            Expanded(
+                child: categoryChoice(DevelopmentCategory.ENERGY), flex: 10)
+          ]),
+          flex: 5),
+      const Expanded(child: SizedBox(), flex: 1),
+      Expanded(
+          child: Row(children: [
+            Expanded(
+                child: categoryChoice(DevelopmentCategory.RELATIONS), flex: 14),
+            const Expanded(child: SizedBox(), flex: 1),
+            Expanded(
+                child: categoryChoice(DevelopmentCategory.WEALTH), flex: 10),
+            const Expanded(child: SizedBox(), flex: 1),
+            const Expanded(child: SizedBox(), flex: 8)
+          ]),
+          flex: 5)
+    ]);
+  }
+
+  ChoiceChip categoryChoice(DevelopmentCategory cat) {
+    return ChoiceChip(
+      selectedColor: selectedToggleColor,
+      disabledColor: unselectedToggleColor,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(5))),
+      label: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: SizedBox(
+            child: Center(
+                child: Row(mainAxisSize: MainAxisSize.min, children: [
+              Icon(Icons.circle, color: cat.color, size: 7),
+              const SizedBox(width: 5),
+              Text(cat.name,
+                  style: cat.index == _value
+                      ? Fonts.mediumWhiteTextStyle
+                      : Fonts.mediumTextStyle)
+            ])),
+            width: double.infinity,
+          )),
+      selected: _value == cat.index,
+      onSelected: (bool selected) {
+        setState(() {
+          _value = selected ? cat.index : -1;
+        });
+        callback?.call(_value);
+      },
+    );
   }
 }
 

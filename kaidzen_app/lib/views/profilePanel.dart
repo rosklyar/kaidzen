@@ -1,6 +1,8 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/ProgressState.dart';
 import 'package:kaidzen_app/achievements/achievementsScreen.dart';
 import 'package:provider/provider.dart';
@@ -51,8 +53,8 @@ class ProfilePanelState extends State<ProfilePanel> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(progressState.getTotalLevel().toString(),
-                                      style: mediumTextStyle),
-                                  const Text('LVL', style: smallTextStyle)
+                                      style: Fonts.mediumTextStyle),
+                                  Text('LVL', style: Fonts.smallTextStyle)
                                 ],
                               ),
                             )),
@@ -70,12 +72,15 @@ class ProfilePanelState extends State<ProfilePanel> {
                             Stack(children: [
                               IconButton(
                                 padding: EdgeInsets.zero,
-                                onPressed: () {
+                                onPressed: () async {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               const AchievementsScreen()));
+                                  await FirebaseAnalytics.instance.logEvent(
+                                      name: AnalyticsEventType
+                                          .ACHIEVEMENTS_SCREEN_OPENED.name);
                                 },
                                 icon:
                                     Image.asset("assets/achievements_icon.png"),
@@ -91,11 +96,15 @@ class ProfilePanelState extends State<ProfilePanel> {
                                           achievementsState
                                               .getCompletedAchievementsCount()
                                               .toString(),
-                                          style: mediumTextStyle)))
+                                          style: Fonts.mediumTextStyle)))
                             ]),
                             IconButton(
                               padding: EdgeInsets.zero,
-                              onPressed: () {},
+                              onPressed: () async {
+                                await FirebaseAnalytics.instance.logEvent(
+                                    name: AnalyticsEventType
+                                        .SETTINGS_SCREEN_OPENED.name);
+                              },
                               icon: Image.asset("assets/burger_icon.png"),
                             )
                           ],
@@ -229,16 +238,16 @@ class _ProgressIndicatorState extends State<ProgressIndicator>
                   children: [
                     Text(
                       " ${widget.title}",
-                      style: mediumTextStyle,
+                      style: Fonts.mediumTextStyle,
                     ),
                     Row(children: [
-                      const Text(
+                      Text(
                         "LVL   ",
-                        style: smallTextStyle,
+                        style: Fonts.smallTextStyle,
                       ),
                       Text(
                         "${widget.level}",
-                        style: mediumTextStyle,
+                        style: Fonts.mediumTextStyle,
                       ),
                     ]),
                   ])),

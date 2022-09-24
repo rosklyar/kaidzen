@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Status {
   static const String TODO = "Do";
@@ -55,36 +56,39 @@ const inputHintTextStyle = TextStyle(
     fontSize: 16, color: inputInactiveBorderColor, fontFamily: 'Montserrat');
 const activeButtonColor = Color.fromRGBO(18, 17, 17, 1);
 
-const TextStyle smallTextStyle = TextStyle(
-  fontSize: 8,
-  fontFamily: "Montserrat",
-  color: Colors.black,
-);
+class Fonts {
+  static TextStyle smallTextStyle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+    fontSize: 8,
+    color: Colors.black,
+  ));
 
-const TextStyle mediumTextStyle = TextStyle(
-  fontSize: 12,
-  fontFamily: "Montserrat",
-  color: Colors.black,
-);
+  static TextStyle mediumTextStyle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+    fontSize: 12,
+    color: Colors.black,
+  ));
 
-const TextStyle largeTextStyle = TextStyle(
-  fontSize: 16,
-  fontFamily: "Montserrat",
-  color: Colors.black,
-);
+  static TextStyle largeTextStyle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+    fontSize: 16,
+    color: Colors.black,
+  ));
 
-const TextStyle largeTextStyle20 = TextStyle(
-  fontSize: 20,
-  fontFamily: "Montserrat",
-  color: Colors.black,
-);
+  static TextStyle largeTextStyle20 = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+    fontSize: 20,
+    color: Colors.black,
+  ));
 
-const TextStyle screenTytleTextStyle = TextStyle(
-  fontSize: 24,
-  fontFamily: "Montserrat",
-  fontWeight: FontWeight.bold,
-  color: Colors.black,
-);
+  static TextStyle screenTytleTextStyle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
+    color: Colors.black,
+  ));
 
-const TextStyle mediumWhiteTextStyle =
-    TextStyle(fontSize: 12, fontFamily: "Montserrat", color: Colors.white);
+  static TextStyle mediumWhiteTextStyle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+          fontSize: 12, fontFamily: "Montserrat", color: Colors.white));
+}

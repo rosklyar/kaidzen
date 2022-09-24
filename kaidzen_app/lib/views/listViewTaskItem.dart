@@ -1,19 +1,13 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
-import 'package:kaidzen_app/service/TasksState.dart';
-import 'package:kaidzen_app/utils/margin.dart';
 import 'package:kaidzen_app/utils/theme.dart';
 import 'package:kaidzen_app/views/viewTask.dart';
-import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
-import '../service/ProgressState.dart';
 import 'MoveTaskIconButton.dart';
-import 'createTask.dart';
 
 class ListViewTaskItem extends ListTile {
   const ListViewTaskItem({
@@ -47,6 +41,7 @@ class ListViewTaskItem extends ListTile {
     );
   }
 }
+
 class ListTileTrail extends StatelessWidget {
   const ListTileTrail({
     Key? key,

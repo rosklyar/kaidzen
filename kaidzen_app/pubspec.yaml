@@ -37,7 +37,7 @@ dependencies:
   flutter_feather_icons: ^2.0.0+1
   flutter_native_splash: ^2.2.2
   expandable: ^5.0.1
-  google_fonts: ^3.0.0
+  google_fonts: ^3.0.1
   toggle_switch: ^2.0.1
   percent_indicator: ^4.0.1
   sqflite: ^2.0.2+1
@@ -46,6 +46,8 @@ dependencies:
   chip_list: ^2.2.3+7
   flutter_svg: ^1.1.4
   sliding_up_panel: ^2.0.0+1
+  cloud_firestore: ^3.4.8
+  firebase_analytics: ^9.3.5
 
 
 dev_dependencies:

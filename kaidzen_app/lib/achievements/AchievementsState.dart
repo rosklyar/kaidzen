@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:kaidzen_app/achievements/AchievementsRepository.dart';
 
@@ -9,6 +10,7 @@ import 'package:kaidzen_app/achievements/set/default/NTasksCompletedEachKDaysFor
 import 'package:kaidzen_app/achievements/set/default/TaskCompletedInSomeSphereAchievement.dart';
 import 'package:kaidzen_app/achievements/set/default/TaskCreatedAchievement.dart';
 import 'package:kaidzen_app/achievements/set/default/TasksCompletedInAllSpheresAchievement.dart';
+import 'package:kaidzen_app/service/AnalyticsService.dart';
 
 class AchievementsState extends ChangeNotifier {
   AchievementsRepository achievementsRepository;
@@ -20,9 +22,9 @@ class AchievementsState extends ChangeNotifier {
   AchievementsState(
       {required this.eventsRepository, required this.achievementsRepository}) {
     var fiveTasksCreatedAchievement =
-        TaskCreatedAchievement(0, 5, eventsRepository: eventsRepository);
+        TaskCreatedAchievement(0, 25, eventsRepository: eventsRepository);
     var twentyFiveTasksCreatedAchievement =
-        TaskCreatedAchievement(1, 25, eventsRepository: eventsRepository);
+        TaskCreatedAchievement(1, 50, eventsRepository: eventsRepository);
     var hundredTasksCreatedAchievement =
         TaskCreatedAchievement(2, 100, eventsRepository: eventsRepository);
     var fiveTasksCompletedInSomeSphereAchievement =
@@ -43,14 +45,15 @@ class AchievementsState extends ChangeNotifier {
     var thirtyTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
         8, 40,
         eventsRepository: eventsRepository);
-    var fourWeeks5tasksCompletedAchievement =
-        NTasksCompletedEachKDaysForMPeriodsAchievement(9, 5, 7, 4,
+    var twoWeeks5tasksCompletedAchievement =
+        NTasksCompletedEachKDaysForMPeriodsAchievement(9, 5, 7, 2,
             eventsRepository: eventsRepository);
-    var fourWeeks10tasksCompletedAchievement =
-        NTasksCompletedEachKDaysForMPeriodsAchievement(10, 10, 7, 4,
+    var threeWeeks10tasksCompletedAchievement =
+        NTasksCompletedEachKDaysForMPeriodsAchievement(10, 10, 7, 3,
             eventsRepository: eventsRepository);
-    var secretAchievement =
-        TaskCreatedAchievement(11, 10, eventsRepository: eventsRepository);
+    var fourWeeks20tasksCompletedAchievement =
+        NTasksCompletedEachKDaysForMPeriodsAchievement(11, 20, 7, 4,
+            eventsRepository: eventsRepository);
 
     achievements = {
       fiveTasksCreatedAchievement.id: fiveTasksCreatedAchievement,
@@ -65,11 +68,11 @@ class AchievementsState extends ChangeNotifier {
       fiveTasksCompletedInEachSphere.id: fiveTasksCompletedInEachSphere,
       tenTasksCompletedInEachSphere.id: tenTasksCompletedInEachSphere,
       thirtyTasksCompletedInEachSphere.id: thirtyTasksCompletedInEachSphere,
-      fourWeeks5tasksCompletedAchievement.id:
-          fourWeeks5tasksCompletedAchievement,
-      fourWeeks10tasksCompletedAchievement.id:
-          fourWeeks10tasksCompletedAchievement,
-      secretAchievement.id: secretAchievement
+      twoWeeks5tasksCompletedAchievement.id: twoWeeks5tasksCompletedAchievement,
+      threeWeeks10tasksCompletedAchievement.id:
+          threeWeeks10tasksCompletedAchievement,
+      fourWeeks20tasksCompletedAchievement.id:
+          fourWeeks20tasksCompletedAchievement
     };
   }
 
@@ -110,6 +113,10 @@ class AchievementsState extends ChangeNotifier {
       final widget = await widgetsFutures[i].value;
       detailsWidgets[widgetsFutures[i].key] = widget;
     }
+
+    await FirebaseAnalytics.instance.setUserProperty(
+        name: AnalyticsUserProperties.ACHIEVEMENTS_COMPLETED.name.toLowerCase(),
+        value: getCompletedAchievementsCount().toString());
 
     notifyListeners();
   }

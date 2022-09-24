@@ -1,40 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-const TextStyle achievementsAppBarTextStyle = TextStyle(
-    fontSize: 24,
-    color: Colors.white,
-    fontWeight: FontWeight.bold,
-    fontFamily: 'Montserrat');
+class AchievementsStyle {
+  static TextStyle achievementsAppBarTextStyle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+          fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold));
 
-const TextStyle achievementsDescriptionTextStyle =
-    TextStyle(fontSize: 16, color: Colors.white, fontFamily: 'Montserrat');
+  static TextStyle achievementsDescriptionTextStyle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(fontSize: 16, color: Colors.white));
 
-const TextStyle achievementsTitleTextStyle =
-    TextStyle(fontSize: 14, color: Colors.white, fontFamily: 'Lato');
+  static TextStyle achievementsTitleTextStyle = GoogleFonts.lato(
+      textStyle: const TextStyle(fontSize: 14, color: Colors.white));
 
-const TextStyle achievementsDetailsTextStyle = TextStyle(
-    fontSize: 16,
-    color: Color.fromRGBO(86, 92, 95, 1),
-    fontFamily: 'Montserrat');
-const TextStyle achievementsDetailsAchievedTextStyle = TextStyle(
-    fontSize: 16,
-    color: Color.fromRGBO(186, 169, 255, 1),
-    fontFamily: 'Montserrat');
+  static TextStyle achievementsDetailsTextStyle = GoogleFonts.montserrat(
+      textStyle:
+          const TextStyle(fontSize: 16, color: Color.fromRGBO(86, 92, 95, 1)));
+  static TextStyle achievementsDetailsAchievedTextStyle =
+      GoogleFonts.montserrat(
+          textStyle: const TextStyle(
+              fontSize: 16, color: Color.fromRGBO(186, 169, 255, 1)));
 
-const Color achievementScreenBackgroundColor = Color.fromRGBO(45, 45, 45, 1);
+  static Color achievementScreenBackgroundColor =
+      const Color.fromRGBO(45, 45, 45, 1);
 
-const Color notCompletedAchievementScreenBackgroundColor =
-    Color.fromRGBO(189, 188, 199, 1);
-const Color completedAchievementScreenBackgroundColor =
-    Color.fromARGB(255, 185, 197, 205);
+  static Color notCompletedAchievementScreenBackgroundColor =
+      const Color.fromRGBO(189, 188, 199, 1);
+  static Color completedAchievementScreenBackgroundColor =
+      const Color.fromARGB(255, 185, 197, 205);
 
-const Color notCompletedAchievementScreenProgressColor =
-    Color.fromARGB(255, 151, 146, 132);
+  static Color notCompletedAchievementScreenProgressColor =
+      const Color.fromARGB(255, 151, 146, 132);
 
-const Color achievementDetailsActiveProgressColor =
-    Color.fromRGBO(195, 184, 239, 1);
-const Color achievementDetailsNotActiveProgressColor =
-    Color.fromRGBO(141, 140, 148, 1);
+  static Color achievementDetailsActiveProgressColor =
+      const Color.fromRGBO(195, 184, 239, 1);
+  static Color achievementDetailsNotActiveProgressColor =
+      const Color.fromRGBO(141, 140, 148, 1);
 
-const Color achievementDetailsBackgroundProgressColor =
-    Color.fromRGBO(108, 107, 107, 1);
+  static Color achievementDetailsBackgroundProgressColor =
+      const Color.fromRGBO(108, 107, 107, 1);
+}
