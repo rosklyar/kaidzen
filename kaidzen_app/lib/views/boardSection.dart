@@ -1,8 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:kaidzen_app/achievements/AchievementsState.dart';
-import 'package:kaidzen_app/achievements/event.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/utils/margin.dart';

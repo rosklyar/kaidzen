@@ -29,7 +29,8 @@ class DetailsRowWidget extends StatelessWidget {
               child: LinearProgressIndicator(
                   value: progress,
                   valueColor: AlwaysStoppedAnimation<Color>(progressColor),
-                  backgroundColor: achievementDetailsBackgroundProgressColor)),
+                  backgroundColor: AchievementsStyle
+                      .achievementDetailsBackgroundProgressColor)),
           const SizedBox(height: 5),
           Row(
             children: [

@@ -29,7 +29,7 @@ class TaskCreatedAchievement extends Achievement {
         await eventsRepository.getEventsNumberByType(EventType.taskCreated);
     return DetailsRowWidget(
         progress: (createdTasks / numberOfTasks).clamp(0.0, 1.0),
-        progressColor: achievementDetailsActiveProgressColor,
+        progressColor: AchievementsStyle.achievementDetailsActiveProgressColor,
         leadingText: "All spheres",
         centerText: "${numberOfTasks - createdTasks} goals ahead");
   }

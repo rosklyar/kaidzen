@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
@@ -16,7 +14,7 @@ class AchievementsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AchievementsState>(
         builder: (context, achievementsState, child) => Scaffold(
-            backgroundColor: achievementScreenBackgroundColor,
+            backgroundColor: AchievementsStyle.achievementScreenBackgroundColor,
             body: Column(children: [
               Expanded(
                   child: Padding(
@@ -25,8 +23,9 @@ class AchievementsScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const SizedBox(width: 32),
-                            const Text('Achievements',
-                                style: achievementsAppBarTextStyle),
+                            Text('Achievements',
+                                style: AchievementsStyle
+                                    .achievementsAppBarTextStyle),
                             IconButton(
                               iconSize: 32,
                               icon: Image.asset("assets/close_icon.png"),
@@ -73,7 +72,8 @@ class AchievementsScreen extends StatelessWidget {
                           const Expanded(child: SizedBox(), flex: 1),
                           Expanded(
                               child: Text(achievement.title,
-                                  style: achievementsTitleTextStyle),
+                                  style: AchievementsStyle
+                                      .achievementsTitleTextStyle),
                               flex: 2)
                         ],
                       );
@@ -122,8 +122,8 @@ class AchievementsScreen extends StatelessWidget {
                     }),
                 flex: 1)
           ])
-        : const Text("Gain\nachievements\nby reaching\nyour goals",
-            style: achievementsDescriptionTextStyle,
+        : Text("Gain\nachievements\nby reaching\nyour goals",
+            style: AchievementsStyle.achievementsDescriptionTextStyle,
             textAlign: TextAlign.center);
   }
 }

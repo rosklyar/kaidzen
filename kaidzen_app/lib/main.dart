@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/AchievementsRepository.dart';
 import 'package:kaidzen_app/achievements/EventsRepository.dart';

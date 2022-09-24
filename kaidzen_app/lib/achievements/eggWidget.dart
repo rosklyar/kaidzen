@@ -1,8 +1,10 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 
+import '../service/AnalyticsService.dart';
 import 'achievementDetailsScreen.dart';
 
 class EggWidget extends StatelessWidget {
@@ -28,7 +30,7 @@ class EggWidget extends StatelessWidget {
                 width: double.infinity,
                 height: double.infinity,
                 "assets/achievements/sets/${achievement.setId}/${achievement.iconName}"),
-            onTap: () {
+            onTap: () async {
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -36,6 +38,9 @@ class EggWidget extends StatelessWidget {
                           achievementSnapshot: achievement,
                           details: achievementsState
                               .getDetailsWidget(achievement.id))));
+              await FirebaseAnalytics.instance.logEvent(
+                  name: AnalyticsEventType.ACHIEVEMENT_DETAILS_OPENED.name,
+                  parameters: {"id": achievement.id});
             })
       ]);
     } else {
@@ -43,7 +48,7 @@ class EggWidget extends StatelessWidget {
         getEggCrack(achievement),
         InkWell(
             child: getProgress(achievement.progress, achievement.isSecret),
-            onTap: () {
+            onTap: () async {
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -51,10 +56,16 @@ class EggWidget extends StatelessWidget {
                           achievementSnapshot: achievement,
                           details: achievementsState
                               .getDetailsWidget(achievement.id))));
+              await FirebaseAnalytics.instance.logEvent(
+                  name: AnalyticsEventType.ACHIEVEMENT_DETAILS_OPENED.name,
+                  parameters: {"id": achievement.id});
               if (achievement.status == AchievementStatus.completed) {
                 achievementsState.updateAchievementSnapshot(
                     AchievementSnapshot.updateStatus(
                         achievement, AchievementStatus.completedAndShown));
+                await FirebaseAnalytics.instance.logEvent(
+                    name: AnalyticsEventType.ACHIEVEMENT_COLLECTED.name,
+                    parameters: {"id": achievement.id});
               }
             }),
         Visibility(

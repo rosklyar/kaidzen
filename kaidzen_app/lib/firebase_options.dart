@@ -50,14 +50,13 @@ class DefaultFirebaseOptions {
       projectId: 'funworkstudiostickygoals');
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'xxxxxxxxxxxxxxxxxxx',
-    appId: 'xxxxxxxxxxxxxxxxxxx',
-    messagingSenderId: 'xxxxxxxxxxxxxxxxxxx',
-    projectId: 'xxxxxxxxxxxxxxxxxxx',
-    databaseURL: 'xxxxxxxxxxxxxxxxxxx',
-    storageBucket: 'xxxxxxxxxxxxxxxxxxx',
-    androidClientId: 'xxxxxxxxxxxxxxxxxxx',
-    iosClientId: 'xxxxxxxxxxxxxxxxxxx',
-    iosBundleId: 'xxxxxxxxxxxxxxxxxxx',
+    apiKey: 'AIzaSyBm1T3lKjA_QjO7mTo8gXj3wAPS5BU52NI',
+    appId: '1:16476665240:ios:47141ce7e0307437ca67ed',
+    messagingSenderId: '16476665240',
+    projectId: 'funworkstudiostickygoals',
+    storageBucket: 'funworkstudiostickygoals.appspot.com',
+    iosClientId:
+        '16476665240-ih9fnn4ufva7ebqsqoq6s9gurvme73ik.apps.googleusercontent.com',
+    iosBundleId: 'com.funworkstudio.stickygoals.ios',
   );
 }

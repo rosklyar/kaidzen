@@ -53,8 +53,8 @@ class ProfilePanelState extends State<ProfilePanel> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(progressState.getTotalLevel().toString(),
-                                      style: mediumTextStyle),
-                                  const Text('LVL', style: smallTextStyle)
+                                      style: Fonts.mediumTextStyle),
+                                  Text('LVL', style: Fonts.smallTextStyle)
                                 ],
                               ),
                             )),
@@ -96,7 +96,7 @@ class ProfilePanelState extends State<ProfilePanel> {
                                           achievementsState
                                               .getCompletedAchievementsCount()
                                               .toString(),
-                                          style: mediumTextStyle)))
+                                          style: Fonts.mediumTextStyle)))
                             ]),
                             IconButton(
                               padding: EdgeInsets.zero,
@@ -238,16 +238,16 @@ class _ProgressIndicatorState extends State<ProgressIndicator>
                   children: [
                     Text(
                       " ${widget.title}",
-                      style: mediumTextStyle,
+                      style: Fonts.mediumTextStyle,
                     ),
                     Row(children: [
-                      const Text(
+                      Text(
                         "LVL   ",
-                        style: smallTextStyle,
+                        style: Fonts.smallTextStyle,
                       ),
                       Text(
                         "${widget.level}",
-                        style: mediumTextStyle,
+                        style: Fonts.mediumTextStyle,
                       ),
                     ]),
                   ])),

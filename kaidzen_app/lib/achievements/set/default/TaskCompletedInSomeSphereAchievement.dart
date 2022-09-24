@@ -42,8 +42,8 @@ class TaskCompletedInSomeSphereAchievement extends Achievement {
           child: DetailsRowWidget(
               progress: completedTasks[e.id] / numberOfTasks,
               progressColor: e.id == maxIndex
-                  ? achievementDetailsActiveProgressColor
-                  : achievementDetailsNotActiveProgressColor,
+                  ? AchievementsStyle.achievementDetailsActiveProgressColor
+                  : AchievementsStyle.achievementDetailsNotActiveProgressColor,
               leadingText: e.name,
               centerText: completedTasks[e.id] > 0
                   ? "${numberOfTasks - completedTasks[e.id]} goals ahead"

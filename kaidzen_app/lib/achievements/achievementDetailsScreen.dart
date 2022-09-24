@@ -14,7 +14,7 @@ class AchievementDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: achievementScreenBackgroundColor,
+        backgroundColor: AchievementsStyle.achievementScreenBackgroundColor,
         body: Column(children: [
           Expanded(
               child: Padding(
@@ -61,13 +61,15 @@ class AchievementDetailsScreen extends StatelessWidget {
                 Expanded(
                     child: Center(
                         child: Text(achievementSnapshot.title,
-                            style: achievementsAppBarTextStyle)),
+                            style:
+                                AchievementsStyle.achievementsAppBarTextStyle)),
                     flex: 1),
                 Expanded(
                     child: Visibility(
                         visible: !achievementSnapshot.isSecret,
                         child: Text(achievementSnapshot.description,
-                            style: achievementsDescriptionTextStyle)),
+                            style: AchievementsStyle
+                                .achievementsDescriptionTextStyle)),
                     flex: 1),
                 Expanded(
                     child: !achievementSnapshot.isSecret &&
