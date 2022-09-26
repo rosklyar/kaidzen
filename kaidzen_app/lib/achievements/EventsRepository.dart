@@ -120,6 +120,15 @@ class EventsRepository {
     return Event.fromMap(maps.first);
   }
 
+  Future<List<Event>> getEventsAfter(DateTime ts) async {
+    if (db == null) {
+      await open();
+    }
+    final List<Map<String, dynamic>> maps = await db!.rawQuery(
+        'SELECT * FROM $tableEvents WHERE $columnEventTs > \'$ts\'');
+    return maps.isNotEmpty ? maps.map((e) => Event.fromMap(maps.first)).toList() : List.empty();
+  }
+
   Future<int> getNumberOfTasksCompletedInPeriod(
       DateTime tsFrom, DateTime tsTo) async {
     if (db == null) {

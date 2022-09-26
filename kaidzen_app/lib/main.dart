@@ -3,7 +3,8 @@ import 'package:kaidzen_app/achievements/AchievementsRepository.dart';
 import 'package:kaidzen_app/achievements/EventsRepository.dart';
 
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
-import 'package:kaidzen_app/service/AnalyticsService.dart';
+import 'package:kaidzen_app/emotions/EmotionPointsRepository.dart';
+import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/views/createTask.dart';
@@ -27,14 +28,18 @@ void main() async {
   ProgressState progressState = ProgressState(
     repository: ProgressRepository(),
   );
+  var eventsRepository = EventsRepository();
   AchievementsState achievementsState = AchievementsState(
-      eventsRepository: EventsRepository(),
+      eventsRepository: eventsRepository,
       achievementsRepository: AchievementsRepository());
+
+  EmotionsState emotionsState = EmotionsState(eventsRepository, EmotionPointsRepository());
 
   TasksState taskState = TasksState(
       repository: TaskRepository(),
       progressState: progressState,
-      achievementsState: achievementsState);
+      achievementsState: achievementsState,
+      emotionsState: emotionsState);
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) {
@@ -49,6 +54,10 @@ void main() async {
     ChangeNotifierProvider(create: (context) {
       achievementsState.loadAll();
       return achievementsState;
+    }),
+    ChangeNotifierProvider(create: (context) {
+      emotionsState.loadAll();
+      return emotionsState;
     }),
   ], child: const MyApp()));
 }

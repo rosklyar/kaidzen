@@ -46,7 +46,7 @@ class AchievementsScreen extends StatelessWidget {
                         children: [
                           Row(children: [
                             const SizedBox(width: 20),
-                            Image.asset("assets/dragon.png")
+                            Image.asset("assets/emotions/regular.png")
                           ]),
                           Row(children: [
                             getNewAchievementsComponent(

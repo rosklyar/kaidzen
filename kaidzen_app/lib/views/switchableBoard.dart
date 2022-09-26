@@ -25,6 +25,8 @@ class SwitchableBoardState extends State<SwitchableBoard> {
     Status.DONE,
   ];
 
+  var currentState = Status.TODO;
+
   void addItem(Task newTask) {
     Provider.of<TasksState>(context, listen: false).addTask(newTask);
   }
@@ -76,21 +78,23 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                   totalSwitches: 3,
                   labels: const [Status.TODO, Status.DOING, Status.DONE],
                   onToggle: (index) {
+                    currentState = _boards[index!];
                     _switchableBoardContainerKey.currentState
-                        ?.changeBoard(_boards[index!]);
+                        ?.changeBoard(currentState);
                   },
                 ),
               ),
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 50),
-                  child: Consumer<TasksState>(
-                      builder: (context, state, child) {
-                        debugPrint("building SwitchableBoardContainer");
-                        return SwitchableBoardContainer(state, Status.TODO, ScrollController(),
-                              key: _switchableBoardContainerKey);
-                      }
-                          ),
+                  child: Consumer<TasksState>(builder: (context, state, child) {
+                    debugPrint("building SwitchableBoardContainer");
+                    return SwitchableBoardContainer(
+                        state,
+                        currentState,
+                        ScrollController(),
+                        key: _switchableBoardContainerKey);
+                  }),
                 ),
               )
             ],
@@ -119,7 +123,6 @@ class SwitchableBoardContainer extends StatefulWidget {
 }
 
 class SwitchableBoardContainerState extends State<SwitchableBoardContainer> {
-
   void changeBoard(String board) {
     if (widget.currentBoard != board) {
       setState(() {

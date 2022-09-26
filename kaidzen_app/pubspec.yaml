@@ -82,6 +82,7 @@ flutter:
     - assets/achievements/new_origami_text/
     - assets/achievements/
     - assets/inspiration/
+    - assets/emotions/
     - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
