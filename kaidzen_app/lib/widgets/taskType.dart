@@ -43,8 +43,8 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
                             const SizedBox(width: 5),
                             Text(cat.name,
                                 style: cat.index == _value
-                                    ? mediumWhiteTextStyle
-                                    : mediumTextStyle)
+                                    ? Fonts.mediumWhiteTextStyle
+                                    : Fonts.mediumTextStyle)
                           ])),
                       selected: _value == cat.index,
                       onSelected: (bool selected) {

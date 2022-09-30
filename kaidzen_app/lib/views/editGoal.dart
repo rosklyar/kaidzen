@@ -55,11 +55,11 @@ class _EditGoalState extends State<EditGoal> {
                                 },
                               ),
                               flex: 1),
-                          const Expanded(
+                         Expanded(
                               child: Center(
                                   child: Text(
                                 "Goal",
-                                style: screenTytleTextStyle,
+                                style: Fonts.screenTytleTextStyle,
                               )),
                               flex: 9),
                           const Expanded(child: SizedBox(), flex: 1)
@@ -91,14 +91,14 @@ class _EditGoalState extends State<EditGoal> {
                           controller: newTaskController,
                         )),
                     flex: 3),
-                const Expanded(
+               Expanded(
                     child: Padding(
                         padding: EdgeInsets.only(left: 10),
                         child: SizedBox(
                             width: double.infinity,
                             child: Text("Life sphere to be affected",
                                 textAlign: TextAlign.left,
-                                style: largeTextStyle))),
+                                style: Fonts.largeTextStyle))),
                     flex: 1),
                 Expanded(
                     child: Padding(
@@ -124,7 +124,7 @@ class _EditGoalState extends State<EditGoal> {
                       onPressed: submit,
                       child: Text('Save',
                           style:
-                              largeTextStyle20.copyWith(color: Colors.white)),
+                              Fonts.largeTextStyle20.copyWith(color: Colors.white)),
                       style:
                           ElevatedButton.styleFrom(primary: activeButtonColor),
                     ))),
@@ -142,7 +142,7 @@ class _EditGoalState extends State<EditGoal> {
               width: double.infinity,
               child: Text(
                 "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
-                style: largeTextStyle,
+                style: Fonts.largeTextStyle,
               ))),
       Padding(
           padding: const EdgeInsets.only(left: 10, right: 10, top: 15),

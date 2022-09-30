@@ -4,9 +4,11 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/models/inspiration.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 import '../achievements/AchievementsState.dart';
 import '../achievements/event.dart';

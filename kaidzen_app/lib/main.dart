@@ -5,6 +5,7 @@ import 'package:kaidzen_app/achievements/EventsRepository.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/emotions/EmotionPointsRepository.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
+import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/views/createTask.dart';

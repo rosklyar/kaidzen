@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
@@ -52,12 +53,10 @@ class ProfilePanelState extends State<ProfilePanel>
                                   child: resolveEmotionedAvatar(emotionsState)),
                             ]),
                             Row(children: [
-                              const Padding(
+                              Padding(
                                   padding: EdgeInsets.only(left: 65, top: 2),
-                                  child: Text("LVL ",
-                                      style: Fonts.smallTextStyle)),
-                              Text(progressState.getTotalLevel().toString(),
-                                  style: Fonts.mediumTextStyle))
+                                  child: Text("LVL ", style: Fonts.smallTextStyle,)),
+                              Text(progressState.getTotalLevel().toString(), style: Fonts.mediumTextStyle,)
                             ])
                           ]),
                           flex: 4),
@@ -70,7 +69,7 @@ class ProfilePanelState extends State<ProfilePanel>
                                 Stack(children: [
                                   IconButton(
                                     padding: EdgeInsets.zero,
-                                    onPressed: () {
+                                    onPressed: () async {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -94,7 +93,7 @@ class ProfilePanelState extends State<ProfilePanel>
                                               achievementsState
                                                   .getCompletedAchievementsCount()
                                                   .toString(),
-                                              style: mediumTextStyle)))
+                                              style: Fonts.mediumTextStyle)))
                                 ]),
                                 IconButton(
                                   padding: EdgeInsets.zero,
