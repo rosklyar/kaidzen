@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:provider/provider.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:kaidzen_app/views/boardSection.dart';
 import 'package:kaidzen_app/assets/constants.dart';
@@ -24,6 +25,8 @@ class SwitchableBoardState extends State<SwitchableBoard> {
     Status.DONE,
   ];
 
+  var currentState = Status.TODO;
+
   void addItem(Task newTask) {
     Provider.of<TasksState>(context, listen: false).addTask(newTask);
   }
@@ -35,68 +38,82 @@ class SwitchableBoardState extends State<SwitchableBoard> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: SingleChildScrollView(
-            child: Stack(children: [
-          Positioned(
-              child: Image.asset("assets/mountains_big.png",
-                  width: MediaQuery.of(context).size.width),
-              top: 0),
-          Padding(
-              padding: const EdgeInsets.only(top: 75),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(30)),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 20.0,
-                    sigmaY: 20.0,
-                  ),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: ToggleSwitch(
-                          fontSize: 18,
-                          minWidth: double.infinity,
-                          cornerRadius: 30.0,
-                          radiusStyle: true,
-                          minHeight: 50.0,
-                          activeBgColor: const [selectedToggleColor],
-                          activeFgColor: Colors.white,
-                          inactiveBgColor: unselectedToggleColor.withOpacity(0),
-                          inactiveFgColor: Colors.black,
-                          initialLabelIndex: 1,
-                          totalSwitches: 3,
-                          labels: const [
-                            Status.TODO,
-                            Status.DOING,
-                            Status.DONE
-                          ],
-                          onToggle: (index) {
-                            _switchableBoardContainerKey.currentState
-                                ?.changeBoard(_boards[index!]);
-                          },
-                        ),
-                      ),
-                      Consumer<TasksState>(
-                          builder: (context, state, child) =>
-                              SwitchableBoardContainer(state,
-                                  key: _switchableBoardContainerKey))
-                    ],
-                  ),
+    var parentHeight = MediaQuery.of(context).size.height;
+    debugPrint("building Panel");
+    return SlidingUpPanel(
+      boxShadow: const <BoxShadow>[
+        BoxShadow(
+          blurRadius: 8.0,
+          color: Color.fromRGBO(255, 255, 255, 0),
+        )
+      ],
+      color: Colors.white.withOpacity(0),
+      maxHeight: parentHeight,
+      minHeight: parentHeight * 0.63,
+      panel: SizedBox(
+          //width: parentWidth,
+          //height: parentHeight,
+          child: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(30)),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(
+            sigmaX: 20.0,
+            sigmaY: 20.0,
+          ),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: ToggleSwitch(
+                  fontSize: 18,
+                  minWidth: double.infinity,
+                  cornerRadius: 30.0,
+                  radiusStyle: true,
+                  minHeight: 50.0,
+                  activeBgColor: const [selectedToggleColor],
+                  activeFgColor: Colors.white,
+                  inactiveBgColor: unselectedToggleColor.withOpacity(0),
+                  inactiveFgColor: Colors.black,
+                  initialLabelIndex: 0,
+                  totalSwitches: 3,
+                  labels: const [Status.TODO, Status.DOING, Status.DONE],
+                  onToggle: (index) {
+                    currentState = _boards[index!];
+                    _switchableBoardContainerKey.currentState
+                        ?.changeBoard(currentState);
+                  },
                 ),
-              ))
-        ])));
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 50),
+                  child: Consumer<TasksState>(builder: (context, state, child) {
+                    debugPrint("building SwitchableBoardContainer");
+                    return SwitchableBoardContainer(
+                        state,
+                        currentState,
+                        ScrollController(),
+                        key: _switchableBoardContainerKey);
+                  }),
+                ),
+              )
+            ],
+          ),
+        ),
+      )),
+    );
   }
 }
 
 class SwitchableBoardContainer extends StatefulWidget {
   final TasksState tasksState;
+  String currentBoard;
+  final ScrollController sc;
 
-  const SwitchableBoardContainer(
-    this.tasksState, {
+  SwitchableBoardContainer(
+    this.tasksState,
+    this.currentBoard,
+    this.sc, {
     Key? key,
   }) : super(key: key);
 
@@ -106,33 +123,20 @@ class SwitchableBoardContainer extends StatefulWidget {
 }
 
 class SwitchableBoardContainerState extends State<SwitchableBoardContainer> {
-  late String currentBoard = Status.DOING;
-  final GlobalKey<BoardState> _doBoardKey = GlobalKey();
-  final GlobalKey<BoardState> _doingBoardKey = GlobalKey();
-  final GlobalKey<BoardState> _doneBoardKey = GlobalKey();
-  final Map<String, GlobalKey<BoardState>> states = {};
-
-  @override
-  void initState() {
-    setState(() {
-      states.putIfAbsent(Status.TODO, () => _doBoardKey);
-      states.putIfAbsent(Status.DOING, () => _doingBoardKey);
-      states.putIfAbsent(Status.DONE, () => _doneBoardKey);
-    });
-    super.initState();
-  }
-
   void changeBoard(String board) {
-    setState(() {
-      currentBoard = board;
-    });
+    if (widget.currentBoard != board) {
+      setState(() {
+        widget.currentBoard = board;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("building Board" + widget.currentBoard);
     return Board(
-        key: states[currentBoard],
-        name: currentBoard,
-        list: widget.tasksState.getByStatus(currentBoard));
+        name: widget.currentBoard,
+        list: widget.tasksState.getByStatus(widget.currentBoard),
+        sc: widget.sc);
   }
 }

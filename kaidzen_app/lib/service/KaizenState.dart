@@ -13,9 +13,6 @@ const String columnTaskStatus = 'status';
 const String columnTaskParentId = 'parent_id';
 const String columnTaskCategory = 'category_id';
 const String columnTaskDifficulty = 'difficulty_id';
-
-const String tableSubtaskMapping = 'taskToParent';
-const String columnSubtaskId = '_task_id';
 const String columnParentId = '_parent_id';
 
 const String tableEvents = 'events';
@@ -40,6 +37,11 @@ const String columnPeriodAchievementInfoId = '_id';
 const String columnPeriodAchievementInfoAchId = 'achievement_id';
 const String columnPeriodAchievementInfoStartEventId = 'start_event_id';
 
+const String tableEmotionPoints = 'emotionPoints';
+const String columnEmotionId = '_id';
+const String columnEmotionPoints = 'points';
+const String columnEmotionUpdateTs = 'update_ts';
+
 class KaizenDb {
   static Database? _db;
 
@@ -56,6 +58,10 @@ class KaizenDb {
       await db.execute('''
             drop table if exists $tableProgress;
             drop table if exists $tableTask;
+            drop table if exists $tableEvents;
+            drop table if exists $tableAchievements;
+            drop table if exists $tableEmotionPoints;
+            drop table if exists $tablePeriodAchievementInfo;
             ''');
       await initDb(db);
     });
@@ -136,6 +142,19 @@ class KaizenDb {
                 (0, 9, -1),
                 (1, 10, -1),
                 (2, 11, -1);
+          ''');
+
+ await db.execute('''
+            create table $tableEmotionPoints ( 
+            $columnEmotionId integer primary key, 
+            $columnEmotionPoints integer not null,
+            $columnEmotionUpdateTs datetime not null)
+          ''');
+
+    final now = DateTime.now().toString();
+    await db.execute('''
+            insert into $tableEmotionPoints values
+                (1, 0, '$now');
           ''');
   }
 }

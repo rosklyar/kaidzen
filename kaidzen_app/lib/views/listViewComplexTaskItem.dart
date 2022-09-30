@@ -2,7 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
-import 'package:kaidzen_app/views/createSubTask.dart';
+import 'package:kaidzen_app/service/TasksState.dart';
+import 'package:kaidzen_app/utils/margin.dart';
+import 'package:kaidzen_app/utils/theme.dart';
+import 'package:kaidzen_app/views/createSubgoal.dart';
+import 'package:kaidzen_app/views/viewGoal.dart';
+import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
 import '../utils/dashSeparator.dart';
@@ -60,7 +65,7 @@ List<Widget> buildExpandableContent(BuildContext context, Task task) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => CreateSubTask(parent: task)));
+                    builder: (context) => CreateSubGoal(parent: task)));
           },
         ),
         title: const Text('Add subtask',
@@ -69,7 +74,7 @@ List<Widget> buildExpandableContent(BuildContext context, Task task) {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CreateSubTask(parent: task)));
+                  builder: (context) => CreateSubGoal(parent: task)));
         },
       ),
     ));

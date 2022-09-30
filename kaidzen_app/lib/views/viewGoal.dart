@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kaidzen_app/views/createSubTask.dart';
+import 'package:kaidzen_app/views/createSubgoal.dart';
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:kaidzen_app/views/editSubgoal.dart';
+import 'package:kaidzen_app/views/editGoal.dart';
 
 import '../models/task.dart';
 import 'package:provider/provider.dart';
@@ -11,18 +13,18 @@ import '../utils/dashSeparator.dart';
 import 'MoveTaskIconButton.dart';
 import 'ListViewTaskItem.dart';
 
-class ViewTask extends StatefulWidget {
+class ViewGoal extends StatefulWidget {
   final Task task;
 
-  const ViewTask(this.task, {Key? key}) : super(key: key);
+  const ViewGoal(this.task, {Key? key}) : super(key: key);
 
   @override
-  State<ViewTask> createState() {
-    return _ViewTaskState();
+  State<ViewGoal> createState() {
+    return _ViewGoalState();
   }
 }
 
-class _ViewTaskState extends State<ViewTask> {
+class _ViewGoalState extends State<ViewGoal> {
   @override
   Widget build(BuildContext context) {
     return Consumer<TasksState>(builder: (context, state, child) {
@@ -100,7 +102,7 @@ class _ViewTaskState extends State<ViewTask> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      CreateSubTask(parent: task)));
+                                      CreateSubGoal(parent: task)));
                         },
                       ),
                       title: const Text('Add subtask',
@@ -111,7 +113,7 @@ class _ViewTaskState extends State<ViewTask> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    CreateSubTask(parent: task)));
+                                    CreateSubGoal(parent: task)));
                       },
                     ),
                   ),
@@ -135,7 +137,7 @@ class _ViewTaskState extends State<ViewTask> {
                 onPressed: () async {
                   await Provider.of<TasksState>(context, listen: false)
                       .deleteTask(task);
-                  Navigator.popUntil(context, ModalRoute.withName('/'));
+                  Navigator.pop(context);
                 },
               ),
               Padding(
@@ -152,7 +154,13 @@ class _ViewTaskState extends State<ViewTask> {
                       : Image.asset("assets/right_inactive.png")),
               IconButton(
                 icon: Image.asset("assets/edit.png"),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) {
+                        var parent = Provider.of<TasksState>(context, listen: false).getById(task.parent!)!;
+                        return task.parent == null ? EditGoal(task) : EditSubGoal(parent: parent, task: task);
+                      }));
+                },
               ),
             ],
           ),
@@ -181,7 +189,7 @@ List<Widget> buildExpandableContent(BuildContext context, Task task) {
           trailing: ListTileTrail(task: subtask),
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ViewTask(subtask)));
+                MaterialPageRoute(builder: (context) => ViewGoal(subtask)));
           },
           selected: false,
         )));

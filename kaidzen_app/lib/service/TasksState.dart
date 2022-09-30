@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/models/task.dart';
 import "package:collection/collection.dart";
 import 'package:kaidzen_app/service/AnalyticsService.dart';
@@ -14,14 +15,16 @@ class TasksState extends ChangeNotifier {
   final TaskRepository repository;
   final ProgressState progressState;
   final AchievementsState achievementsState;
+  final EmotionsState emotionsState;
   Map<String, List<Task>> _tasks;
   Map<int, Task> _tasksMap;
 
-  TasksState(
-      {required this.repository,
-      required this.progressState,
-      required this.achievementsState})
-      : _tasks = {},
+  TasksState({
+    required this.repository,
+    required this.progressState,
+    required this.achievementsState,
+    required this.emotionsState,
+  })  : _tasks = {},
         _tasksMap = {};
 
   Future loadAll() async {
@@ -65,6 +68,12 @@ class TasksState extends ChangeNotifier {
     await repository.insert(newTask);
     await loadAll();
     await updatePropertyAfterTaskAdded();
+    notifyListeners();
+  }
+
+  updateTask(Task task) async {
+    await repository.update(task);
+    await loadAll();
     notifyListeners();
   }
 
@@ -114,18 +123,24 @@ class TasksState extends ChangeNotifier {
     await repository.update(task);
     if (newStatus == Status.DONE) {
       await progressState.updateProgress(task);
-      await achievementsState.addEvent(
-          Event(EventType.taskCompleted, DateTime.now(), task.category));
     }
+    var type = newStatus == Status.DOING
+        ? EventType.taskInProgress
+        : EventType.taskCompleted;
+    debugPrint('moving task $task & $type');
+    var event = Event(type, DateTime.now(), task.category);
+    await achievementsState.addEvent(event);
+    await emotionsState.updateEmotionPoints(event);
+
     await FirebaseAnalytics.instance
-        .logEvent(name: AnalyticsEventType.GOAL_ACTION.name, parameters: {
-      "goal_id": task.id,
-      "goal_name": task.name,
-      "goal_sphere": task.category.id,
-      "goal_impact": task.difficulty.id,
-      "goal_status": newStatus,
-      "goal_previous_status": oldStatus,
-      "goal_type": task.subtasks.isNotEmpty ? "WITH_SUB_GOALS" : "SIMPLE"
-    });
+            .logEvent(name: AnalyticsEventType.GOAL_ACTION.name, parameters: {
+          "goal_id": task.id,
+          "goal_name": task.name,
+          "goal_sphere": task.category.id,
+          "goal_impact": task.difficulty.id,
+          "goal_status": newStatus,
+          "goal_previous_status": oldStatus,
+          "goal_type": task.subtasks.isNotEmpty ? "WITH_SUB_GOALS" : "SIMPLE"
+        });
   }
 }

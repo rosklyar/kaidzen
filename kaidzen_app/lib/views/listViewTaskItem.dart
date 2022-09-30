@@ -4,7 +4,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/utils/theme.dart';
-import 'package:kaidzen_app/views/viewTask.dart';
+import 'package:kaidzen_app/views/viewGoal.dart';
+import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
 import 'MoveTaskIconButton.dart';
@@ -35,7 +36,7 @@ class ListViewTaskItem extends ListTile {
       trailing: ListTileTrail(task: task),
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => ViewTask(task)));
+            context, MaterialPageRoute(builder: (context) => ViewGoal(task)));
       },
       selected: false,
     );

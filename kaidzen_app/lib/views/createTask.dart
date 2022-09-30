@@ -4,6 +4,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/models/inspiration.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -33,8 +34,8 @@ class _CreateTaskState extends State<CreateTask> {
   int _currentDifficulty = 0;
   bool _isCreateButtonActive = false;
   late Future<List<Inspiration>>? _inspirationsFuture;
-  final GlobalKey<_TaskTypeWidgetState> _taskTypeWidgetKey = GlobalKey();
-  final GlobalKey<_TaskDifficultyWidgetState> _taskDifficultyWidgetKey =
+  final GlobalKey<dynamic> _taskTypeWidgetKey = GlobalKey();
+  final GlobalKey<dynamic> _taskDifficultyWidgetKey =
       GlobalKey();
 
   @override
@@ -348,8 +349,10 @@ class _CreateTaskState extends State<CreateTask> {
         Difficulty.values
             .firstWhere((element) => element.id == _currentDifficulty),
         parent: widget.parent != null ? widget.parent!.id : null));
-    Provider.of<AchievementsState>(context, listen: false)
-        .addEvent(Event(EventType.taskCreated, DateTime.now(), category));
+    var event = Event(EventType.taskCreated, DateTime.now(), category);
+    Provider.of<AchievementsState>(context, listen: false).addEvent(event);
+    Provider.of<EmotionsState>(context, listen: false)
+        .updateEmotionPoints(event);
     Navigator.pop(context);
   }
 

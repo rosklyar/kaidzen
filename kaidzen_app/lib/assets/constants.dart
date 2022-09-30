@@ -92,3 +92,5 @@ class Fonts {
       textStyle: const TextStyle(
           fontSize: 12, fontFamily: "Montserrat", color: Colors.white));
 }
+
+
