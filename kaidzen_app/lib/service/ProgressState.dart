@@ -35,7 +35,7 @@ class ProgressState extends ChangeNotifier {
           value: updatedProgress.points.toString());
       if (updatedProgress.level > currentProgress.level) {
         await FirebaseAnalytics.instance.logEvent(
-            name: AnalyticsEventType.LEVEL_UP.name,
+            name: AnalyticsEventType.level_up.name,
             parameters: {
               "sphere": task.category.id,
               "level": updatedProgress.level

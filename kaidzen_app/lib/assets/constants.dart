@@ -52,8 +52,6 @@ enum Difficulty {
 const selectedToggleColor = Color.fromRGBO(86, 92, 95, 1);
 const unselectedToggleColor = Color.fromRGBO(231, 233, 234, 1);
 const inputInactiveBorderColor = Color.fromRGBO(114, 118, 121, 1);
-const inputHintTextStyle = TextStyle(
-    fontSize: 16, color: inputInactiveBorderColor, fontFamily: 'Montserrat');
 const activeButtonColor = Color.fromRGBO(18, 17, 17, 1);
 
 class Fonts {
@@ -75,6 +73,12 @@ class Fonts {
     color: Colors.black,
   ));
 
+  static TextStyle largeTextStyleWhite = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+    fontSize: 16,
+    color: Colors.white,
+  ));
+
   static TextStyle largeTextStyle20 = GoogleFonts.montserrat(
       textStyle: const TextStyle(
     fontSize: 20,
@@ -89,8 +93,9 @@ class Fonts {
   ));
 
   static TextStyle mediumWhiteTextStyle = GoogleFonts.montserrat(
-      textStyle: const TextStyle(
-          fontSize: 12, fontFamily: "Montserrat", color: Colors.white));
+      textStyle: const TextStyle(fontSize: 12, color: Colors.white));
+
+  static TextStyle inputHintTextStyle = GoogleFonts.montserrat(
+      textStyle:
+          const TextStyle(fontSize: 16, color: inputInactiveBorderColor));
 }
-
-

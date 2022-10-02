@@ -41,19 +41,24 @@ class AchievementsScreen extends StatelessWidget {
                         bottom: 0,
                         child: SvgPicture.asset(
                             "assets/achievements/dotted_line_ach.svg")),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(children: [
-                            const SizedBox(width: 20),
-                            Image.asset("assets/emotions/regular.png")
-                          ]),
-                          Row(children: [
-                            getNewAchievementsComponent(
-                                achievementsState, context),
-                            const SizedBox(width: 20)
-                          ])
-                        ])
+                    Column(children: [
+                      Expanded(
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(children: [
+                                  const SizedBox(width: 20),
+                                  Image.asset("assets/emotions/regular.png")
+                                ]),
+                                Row(children: [
+                                  getNewAchievementsComponent(
+                                      achievementsState, context),
+                                  const SizedBox(width: 40)
+                                ])
+                              ]),
+                          flex: 25),
+                      const Expanded(child: SizedBox(), flex: 1)
+                    ])
                   ]),
                   flex: 2),
               Expanded(
