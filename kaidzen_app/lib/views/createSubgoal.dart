@@ -31,7 +31,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
           centerTitle: true,
           title: Wrap(children: [
             Padding(
-              padding: EdgeInsets.only(top: 5, right: 15),
+              padding: const EdgeInsets.only(top: 5, right: 15),
               child: Icon(Icons.circle_rounded,
                   color: widget.parent.category.color,
                   size: 10.0 + Difficulty.EASY.id * 3),
@@ -92,7 +92,8 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
         newTaskController.text, widget.parent.category, Difficulty.EASY,
         parent: widget.parent.id));
 
-    var event = Event(EventType.taskCreated, DateTime.now(), widget.parent.category);
+    var event =
+        Event(EventType.taskCreated, DateTime.now(), widget.parent.category);
     Provider.of<AchievementsState>(context, listen: false).addEvent(event);
     Provider.of<EmotionsState>(context, listen: false)
         .updateEmotionPoints(event);

@@ -54,9 +54,16 @@ class ProfilePanelState extends State<ProfilePanel>
                             ]),
                             Row(children: [
                               Padding(
-                                  padding: EdgeInsets.only(left: 65, top: 2),
-                                  child: Text("LVL ", style: Fonts.smallTextStyle,)),
-                              Text(progressState.getTotalLevel().toString(), style: Fonts.mediumTextStyle,)
+                                  padding:
+                                      const EdgeInsets.only(left: 65, top: 2),
+                                  child: Text(
+                                    "LVL ",
+                                    style: Fonts.smallTextStyle,
+                                  )),
+                              Text(
+                                progressState.getTotalLevel().toString(),
+                                style: Fonts.mediumTextStyle,
+                              )
                             ])
                           ]),
                           flex: 4),
@@ -75,9 +82,9 @@ class ProfilePanelState extends State<ProfilePanel>
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   const AchievementsScreen()));
-                                                  await FirebaseAnalytics.instance.logEvent(
-                                                                                        name: AnalyticsEventType
-                                                                                            .ACHIEVEMENTS_SCREEN_OPENED.name);
+                                      await FirebaseAnalytics.instance.logEvent(
+                                          name: AnalyticsEventType
+                                              .achievements_screen_opened.name);
                                     },
                                     icon: Image.asset(
                                         "assets/achievements_icon.png"),
@@ -98,10 +105,10 @@ class ProfilePanelState extends State<ProfilePanel>
                                 IconButton(
                                   padding: EdgeInsets.zero,
                                   onPressed: () async {
-                                                                                await FirebaseAnalytics.instance.logEvent(
-                                                                                    name: AnalyticsEventType
-                                                                                        .SETTINGS_SCREEN_OPENED.name);
-                                                                              },
+                                    await FirebaseAnalytics.instance.logEvent(
+                                        name: AnalyticsEventType
+                                            .settings_screen_opened.name);
+                                  },
                                   icon: Image.asset("assets/burger_icon.png"),
                                 )
                               ],

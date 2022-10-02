@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
@@ -7,6 +8,7 @@ import 'package:kaidzen_app/widgets/taskDifficulty.dart';
 import '../models/task.dart';
 import 'package:provider/provider.dart';
 
+import '../service/AnalyticsService.dart';
 import '../service/TasksState.dart';
 
 class EditGoal extends StatefulWidget {
@@ -50,12 +52,15 @@ class _EditGoalState extends State<EditGoal> {
                               child: IconButton(
                                 icon: SvgPicture.asset(
                                     "assets/shevron-left-black.svg"),
-                                onPressed: () {
+                                onPressed: () async {
+                                  await FirebaseAnalytics.instance.logEvent(
+                                      name: AnalyticsEventType
+                                          .create_goal_screen_back_button.name);
                                   Navigator.of(context).pop();
                                 },
                               ),
                               flex: 1),
-                         Expanded(
+                          Expanded(
                               child: Center(
                                   child: Text(
                                 "Goal",
@@ -87,13 +92,13 @@ class _EditGoalState extends State<EditGoal> {
                                   borderRadius: BorderRadius.circular(5),
                                   borderSide: const BorderSide(
                                       color: inputInactiveBorderColor)),
-                              hintStyle: inputHintTextStyle),
+                              hintStyle: Fonts.inputHintTextStyle),
                           controller: newTaskController,
                         )),
                     flex: 3),
-               Expanded(
+                Expanded(
                     child: Padding(
-                        padding: EdgeInsets.only(left: 10),
+                        padding: const EdgeInsets.only(left: 10),
                         child: SizedBox(
                             width: double.infinity,
                             child: Text("Life sphere to be affected",
@@ -121,10 +126,15 @@ class _EditGoalState extends State<EditGoal> {
                 child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: submit,
+                      onPressed: () async {
+                        await FirebaseAnalytics.instance.logEvent(
+                            name: AnalyticsEventType
+                                .edit_goal_screen_save_button.name);
+                        submit();
+                      },
                       child: Text('Save',
-                          style:
-                              Fonts.largeTextStyle20.copyWith(color: Colors.white)),
+                          style: Fonts.largeTextStyle20
+                              .copyWith(color: Colors.white)),
                       style:
                           ElevatedButton.styleFrom(primary: activeButtonColor),
                     ))),

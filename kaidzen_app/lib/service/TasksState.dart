@@ -65,9 +65,19 @@ class TasksState extends ChangeNotifier {
   }
 
   addTask(Task newTask) async {
-    await repository.insert(newTask);
+    Task task = await repository.insert(newTask);
     await loadAll();
     await updatePropertyAfterTaskAdded();
+    await FirebaseAnalytics.instance
+        .logEvent(name: AnalyticsEventType.goal_action.name, parameters: {
+      "goal_id": task.id,
+      "goal_name": task.name,
+      "goal_sphere": task.category.id,
+      "goal_impact": task.difficulty.id,
+      "goal_status": Status.TODO,
+      "is_created": true,
+      "is_simple": task.subtasks.isEmpty
+    });
     notifyListeners();
   }
 
@@ -133,14 +143,15 @@ class TasksState extends ChangeNotifier {
     await emotionsState.updateEmotionPoints(event);
 
     await FirebaseAnalytics.instance
-            .logEvent(name: AnalyticsEventType.GOAL_ACTION.name, parameters: {
-          "goal_id": task.id,
-          "goal_name": task.name,
-          "goal_sphere": task.category.id,
-          "goal_impact": task.difficulty.id,
-          "goal_status": newStatus,
-          "goal_previous_status": oldStatus,
-          "goal_type": task.subtasks.isNotEmpty ? "WITH_SUB_GOALS" : "SIMPLE"
-        });
+        .logEvent(name: AnalyticsEventType.goal_action.name, parameters: {
+      "goal_id": task.id,
+      "goal_name": task.name,
+      "goal_sphere": task.category.id,
+      "goal_impact": task.difficulty.id,
+      "goal_status": newStatus,
+      "is_created": false,
+      "goal_previous_status": oldStatus,
+      "is_simple": task.subtasks.isEmpty
+    });
   }
 }

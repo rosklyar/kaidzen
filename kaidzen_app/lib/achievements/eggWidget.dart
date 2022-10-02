@@ -39,8 +39,11 @@ class EggWidget extends StatelessWidget {
                           details: achievementsState
                               .getDetailsWidget(achievement.id))));
               await FirebaseAnalytics.instance.logEvent(
-                  name: AnalyticsEventType.ACHIEVEMENT_DETAILS_OPENED.name,
-                  parameters: {"id": achievement.id});
+                  name: AnalyticsEventType.achievement_status_checked.name,
+                  parameters: {
+                    "id": achievement.id,
+                    "progress": achievement.progress
+                  });
             })
       ]);
     } else {
@@ -57,14 +60,17 @@ class EggWidget extends StatelessWidget {
                           details: achievementsState
                               .getDetailsWidget(achievement.id))));
               await FirebaseAnalytics.instance.logEvent(
-                  name: AnalyticsEventType.ACHIEVEMENT_DETAILS_OPENED.name,
-                  parameters: {"id": achievement.id});
+                  name: AnalyticsEventType.achievement_status_checked.name,
+                  parameters: {
+                    "id": achievement.id,
+                    "progress": achievement.progress
+                  });
               if (achievement.status == AchievementStatus.completed) {
                 achievementsState.updateAchievementSnapshot(
                     AchievementSnapshot.updateStatus(
                         achievement, AchievementStatus.completedAndShown));
                 await FirebaseAnalytics.instance.logEvent(
-                    name: AnalyticsEventType.ACHIEVEMENT_COLLECTED.name,
+                    name: AnalyticsEventType.achievement_collected.name,
                     parameters: {"id": achievement.id});
               }
             }),

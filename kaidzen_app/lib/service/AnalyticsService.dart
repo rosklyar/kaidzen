@@ -77,15 +77,18 @@ class AnalyticsService {
 }
 
 enum AnalyticsEventType {
-  CREATE_GOAL_BUTTON_PRESSED,
-  CREATE_GOAL_SCREEN_BACK_BUTTON,
-  CREATE_GOAL_SCREEN_CREATE_BUTTON,
-  ACHIEVEMENTS_SCREEN_OPENED,
-  SETTINGS_SCREEN_OPENED,
-  GOAL_ACTION,
-  ACHIEVEMENT_DETAILS_OPENED,
-  ACHIEVEMENT_COLLECTED,
-  LEVEL_UP;
+  create_goal_button_pressed,
+  create_goal_screen_back_button,
+  edit_goal_screen_back_button,
+  create_goal_screen_create_button,
+  edit_goal_screen_save_button,
+  achievements_screen_opened,
+  settings_screen_opened,
+  goal_action,
+  achievement_status_checked,
+  achievement_received,
+  achievement_collected,
+  level_up;
 }
 
 enum AnalyticsUserProperties {

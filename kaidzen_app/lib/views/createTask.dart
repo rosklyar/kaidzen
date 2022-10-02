@@ -35,8 +35,7 @@ class _CreateTaskState extends State<CreateTask> {
   bool _isCreateButtonActive = false;
   late Future<List<Inspiration>>? _inspirationsFuture;
   final GlobalKey<dynamic> _taskTypeWidgetKey = GlobalKey();
-  final GlobalKey<dynamic> _taskDifficultyWidgetKey =
-      GlobalKey();
+  final GlobalKey<dynamic> _taskDifficultyWidgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -76,7 +75,7 @@ class _CreateTaskState extends State<CreateTask> {
                                 onPressed: () async {
                                   await FirebaseAnalytics.instance.logEvent(
                                       name: AnalyticsEventType
-                                          .CREATE_GOAL_SCREEN_BACK_BUTTON.name);
+                                          .create_goal_screen_back_button.name);
                                   Navigator.of(context).pop();
                                 },
                               ),
@@ -114,7 +113,7 @@ class _CreateTaskState extends State<CreateTask> {
                                   borderSide: const BorderSide(
                                       color: inputInactiveBorderColor)),
                               hintText: 'Goal title',
-                              hintStyle: inputHintTextStyle),
+                              hintStyle: Fonts.inputHintTextStyle),
                           controller: newTaskController,
                         )),
                     flex: 3),
@@ -130,11 +129,16 @@ class _CreateTaskState extends State<CreateTask> {
                 Expanded(
                     child: Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: TaskTypeWidget(
-                            key: _taskTypeWidgetKey,
-                            callback: (value) => setState(() {
-                                  _currentCategory = value!;
-                                }))),
+                        child: Column(children: [
+                          Expanded(
+                              child: TaskTypeWidget(
+                                  key: _taskTypeWidgetKey,
+                                  callback: (value) => setState(() {
+                                        _currentCategory = value!;
+                                      })),
+                              flex: 2),
+                          const Expanded(child: SizedBox(), flex: 1)
+                        ])),
                     flex: 4),
                 Expanded(child: getDiff(), flex: 7),
               ]),
@@ -242,11 +246,7 @@ class _CreateTaskState extends State<CreateTask> {
                               }
                               await FirebaseAnalytics.instance.logEvent(
                                   name: AnalyticsEventType
-                                      .CREATE_GOAL_SCREEN_CREATE_BUTTON.name,
-                                  parameters: {
-                                    "sphere": _currentCategory,
-                                    "impact": _currentDifficulty
-                                  });
+                                      .create_goal_screen_create_button.name);
                             }
                           : null,
                       child: Text('Create',
@@ -400,7 +400,7 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
             Expanded(
                 child: categoryChoice(DevelopmentCategory.WEALTH), flex: 10),
             const Expanded(child: SizedBox(), flex: 1),
-            const Expanded(child: SizedBox(), flex: 8)
+            const Expanded(child: SizedBox(), flex: 6)
           ]),
           flex: 5)
     ]);
@@ -421,10 +421,11 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
               const SizedBox(width: 5),
               Text(cat.name,
                   style: cat.index == _value
-                      ? Fonts.mediumWhiteTextStyle
-                      : Fonts.mediumTextStyle)
+                      ? Fonts.largeTextStyleWhite
+                      : Fonts.largeTextStyle)
             ])),
             width: double.infinity,
+            height: double.infinity,
           )),
       selected: _value == cat.index,
       onSelected: (bool selected) {
@@ -444,6 +445,7 @@ class TaskDifficultyWidget extends StatefulWidget {
 
   @override
   State<TaskDifficultyWidget> createState() {
+    // ignore: no_logic_in_create_state
     return _TaskDifficultyWidgetState(callback);
   }
 }
@@ -451,31 +453,50 @@ class TaskDifficultyWidget extends StatefulWidget {
 class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
   final void Function(int?)? callback;
   _TaskDifficultyWidgetState(this.callback);
-  int? _currentDifficulty = 0;
-
+  int _currentDifficulty = 0;
+  List<bool> _isSelected = [true, false, false];
   @override
   Widget build(BuildContext context) {
-    return ToggleSwitch(
-      minWidth: double.infinity,
-      activeBgColor: const [selectedToggleColor],
-      activeFgColor: Colors.white,
-      inactiveBgColor: unselectedToggleColor,
-      inactiveFgColor: activeButtonColor,
-      initialLabelIndex: _currentDifficulty,
-      dividerColor: selectedToggleColor,
-      totalSwitches: 3,
-      cornerRadius: 5,
-      labels: [
-        Difficulty.EASY.name,
-        Difficulty.MEDIUM.name,
-        Difficulty.HARD.name
-      ],
-      onToggle: (index) {
-        setState(() {
-          _currentDifficulty = index;
-        });
-        callback?.call(_currentDifficulty);
-      },
-    );
+    return SizedBox(
+        child: LayoutBuilder(
+            builder: (context, constraints) => ToggleButtons(
+                constraints: BoxConstraints.expand(
+                    width: constraints.maxWidth / 3 - 5,
+                    height: MediaQuery.of(context).size.height * 0.05),
+                borderRadius: BorderRadius.circular(5),
+                children: [
+                  getDiffOptionLayout(Difficulty.EASY, _isSelected[0]),
+                  getDiffOptionLayout(Difficulty.MEDIUM, _isSelected[1]),
+                  getDiffOptionLayout(Difficulty.HARD, _isSelected[2])
+                ],
+                isSelected: Iterable<int>.generate(3)
+                    .map((e) => e == _currentDifficulty)
+                    .toList(),
+                onPressed: (newIndex) {
+                  setState(() {
+                    _currentDifficulty = newIndex;
+                    _isSelected = Iterable<int>.generate(3)
+                        .map((e) => e == _currentDifficulty)
+                        .toList();
+                  });
+                  callback?.call(_currentDifficulty);
+                })),
+        width: double.infinity);
+  }
+
+  StatelessWidget getDiffOptionLayout(Difficulty difficulty, bool selected) {
+    return selected
+        ? Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: selectedToggleColor,
+            child: Center(
+                child: Text(difficulty.name, style: Fonts.largeTextStyleWhite)))
+        : Container(
+            width: double.infinity,
+            height: double.infinity,
+            color: unselectedToggleColor,
+            child: Center(
+                child: Text(difficulty.name, style: Fonts.largeTextStyle)));
   }
 }

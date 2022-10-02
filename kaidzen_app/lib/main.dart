@@ -34,7 +34,8 @@ void main() async {
       eventsRepository: eventsRepository,
       achievementsRepository: AchievementsRepository());
 
-  EmotionsState emotionsState = EmotionsState(eventsRepository, EmotionPointsRepository());
+  EmotionsState emotionsState =
+      EmotionsState(eventsRepository, EmotionPointsRepository());
 
   TasksState taskState = TasksState(
       repository: TaskRepository(),
@@ -107,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.black,
         onPressed: () async {
           await FirebaseAnalytics.instance.logEvent(
-              name: AnalyticsEventType.CREATE_GOAL_BUTTON_PRESSED.name);
+              name: AnalyticsEventType.create_goal_button_pressed.name);
 
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const CreateTask()));

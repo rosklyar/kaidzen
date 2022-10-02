@@ -99,8 +99,11 @@ class AchievementsState extends ChangeNotifier {
         .where((ach) =>
             ach.status == AchievementStatus.completed &&
             notCompletedAchievementsIds.contains(ach.id))
-        .forEach((element) {
+        .forEach((element) async {
       achievementsRepository.updateAchievementSnapshot(element);
+      await FirebaseAnalytics.instance.logEvent(
+          name: AnalyticsEventType.achievement_received.name,
+          parameters: {"id": element.id});
     });
 
     _snaphots =
