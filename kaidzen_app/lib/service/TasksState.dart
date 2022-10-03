@@ -7,6 +7,8 @@ import 'package:kaidzen_app/models/task.dart';
 import "package:collection/collection.dart";
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
+import 'package:kaidzen_app/tutorial/TutorialState.dart';
+import 'package:kaidzen_app/tutorial/tutorialProgress.dart';
 
 import '../achievements/event.dart';
 import 'ProgressState.dart';
@@ -16,6 +18,7 @@ class TasksState extends ChangeNotifier {
   final ProgressState progressState;
   final AchievementsState achievementsState;
   final EmotionsState emotionsState;
+  final TutorialState tutorialState;
   Map<String, List<Task>> _tasks;
   Map<int, Task> _tasksMap;
 
@@ -24,6 +27,7 @@ class TasksState extends ChangeNotifier {
     required this.progressState,
     required this.achievementsState,
     required this.emotionsState,
+    required this.tutorialState,
   })  : _tasks = {},
         _tasksMap = {};
 
@@ -138,9 +142,17 @@ class TasksState extends ChangeNotifier {
         ? EventType.taskInProgress
         : EventType.taskCompleted;
     debugPrint('moving task $task & $type');
-    var event = Event(type, DateTime.now(), task.category);
-    await achievementsState.addEvent(event);
-    await emotionsState.updateEmotionPoints(event);
+
+    if (task.id! > 0 && task.id! <= 3) {
+      if (newStatus == Status.DONE) {
+        tutorialState
+            .updateTutorialState(TutorialStep(task.id!, DateTime.now()));
+      }
+    } else {
+      var event = Event(type, DateTime.now(), task.category);
+      await achievementsState.addEvent(event);
+      await emotionsState.updateEmotionPoints(event);
+    }
 
     await FirebaseAnalytics.instance
         .logEvent(name: AnalyticsEventType.goal_action.name, parameters: {

@@ -25,6 +25,8 @@ class ViewGoal extends StatefulWidget {
 }
 
 class _ViewGoalState extends State<ViewGoal> {
+  bool deleteOverlayVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return Consumer<TasksState>(builder: (context, state, child) {
@@ -45,36 +47,46 @@ class _ViewGoalState extends State<ViewGoal> {
       body: Column(children: [
         Expanded(
             child: Column(children: [
-              Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                  child: SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        task.name,
-                        textAlign: TextAlign.left,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 24.0),
-                      ))),
-              Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                  child: SizedBox(
-                      width: double.infinity,
-                      child: Wrap(
-                        spacing: 10,
-                        children: [
-                          Icon(Icons.circle_rounded,
-                              color: task.category.color,
-                              size: 10.0 + task.difficulty.id * 3),
-                          Text(
-                            "${task.difficulty.noun} impact on my ${task.category.id >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == widget.task.category.id).name : 'life sphere'} ",
-                            textAlign: TextAlign.left,
-                            style: const TextStyle(
-                                color: Color.fromARGB(204, 147, 138, 138)),
-                          )
-                        ],
-                      ))),
+              Stack(
+                children: [
+                  Visibility(
+                      visible: deleteOverlayVisible,
+                      child: Image.asset("assets/Deleted.png")),
+                  Column(children: [
+                    Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 16),
+                        child: SizedBox(
+                            width: double.infinity,
+                            child: Text(
+                              task.name,
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 24.0),
+                            ))),
+                    Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 8),
+                        child: SizedBox(
+                            width: double.infinity,
+                            child: Wrap(
+                              spacing: 10,
+                              children: [
+                                Icon(Icons.circle_rounded,
+                                    color: task.category.color,
+                                    size: 10.0 + task.difficulty.id * 3),
+                                Text(
+                                  "${task.difficulty.noun} impact on my ${task.category.id >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == widget.task.category.id).name : 'life sphere'} ",
+                                  textAlign: TextAlign.left,
+                                  style: const TextStyle(
+                                      color:
+                                          Color.fromARGB(204, 147, 138, 138)),
+                                )
+                              ],
+                            ))),
+                  ]),
+                ],
+              ),
               const SizedBox(height: 20),
               Flexible(
                 child: ConstrainedBox(
@@ -135,9 +147,10 @@ class _ViewGoalState extends State<ViewGoal> {
                 icon: Image.asset("assets/delete.png"),
                 color: Theme.of(context).errorColor,
                 onPressed: () async {
-                  await Provider.of<TasksState>(context, listen: false)
-                      .deleteTask(task);
-                  Navigator.pop(context);
+                  setState(() {
+                    deleteOverlayVisible = true;
+                  });
+                  await deletePopup(context, task);
                 },
               ),
               Padding(
@@ -155,11 +168,12 @@ class _ViewGoalState extends State<ViewGoal> {
               IconButton(
                 icon: Image.asset("assets/edit.png"),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) {
-                        var parent = Provider.of<TasksState>(context, listen: false).getById(task.parent!)!;
-                        return task.parent == null ? EditGoal(task) : EditSubGoal(parent: parent, task: task);
-                      }));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return task.parent == null
+                        ? EditGoal(task)
+                        : EditSubGoal(parent: Provider.of<TasksState>(context, listen: false)
+                        .getById(task.parent!)!, task: task);
+                  }));
                 },
               ),
             ],
@@ -167,6 +181,51 @@ class _ViewGoalState extends State<ViewGoal> {
         ),
       ]),
     );
+  }
+
+  Future<void> deletePopup(BuildContext context, Task task) async {
+    showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.2,
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Text('Are you sure?',
+                            style: Fonts.screenTytleTextStyle)),
+                    flex: 4),
+                const Expanded(child: SizedBox(), flex: 1),
+                Expanded(
+                    child: GestureDetector(
+                        child: Text('Delete',
+                            style: Fonts.largeTextStyle.copyWith(
+                                decoration: TextDecoration.underline)),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Provider.of<TasksState>(context, listen: false)
+                              .deleteTask(task);
+                          Navigator.pop(context);
+                        }),
+                    flex: 2),
+              ],
+            ),
+          ),
+        );
+      },
+    ).whenComplete(() {
+      setState(() {
+        deleteOverlayVisible = false;
+      });
+    });
   }
 }
 

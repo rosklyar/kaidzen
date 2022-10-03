@@ -188,7 +188,7 @@ class _CreateTaskState extends State<CreateTask> {
                                                 child: SizedBox(), flex: 1),
                                             Expanded(
                                                 child: Text(
-                                                    "Sometimes we set goals we don’t need.\nChoosing the sphere helps to\nunderstand why this goal is important\n— will it improve your goal, health,\nrelationships, make you more wealthy,\nor fulfill with energy.\n\n\nAnd adds you some extra points.",
+                                                    "Sometimes we set goals we don’t need.\nChoosing the sphere helps to\nunderstand why this goal is important\n— will it improve your mind, health,\nrelationships, make you more wealthy,\nor fulfill with energy.\n\n\nAnd adds you some extra points.",
                                                     style:
                                                         Fonts.largeTextStyle),
                                                 flex: 10),

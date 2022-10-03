@@ -70,7 +70,7 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                   cornerRadius: 30.0,
                   radiusStyle: true,
                   minHeight: 50.0,
-                  activeBgColor: const [selectedToggleColor],
+                  activeBgColor: const [activeButtonColor],
                   activeFgColor: Colors.white,
                   inactiveBgColor: unselectedToggleColor.withOpacity(0),
                   inactiveFgColor: Colors.black,

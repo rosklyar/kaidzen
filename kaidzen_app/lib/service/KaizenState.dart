@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 
@@ -42,11 +43,16 @@ const String columnEmotionId = '_id';
 const String columnEmotionPoints = 'points';
 const String columnEmotionUpdateTs = 'update_ts';
 
+const String tableTutorialSteps = 'tutorialSteps';
+const String columnTutorialStepId = 'step_id';
+const String columnTutorialUpdateTs = 'update_ts';
+
 class KaizenDb {
   static Database? _db;
 
   static Future<Database> getDb() async {
     _db ??= await _open();
+    //debugPrint(_db?.path);
     return _db!;
   }
 
@@ -90,9 +96,18 @@ class KaizenDb {
           $columnTaskTitle text not null,
           $columnTaskCategory integer not null,
           $columnTaskDifficulty integer not null,
-          $columnTaskStatus integer not null,
+          $columnTaskStatus text not null,
           $columnParentId integer)
         ''');
+
+    const intitialStatus = Status.TODO;
+    await db.execute('''
+            insert into $tableTask values
+                (0, 'Break the egg', 0, 0, '$intitialStatus', null),
+                (1, 'Move this subgoal through DOING to DONE', 0, 0, '$intitialStatus', 0),
+                (2, 'Read about the "Continuous improvement" concept (in Main menu)', 0, 0, '$intitialStatus', 0),
+                (3, 'Clear you mind', 0, 0, '$intitialStatus', 0);
+          ''');
 
     await db.execute('''
             create table $tableEvents ( 
@@ -144,7 +159,7 @@ class KaizenDb {
                 (2, 11, -1);
           ''');
 
- await db.execute('''
+    await db.execute('''
             create table $tableEmotionPoints ( 
             $columnEmotionId integer primary key, 
             $columnEmotionPoints integer not null,
@@ -155,6 +170,12 @@ class KaizenDb {
     await db.execute('''
             insert into $tableEmotionPoints values
                 (1, 0, '$now');
+          ''');
+
+    await db.execute('''
+            create table $tableTutorialSteps ( 
+            $columnTutorialStepId integer primary key, 
+            $columnTutorialUpdateTs datetime not null)
           ''');
   }
 }
