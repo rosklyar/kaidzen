@@ -10,6 +10,8 @@ import 'package:kaidzen_app/service/ProgressState.dart';
 import 'package:kaidzen_app/achievements/achievementsScreen.dart';
 import 'package:provider/provider.dart';
 
+import '../tutorial/TutorialState.dart';
+
 class ProfilePanel extends StatefulWidget {
   const ProfilePanel({Key? key}) : super(key: key);
 
@@ -31,9 +33,10 @@ class ProfilePanelState extends State<ProfilePanel>
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<ProgressState, AchievementsState, EmotionsState>(
+    return Consumer4<ProgressState, AchievementsState, EmotionsState,
+            TutorialState>(
         builder: (context, progressState, achievementsState, emotionsState,
-                child) =>
+                tutorialState, child) =>
             Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Stack(children: [
@@ -42,20 +45,23 @@ class ProfilePanelState extends State<ProfilePanel>
                       Expanded(
                           child: Column(children: [
                             Stack(children: [
-                              const Icon(
-                                Icons.circle,
-                                size: 140.0,
-                                color: Color.fromARGB(109, 138, 198, 186),
-                              ),
                               Padding(
                                   padding:
-                                      const EdgeInsets.only(left: 25, top: 20),
-                                  child: resolveEmotionedAvatar(emotionsState)),
+                                      const EdgeInsets.only(top: 20),
+                                  child: AnimatedSwitcher(
+                                      duration:
+                                          const Duration(milliseconds: 800),
+                                      transitionBuilder: (Widget child,
+                                          Animation<double> animation) {
+                                        return FadeTransition(
+                                            opacity: animation, child: child);
+                                      },
+                                      child: avatar(
+                                          tutorialState, emotionsState))),
                             ]),
                             Row(children: [
                               Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 65, top: 2),
+                                  padding: EdgeInsets.only(left: 65, top: 2),
                                   child: Text(
                                     "LVL ",
                                     style: Fonts.smallTextStyle,
@@ -189,26 +195,45 @@ class ProfilePanelState extends State<ProfilePanel>
                 ])));
   }
 
-  Image resolveEmotionedAvatar(EmotionsState emotionsState) {
+  Image avatar(TutorialState tutorialState, EmotionsState emotionsState) {
+    var avatarPath = resolveEmotionedAvatar(tutorialState, emotionsState);
+    return Image.asset(key: ValueKey(avatarPath), avatarPath, width: 100);
+  }
+
+  String resolveEmotionedAvatar(
+      TutorialState tutorialState, EmotionsState emotionsState) {
     var points = emotionsState.emotionPoints.points;
 
-    if (points <= 10) {
-      return Image.asset("assets/emotions/sad03.png", width: 100);
-    } else if (points > 10 && points <= 20) {
-      return Image.asset("assets/emotions/sad02.png", width: 100);
-    } else if (points > 20 && points <= 30) {
-      return Image.asset("assets/emotions/sad01.png", width: 100);
-    } else if (points > 30 && points <= 40) {
-      return Image.asset("assets/emotions/regular.png", width: 100);
-    } else if (points > 40 && points <= 50) {
-      return Image.asset("assets/emotions/happy01.png", width: 100);
-    } else if (points > 50 && points <= 60) {
-      return Image.asset("assets/emotions/happy02.png", width: 100);
-    } else if (points > 60) {
-      return Image.asset("assets/emotions/happy03.png", width: 100);
+    var completedStepsCount =
+        tutorialState.getTutorialProgress().completedStepsCount();
+
+    if (completedStepsCount < 3) {
+      if (completedStepsCount == 0) {
+        return "assets/emotions/egg01.png";
+      } else if (completedStepsCount == 1) {
+        return "assets/emotions/egg02.png";
+      } else {
+        return "assets/emotions/egg03.png";
+      }
     }
 
-    return Image.asset("assets/emotions/regular.png", width: 100);
+    if (points <= 10) {
+      return "assets/emotions/sad03.png";
+    } else if (points > 10 && points <= 20) {
+      return "assets/emotions/sad02.png";
+    } else if (points > 20 && points <= 30) {
+      return "assets/emotions/sad01.png";
+    } else if (points > 30 && points <= 40) {
+      return "assets/emotions/regular.png";
+    } else if (points > 40 && points <= 50) {
+      return "assets/emotions/happy01.png";
+    } else if (points > 50 && points <= 60) {
+      return "assets/emotions/happy02.png";
+    } else if (points > 60) {
+      return "assets/emotions/happy03.png";
+    }
+
+    return "assets/emotions/regular.png";
   }
 }
 

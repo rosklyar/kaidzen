@@ -3,13 +3,16 @@ import 'package:kaidzen_app/achievements/EventsRepository.dart';
 import 'package:kaidzen_app/achievements/event.dart';
 import 'package:kaidzen_app/emotions/EmotionPointsRepository.dart';
 import 'package:kaidzen_app/emotions/emotionPoints.dart';
+import 'package:kaidzen_app/tutorial/TutorialState.dart';
 
 class EmotionsState extends ChangeNotifier {
   EmotionPointsRepository emotionPointsRepository;
   EventsRepository eventsRepository;
+  TutorialState tutorialState;
   EmotionPoints emotionPoints = EmotionPoints(1, 0, DateTime.now());
 
-  EmotionsState(this.eventsRepository, this.emotionPointsRepository);
+  EmotionsState(
+      this.eventsRepository, this.emotionPointsRepository, this.tutorialState);
 
   loadAll() async {
     debugPrint('Init points');
@@ -19,6 +22,7 @@ class EmotionsState extends ChangeNotifier {
     final lastUpdateTs = emotionPoints.updateTs;
     final now = DateTime.now();
     final daysPast = now.difference(lastUpdateTs).inDays;
+    debugPrint('daysPast' + daysPast.toString());
     currentPoints -= daysPast * 2;
 
     var events = await eventsRepository.getEventsAfter(emotionPoints.updateTs);
