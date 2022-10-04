@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../style.dart';
 
@@ -54,13 +55,11 @@ class DetailsRowWidget extends StatelessWidget {
         ]));
   }
 
-  static TextStyle achievementsDetailsLeadingTextStyle = const TextStyle(
-      fontSize: 12,
-      color: Color.fromRGBO(108, 107, 107, 1),
-      fontFamily: 'Montserrat');
+  static TextStyle achievementsDetailsLeadingTextStyle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+          fontSize: 12, color: Color.fromRGBO(108, 107, 107, 1)));
 
-  static TextStyle achievementsDetailsCenterTextStyle = const TextStyle(
-      fontSize: 12,
-      color: Color.fromRGBO(202, 196, 196, 1),
-      fontFamily: 'Montserrat');
+  static TextStyle achievementsDetailsCenterTextStyle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+          fontSize: 12, color: Color.fromRGBO(202, 196, 196, 1)));
 }

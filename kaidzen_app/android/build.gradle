@@ -1,4 +1,9 @@
 buildscript {
+    
+    ext{
+        ndkVersion = "25.1.8937393"
+    }
+
     ext.kotlin_version = '1.6.10'
     repositories {
         google()
