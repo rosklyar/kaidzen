@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 
@@ -57,8 +58,8 @@ class KaizenDb {
   }
 
   static Future<Database> _open() async {
-    return await openDatabase('kaizen.db', version: 1,
-        onCreate: (Database db, int version) async {
+    return await openDatabase(join(await getDatabasesPath(), 'kaizen.db'),
+        version: 1, onCreate: (Database db, int version) async {
       await initDb(db);
     }, onUpgrade: (db, oldVersion, newVersion) async {
       await db.execute('''
@@ -131,18 +132,18 @@ class KaizenDb {
 
     await db.execute('''
             insert into $tableAchievements values
-                (0, 0, 'Initiator', 'Create 25 tasks', 'Boat.svg', 0, false, 0.0),
-                (1, 0, 'Composer', 'Create 50 tasks', 'Duck.svg', 0, false, 0.0),
-                (2, 0, 'Writer', 'Create 100 tasks', 'Fish.svg', 0, false, 0.0),
-                (3, 0, 'Trainee', 'Complete 5 tasks in one sphere', 'Frog.svg', 0, false, 0.0),
-                (4, 0, 'Master', 'Complete 50 tasks in one sphere', 'Elephant.svg', 0, false, 0.0),
-                (5, 0, 'Adept', 'Complete 150 tasks in one sphere', 'Dino.svg', 0, false, 0.0),
-                (6, 0, 'Toddler', 'Complete 5 tasks in each sphere', 'Dog.svg', 0, false, 0.0),
-                (7, 0, 'Teenager', 'Complete 15 tasks in each sphere', 'Cat.svg', 0, false, 0.0),
-                (8, 0, 'Adult', 'Complete 40 tasks in each sphere', 'Unicorn.svg', 0, false, 0.0),
-                (9, 0, 'Sprinter', '2 weeks in a row close at least 5 tasks', 'Bird.svg', 0, false, 0.0),
-                (10, 0, 'Half marathoner', '3 weeks in a row close at least 10 tasks', 'Crane.svg', 0, false, 0.0),
-                (11, 0, 'Marathoner', '4 weeks in a row close at least 20 tasks', 'Dragon.svg', 0, false, 0.0);
+                (0, 0, 'Initiator', 'Create 25 tasks', 'Boat.svg', 0, 0, 0.0),
+                (1, 0, 'Composer', 'Create 50 tasks', 'Duck.svg', 0, 0, 0.0),
+                (2, 0, 'Writer', 'Create 100 tasks', 'Fish.svg', 0, 0, 0.0),
+                (3, 0, 'Trainee', 'Complete 5 tasks in one sphere', 'Frog.svg', 0, 0, 0.0),
+                (4, 0, 'Master', 'Complete 50 tasks in one sphere', 'Elephant.svg', 0, 0, 0.0),
+                (5, 0, 'Adept', 'Complete 150 tasks in one sphere', 'Dino.svg', 0, 0, 0.0),
+                (6, 0, 'Toddler', 'Complete 5 tasks in each sphere', 'Dog.svg', 0, 0, 0.0),
+                (7, 0, 'Teenager', 'Complete 15 tasks in each sphere', 'Cat.svg', 0, 0, 0.0),
+                (8, 0, 'Adult', 'Complete 40 tasks in each sphere', 'Unicorn.svg', 0, 0, 0.0),
+                (9, 0, 'Sprinter', '2 weeks in a row close at least 5 tasks', 'Bird.svg', 0, 0, 0.0),
+                (10, 0, 'Half marathoner', '3 weeks in a row close at least 10 tasks', 'Crane.svg', 0, 0, 0.0),
+                (11, 0, 'Marathoner', '4 weeks in a row close at least 20 tasks', 'Dragon.svg', 0, 0, 0.0);
           ''');
 
     await db.execute('''
