@@ -8,6 +8,7 @@ import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/ProgressState.dart';
 import 'package:kaidzen_app/achievements/achievementsScreen.dart';
+import 'package:kaidzen_app/views/SettingsScreen.dart';
 import 'package:provider/provider.dart';
 
 import '../tutorial/TutorialState.dart';
@@ -46,8 +47,7 @@ class ProfilePanelState extends State<ProfilePanel>
                           child: Column(children: [
                             Stack(children: [
                               Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 20),
+                                  padding: const EdgeInsets.only(top: 20),
                                   child: AnimatedSwitcher(
                                       duration:
                                           const Duration(milliseconds: 800),
@@ -61,7 +61,8 @@ class ProfilePanelState extends State<ProfilePanel>
                             ]),
                             Row(children: [
                               Padding(
-                                  padding: EdgeInsets.only(left: 65, top: 2),
+                                  padding:
+                                      const EdgeInsets.only(left: 65, top: 2),
                                   child: Text(
                                     "LVL ",
                                     style: Fonts.smallTextStyle,
@@ -111,6 +112,11 @@ class ProfilePanelState extends State<ProfilePanel>
                                 IconButton(
                                   padding: EdgeInsets.zero,
                                   onPressed: () async {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                SettingsScreen()));
                                     await FirebaseAnalytics.instance.logEvent(
                                         name: AnalyticsEventType
                                             .settings_screen_opened.name);
