@@ -33,7 +33,7 @@ class _EditSubGoalState extends State<EditSubGoal> {
           centerTitle: true,
           title: Wrap(children: [
             Padding(
-              padding: EdgeInsets.only(top: 5, right: 15),
+              padding: const EdgeInsets.only(top: 5, right: 15),
               child: Icon(Icons.circle_rounded,
                   color: widget.parent.category.color,
                   size: 10.0 + Difficulty.EASY.id * 3),

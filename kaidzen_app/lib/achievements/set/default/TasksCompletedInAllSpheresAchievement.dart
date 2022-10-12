@@ -19,7 +19,10 @@ class TaskCompletedInAllSpheresAchievement extends Achievement {
     final eventsCounts = await Future.wait(activeCategories.map((e) =>
         eventsRepository.getEventsCountByCategory(
             EventType.taskCompleted, e.id)));
-    final value = eventsCounts.reduce(min) / numberOfTasks;
+    final value = eventsCounts
+            .map((e) => e.clamp(0, numberOfTasks))
+            .reduce((a, b) => a + b) /
+        (numberOfTasks * activeCategories.length);
     return value.clamp(0.0, 1.0);
   }
 
