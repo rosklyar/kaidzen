@@ -8,7 +8,7 @@ import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/ProgressState.dart';
 import 'package:kaidzen_app/achievements/achievementsScreen.dart';
-import 'package:kaidzen_app/views/SettingsScreen.dart';
+import 'package:kaidzen_app/settings/SettingsScreen.dart';
 import 'package:provider/provider.dart';
 
 import '../tutorial/TutorialState.dart';
@@ -81,9 +81,8 @@ class ProfilePanelState extends State<ProfilePanel>
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Stack(children: [
-                                  IconButton(
-                                    padding: EdgeInsets.zero,
-                                    onPressed: () async {
+                                  GestureDetector(
+                                    onTap: () async {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -93,8 +92,11 @@ class ProfilePanelState extends State<ProfilePanel>
                                           name: AnalyticsEventType
                                               .achievements_screen_opened.name);
                                     },
-                                    icon: Image.asset(
-                                        "assets/achievements_icon.png"),
+                                    child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 10, top: 5),
+                                        child: Image.asset(
+                                            "assets/achievements_icon.png")),
                                   ),
                                   Visibility(
                                       visible: achievementsState
@@ -109,19 +111,21 @@ class ProfilePanelState extends State<ProfilePanel>
                                                   .toString(),
                                               style: Fonts.mediumTextStyle)))
                                 ]),
-                                IconButton(
-                                  padding: EdgeInsets.zero,
-                                  onPressed: () async {
+                                GestureDetector(
+                                  onTap: () async {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                SettingsScreen()));
+                                                const SettingsScreen()));
                                     await FirebaseAnalytics.instance.logEvent(
                                         name: AnalyticsEventType
                                             .settings_screen_opened.name);
                                   },
-                                  icon: Image.asset("assets/burger_icon.png"),
+                                  child: Padding(
+                                      padding: const EdgeInsets.only(top: 5),
+                                      child: Image.asset(
+                                          "assets/burger_icon.png")),
                                 )
                               ],
                             ),
