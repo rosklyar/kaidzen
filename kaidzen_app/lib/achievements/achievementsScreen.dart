@@ -5,6 +5,7 @@ import 'package:kaidzen_app/achievements/achievementDetailsScreen.dart';
 import 'package:kaidzen_app/achievements/eggWidget.dart';
 import 'package:kaidzen_app/achievements/style.dart';
 import 'package:provider/provider.dart';
+import '../tutorial/TutorialState.dart';
 import 'achievementSnaphot.dart';
 
 class AchievementsScreen extends StatelessWidget {
@@ -48,7 +49,7 @@ class AchievementsScreen extends StatelessWidget {
                               children: [
                                 Row(children: [
                                   const SizedBox(width: 20),
-                                  Image.asset("assets/emotions/regular.png")
+                                  avatarImage(context)
                                 ]),
                                 Row(children: [
                                   getNewAchievementsComponent(
@@ -130,5 +131,29 @@ class AchievementsScreen extends StatelessWidget {
         : Text("Gain\nachievements\nby reaching\nyour goals",
             style: AchievementsStyle.achievementsDescriptionTextStyle,
             textAlign: TextAlign.center);
+  }
+
+  Image avatarImage(BuildContext context) {
+    TutorialState tutorialState =
+        Provider.of<TutorialState>(context, listen: false);
+    var avatarPath = resolveEmotionedAvatar(tutorialState);
+    return Image.asset(key: ValueKey(avatarPath), avatarPath, width: 100);
+  }
+
+  String resolveEmotionedAvatar(TutorialState tutorialState) {
+    var completedStepsCount =
+        tutorialState.getTutorialProgress().completedStepsCount();
+
+    if (completedStepsCount < 3) {
+      if (completedStepsCount == 0) {
+        return "assets/emotions/egg01.png";
+      } else if (completedStepsCount == 1) {
+        return "assets/emotions/egg02.png";
+      } else {
+        return "assets/emotions/egg03.png";
+      }
+    } else {
+      return "assets/emotions/regular.png";
+    }
   }
 }
