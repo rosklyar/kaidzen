@@ -8,7 +8,8 @@ Map<String, Object?> toMap(Task task) {
   var map = <String, Object?>{
     columnTaskTitle: task.name,
     columnTaskStatus: task.status,
-    columnParentId: task.parent,
+    columnTaskPriority: task.priority,
+    columnTaskParentId: task.parent,
     columnTaskCategory: task.category.id,
     columnTaskDifficulty: task.difficulty.id,
   };
@@ -27,7 +28,8 @@ Task fromMap(Map<String, Object?> map) {
           (element) => element.id == (map[columnTaskDifficulty] as int)),
       id: map[columnTaskId] as int,
       status: map[columnTaskStatus] as String,
-      parent: map[columnParentId] as int?);
+      priority: map[columnTaskPriority] as int,
+      parent: map[columnTaskParentId] as int?);
 }
 
 class TaskRepository {
@@ -53,7 +55,8 @@ class TaskRepository {
       columnTaskId,
       columnTaskCategory,
       columnTaskStatus,
-      columnParentId,
+      columnTaskPriority,
+      columnTaskParentId,
       columnTaskTitle,
       columnTaskDifficulty
     ]);
@@ -68,8 +71,9 @@ class TaskRepository {
         columns: [
           columnTaskId,
           columnTaskStatus,
+          columnTaskPriority,
           columnTaskTitle,
-          columnParentId
+          columnTaskParentId
         ],
         where: '$columnTaskId = ?',
         whereArgs: [id]);
@@ -81,7 +85,7 @@ class TaskRepository {
 
   Future<int> delete(int? id) async {
     return await db!.delete(tableTask,
-        where: '$columnTaskId = ? OR $columnParentId = ?',
+        where: '$columnTaskId = ? OR $columnTaskParentId = ?',
         whereArgs: [id, id]);
   }
 
