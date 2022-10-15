@@ -143,15 +143,18 @@ class _ViewGoalState extends State<ViewGoal> {
           child: ButtonBar(
             alignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              IconButton(
-                icon: Image.asset("assets/delete.png"),
-                color: Theme.of(context).errorColor,
-                onPressed: () async {
-                  setState(() {
-                    deleteOverlayVisible = true;
-                  });
-                  await deletePopup(context, task);
-                },
+              Visibility(
+                visible: task.id! > 3,
+                child: IconButton(
+                  icon: Image.asset("assets/delete.png"),
+                  color: Theme.of(context).errorColor,
+                  onPressed: () async {
+                    setState(() {
+                      deleteOverlayVisible = true;
+                    });
+                    await deletePopup(context, task);
+                  },
+                ),
               ),
               Padding(
                   padding: const EdgeInsets.only(left: 50),
