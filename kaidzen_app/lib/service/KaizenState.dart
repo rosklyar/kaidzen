@@ -12,10 +12,10 @@ const String tableTask = 'task';
 const String columnTaskId = '_id';
 const String columnTaskTitle = 'title';
 const String columnTaskStatus = 'status';
+const String columnTaskPriority = '_priority';
 const String columnTaskParentId = 'parent_id';
 const String columnTaskCategory = 'category_id';
 const String columnTaskDifficulty = 'difficulty_id';
-const String columnParentId = '_parent_id';
 
 const String tableEvents = 'events';
 const String columnEventtId = '_id';
@@ -53,7 +53,7 @@ class KaizenDb {
 
   static Future<Database> getDb() async {
     _db ??= await _open();
-    //debugPrint(_db?.path);
+    debugPrint(_db?.path);
     return _db!;
   }
 
@@ -95,19 +95,20 @@ class KaizenDb {
           create table $tableTask (
           $columnTaskId integer primary key autoincrement,
           $columnTaskTitle text not null,
+          $columnTaskPriority integer not null,
           $columnTaskCategory integer not null,
           $columnTaskDifficulty integer not null,
           $columnTaskStatus text not null,
-          $columnParentId integer)
+          $columnTaskParentId integer)
         ''');
 
     const intitialStatus = Status.TODO;
     await db.execute('''
             insert into $tableTask values
-                (0, 'Break the egg', 0, 0, '$intitialStatus', null),
-                (1, 'Move this subgoal through DOING to DONE', 0, 0, '$intitialStatus', 0),
-                (2, 'Read about the "Continuous improvement" concept (in Main menu)', 0, 0, '$intitialStatus', 0),
-                (3, 'Clear you mind', 0, 0, '$intitialStatus', 0);
+                (0, 'Break the egg', 0, 0, 0, '$intitialStatus', null),
+                (1, 'Move this subgoal through DOING to DONE', 0, 0, 0, '$intitialStatus', 0),
+                (2, 'Read about the "Continuous improvement" concept (in Main menu)', 0, 0, 0, '$intitialStatus', 0),
+                (3, 'Clear you mind', 0, 0, 0, '$intitialStatus', 0);
           ''');
 
     await db.execute('''
