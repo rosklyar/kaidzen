@@ -8,12 +8,13 @@ class Task extends Equatable {
   String name;
   DevelopmentCategory category;
   String status;
+  int priority;
   List<Task> subtasks = List.empty(growable: true);
   Difficulty difficulty;
   int? parent;
 
   Task(this.name, this.category, this.difficulty,
-      {this.status = Status.TODO, this.id, this.parent});
+      {this.status = Status.TODO, this.priority = 0, this.id, this.parent});
 
   void addSubTask(Task subTask) {
     subtasks.add(subTask);

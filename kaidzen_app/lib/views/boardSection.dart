@@ -39,6 +39,19 @@ class BoardState extends State<Board> {
         }
         final Task item = widget.list.removeAt(oldIndex);
         widget.list.insert(newIndex, item);
+
+        List<Task> tasksToUpdate = List.empty(growable: true);
+        int from = newIndex > oldIndex ? oldIndex : newIndex;
+        int to = newIndex > oldIndex ? newIndex : oldIndex;
+        for (int i = from; i <= to; i++) {
+          Task t = widget.list[i];
+          t.priority = i;
+          debugPrint("new t priority" + t.priority.toString());
+          tasksToUpdate.add(t);
+        }
+
+        Provider.of<TasksState>(context, listen: false)
+            .updateTasks(tasksToUpdate);
       },
     );
   }
@@ -59,8 +72,7 @@ class BoardState extends State<Board> {
                   .deleteTask(widget.list[index]);
             },
             child: Column(
-                key: Key('$index'),
-                children: [taskCard(widget.list[index])]),
+                key: Key('$index'), children: [taskCard(widget.list[index])]),
           );
         },
       ),

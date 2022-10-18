@@ -44,6 +44,10 @@ class TasksState extends ChangeNotifier {
     _tasks.putIfAbsent(Status.TODO, () => <Task>[]);
     _tasks.putIfAbsent(Status.DOING, () => <Task>[]);
     _tasks.putIfAbsent(Status.DONE, () => <Task>[]);
+
+    _tasks[Status.TODO]!.sort((a, b) => a.priority - b.priority);
+    _tasks[Status.DOING]!.sort((a, b) => a.priority - b.priority);
+    _tasks[Status.DONE]!.sort((a, b) => a.priority - b.priority);
     notifyListeners();
   }
 
@@ -69,6 +73,7 @@ class TasksState extends ChangeNotifier {
   }
 
   addTask(Task newTask) async {
+    newTask.priority = calculateNewPriority(newTask, newTask.status);
     Task task = await repository.insert(newTask);
     await loadAll();
     await updatePropertyAfterTaskAdded();
@@ -87,6 +92,14 @@ class TasksState extends ChangeNotifier {
 
   updateTask(Task task) async {
     await repository.update(task);
+    await loadAll();
+    notifyListeners();
+  }
+
+  updateTasks(List<Task> tasks) async {
+    for (var task in tasks) {
+      await repository.update(task);
+    }
     await loadAll();
     notifyListeners();
   }
@@ -132,6 +145,8 @@ class TasksState extends ChangeNotifier {
   }
 
   Future<void> moveTask(Task task, String newStatus) async {
+    task.priority = calculateNewPriority(task, newStatus);
+
     String oldStatus = task.status;
     task.status = newStatus;
     await repository.update(task);
@@ -165,5 +180,12 @@ class TasksState extends ChangeNotifier {
       "goal_previous_status": oldStatus,
       "is_simple": task.subtasks.isEmpty
     });
+  }
+
+  int calculateNewPriority(Task task, String newStatus) {
+    if (task.parent != null && newStatus == Status.TODO) {
+      return 0;
+    }
+    return _tasks[newStatus]!.length;
   }
 }
