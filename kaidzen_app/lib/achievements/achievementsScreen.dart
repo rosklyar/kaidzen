@@ -33,29 +33,26 @@ class AchievementsScreen extends StatelessWidget {
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(children: [
-                                  const SizedBox(width: 20),
-                                  avatarImage(context)
-                                ]),
-                                Row(children: [
-                                  getNewAchievementsComponent(
-                                      achievementsState, context),
-                                  const SizedBox(width: 40)
-                                ])
-                              ]),
-                          flex: 25),
-                      const Expanded(child: SizedBox(), flex: 1)
-                    ])
-                  ]),
-                  flex: 2),
-              Expanded(
-                  child: GridView.count(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 20,
-                    children:
-                        achievementsState.getAchievements().map((achievement) {
-                      return Column(
-                        children: [
+                                const SizedBox(width: 32),
+                                Text('Achievements',
+                                    style: AchievementsStyle
+                                        .achievementsAppBarTextStyle),
+                                IconButton(
+                                  iconSize: 32,
+                                  icon: Image.asset("assets/close_icon.png"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ])),
+                      flex: 1),
+                  Expanded(
+                      child: Stack(children: [
+                        Positioned(
+                            bottom: 0,
+                            child: SvgPicture.asset(
+                                "assets/achievements/dotted_line_ach.svg")),
+                        Column(children: [
                           Expanded(
                               child: Row(
                                   mainAxisAlignment:
@@ -63,7 +60,7 @@ class AchievementsScreen extends StatelessWidget {
                                   children: [
                                     Row(children: [
                                       const SizedBox(width: 20),
-                                      Image.asset("assets/emotions/regular.png")
+                                      avatarImage(context)
                                     ]),
                                     Row(children: [
                                       getNewAchievementsComponent(
