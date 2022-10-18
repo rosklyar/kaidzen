@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/achievements/achievementDetailsScreen.dart';
@@ -13,79 +14,90 @@ class AchievementsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AchievementsState>(
-        builder: (context, achievementsState, child) => Scaffold(
-            backgroundColor: AchievementsStyle.achievementScreenBackgroundColor,
-            body: Column(children: [
-              Expanded(
-                  child: Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const SizedBox(width: 32),
-                            Text('Achievements',
-                                style: AchievementsStyle
-                                    .achievementsAppBarTextStyle),
-                            IconButton(
-                              iconSize: 32,
-                              icon: Image.asset("assets/close_icon.png"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ])),
-                  flex: 1),
-              Expanded(
-                  child: Stack(children: [
-                    Positioned(
-                        bottom: 0,
-                        child: SvgPicture.asset(
-                            "assets/achievements/dotted_line_ach.svg")),
-                    Column(children: [
-                      Expanded(
+        builder: (context, achievementsState, child) => AnnotatedRegion<
+                SystemUiOverlayStyle>(
+            value: SystemUiOverlayStyle(
+                statusBarColor: AchievementsStyle
+                    .achievementScreenBackgroundColor
+                    .withOpacity(0),
+                statusBarIconBrightness: Brightness.light,
+                systemNavigationBarIconBrightness: Brightness.light),
+            child: Scaffold(
+                backgroundColor:
+                    AchievementsStyle.achievementScreenBackgroundColor,
+                body: Column(children: [
+                  Expanded(
+                      child: Padding(
+                          padding: const EdgeInsets.only(top: 20),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(children: [
-                                  const SizedBox(width: 20),
-                                  Image.asset("assets/emotions/regular.png")
-                                ]),
-                                Row(children: [
-                                  getNewAchievementsComponent(
-                                      achievementsState, context),
-                                  const SizedBox(width: 40)
-                                ])
-                              ]),
-                          flex: 25),
-                      const Expanded(child: SizedBox(), flex: 1)
-                    ])
-                  ]),
-                  flex: 2),
-              Expanded(
-                  child: GridView.count(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 20,
-                    children:
-                        achievementsState.getAchievements().map((achievement) {
-                      return Column(
-                        children: [
+                                const SizedBox(width: 32),
+                                Text('Achievements',
+                                    style: AchievementsStyle
+                                        .achievementsAppBarTextStyle),
+                                IconButton(
+                                  iconSize: 32,
+                                  icon: Image.asset("assets/close_icon.png"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ])),
+                      flex: 1),
+                  Expanded(
+                      child: Stack(children: [
+                        Positioned(
+                            bottom: 0,
+                            child: SvgPicture.asset(
+                                "assets/achievements/dotted_line_ach.svg")),
+                        Column(children: [
                           Expanded(
-                              child: EggWidget(
-                                  achievement: achievement,
-                                  achievementsState: achievementsState),
-                              flex: 10),
-                          const Expanded(child: SizedBox(), flex: 1),
-                          Expanded(
-                              child: Text(achievement.title,
-                                  style: AchievementsStyle
-                                      .achievementsTitleTextStyle),
-                              flex: 2)
-                        ],
-                      );
-                    }).toList(),
-                  ),
-                  flex: 10),
-            ])));
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(children: [
+                                      const SizedBox(width: 20),
+                                      Image.asset("assets/emotions/regular.png")
+                                    ]),
+                                    Row(children: [
+                                      getNewAchievementsComponent(
+                                          achievementsState, context),
+                                      const SizedBox(width: 40)
+                                    ])
+                                  ]),
+                              flex: 25),
+                          const Expanded(child: SizedBox(), flex: 1)
+                        ])
+                      ]),
+                      flex: 2),
+                  Expanded(
+                      child: GridView.count(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 20,
+                        children: achievementsState
+                            .getAchievements()
+                            .map((achievement) {
+                          return Column(
+                            children: [
+                              Expanded(
+                                  child: EggWidget(
+                                      achievement: achievement,
+                                      achievementsState: achievementsState),
+                                  flex: 10),
+                              const Expanded(child: SizedBox(), flex: 1),
+                              Expanded(
+                                  child: Text(achievement.title,
+                                      style: AchievementsStyle
+                                          .achievementsTitleTextStyle),
+                                  flex: 2)
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                      flex: 10),
+                ]))));
   }
 
   Widget getNewAchievementsComponent(

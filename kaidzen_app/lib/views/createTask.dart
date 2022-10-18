@@ -8,7 +8,6 @@ import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/models/inspiration.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
 import '../achievements/AchievementsState.dart';
 import '../achievements/event.dart';
@@ -102,6 +101,8 @@ class _CreateTaskState extends State<CreateTask> {
                                     newTaskController.clear();
                                     _taskTypeWidgetKey.currentState!._value =
                                         -1;
+                                    _taskDifficultyWidgetKey
+                                        .currentState._currentDifficulty = 0;
                                   },
                                   icon: Visibility(
                                       visible:
@@ -336,7 +337,9 @@ class _CreateTaskState extends State<CreateTask> {
               width: double.infinity,
               child: TaskDifficultyWidget(
                   key: _taskDifficultyWidgetKey,
-                  callback: (value) => _currentDifficulty = value!)))
+                  callback: (value) => setState(() {
+                        _currentDifficulty = value!;
+                      }))))
     ]);
   }
 
@@ -454,7 +457,7 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
   final void Function(int?)? callback;
   _TaskDifficultyWidgetState(this.callback);
   int _currentDifficulty = 0;
-  List<bool> _isSelected = [true, false, false];
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -465,9 +468,10 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
                     height: MediaQuery.of(context).size.height * 0.05),
                 borderRadius: BorderRadius.circular(5),
                 children: [
-                  getDiffOptionLayout(Difficulty.EASY, _isSelected[0]),
-                  getDiffOptionLayout(Difficulty.MEDIUM, _isSelected[1]),
-                  getDiffOptionLayout(Difficulty.HARD, _isSelected[2])
+                  getDiffOptionLayout(Difficulty.EASY, _currentDifficulty == 0),
+                  getDiffOptionLayout(
+                      Difficulty.MEDIUM, _currentDifficulty == 1),
+                  getDiffOptionLayout(Difficulty.HARD, _currentDifficulty == 2)
                 ],
                 isSelected: Iterable<int>.generate(3)
                     .map((e) => e == _currentDifficulty)
@@ -475,9 +479,6 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
                 onPressed: (newIndex) {
                   setState(() {
                     _currentDifficulty = newIndex;
-                    _isSelected = Iterable<int>.generate(3)
-                        .map((e) => e == _currentDifficulty)
-                        .toList();
                   });
                   callback?.call(_currentDifficulty);
                 })),

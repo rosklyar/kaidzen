@@ -5,6 +5,7 @@ import 'package:kaidzen_app/models/progress.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/ProgressCalculator.dart';
 import 'package:kaidzen_app/service/ProgressRepository.dart';
+import 'package:kaidzen_app/settings/ReviewUtils.dart';
 
 import 'AnalyticsService.dart';
 
@@ -40,6 +41,9 @@ class ProgressState extends ChangeNotifier {
               "sphere": task.category.id,
               "level": updatedProgress.level
             });
+        if (getTotalLevel() % 10 == 0) {
+          ReviewUtils.requestReview();
+        }
       }
       notifyListeners();
     }

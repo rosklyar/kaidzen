@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kaidzen_app/achievements/AchievementsRepository.dart';
 import 'package:kaidzen_app/achievements/EventsRepository.dart';
 
@@ -78,7 +79,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Kaizen',
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
@@ -100,33 +100,35 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 0.0,
-      ),
-      body: Stack(children: [
-        Column(children: [
-          ProfilePanel(key: _profilePanelKey),
-          Image.asset("assets/mountains_big.png",
-              width: MediaQuery.of(context).size.width),
-        ]),
-        SwitchableBoard(key: _switchableBoardKey),
-      ]),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black,
-        onPressed: () async {
-          await FirebaseAnalytics.instance.logEvent(
-              name: AnalyticsEventType.create_goal_button_pressed.name);
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+            statusBarColor: Colors.white.withOpacity(0),
+            statusBarIconBrightness: Brightness.dark,
+            systemNavigationBarIconBrightness: Brightness.dark),
+        child: Scaffold(
+          body: Stack(children: [
+            Column(children: [
+              ProfilePanel(key: _profilePanelKey),
+              Image.asset("assets/mountains_big.png",
+                  width: MediaQuery.of(context).size.width),
+            ]),
+            SwitchableBoard(key: _switchableBoardKey),
+          ]),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: Colors.black,
+            onPressed: () async {
+              await FirebaseAnalytics.instance.logEvent(
+                  name: AnalyticsEventType.create_goal_button_pressed.name);
 
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const CreateTask()));
-        },
-        tooltip: 'Add task',
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      ),
-    );
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const CreateTask()));
+            },
+            tooltip: 'Add task',
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+          ),
+        ));
   }
 }

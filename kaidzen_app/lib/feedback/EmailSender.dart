@@ -140,7 +140,7 @@ class _EmailSenderState extends State<EmailSender> {
                               color: Color.fromRGBO(117, 30, 132, 1))),
                       hintStyle: Fonts.inputHintTextStyle),
                 ),
-                flex: 8),
+                flex: 6),
             Expanded(
                 child: Column(
                   children: <Widget>[
