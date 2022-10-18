@@ -51,6 +51,7 @@ enum Difficulty {
 
 const selectedToggleColor = Color.fromRGBO(86, 92, 95, 1);
 const unselectedToggleColor = Color.fromRGBO(231, 233, 234, 1);
+const whiteBackgroundColor = Color.fromRGBO(225, 218, 218, 1.0);
 const inputInactiveBorderColor = Color.fromRGBO(114, 118, 121, 1);
 const activeButtonColor = Color.fromRGBO(18, 17, 17, 1);
 

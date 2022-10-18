@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -268,10 +269,13 @@ class ProgressIndicator extends StatefulWidget {
 class _ProgressIndicatorState extends State<ProgressIndicator>
     with TickerProviderStateMixin {
   late AnimationController _controller;
+  double _height = 8.0;
+  Color? _color;
 
   @override
   void initState() {
     super.initState();
+    _color = widget.progressColor;
     _controller = AnimationController(
         vsync: this, animationBehavior: AnimationBehavior.preserve);
     _controller.addListener(() {
@@ -282,13 +286,25 @@ class _ProgressIndicatorState extends State<ProgressIndicator>
   @override
   void didUpdateWidget(covariant ProgressIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.percent <= widget.percent) {
-      _controller.animateTo(widget.percent,
-          duration: const Duration(seconds: 1));
+    if (oldWidget.percent == widget.percent) {
+      setState(() {
+        _height = 8.0;
+        _color = widget.progressColor;
+      });
     } else {
-      _controller.animateTo(1.0, duration: const Duration(milliseconds: 500));
-      _controller.animateTo(widget.percent,
-          duration: const Duration(milliseconds: 500));
+      if (oldWidget.percent < widget.percent) {
+        _controller.animateTo(widget.percent,
+            duration: const Duration(seconds: 1));
+      } else {
+        _controller.animateTo(1.0, duration: const Duration(milliseconds: 500));
+        _controller.animateTo(0.0, duration: const Duration(microseconds: 1));
+        _controller.animateTo(widget.percent,
+            duration: const Duration(milliseconds: 500));
+      }
+      setState(() {
+        _height = 16.0;
+        _color = lighten(_color!, 0.3);
+      });
     }
   }
 
@@ -321,11 +337,24 @@ class _ProgressIndicatorState extends State<ProgressIndicator>
               padding: const EdgeInsets.symmetric(horizontal: 7),
               child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(3.0)),
-                  child: LinearProgressIndicator(
-                      minHeight: 8.0,
-                      value: _controller.value,
-                      backgroundColor: const Color.fromRGBO(225, 218, 218, 1.0),
-                      color: widget.progressColor)))
+                  child: AnimatedContainer(
+                      height: _height,
+                      duration: const Duration(seconds: 1),
+                      curve: Curves.fastOutSlowIn,
+                      child: LinearProgressIndicator(
+                          value: _controller.value,
+                          backgroundColor: whiteBackgroundColor,
+                          color: _color))))
         ]));
+  }
+
+  Color lighten(Color color, [double amount = .1]) {
+    assert(amount >= 0 && amount <= 1);
+
+    final hsl = HSLColor.fromColor(color);
+    final hslLight =
+        hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+
+    return hslLight.toColor();
   }
 }

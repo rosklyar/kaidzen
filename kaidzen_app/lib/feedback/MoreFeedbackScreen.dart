@@ -43,7 +43,8 @@ class MoreFeedbackScreen extends StatelessWidget {
                       ]),
                   flex: 2),
               Expanded(
-                  child: Image.asset("assets/emotions/happy03.png"), flex: 5),
+                  child: SvgPicture.asset("assets/emotions/communication.svg"),
+                  flex: 5),
               Expanded(
                   child: Text("Your thoughts matter",
                       style: Fonts.screenTytleTextStyle),
