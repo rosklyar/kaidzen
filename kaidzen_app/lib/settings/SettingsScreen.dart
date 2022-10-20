@@ -21,7 +21,7 @@ class SettingsScreen extends StatelessWidget {
         title: 'Sticky Goals',
         text: 'Sticky Goals',
         linkUrl:
-            'https://play.google.com/apps/test/com.funworkstudio.stickygoals.android/4',
+            'https://play.google.com/apps/test/com.funworkstudio.stickygoals.android/5',
         chooserTitle: 'Share \'Sticky Goals\'');
   }
 
