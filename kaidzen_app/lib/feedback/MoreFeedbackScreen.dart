@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:kaidzen_app/settings/SettingsScreen.dart';
 
 import '../assets/constants.dart';
-import 'EmailSender.dart';
 
 class MoreFeedbackScreen extends StatelessWidget {
   const MoreFeedbackScreen({Key? key}) : super(key: key);
@@ -22,29 +20,26 @@ class MoreFeedbackScreen extends StatelessWidget {
                           child:
                               SvgPicture.asset("assets/shevron-left-black.svg"),
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SettingsScreen()));
+                            var count = 0;
+                            Navigator.popUntil(context, (route) {
+                              return count++ == 2;
+                            });
                           },
                         ),
                         GestureDetector(
                           child: SvgPicture.asset(
                               "assets/settings/close_black_icon.svg"),
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SettingsScreen()));
+                            var count = 0;
+                            Navigator.popUntil(context, (route) {
+                              return count++ == 2;
+                            });
                           },
                         ),
                       ]),
                   flex: 2),
               Expanded(
-                  child: SvgPicture.asset("assets/emotions/communication.svg"),
-                  flex: 5),
+                  child: Image.asset("assets/emotions/happy02.png"), flex: 5),
               Expanded(
                   child: Text("Your thoughts matter",
                       style: Fonts.screenTytleTextStyle),
@@ -65,11 +60,7 @@ class MoreFeedbackScreen extends StatelessWidget {
                               child:
                                   SvgPicture.asset("assets/settings/mail.svg"),
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const EmailSender()));
+                                Navigator.pop(context);
                               },
                             ),
                             Text('Send another message',
@@ -77,10 +68,7 @@ class MoreFeedbackScreen extends StatelessWidget {
                                     decoration: TextDecoration.underline))
                           ]),
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const EmailSender()));
+                        Navigator.pop(context);
                       }),
                   flex: 2),
             ])));

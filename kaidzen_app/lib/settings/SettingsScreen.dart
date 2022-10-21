@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:kaidzen_app/feedback/EmailSender.dart';
-import 'package:kaidzen_app/main.dart';
 import 'package:kaidzen_app/service/ProgressState.dart';
 import 'package:kaidzen_app/settings/AboutPhilosophyScreen.dart';
 import 'package:kaidzen_app/settings/LongTextScreen.dart';
@@ -44,11 +43,7 @@ class SettingsScreen extends StatelessWidget {
                                   icon: SvgPicture.asset(
                                       "assets/settings/close_black_icon.svg"),
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const HomeScreen()));
+                                    Navigator.pop(context);
                                   },
                                 ),
                               ])),
