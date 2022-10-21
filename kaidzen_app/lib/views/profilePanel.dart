@@ -1,6 +1,3 @@
-import 'dart:developer';
-import 'dart:ui';
-
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
@@ -31,7 +28,6 @@ class ProfilePanelState extends State<ProfilePanel>
     parent: _controller,
     curve: Curves.easeIn,
   );
-  ProfilePanelState();
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +120,8 @@ class ProfilePanelState extends State<ProfilePanel>
                                             .settings_screen_opened.name);
                                   },
                                   child: Padding(
-                                      padding: const EdgeInsets.only(top: 5),
+                                      padding: const EdgeInsets.only(
+                                          top: 5, right: 5),
                                       child: Image.asset(
                                           "assets/burger_icon.png")),
                                 )
@@ -302,8 +299,8 @@ class _ProgressIndicatorState extends State<ProgressIndicator>
             duration: const Duration(milliseconds: 500));
       }
       setState(() {
-        _height = 16.0;
-        _color = lighten(_color!, 0.3);
+        _height = 12.0;
+        _color = lighten(_color!, 0.2);
       });
     }
   }

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:story_view/story_view.dart';
-
-import 'SettingsScreen.dart';
 
 class AboutPhilosophyScreen extends StatelessWidget {
   final StoryController controller = StoryController();
