@@ -48,29 +48,30 @@ void main() async {
       emotionsState: emotionsState,
       tutorialState: tutorialState);
 
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (context) {
-      taskState.loadAll();
-      AnalyticsService.initUserProperties(taskState);
-      return taskState;
-    }),
-    ChangeNotifierProvider(create: (context) {
-      progressState.loadAll();
-      return progressState;
-    }),
-    ChangeNotifierProvider(create: (context) {
-      achievementsState.loadAll();
-      return achievementsState;
-    }),
-    ChangeNotifierProvider(create: (context) {
-      tutorialState.loadAll();
-      return tutorialState;
-    }),
-    ChangeNotifierProvider(create: (context) {
-      emotionsState.loadAll();
-      return emotionsState;
-    }),
-  ], child: const MyApp()));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => runApp(MultiProvider(providers: [
+            ChangeNotifierProvider(create: (context) {
+              taskState.loadAll();
+              AnalyticsService.initUserProperties(taskState);
+              return taskState;
+            }),
+            ChangeNotifierProvider(create: (context) {
+              progressState.loadAll();
+              return progressState;
+            }),
+            ChangeNotifierProvider(create: (context) {
+              achievementsState.loadAll();
+              return achievementsState;
+            }),
+            ChangeNotifierProvider(create: (context) {
+              tutorialState.loadAll();
+              return tutorialState;
+            }),
+            ChangeNotifierProvider(create: (context) {
+              emotionsState.loadAll();
+              return emotionsState;
+            }),
+          ], child: const MyApp())));
 }
 
 class MyApp extends StatelessWidget {
@@ -109,10 +110,11 @@ class _HomeScreenState extends State<HomeScreen> {
           body: Stack(children: [
             Column(children: [
               Expanded(
-                flex: 20,
-                child: Padding(
-                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
-                  child: ProfilePanel(key: _profilePanelKey))),
+                  flex: 20,
+                  child: Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.02),
+                      child: ProfilePanel(key: _profilePanelKey))),
               Expanded(
                 flex: 16,
                 child: Image.asset("assets/mountains_big.png",
