@@ -145,6 +145,9 @@ class _ViewGoalState extends State<ViewGoal> {
             children: <Widget>[
               Visibility(
                 visible: task.id! > 3,
+                maintainState: true,
+                maintainAnimation: true,
+                maintainSize: true,
                 child: IconButton(
                   icon: Image.asset("assets/delete.png"),
                   color: Theme.of(context).errorColor,

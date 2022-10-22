@@ -7,6 +7,23 @@ class Status {
   static const String DONE = "Done";
 }
 
+enum ToggleBoard {
+  TODO(0, Status.TODO),
+  DOING(1, Status.DOING),
+  DONE(2, Status.DONE);
+
+  const ToggleBoard(this.id, this.name);
+
+  final int id;
+  final String name;
+}
+
+const List<ToggleBoard> toggleBoards = [
+  ToggleBoard.TODO,
+  ToggleBoard.DOING,
+  ToggleBoard.DONE,
+];
+
 enum DevelopmentCategory {
   MIND(0, "Mind", "mind", Color.fromRGBO(69, 131, 151, 1.0), "assets/Mind",
       0xFFEBF8FA),
@@ -95,6 +112,19 @@ class Fonts {
 
   static TextStyle mediumWhiteTextStyle = GoogleFonts.montserrat(
       textStyle: const TextStyle(fontSize: 12, color: Colors.white));
+
+static TextStyle xLargeTextStyle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+    fontSize: 18,
+    color: Colors.black,
+  ));
+
+  static TextStyle xLargeWhiteTextStyle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+        fontWeight: FontWeight.bold,
+    fontSize: 18,
+    color: Colors.white,
+  ));
 
   static TextStyle inputHintTextStyle = GoogleFonts.montserrat(
       textStyle:

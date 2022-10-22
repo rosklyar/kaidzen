@@ -108,9 +108,17 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Scaffold(
           body: Stack(children: [
             Column(children: [
-              ProfilePanel(key: _profilePanelKey),
-              Image.asset("assets/mountains_big.png",
-                  width: MediaQuery.of(context).size.width),
+              Expanded(
+                flex: 20,
+                child: Padding(
+                  padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.02),
+                  child: ProfilePanel(key: _profilePanelKey))),
+              Expanded(
+                flex: 16,
+                child: Image.asset("assets/mountains_big.png",
+                    width: MediaQuery.of(context).size.width),
+              ),
+              Expanded(flex: 50, child: Container())
             ]),
             SwitchableBoard(key: _switchableBoardKey),
           ]),
