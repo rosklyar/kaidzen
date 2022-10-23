@@ -9,6 +9,8 @@ import 'package:toggle_switch/toggle_switch.dart';
 import 'package:kaidzen_app/views/boardSection.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 
+import '../widgets/switchableBoardsToggle.dart';
+
 class SwitchableBoard extends StatefulWidget {
   const SwitchableBoard({Key? key}) : super(key: key);
 
@@ -48,8 +50,8 @@ class SwitchableBoardState extends State<SwitchableBoard> {
         )
       ],
       color: Colors.white.withOpacity(0),
-      maxHeight: parentHeight,
-      minHeight: parentHeight * 0.63,
+      maxHeight: parentHeight * 0.97,
+      minHeight: parentHeight * 0.68,
       panel: SizedBox(
           //width: parentWidth,
           //height: parentHeight,
@@ -64,25 +66,10 @@ class SwitchableBoardState extends State<SwitchableBoard> {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: ToggleSwitch(
-                  fontSize: 18,
-                  minWidth: double.infinity,
-                  cornerRadius: 30.0,
-                  radiusStyle: true,
-                  minHeight: 50.0,
-                  activeBgColor: const [activeButtonColor],
-                  activeFgColor: Colors.white,
-                  inactiveBgColor: unselectedToggleColor.withOpacity(0),
-                  inactiveFgColor: Colors.black,
-                  initialLabelIndex: 0,
-                  totalSwitches: 3,
-                  labels: const [Status.TODO, Status.DOING, Status.DONE],
-                  onToggle: (index) {
-                    currentState = _boards[index!];
-                    _switchableBoardContainerKey.currentState
-                        ?.changeBoard(currentState);
-                  },
-                ),
+                child: SwitchableBoardsToggleWidget((value) => setState(() {
+                                  currentState = toggleBoards[value!].name;
+                                }), 0)
+,
               ),
               Expanded(
                 child: Padding(
