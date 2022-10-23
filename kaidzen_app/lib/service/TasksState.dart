@@ -183,9 +183,12 @@ class TasksState extends ChangeNotifier {
   }
 
   int calculateNewPriority(Task task, String newStatus) {
+    var tasksCount = _tasks[newStatus]!.length;
     if (task.parent != null && newStatus == Status.TODO) {
       return 0;
     }
-    return _tasks[newStatus]!.length;
+    return tasksCount == 0
+        ? tasksCount
+        : _tasks[newStatus]![tasksCount - 1].priority + 1;
   }
 }
