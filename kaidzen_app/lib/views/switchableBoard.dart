@@ -27,7 +27,8 @@ class SwitchableBoardState extends State<SwitchableBoard> {
     Status.DONE,
   ];
 
-  var currentState = Status.TODO;
+  var currentBoard = toggleBoards[1];
+  var scrollEnabled = false;
 
   void addItem(Task newTask) {
     Provider.of<TasksState>(context, listen: false).addTask(newTask);
@@ -43,6 +44,18 @@ class SwitchableBoardState extends State<SwitchableBoard> {
     var parentHeight = MediaQuery.of(context).size.height;
     debugPrint("building Panel");
     return SlidingUpPanel(
+      onPanelClosed: () {
+        setState(() {
+          scrollEnabled = false;
+        });
+        debugPrint("scrollEnabled = " + scrollEnabled.toString());
+      },
+      onPanelOpened: () {
+        setState(() {
+          scrollEnabled = true;
+        });
+        debugPrint("scrollEnabled = " + scrollEnabled.toString());
+      },
       boxShadow: const <BoxShadow>[
         BoxShadow(
           blurRadius: 8.0,
@@ -66,10 +79,11 @@ class SwitchableBoardState extends State<SwitchableBoard> {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: SwitchableBoardsToggleWidget((value) => setState(() {
-                                  currentState = toggleBoards[value!].name;
-                                }), 0)
-,
+                child: SwitchableBoardsToggleWidget(
+                    (value) => setState(() {
+                          currentBoard = toggleBoards[value!];
+                        }),
+                    currentBoard.id),
               ),
               Expanded(
                 child: Padding(
@@ -77,9 +91,7 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                   child: Consumer<TasksState>(builder: (context, state, child) {
                     debugPrint("building SwitchableBoardContainer");
                     return SwitchableBoardContainer(
-                        state,
-                        currentState,
-                        ScrollController(),
+                        state, currentBoard, ScrollController(), scrollEnabled,
                         key: _switchableBoardContainerKey);
                   }),
                 ),
@@ -94,13 +106,15 @@ class SwitchableBoardState extends State<SwitchableBoard> {
 
 class SwitchableBoardContainer extends StatefulWidget {
   final TasksState tasksState;
-  String currentBoard;
+  ToggleBoard currentBoard;
   final ScrollController sc;
+  final bool scrollEnabled;
 
   SwitchableBoardContainer(
     this.tasksState,
     this.currentBoard,
-    this.sc, {
+    this.sc,
+    this.scrollEnabled, {
     Key? key,
   }) : super(key: key);
 
@@ -110,20 +124,14 @@ class SwitchableBoardContainer extends StatefulWidget {
 }
 
 class SwitchableBoardContainerState extends State<SwitchableBoardContainer> {
-  void changeBoard(String board) {
-    if (widget.currentBoard != board) {
-      setState(() {
-        widget.currentBoard = board;
-      });
-    }
-  }
-
+  
   @override
   Widget build(BuildContext context) {
-    debugPrint("building Board" + widget.currentBoard);
+    debugPrint("building Board " + widget.currentBoard.name);
     return Board(
-        name: widget.currentBoard,
-        list: widget.tasksState.getByStatus(widget.currentBoard),
-        sc: widget.sc);
+        name: widget.currentBoard.name,
+        list: widget.tasksState.getByStatus(widget.currentBoard.name),
+        sc: widget.sc,
+        scrollEnabled: widget.scrollEnabled);
   }
 }

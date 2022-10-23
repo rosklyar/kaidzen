@@ -10,16 +10,18 @@ import '../assets/constants.dart';
 import 'ListViewTaskItem.dart';
 
 class Board extends StatefulWidget {
-  const Board({
-    Key? key,
-    required this.name,
-    required this.list,
-    required this.sc,
-  }) : super(key: key);
+  const Board(
+      {Key? key,
+      required this.name,
+      required this.list,
+      required this.sc,
+      required this.scrollEnabled})
+      : super(key: key);
 
   final List<Task> list;
   final String name;
   final ScrollController sc;
+  final bool scrollEnabled;
 
   @override
   // ignore: no_logic_in_create_state
@@ -29,8 +31,6 @@ class Board extends StatefulWidget {
 }
 
 class BoardState extends State<Board> {
-  final _random = Random();
-
   void _onReorder(int oldIndex, int newIndex) {
     setState(
       () {
@@ -59,35 +59,31 @@ class BoardState extends State<Board> {
   @override
   Widget build(BuildContext context) {
     return ReorderableListView(
+      physics: widget.scrollEnabled
+          ? const AlwaysScrollableScrollPhysics()
+          : const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
       onReorder: _onReorder,
       scrollController: widget.sc,
       children: List.generate(
         widget.list.length,
         (index) {
-          return Dismissible(
-            key: Key(widget.list[index].id.toString()),
-            onDismissed: (direction) async {
-              await Provider.of<TasksState>(context, listen: false)
-                  .deleteTask(widget.list[index]);
-            },
-            child: Column(
-                key: Key('$index'), children: [taskCard(widget.list[index])]),
-          );
+          return Column(
+              key: Key('$index'), children: [taskCard(widget.list[index])]);
         },
       ),
     );
   }
 
-  Card taskCard(Task task) {
+  Widget taskCard(Task task) {
     if (task.status == Status.TODO) {
       return Card(elevation: 8, child: listItem(task));
     }
     var background = task.status == Status.DOING
         ? AssetImage(
-            "assets/doing" + ((_random.nextInt(2) + 1)).toString() + ".png")
+            "assets/doing" + ((task.priority + 1) % 2 + 1).toString() + ".png")
         : AssetImage(task.category.backgroundLink +
-            ((_random.nextInt(2) + 1)).toString() +
+            ((task.priority + 1) % 2 + 1).toString() +
             ".png");
 
     return Card(

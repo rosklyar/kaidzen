@@ -28,7 +28,7 @@ class _SwitchableBoardsToggleWidgetState
   @override
   void initState() {
     super.initState();
-    _value = widget.initialCategory ?? -1;
+    _value = widget.initialCategory;
   }
 
   @override
@@ -59,27 +59,12 @@ class _SwitchableBoardsToggleWidgetState
                                         style: board.index == _value
                                             ? Fonts.xLargeWhiteTextStyle
                                             : Fonts.xLargeTextStyle),
-                                    Padding(
-                                      padding: EdgeInsets.only(bottom: 5),
-                                      child: Container(
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: board.index == _value
-                                                    ? Colors.white
-                                                    : Colors.black,
-                                              ),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(30))),
-                                          child: Text("2", style: board.index == _value
-                                            ? Fonts.xLargeWhiteTextStyle
-                                            : Fonts.xLargeTextStyle)),
-                                    )
                                   ])),
                         ),
                         selected: _value == board.index,
                         onSelected: (bool selected) {
                           setState(() {
-                            _value = selected ? board.index : -1;
+                            _value = board.index;
                           });
                           callback?.call(_value);
                         },
