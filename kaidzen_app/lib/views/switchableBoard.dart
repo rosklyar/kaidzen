@@ -43,18 +43,24 @@ class SwitchableBoardState extends State<SwitchableBoard> {
   Widget build(BuildContext context) {
     var parentHeight = MediaQuery.of(context).size.height;
     debugPrint("building Panel");
+    var sc = ScrollController();
     return SlidingUpPanel(
       onPanelClosed: () {
-        setState(() {
-          scrollEnabled = false;
-        });
-        debugPrint("scrollEnabled = " + scrollEnabled.toString());
+        if (scrollEnabled) {
+          setState(() {
+            scrollEnabled = false;
+          });
+        }
+
+        sc.animateTo(0,
+            duration: Duration(milliseconds: 300), curve: Curves.ease);
       },
       onPanelOpened: () {
-        setState(() {
-          scrollEnabled = true;
-        });
-        debugPrint("scrollEnabled = " + scrollEnabled.toString());
+        if (!scrollEnabled) {
+          setState(() {
+            scrollEnabled = true;
+          });
+        }
       },
       boxShadow: const <BoxShadow>[
         BoxShadow(
@@ -91,7 +97,7 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                   child: Consumer<TasksState>(builder: (context, state, child) {
                     debugPrint("building SwitchableBoardContainer");
                     return SwitchableBoardContainer(
-                        state, currentBoard, ScrollController(), scrollEnabled,
+                        state, currentBoard, sc, scrollEnabled,
                         key: _switchableBoardContainerKey);
                   }),
                 ),
@@ -124,7 +130,6 @@ class SwitchableBoardContainer extends StatefulWidget {
 }
 
 class SwitchableBoardContainerState extends State<SwitchableBoardContainer> {
-  
   @override
   Widget build(BuildContext context) {
     debugPrint("building Board " + widget.currentBoard.name);
