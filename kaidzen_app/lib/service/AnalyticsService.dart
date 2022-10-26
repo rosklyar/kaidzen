@@ -2,10 +2,13 @@ import 'dart:developer';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
+import 'package:kaidzen_app/tutorial/TutorialState.dart';
 
 class AnalyticsService {
-  static void initUserProperties(TasksState tasksState) async {
+  static void initUserProperties(TasksState tasksState,
+      EmotionsState emotionsState, TutorialState tutorialState) async {
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.HEALTH_LEVEL.name.toLowerCase(),
         value: tasksState.progressState
@@ -73,6 +76,17 @@ class AnalyticsService {
         value: tasksState.achievementsState
             .getCompletedAchievementsCount()
             .toString());
+
+    await FirebaseAnalytics.instance.setUserProperty(
+        name: AnalyticsUserProperties.EMOTION_POINTS.name.toLowerCase(),
+        value: emotionsState.emotionPoints.toString());
+
+    await FirebaseAnalytics.instance.setUserProperty(
+        name: AnalyticsUserProperties.TUTORIAL_STEPS_COMPLETED.name.toLowerCase(),
+        value: tutorialState
+            .getTutorialProgress()
+            .completedStepsCount()
+            .toString());
   }
 }
 
@@ -93,7 +107,9 @@ enum AnalyticsEventType {
   achievement_status_checked,
   achievement_received,
   achievement_collected,
-  level_up;
+  level_up,
+  emotion_changed,
+  tutorial_step_completed;
 }
 
 enum AnalyticsUserProperties {
@@ -111,7 +127,9 @@ enum AnalyticsUserProperties {
   CURRENT_GOALS_DO,
   CURRENT_GOALS_DOING,
   CURRENT_GOALS_DONE,
-  ACHIEVEMENTS_COMPLETED
+  ACHIEVEMENTS_COMPLETED,
+  EMOTION_POINTS,
+  TUTORIAL_STEPS_COMPLETED;
 }
 
 const Map<DevelopmentCategory, AnalyticsUserProperties> levelPropertiesMap = {

@@ -43,22 +43,22 @@ class ProfilePanelState extends State<ProfilePanel>
                       child: Column(children: [
                         Stack(children: [
                           Padding(
-                              padding: EdgeInsets.only(top: parentHeight * 0.07),
+                              padding:
+                                  EdgeInsets.only(top: parentHeight * 0.07),
                               child: AnimatedSwitcher(
-                                  duration:
-                                      const Duration(milliseconds: 800),
+                                  duration: const Duration(milliseconds: 800),
                                   transitionBuilder: (Widget child,
                                       Animation<double> animation) {
                                     return FadeTransition(
                                         opacity: animation, child: child);
                                   },
-                                  child: avatar(
-                                      tutorialState, emotionsState))),
+                                  child: avatar(tutorialState, emotionsState))),
                         ]),
                         Row(children: [
                           Padding(
-                              padding:
-                                   EdgeInsets.only(left: parentHeight * 0.08, top: parentHeight * 0.005),
+                              padding: EdgeInsets.only(
+                                  left: parentHeight * 0.08,
+                                  top: parentHeight * 0.005),
                               child: Text(
                                 "LVL ",
                                 style: Fonts.smallTextStyle,
@@ -119,10 +119,9 @@ class ProfilePanelState extends State<ProfilePanel>
                                         .settings_screen_opened.name);
                               },
                               child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 5, right: 5),
-                                  child: Image.asset(
-                                      "assets/burger_icon.png")),
+                                  padding:
+                                      const EdgeInsets.only(top: 5, right: 5),
+                                  child: Image.asset("assets/burger_icon.png")),
                             )
                           ],
                         ),
@@ -136,10 +135,9 @@ class ProfilePanelState extends State<ProfilePanel>
                                         percent: progressState
                                             .getLevelProgressFraction(
                                                 DevelopmentCategory.MIND),
-                                        level: progressState.getLevel(
-                                            DevelopmentCategory.MIND),
-                                        title:
-                                            DevelopmentCategory.MIND.name,
+                                        level: progressState
+                                            .getLevel(DevelopmentCategory.MIND),
+                                        title: DevelopmentCategory.MIND.name,
                                         progressColor:
                                             DevelopmentCategory.MIND.color),
                                     ProgressIndicator(
@@ -148,20 +146,18 @@ class ProfilePanelState extends State<ProfilePanel>
                                                 DevelopmentCategory.HEALTH),
                                         level: progressState.getLevel(
                                             DevelopmentCategory.HEALTH),
-                                        title:
-                                            DevelopmentCategory.HEALTH.name,
-                                        progressColor: DevelopmentCategory
-                                            .HEALTH.color),
+                                        title: DevelopmentCategory.HEALTH.name,
+                                        progressColor:
+                                            DevelopmentCategory.HEALTH.color),
                                     ProgressIndicator(
                                         percent: progressState
                                             .getLevelProgressFraction(
                                                 DevelopmentCategory.ENERGY),
                                         level: progressState.getLevel(
                                             DevelopmentCategory.ENERGY),
-                                        title:
-                                            DevelopmentCategory.ENERGY.name,
-                                        progressColor: DevelopmentCategory
-                                            .ENERGY.color),
+                                        title: DevelopmentCategory.ENERGY.name,
+                                        progressColor:
+                                            DevelopmentCategory.ENERGY.color),
                                   ],
                                 ),
                                 flex: 5),
@@ -174,19 +170,17 @@ class ProfilePanelState extends State<ProfilePanel>
                                                 DevelopmentCategory.WEALTH),
                                         level: progressState.getLevel(
                                             DevelopmentCategory.WEALTH),
-                                        title:
-                                            DevelopmentCategory.WEALTH.name,
-                                        progressColor: DevelopmentCategory
-                                            .WEALTH.color),
+                                        title: DevelopmentCategory.WEALTH.name,
+                                        progressColor:
+                                            DevelopmentCategory.WEALTH.color),
                                     ProgressIndicator(
                                         percent: progressState
                                             .getLevelProgressFraction(
-                                                DevelopmentCategory
-                                                    .RELATIONS),
+                                                DevelopmentCategory.RELATIONS),
                                         level: progressState.getLevel(
                                             DevelopmentCategory.RELATIONS),
-                                        title: DevelopmentCategory
-                                            .RELATIONS.name,
+                                        title:
+                                            DevelopmentCategory.RELATIONS.name,
                                         progressColor: DevelopmentCategory
                                             .RELATIONS.color),
                                     const SizedBox(height: 32.0),
@@ -224,23 +218,7 @@ class ProfilePanelState extends State<ProfilePanel>
       }
     }
 
-    if (points <= 10) {
-      return "assets/emotions/sad03.png";
-    } else if (points > 10 && points <= 20) {
-      return "assets/emotions/sad02.png";
-    } else if (points > 20 && points <= 30) {
-      return "assets/emotions/sad01.png";
-    } else if (points > 30 && points <= 40) {
-      return "assets/emotions/regular.png";
-    } else if (points > 40 && points <= 50) {
-      return "assets/emotions/happy01.png";
-    } else if (points > 50 && points <= 60) {
-      return "assets/emotions/happy02.png";
-    } else if (points > 60) {
-      return "assets/emotions/happy03.png";
-    }
-
-    return "assets/emotions/regular.png";
+    return emotionsState.getCurrentEmotion().assetPath;
   }
 }
 
