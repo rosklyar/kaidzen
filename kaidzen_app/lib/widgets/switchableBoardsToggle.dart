@@ -58,7 +58,6 @@ class _SwitchableBoardsToggleWidgetState
                                   child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
-                                      //mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Text(board.name,
                                             style: board.index == _value
@@ -68,7 +67,7 @@ class _SwitchableBoardsToggleWidgetState
                             ),
                             Consumer<TasksState>(
                               builder: (context, taskState, child) => Visibility(
-                                visible: taskState.getByStatus(board.name).isNotEmpty,
+                                visible: taskState.getCountByStatus(board.name) > 0,
                                 child: Positioned(
                                     top: 0,
                                     right: -2,
@@ -82,9 +81,9 @@ class _SwitchableBoardsToggleWidgetState
                                           color: Colors.white.withOpacity(0)),
                                       child: Center(
                                         child: Text(
-                                          taskState.getByStatus(board.name).length.toString(),
+                                          taskState.getCountByStatus(board.name).toString(),
                                           style: TextStyle(
-                                            fontSize: 13,
+                                            fontSize: 12,
                                             color: board.index == _value
                                                 ? Colors.white
                                                 : Colors.black,

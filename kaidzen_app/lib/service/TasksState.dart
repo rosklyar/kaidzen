@@ -64,6 +64,11 @@ class TasksState extends ChangeNotifier {
     return tasks;
   }
 
+  int getCountByStatus(String status) {
+    List<Task> tasks = _tasks[status] ?? [];
+    return tasks.length;
+  }
+
   Task? getById(int id) {
     return _tasksMap[id];
   }

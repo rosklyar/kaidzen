@@ -110,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
           body: Stack(children: [
             Column(children: [
               Expanded(
-                  flex: 20,
+                  flex: 22,
                   child: Padding(
                       padding: EdgeInsets.only(
                           top: MediaQuery.of(context).size.height * 0.02),
@@ -120,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Image.asset("assets/mountains_big.png",
                     width: MediaQuery.of(context).size.width),
               ),
-              Expanded(flex: 50, child: Container())
+              Expanded(flex: 48, child: Container())
             ]),
             SwitchableBoard(key: _switchableBoardKey),
           ]),
