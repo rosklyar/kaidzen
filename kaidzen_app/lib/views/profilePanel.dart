@@ -32,6 +32,7 @@ class ProfilePanelState extends State<ProfilePanel>
   @override
   Widget build(BuildContext context) {
     var parentHeight = MediaQuery.of(context).size.height;
+    var parentWidth = MediaQuery.of(context).size.width;
     return Consumer4<ProgressState, AchievementsState, EmotionsState,
             TutorialState>(
         builder: (context, progressState, achievementsState, emotionsState,
@@ -57,15 +58,17 @@ class ProfilePanelState extends State<ProfilePanel>
                         Row(children: [
                           Padding(
                               padding: EdgeInsets.only(
-                                  left: parentHeight * 0.08,
-                                  top: parentHeight * 0.005),
+                                  left: parentHeight * 0.06),
                               child: Text(
-                                "LVL ",
-                                style: Fonts.smallTextStyle,
+                                "TOTAL LVL  ",
+                                style: Fonts.smallTextStyle
                               )),
-                          Text(
-                            progressState.getTotalLevel().toString(),
-                            style: Fonts.mediumTextStyle,
+                          Padding(
+                            padding: EdgeInsets.only(bottom: parentHeight * 0.005),
+                            child: Text(
+                              progressState.getTotalLevel().toString(),
+                              style: Fonts.mediumBoldTextStyle,
+                            ),
                           )
                         ])
                       ]),
@@ -73,121 +76,126 @@ class ProfilePanelState extends State<ProfilePanel>
                   Expanded(
                       child: Column(children: [
                         const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Stack(children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: parentWidth * 0.02),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Stack(children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const AchievementsScreen()));
+                                    await FirebaseAnalytics.instance.logEvent(
+                                        name: AnalyticsEventType
+                                            .achievements_screen_opened.name);
+                                  },
+                                  child: Padding(
+                                      padding: EdgeInsets.only(right: parentWidth * 0.02, top: parentHeight * 0.03),
+                                      child: Image.asset(
+                                          "assets/achievements_icon.png")),
+                                ),
+                                Visibility(
+                                    visible: achievementsState
+                                            .getCompletedAchievementsCount() >
+                                        0,
+                                    child: Positioned(
+                                        top: parentHeight * 0.02,
+                                        right: parentWidth * 0.01,
+                                        child: Text(
+                                            achievementsState
+                                                .getCompletedAchievementsCount()
+                                                .toString(),
+                                            style: Fonts.mediumBoldTextStyle)))
+                              ]),
                               GestureDetector(
                                 onTap: () async {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const AchievementsScreen()));
+                                              const SettingsScreen()));
                                   await FirebaseAnalytics.instance.logEvent(
                                       name: AnalyticsEventType
-                                          .achievements_screen_opened.name);
+                                          .settings_screen_opened.name);
                                 },
                                 child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 10, top: 5),
-                                    child: Image.asset(
-                                        "assets/achievements_icon.png")),
-                              ),
-                              Visibility(
-                                  visible: achievementsState
-                                          .getCompletedAchievementsCount() >
-                                      0,
-                                  child: Positioned(
-                                      top: 0.0,
-                                      right: 4.0,
-                                      child: Text(
-                                          achievementsState
-                                              .getCompletedAchievementsCount()
-                                              .toString(),
-                                          style: Fonts.mediumTextStyle)))
-                            ]),
-                            GestureDetector(
-                              onTap: () async {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SettingsScreen()));
-                                await FirebaseAnalytics.instance.logEvent(
-                                    name: AnalyticsEventType
-                                        .settings_screen_opened.name);
-                              },
-                              child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 5, right: 5),
-                                  child: Image.asset("assets/burger_icon.png")),
-                            )
-                          ],
+                                    padding:
+                                       EdgeInsets.only(top: parentHeight * 0.03, right: 5),
+                                    child: Image.asset("assets/burger_icon.png")),
+                              )
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 20),
-                        Row(
-                          children: [
-                            Expanded(
-                                child: Column(
-                                  children: [
-                                    ProgressIndicator(
-                                        percent: progressState
-                                            .getLevelProgressFraction(
-                                                DevelopmentCategory.MIND),
-                                        level: progressState
-                                            .getLevel(DevelopmentCategory.MIND),
-                                        title: DevelopmentCategory.MIND.name,
-                                        progressColor:
-                                            DevelopmentCategory.MIND.color),
-                                    ProgressIndicator(
-                                        percent: progressState
-                                            .getLevelProgressFraction(
-                                                DevelopmentCategory.HEALTH),
-                                        level: progressState.getLevel(
-                                            DevelopmentCategory.HEALTH),
-                                        title: DevelopmentCategory.HEALTH.name,
-                                        progressColor:
-                                            DevelopmentCategory.HEALTH.color),
-                                    ProgressIndicator(
-                                        percent: progressState
-                                            .getLevelProgressFraction(
-                                                DevelopmentCategory.ENERGY),
-                                        level: progressState.getLevel(
-                                            DevelopmentCategory.ENERGY),
-                                        title: DevelopmentCategory.ENERGY.name,
-                                        progressColor:
-                                            DevelopmentCategory.ENERGY.color),
-                                  ],
-                                ),
-                                flex: 5),
-                            Expanded(
-                                child: Column(
-                                  children: [
-                                    ProgressIndicator(
-                                        percent: progressState
-                                            .getLevelProgressFraction(
-                                                DevelopmentCategory.WEALTH),
-                                        level: progressState.getLevel(
-                                            DevelopmentCategory.WEALTH),
-                                        title: DevelopmentCategory.WEALTH.name,
-                                        progressColor:
-                                            DevelopmentCategory.WEALTH.color),
-                                    ProgressIndicator(
-                                        percent: progressState
-                                            .getLevelProgressFraction(
-                                                DevelopmentCategory.RELATIONS),
-                                        level: progressState.getLevel(
-                                            DevelopmentCategory.RELATIONS),
-                                        title:
-                                            DevelopmentCategory.RELATIONS.name,
-                                        progressColor: DevelopmentCategory
-                                            .RELATIONS.color),
-                                    const SizedBox(height: 32.0),
-                                  ],
-                                ),
-                                flex: 5)
-                          ],
+                        Padding(
+                          padding: EdgeInsets.only(right: parentWidth * 0.02),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: Column(
+                                    children: [
+                                      ProgressIndicator(
+                                          percent: progressState
+                                              .getLevelProgressFraction(
+                                                  DevelopmentCategory.MIND),
+                                          level: progressState
+                                              .getLevel(DevelopmentCategory.MIND),
+                                          title: DevelopmentCategory.MIND.name,
+                                          progressColor:
+                                              DevelopmentCategory.MIND.color),
+                                      ProgressIndicator(
+                                          percent: progressState
+                                              .getLevelProgressFraction(
+                                                  DevelopmentCategory.HEALTH),
+                                          level: progressState.getLevel(
+                                              DevelopmentCategory.HEALTH),
+                                          title: DevelopmentCategory.HEALTH.name,
+                                          progressColor:
+                                              DevelopmentCategory.HEALTH.color),
+                                      ProgressIndicator(
+                                          percent: progressState
+                                              .getLevelProgressFraction(
+                                                  DevelopmentCategory.ENERGY),
+                                          level: progressState.getLevel(
+                                              DevelopmentCategory.ENERGY),
+                                          title: DevelopmentCategory.ENERGY.name,
+                                          progressColor:
+                                              DevelopmentCategory.ENERGY.color),
+                                    ],
+                                  ),
+                                  flex: 5),
+                              Expanded(
+                                  child: Column(
+                                    children: [
+                                      ProgressIndicator(
+                                          percent: progressState
+                                              .getLevelProgressFraction(
+                                                  DevelopmentCategory.WEALTH),
+                                          level: progressState.getLevel(
+                                              DevelopmentCategory.WEALTH),
+                                          title: DevelopmentCategory.WEALTH.name,
+                                          progressColor:
+                                              DevelopmentCategory.WEALTH.color),
+                                      ProgressIndicator(
+                                          percent: progressState
+                                              .getLevelProgressFraction(
+                                                  DevelopmentCategory.RELATIONS),
+                                          level: progressState.getLevel(
+                                              DevelopmentCategory.RELATIONS),
+                                          title:
+                                              DevelopmentCategory.RELATIONS.name,
+                                          progressColor: DevelopmentCategory
+                                              .RELATIONS.color),
+                                      const SizedBox(height: 32.0),
+                                    ],
+                                  ),
+                                  flex: 5)
+                            ],
+                          ),
                         )
                       ]),
                       flex: 6)
@@ -198,13 +206,11 @@ class ProfilePanelState extends State<ProfilePanel>
 
   Image avatar(TutorialState tutorialState, EmotionsState emotionsState) {
     var avatarPath = resolveEmotionedAvatar(tutorialState, emotionsState);
-    return Image.asset(key: ValueKey(avatarPath), avatarPath, width: 100);
+    return Image.asset(key: ValueKey(avatarPath), avatarPath, width: MediaQuery.of(context).size.width * 0.25);
   }
 
   String resolveEmotionedAvatar(
       TutorialState tutorialState, EmotionsState emotionsState) {
-    var points = emotionsState.emotionPoints.points;
-
     var completedStepsCount =
         tutorialState.getTutorialProgress().completedStepsCount();
 

@@ -416,12 +416,12 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5))),
       label: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.fromLTRB(0, 0, 2, 2),
           child: SizedBox(
             child: Center(
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
-              Icon(Icons.circle, color: cat.color, size: 7),
-              const SizedBox(width: 5),
+              Icon(Icons.circle, color: cat.color, size: 9),
+              const SizedBox(width: 6),
               Text(cat.name,
                   style: cat.index == _value
                       ? Fonts.largeTextStyleWhite

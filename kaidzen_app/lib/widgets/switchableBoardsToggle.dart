@@ -1,8 +1,10 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
+import '../service/TasksState.dart';
 
 class SwitchableBoardsToggleWidget extends StatefulWidget {
   final void Function(int?)? callback;
@@ -47,19 +49,52 @@ class _SwitchableBoardsToggleWidgetState
                         shape: const RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(30))),
-                        label: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.2,
-                          child: Padding(
-                              padding: const EdgeInsets.all(6),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  //mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(board.name,
-                                        style: board.index == _value
-                                            ? Fonts.xLargeWhiteTextStyle
-                                            : Fonts.xLargeTextStyle),
-                                  ])),
+                        label: Stack(
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.2,
+                              child: Padding(
+                                  padding: const EdgeInsets.all(6),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      //mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(board.name,
+                                            style: board.index == _value
+                                                ? Fonts.xLargeWhiteTextStyle
+                                                : Fonts.xLargeTextStyle),
+                                      ])),
+                            ),
+                            Consumer<TasksState>(
+                              builder: (context, taskState, child) => Visibility(
+                                visible: taskState.getByStatus(board.name).isNotEmpty,
+                                child: Positioned(
+                                    top: 0,
+                                    right: -2,
+                                    child: Container(
+                                      width:
+                                          MediaQuery.of(context).size.width * 0.05,
+                                      height:
+                                          MediaQuery.of(context).size.width * 0.04,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white.withOpacity(0)),
+                                      child: Center(
+                                        child: Text(
+                                          taskState.getByStatus(board.name).length.toString(),
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: board.index == _value
+                                                ? Colors.white
+                                                : Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    )),
+                              ),
+                            )
+                          ],
                         ),
                         selected: _value == board.index,
                         onSelected: (bool selected) {
