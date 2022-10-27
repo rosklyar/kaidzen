@@ -52,7 +52,7 @@ void main() async {
       .then((value) => runApp(MultiProvider(providers: [
             ChangeNotifierProvider(create: (context) {
               taskState.loadAll();
-              AnalyticsService.initUserProperties(taskState);
+              AnalyticsService.initUserProperties(taskState, emotionsState, tutorialState);
               return taskState;
             }),
             ChangeNotifierProvider(create: (context) {
