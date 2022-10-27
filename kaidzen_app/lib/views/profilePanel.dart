@@ -57,15 +57,17 @@ class ProfilePanelState extends State<ProfilePanel>
                         Row(children: [
                           Padding(
                               padding: EdgeInsets.only(
-                                  left: parentHeight * 0.08,
-                                  top: parentHeight * 0.005),
+                                  left: parentHeight * 0.06),
                               child: Text(
-                                "LVL ",
-                                style: Fonts.smallTextStyle,
+                                "TOTAL LVL  ",
+                                style: Fonts.smallTextStyle
                               )),
-                          Text(
-                            progressState.getTotalLevel().toString(),
-                            style: Fonts.mediumTextStyle,
+                          Padding(
+                            padding: EdgeInsets.only(bottom: parentHeight * 0.005),
+                            child: Text(
+                              progressState.getTotalLevel().toString(),
+                              style: Fonts.mediumBoldTextStyle,
+                            ),
                           )
                         ])
                       ]),
@@ -89,8 +91,8 @@ class ProfilePanelState extends State<ProfilePanel>
                                           .achievements_screen_opened.name);
                                 },
                                 child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 10, top: 5),
+                                    padding: EdgeInsets.only(
+                                        right: parentHeight * 0.005, top: parentHeight * 0.03),
                                     child: Image.asset(
                                         "assets/achievements_icon.png")),
                               ),
@@ -120,7 +122,7 @@ class ProfilePanelState extends State<ProfilePanel>
                               },
                               child: Padding(
                                   padding:
-                                      const EdgeInsets.only(top: 5, right: 5),
+                                     EdgeInsets.only(top: parentHeight * 0.03, right: 5),
                                   child: Image.asset("assets/burger_icon.png")),
                             )
                           ],
@@ -198,7 +200,7 @@ class ProfilePanelState extends State<ProfilePanel>
 
   Image avatar(TutorialState tutorialState, EmotionsState emotionsState) {
     var avatarPath = resolveEmotionedAvatar(tutorialState, emotionsState);
-    return Image.asset(key: ValueKey(avatarPath), avatarPath, width: 100);
+    return Image.asset(key: ValueKey(avatarPath), avatarPath, width: MediaQuery.of(context).size.width * 0.25);
   }
 
   String resolveEmotionedAvatar(
