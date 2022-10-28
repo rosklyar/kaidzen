@@ -70,7 +70,7 @@ class SwitchableBoardState extends State<SwitchableBoard> {
       ],
       color: Colors.white.withOpacity(0),
       maxHeight: parentHeight * 0.97,
-      minHeight: parentHeight * 0.66,
+      minHeight: parentHeight * 0.63,
       panel: SizedBox(
           //width: parentWidth,
           //height: parentHeight,
