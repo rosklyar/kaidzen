@@ -52,7 +52,8 @@ void main() async {
       .then((value) => runApp(MultiProvider(providers: [
             ChangeNotifierProvider(create: (context) {
               taskState.loadAll();
-              AnalyticsService.initUserProperties(taskState, emotionsState, tutorialState);
+              AnalyticsService.initUserProperties(
+                  taskState, emotionsState, tutorialState);
               return taskState;
             }),
             ChangeNotifierProvider(create: (context) {
@@ -110,17 +111,17 @@ class _HomeScreenState extends State<HomeScreen> {
           body: Stack(children: [
             Column(children: [
               Expanded(
-                  flex: 22,
-                  child: Padding(
-                      padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height * 0.02),
-                      child: ProfilePanel(key: _profilePanelKey))),
+                  flex: 32,
+                  child: ProfilePanel(key: _profilePanelKey)),
               Expanded(
-                flex: 16,
-                child: Image.asset("assets/mountains_big.png",
-                    width: MediaQuery.of(context).size.width),
+                flex: 24,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.01),
+                  child: Image.asset("assets/mountains_cut.png",
+                      width: MediaQuery.of(context).size.width),
+                ),
               ),
-              Expanded(flex: 48, child: Container())
+              Expanded(flex: 60, child: Container())
             ]),
             SwitchableBoard(key: _switchableBoardKey),
           ]),

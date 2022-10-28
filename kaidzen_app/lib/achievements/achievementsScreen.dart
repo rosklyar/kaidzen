@@ -165,7 +165,7 @@ class AchievementsScreen extends StatelessWidget {
     TutorialState tutorialState =
         Provider.of<TutorialState>(context, listen: false);
     var avatarPath = resolveEmotionedAvatar(tutorialState);
-    return Image.asset(key: ValueKey(avatarPath), avatarPath, width: MediaQuery.of(context).size.width * 0.37);
+    return Image.asset(key: ValueKey(avatarPath), avatarPath, width: MediaQuery.of(context).size.width * 0.28);
   }
 
   String resolveEmotionedAvatar(TutorialState tutorialState) {

@@ -45,7 +45,7 @@ class ProfilePanelState extends State<ProfilePanel>
                         Stack(children: [
                           Padding(
                               padding:
-                                  EdgeInsets.only(top: parentHeight * 0.07),
+                                  EdgeInsets.only(top: parentHeight * 0.09),
                               child: AnimatedSwitcher(
                                   duration: const Duration(milliseconds: 800),
                                   transitionBuilder: (Widget child,
@@ -57,14 +57,13 @@ class ProfilePanelState extends State<ProfilePanel>
                         ]),
                         Row(children: [
                           Padding(
-                              padding: EdgeInsets.only(
-                                  left: parentHeight * 0.06),
-                              child: Text(
-                                "TOTAL LVL  ",
-                                style: Fonts.smallTextStyle
-                              )),
+                              padding:
+                                  EdgeInsets.only(left: parentHeight * 0.07),
+                              child: Text("TOTAL LVL  ",
+                                  style: Fonts.smallTextStyle)),
                           Padding(
-                            padding: EdgeInsets.only(bottom: parentHeight * 0.005),
+                            padding:
+                                EdgeInsets.only(bottom: parentHeight * 0.005),
                             child: Text(
                               progressState.getTotalLevel().toString(),
                               style: Fonts.mediumBoldTextStyle,
@@ -75,7 +74,7 @@ class ProfilePanelState extends State<ProfilePanel>
                       flex: 4),
                   Expanded(
                       child: Column(children: [
-                        const SizedBox(height: 20),
+                        //const SizedBox(height: 20),
                         Padding(
                           padding: EdgeInsets.only(right: parentWidth * 0.02),
                           child: Row(
@@ -94,7 +93,9 @@ class ProfilePanelState extends State<ProfilePanel>
                                             .achievements_screen_opened.name);
                                   },
                                   child: Padding(
-                                      padding: EdgeInsets.only(right: parentWidth * 0.02, top: parentHeight * 0.03),
+                                      padding: EdgeInsets.only(
+                                          right: parentWidth * 0.02,
+                                          top: parentHeight * 0.04),
                                       child: Image.asset(
                                           "assets/achievements_icon.png")),
                                 ),
@@ -123,14 +124,15 @@ class ProfilePanelState extends State<ProfilePanel>
                                           .settings_screen_opened.name);
                                 },
                                 child: Padding(
-                                    padding:
-                                       EdgeInsets.only(top: parentHeight * 0.03, right: 5),
-                                    child: Image.asset("assets/burger_icon.png")),
+                                    padding: EdgeInsets.only(
+                                        top: parentHeight * 0.04, right: 5),
+                                    child:
+                                        Image.asset("assets/burger_icon.png")),
                               )
                             ],
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: parentHeight * 0.03),
                         Padding(
                           padding: EdgeInsets.only(right: parentWidth * 0.02),
                           child: Row(
@@ -142,8 +144,8 @@ class ProfilePanelState extends State<ProfilePanel>
                                           percent: progressState
                                               .getLevelProgressFraction(
                                                   DevelopmentCategory.MIND),
-                                          level: progressState
-                                              .getLevel(DevelopmentCategory.MIND),
+                                          level: progressState.getLevel(
+                                              DevelopmentCategory.MIND),
                                           title: DevelopmentCategory.MIND.name,
                                           progressColor:
                                               DevelopmentCategory.MIND.color),
@@ -153,7 +155,8 @@ class ProfilePanelState extends State<ProfilePanel>
                                                   DevelopmentCategory.HEALTH),
                                           level: progressState.getLevel(
                                               DevelopmentCategory.HEALTH),
-                                          title: DevelopmentCategory.HEALTH.name,
+                                          title:
+                                              DevelopmentCategory.HEALTH.name,
                                           progressColor:
                                               DevelopmentCategory.HEALTH.color),
                                       ProgressIndicator(
@@ -162,7 +165,8 @@ class ProfilePanelState extends State<ProfilePanel>
                                                   DevelopmentCategory.ENERGY),
                                           level: progressState.getLevel(
                                               DevelopmentCategory.ENERGY),
-                                          title: DevelopmentCategory.ENERGY.name,
+                                          title:
+                                              DevelopmentCategory.ENERGY.name,
                                           progressColor:
                                               DevelopmentCategory.ENERGY.color),
                                     ],
@@ -177,17 +181,19 @@ class ProfilePanelState extends State<ProfilePanel>
                                                   DevelopmentCategory.WEALTH),
                                           level: progressState.getLevel(
                                               DevelopmentCategory.WEALTH),
-                                          title: DevelopmentCategory.WEALTH.name,
+                                          title:
+                                              DevelopmentCategory.WEALTH.name,
                                           progressColor:
                                               DevelopmentCategory.WEALTH.color),
                                       ProgressIndicator(
                                           percent: progressState
                                               .getLevelProgressFraction(
-                                                  DevelopmentCategory.RELATIONS),
+                                                  DevelopmentCategory
+                                                      .RELATIONS),
                                           level: progressState.getLevel(
                                               DevelopmentCategory.RELATIONS),
-                                          title:
-                                              DevelopmentCategory.RELATIONS.name,
+                                          title: DevelopmentCategory
+                                              .RELATIONS.name,
                                           progressColor: DevelopmentCategory
                                               .RELATIONS.color),
                                       const SizedBox(height: 32.0),
@@ -206,7 +212,10 @@ class ProfilePanelState extends State<ProfilePanel>
 
   Image avatar(TutorialState tutorialState, EmotionsState emotionsState) {
     var avatarPath = resolveEmotionedAvatar(tutorialState, emotionsState);
-    return Image.asset(key: ValueKey(avatarPath), avatarPath, width: MediaQuery.of(context).size.width * 0.25);
+    return Image.asset(
+        key: ValueKey(avatarPath),
+        avatarPath,
+        width: MediaQuery.of(context).size.width * 0.25);
   }
 
   String resolveEmotionedAvatar(
