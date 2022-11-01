@@ -74,9 +74,10 @@ class ProfilePanelState extends State<ProfilePanel>
                       flex: 4),
                   Expanded(
                       child: Column(children: [
-                        //const SizedBox(height: 20),
                         Padding(
-                          padding: EdgeInsets.only(right: parentWidth * 0.02),
+                          padding: EdgeInsets.only(
+                              top: parentHeight * 0.07,
+                              right: parentWidth * 0.02),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -94,8 +95,7 @@ class ProfilePanelState extends State<ProfilePanel>
                                   },
                                   child: Padding(
                                       padding: EdgeInsets.only(
-                                          right: parentWidth * 0.02,
-                                          top: parentHeight * 0.04),
+                                          right: parentWidth * 0.02),
                                       child: Image.asset(
                                           "assets/achievements_icon.png")),
                                 ),
@@ -124,15 +124,14 @@ class ProfilePanelState extends State<ProfilePanel>
                                           .settings_screen_opened.name);
                                 },
                                 child: Padding(
-                                    padding: EdgeInsets.only(
-                                        top: parentHeight * 0.04, right: 5),
+                                    padding: const EdgeInsets.only(right: 5),
                                     child:
                                         Image.asset("assets/burger_icon.png")),
                               )
                             ],
                           ),
                         ),
-                        SizedBox(height: parentHeight * 0.03),
+                        SizedBox(height: parentHeight * 0.01),
                         Padding(
                           padding: EdgeInsets.only(right: parentWidth * 0.02),
                           child: Row(
