@@ -61,23 +61,20 @@ class SettingsScreen extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                               Row(children: [
-                                Text(
-                                  "About philosophy",
-                                  style: Fonts.largeTextStyle20,
-                                  textAlign: TextAlign.left,
-                                )
+                                InkWell(
+                                    child: Text(
+                                      "About philosophy",
+                                      style: Fonts.largeTextStyle20,
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    onTap: () async {
+                                      await _goToAboutPhilosophy(context);
+                                    })
                               ]),
                               IconButton(
                                   padding: EdgeInsets.zero,
                                   onPressed: () async {
-                                    await FirebaseAnalytics.instance.logEvent(
-                                        name: AnalyticsEventType
-                                            .about_philosophy_opened.name);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                AboutPhilosophyScreen()));
+                                    await _goToAboutPhilosophy(context);
                                   },
                                   icon: SvgPicture.asset(
                                       "assets/shevron-right-black.svg"))
@@ -88,23 +85,20 @@ class SettingsScreen extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                               Row(children: [
-                                Text(
-                                  "Send feedback",
-                                  style: Fonts.largeTextStyle20,
-                                  textAlign: TextAlign.left,
-                                )
+                                InkWell(
+                                    child: Text(
+                                      "Send feedback",
+                                      style: Fonts.largeTextStyle20,
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    onTap: () async {
+                                      await _goToSendFeedback(context);
+                                    })
                               ]),
                               IconButton(
                                   padding: EdgeInsets.zero,
                                   onPressed: () async {
-                                    await FirebaseAnalytics.instance.logEvent(
-                                        name: AnalyticsEventType
-                                            .send_feedback_opened.name);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const EmailSender()));
+                                    await _goToSendFeedback(context);
                                   },
                                   icon: SvgPicture.asset(
                                       "assets/shevron-right-black.svg"))
@@ -117,11 +111,15 @@ class SettingsScreen extends StatelessWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                   Row(children: [
-                                    Text(
-                                      "Love the app? Leave a review",
-                                      style: Fonts.largeTextStyle20,
-                                      textAlign: TextAlign.left,
-                                    )
+                                    InkWell(
+                                        child: Text(
+                                          "Love the app? Leave a review",
+                                          style: Fonts.largeTextStyle20,
+                                          textAlign: TextAlign.left,
+                                        ),
+                                        onTap: () async {
+                                          ReviewUtils.requestReview();
+                                        })
                                   ]),
                                   IconButton(
                                       padding: EdgeInsets.zero,
@@ -137,19 +135,20 @@ class SettingsScreen extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                               Row(children: [
-                                Text(
-                                  "Share app",
-                                  style: Fonts.largeTextStyle20,
-                                  textAlign: TextAlign.left,
-                                )
+                                InkWell(
+                                    child: Text(
+                                      "Share app",
+                                      style: Fonts.largeTextStyle20,
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    onTap: () async {
+                                      await _shareApp();
+                                    })
                               ]),
                               IconButton(
                                   padding: EdgeInsets.zero,
                                   onPressed: () async {
-                                    await FirebaseAnalytics.instance.logEvent(
-                                        name: AnalyticsEventType
-                                            .share_app_opened.name);
-                                    share();
+                                    await _shareApp();
                                   },
                                   icon: SvgPicture.asset(
                                       "assets/shevron-right-black.svg"))
@@ -169,28 +168,21 @@ class SettingsScreen extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                               Row(children: [
-                                Text(
-                                  "Terms of use",
-                                  style: Fonts.largeTextStyle20,
-                                  textAlign: TextAlign.left,
+                                InkWell(
+                                  child: Text(
+                                    "Terms of use",
+                                    style: Fonts.largeTextStyle20,
+                                    textAlign: TextAlign.left,
+                                  ),
+                                  onTap: () async {
+                                    await _goToTermsOfUse(context);
+                                  },
                                 )
                               ]),
                               IconButton(
                                   padding: EdgeInsets.zero,
                                   onPressed: () async {
-                                    await FirebaseAnalytics.instance.logEvent(
-                                        name: AnalyticsEventType
-                                            .terms_of_use_opened.name);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                LongTextScreen(
-                                                  title: "Terms of use",
-                                                  date: DateTime(2022, 9, 30),
-                                                  mdFilePath:
-                                                      'assets/settings/terms_of_use.md',
-                                                )));
+                                    await _goToTermsOfUse(context);
                                   },
                                   icon: SvgPicture.asset(
                                       "assets/shevron-right-black.svg"))
@@ -201,28 +193,20 @@ class SettingsScreen extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                               Row(children: [
-                                Text(
-                                  "Privacy policy",
-                                  style: Fonts.largeTextStyle20,
-                                  textAlign: TextAlign.left,
-                                )
+                                InkWell(
+                                    child: Text(
+                                      "Privacy policy",
+                                      style: Fonts.largeTextStyle20,
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    onTap: () async {
+                                      await _goToPrivacyPolicy(context);
+                                    })
                               ]),
                               IconButton(
                                   padding: EdgeInsets.zero,
                                   onPressed: () async {
-                                    await FirebaseAnalytics.instance.logEvent(
-                                        name: AnalyticsEventType
-                                            .privacy_policy_opened.name);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                LongTextScreen(
-                                                  title: "Privacy policy",
-                                                  date: DateTime(2022, 9, 30),
-                                                  mdFilePath:
-                                                      'assets/settings/privacy_policy.md',
-                                                )));
+                                    await _goToPrivacyPolicy(context);
                                   },
                                   icon: SvgPicture.asset(
                                       "assets/shevron-right-black.svg"))
@@ -236,5 +220,51 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
             ));
+  }
+
+  Future<void> _goToPrivacyPolicy(BuildContext context) async {
+    await FirebaseAnalytics.instance
+        .logEvent(name: AnalyticsEventType.privacy_policy_opened.name);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => LongTextScreen(
+                  title: "Privacy policy",
+                  date: DateTime(2022, 9, 30),
+                  mdFilePath: 'assets/settings/privacy_policy.md',
+                )));
+  }
+
+  Future<void> _goToTermsOfUse(BuildContext context) async {
+    await FirebaseAnalytics.instance
+        .logEvent(name: AnalyticsEventType.terms_of_use_opened.name);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => LongTextScreen(
+                  title: "Terms of use",
+                  date: DateTime(2022, 9, 30),
+                  mdFilePath: 'assets/settings/terms_of_use.md',
+                )));
+  }
+
+  Future<void> _shareApp() async {
+    await FirebaseAnalytics.instance
+        .logEvent(name: AnalyticsEventType.share_app_opened.name);
+    share();
+  }
+
+  Future<void> _goToSendFeedback(BuildContext context) async {
+    await FirebaseAnalytics.instance
+        .logEvent(name: AnalyticsEventType.send_feedback_opened.name);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const EmailSender()));
+  }
+
+  Future<void> _goToAboutPhilosophy(BuildContext context) async {
+    await FirebaseAnalytics.instance
+        .logEvent(name: AnalyticsEventType.about_philosophy_opened.name);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => AboutPhilosophyScreen()));
   }
 }

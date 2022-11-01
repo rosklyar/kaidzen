@@ -41,11 +41,7 @@ class LongTextScreen extends StatelessWidget {
                           child: SvgPicture.asset(
                               "assets/settings/close_black_icon.svg"),
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SettingsScreen()));
+                            Navigator.pop(context);
                           },
                         ),
                       ]),
