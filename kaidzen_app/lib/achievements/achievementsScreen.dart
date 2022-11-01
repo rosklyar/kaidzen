@@ -28,10 +28,19 @@ class AchievementsScreen extends StatelessWidget {
                 headerSliverBuilder:
                     (BuildContext context, bool innerBoxIsScrolled) => [
                   SliverAppBar(
-                    title: Visibility(
-                      child: Text('Achievements',
-                            style: AchievementsStyle.achievementsAppBarTextStyle),
-                    ),
+                    centerTitle: true,
+                    title: Text('Achievements',
+                        style: AchievementsStyle.achievementsAppBarTextStyle),
+                    automaticallyImplyLeading: false,
+                    actions: [
+                      IconButton(
+                        iconSize: 32,
+                        icon: Image.asset("assets/close_icon.png"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )
+                    ],
                     pinned: true,
                     floating: true,
                     backgroundColor:
@@ -39,31 +48,15 @@ class AchievementsScreen extends StatelessWidget {
                     expandedHeight: MediaQuery.of(context).size.height * 0.23,
                     flexibleSpace: FlexibleSpaceBar(
                       background: Column(children: [
-                        Expanded(
-                            child: Padding(
-                                padding: const EdgeInsets.only(top: 20),
-                                child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const SizedBox(width: 32),
-                                      IconButton(
-                                        iconSize: 32,
-                                        icon: Image.asset(
-                                            "assets/close_icon.png"),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ])),
-                            flex: 1),
+                        const Expanded(child: SizedBox(), flex: 1),
                         Expanded(
                             child: Stack(children: [
                               Positioned(
                                   bottom: 0,
                                   child: SvgPicture.asset(
                                       "assets/achievements/dotted_line_ach.svg",
-                                      width: MediaQuery.of(context).size.width)),
+                                      width:
+                                          MediaQuery.of(context).size.width)),
                               Column(children: [
                                 Expanded(
                                     child: Row(
@@ -165,7 +158,10 @@ class AchievementsScreen extends StatelessWidget {
     TutorialState tutorialState =
         Provider.of<TutorialState>(context, listen: false);
     var avatarPath = resolveEmotionedAvatar(tutorialState);
-    return Image.asset(key: ValueKey(avatarPath), avatarPath, width: MediaQuery.of(context).size.width * 0.28);
+    return Image.asset(
+        key: ValueKey(avatarPath),
+        avatarPath,
+        width: MediaQuery.of(context).size.width * 0.28);
   }
 
   String resolveEmotionedAvatar(TutorialState tutorialState) {

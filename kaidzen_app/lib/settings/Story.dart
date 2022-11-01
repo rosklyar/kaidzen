@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:kaidzen_app/assets/constants.dart';
 
 class Story extends StatelessWidget {
-  final Text text;
+  final String title;
+  final String text;
   final Color backgroundColor;
   final Image backgroundImage;
 
   const Story(
       {super.key,
+      required this.title,
       required this.text,
       required this.backgroundColor,
       required this.backgroundImage});
@@ -21,7 +24,19 @@ class Story extends StatelessWidget {
           Expanded(
               child: Stack(children: [
                 Positioned(bottom: 0, child: backgroundImage),
-                Center(child: text)
+                Column(children: [
+                  Expanded(
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child:
+                              Text(title, style: Fonts.screenTytleTextStyle)),
+                      flex: 1),
+                  Expanded(
+                      child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(text, style: Fonts.largeTextStyle)),
+                      flex: 8)
+                ])
               ]),
               flex: 6)
         ]));
