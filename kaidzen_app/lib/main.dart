@@ -110,13 +110,12 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Scaffold(
           body: Stack(children: [
             Column(children: [
-              Expanded(
-                  flex: 32,
-                  child: ProfilePanel(key: _profilePanelKey)),
+              Expanded(flex: 32, child: ProfilePanel(key: _profilePanelKey)),
               Expanded(
                 flex: 24,
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.01),
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height * 0.01),
                   child: Image.asset("assets/mountains_cut.png",
                       width: MediaQuery.of(context).size.width),
                 ),

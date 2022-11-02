@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
 import '../service/AnalyticsService.dart';
+import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -19,8 +20,9 @@ class SettingsScreen extends StatelessWidget {
     await FlutterShare.share(
         title: 'Sticky Goals',
         text: 'Sticky Goals',
-        linkUrl:
-            'https://play.google.com/apps/test/com.funworkstudio.stickygoals.android/5',
+        linkUrl: defaultTargetPlatform == TargetPlatform.android
+            ? 'https://play.google.com/apps/test/com.funworkstudio.stickygoals.android/11'
+            : "https://https://www.apple.com/app-store",
         chooserTitle: 'Share \'Sticky Goals\'');
   }
 
