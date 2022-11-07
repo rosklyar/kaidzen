@@ -101,16 +101,45 @@ class ProfilePanelState extends State<ProfilePanel>
                                 ),
                                 Visibility(
                                     visible: achievementsState
-                                            .getCompletedAchievementsCount() >
+                                            .getCompletedAchievementsCount() >=
                                         0,
                                     child: Positioned(
-                                        top: parentHeight * 0.02,
-                                        right: parentWidth * 0.01,
-                                        child: Text(
+                                      top: 0,
+                                      right: -4,
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width *
+                                            0.05,
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.04,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color.fromARGB(255, 204, 158, 243)),
+                                        child: Center(
+                                          child: Text(
                                             achievementsState
                                                 .getCompletedAchievementsCount()
                                                 .toString(),
-                                            style: Fonts.mediumBoldTextStyle)))
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )),
+                                // Visibility(
+                                //     visible: achievementsState
+                                //             .getCompletedAchievementsCount() >
+                                //         0,
+                                //     child: Positioned(
+                                //         top: parentHeight * 0.02,
+                                //         right: parentWidth * 0.01,
+                                //         child: Text(
+                                //             achievementsState
+                                //                 .getCompletedAchievementsCount()
+                                //                 .toString(),
+                                //             style: Fonts.mediumBoldTextStyle)))
                               ]),
                               GestureDetector(
                                 onTap: () async {
