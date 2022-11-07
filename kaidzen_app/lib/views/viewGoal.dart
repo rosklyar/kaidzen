@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/views/createSubgoal.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/views/editSubgoal.dart';
@@ -42,7 +43,12 @@ class _ViewGoalState extends State<ViewGoal> {
     return Scaffold(
       backgroundColor: Color(task.category.backgroundColor),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        elevation: 0.0,
         centerTitle: true,
+        leading: BackButton(
+            color: Colors.black, onPressed: () => Navigator.pop(context)),
+        backgroundColor: Colors.white.withOpacity(0),
       ),
       body: Column(children: [
         Expanded(
@@ -117,7 +123,7 @@ class _ViewGoalState extends State<ViewGoal> {
                                       CreateSubGoal(parent: task)));
                         },
                       ),
-                      title: const Text('Add subtask',
+                      title: const Text('Add subgoal',
                           style:
                               TextStyle(decoration: TextDecoration.underline)),
                       onTap: () {
@@ -177,8 +183,11 @@ class _ViewGoalState extends State<ViewGoal> {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return task.parent == null
                         ? EditGoal(task)
-                        : EditSubGoal(parent: Provider.of<TasksState>(context, listen: false)
-                        .getById(task.parent!)!, task: task);
+                        : EditSubGoal(
+                            parent:
+                                Provider.of<TasksState>(context, listen: false)
+                                    .getById(task.parent!)!,
+                            task: task);
                   }));
                 },
               ),

@@ -68,7 +68,7 @@ List<Widget> buildExpandableContent(BuildContext context, Task task) {
                     builder: (context) => CreateSubGoal(parent: task)));
           },
         ),
-        title: const Text('Add subtask',
+        title: const Text('Add subgoal',
             style: TextStyle(decoration: TextDecoration.underline)),
         onTap: () {
           Navigator.push(

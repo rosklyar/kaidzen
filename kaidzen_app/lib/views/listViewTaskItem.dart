@@ -35,8 +35,11 @@ class ListViewTaskItem extends ListTile {
       subtitle: Text('For ' + task.category.nameLowercase),
       trailing: ListTileTrail(task: task),
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => ViewGoal(task)));
+         Navigator.push(
+            context,
+            MaterialPageRoute(
+                settings: const RouteSettings(name: "parentTask"),
+                builder: (context) => ViewGoal(task)));
       },
       selected: false,
     );
