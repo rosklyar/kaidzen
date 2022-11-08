@@ -119,7 +119,7 @@ class AchievementsScreen extends StatelessWidget {
             Expanded(
                 child: Stack(children: [
                   SvgPicture.asset(
-                      "assets/achievements/new_origami_text/new_origami_text_${completedAchievementsCount % 10}.svg")
+                      "assets/achievements/new_origami_text/new_origami_text_${completedAchievementsCount % 13}.svg")
                 ]),
                 flex: 2),
             const SizedBox(height: 10),
