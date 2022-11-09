@@ -76,7 +76,7 @@ class ProfilePanelState extends State<ProfilePanel>
                       child: Column(children: [
                         Padding(
                           padding: EdgeInsets.only(
-                              top: parentHeight * 0.07,
+                              top: parentHeight * 0.05,
                               right: parentWidth * 0.02),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,

@@ -65,10 +65,10 @@ class _ViewGoalState extends State<ViewGoal> {
                         child: SizedBox(
                             width: double.infinity,
                             child: Text(
-                              task.name,
+                              task.shortenedName(200),
                               textAlign: TextAlign.left,
                               style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 24.0),
+                                  fontWeight: FontWeight.bold, fontSize: 20.0),
                             ))),
                     Padding(
                         padding: const EdgeInsets.symmetric(

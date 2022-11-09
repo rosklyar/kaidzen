@@ -29,13 +29,13 @@ class ListViewTaskItem extends ListTile {
         ],
       ),
       title: Text(
-        task.name,
+        task.shortenedName(75),
         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
       ),
       subtitle: Text('For ' + task.category.nameLowercase),
       trailing: ListTileTrail(task: task),
       onTap: () {
-         Navigator.push(
+        Navigator.push(
             context,
             MaterialPageRoute(
                 settings: const RouteSettings(name: "parentTask"),

@@ -35,7 +35,7 @@ enum DevelopmentCategory {
       "assets/Relations", 0xFFFFEBE6),
   WEALTH(4, "Wealth", "wealth", Color.fromRGBO(138, 94, 176, 1.0),
       "assets/Wealth", 0xFFF4E8FE),
-  NO_CATEGORY(-1, "No category", "life", Colors.white, "", 0xFFFFFF);
+  NO_CATEGORY(-1, "No category", "life", Colors.white, "", 0xFFFFFFFF);
 
   const DevelopmentCategory(this.id, this.name, this.nameLowercase, this.color,
       this.backgroundLink, this.backgroundColor);

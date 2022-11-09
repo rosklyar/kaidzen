@@ -75,7 +75,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                   ),
                   Text(
                       style: const TextStyle(color: Colors.grey),
-                      widget.parent.name)
+                      widget.parent.shortenedName(200))
                 ],
               )
             ]),

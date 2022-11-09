@@ -24,6 +24,13 @@ class Task extends Equatable {
     return subtasks.isNotEmpty;
   }
 
+  String shortenedName(int maxLength) {
+    if (name.isNotEmpty && name.length > maxLength) {
+      return name.substring(0, maxLength) + "...";
+    }
+    return name;
+  }
+
   @override
   String toString() {
     return "id: $id, name: $name, category: $category, status: $status, difficulty: $difficulty, parent=$parent";
