@@ -4,6 +4,8 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/settings/SettingsScreen.dart';
 
+import '../main.dart';
+
 class LongTextScreen extends StatelessWidget {
   final String title;
   final DateTime date;
@@ -30,22 +32,21 @@ class LongTextScreen extends StatelessWidget {
                           child:
                               SvgPicture.asset("assets/shevron-left-black.svg"),
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SettingsScreen()));
+                            Navigator.pop(context);
                           },
                         ),
                         GestureDetector(
                           child: SvgPicture.asset(
                               "assets/settings/close_black_icon.svg"),
                           onTap: () {
-                            Navigator.pop(context);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const HomeScreen()));
                           },
                         ),
                       ]),
-                  flex: 2),
+                  flex: 1),
               Expanded(
                   child: FutureBuilder<String>(
                       future: Future.delayed(const Duration(milliseconds: 150))
@@ -56,7 +57,7 @@ class LongTextScreen extends StatelessWidget {
                         }
                         return const Center(child: CircularProgressIndicator());
                       }),
-                  flex: 27),
+                  flex: 9),
             ])));
   }
 }

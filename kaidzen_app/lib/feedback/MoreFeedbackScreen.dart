@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../assets/constants.dart';
+import '../main.dart';
 
 class MoreFeedbackScreen extends StatelessWidget {
   const MoreFeedbackScreen({Key? key}) : super(key: key);
@@ -20,20 +21,17 @@ class MoreFeedbackScreen extends StatelessWidget {
                           child:
                               SvgPicture.asset("assets/shevron-left-black.svg"),
                           onTap: () {
-                            var count = 0;
-                            Navigator.popUntil(context, (route) {
-                              return count++ == 2;
-                            });
+                            Navigator.of(context).pop();
                           },
                         ),
                         GestureDetector(
                           child: SvgPicture.asset(
                               "assets/settings/close_black_icon.svg"),
                           onTap: () {
-                            var count = 0;
-                            Navigator.popUntil(context, (route) {
-                              return count++ == 2;
-                            });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const HomeScreen()));
                           },
                         ),
                       ]),

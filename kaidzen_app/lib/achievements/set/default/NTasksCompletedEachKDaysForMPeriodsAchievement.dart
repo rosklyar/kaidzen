@@ -60,8 +60,7 @@ class NTasksCompletedEachKDaysForMPeriodsAchievement extends Achievement {
           children: List.generate(
               numberOfPeriods,
               (index) => Expanded(
-                  child: notCompletedDetailsRowWidget(
-                      index * numberOfDays, (index + 1) * numberOfDays),
+                  child: notCompletedDetailsRowWidget(getLeadingText(index)),
                   flex: 1)));
     }
     List<Widget> detailsRows = [];
@@ -70,8 +69,7 @@ class NTasksCompletedEachKDaysForMPeriodsAchievement extends Achievement {
     DateTime now = DateTime.now();
     for (int i = 0; i < numberOfPeriods; i++) {
       if (from.isAtSameMomentAs(now)) {
-        detailsRows.add(notCompletedDetailsRowWidget(
-            i * numberOfDays, (i + 1) * numberOfDays));
+        detailsRows.add(notCompletedDetailsRowWidget(getLeadingText(i)));
       } else {
         DateTime to = _getToDatetime(from, now);
         int completedTasks =
@@ -81,8 +79,7 @@ class NTasksCompletedEachKDaysForMPeriodsAchievement extends Achievement {
               progress: 1.0,
               progressColor:
                   AchievementsStyle.achievementDetailsActiveProgressColor,
-              leadingText:
-                  "Days ${i * numberOfDays} - ${(i + 1) * numberOfDays}",
+              leadingText: getLeadingText(i),
               centerText: "Completed"));
         } else {
           DateTime periodEnd = from.add(Duration(days: numberOfDays));
@@ -93,8 +90,7 @@ class NTasksCompletedEachKDaysForMPeriodsAchievement extends Achievement {
                 progress: (completedTasks / numberOfTasks).clamp(0.0, 1.0),
                 progressColor:
                     AchievementsStyle.achievementDetailsActiveProgressColor,
-                leadingText:
-                    "Days ${i * numberOfDays} - ${(i + 1) * numberOfDays}",
+                leadingText: getLeadingText(i),
                 centerText: "${numberOfTasks - completedTasks} goals ahead",
                 trailingText:
                     getTrailingText(daysLeft, hoursLeft, periodEnd, now),
@@ -110,6 +106,10 @@ class NTasksCompletedEachKDaysForMPeriodsAchievement extends Achievement {
         children: detailsRows.map((e) => Expanded(child: e, flex: 1)).toList());
   }
 
+  String getLeadingText(int i) => numberOfDays == 7
+      ? "Week ${i + 1}"
+      : "Days ${(i * numberOfDays) + 1} - ${(i + 1) * numberOfDays}";
+
   String getTrailingText(
       int daysLeft, int hoursLeft, DateTime periodEnd, DateTime now) {
     return daysLeft > 0
@@ -124,11 +124,11 @@ class NTasksCompletedEachKDaysForMPeriodsAchievement extends Achievement {
     return to.isAfter(now) ? now : to;
   }
 
-  DetailsRowWidget notCompletedDetailsRowWidget(int from, int to) {
+  DetailsRowWidget notCompletedDetailsRowWidget(String leadingText) {
     return DetailsRowWidget(
         progress: 0.0,
         progressColor: AchievementsStyle.achievementDetailsActiveProgressColor,
-        leadingText: "Days $from - $to",
+        leadingText: leadingText,
         centerText: "Not started");
   }
 }

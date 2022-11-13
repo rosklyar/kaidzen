@@ -10,6 +10,7 @@ import 'package:kaidzen_app/settings/ReviewUtils.dart';
 import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
+import '../main.dart';
 import '../service/AnalyticsService.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 
@@ -45,7 +46,11 @@ class SettingsScreen extends StatelessWidget {
                                   icon: SvgPicture.asset(
                                       "assets/settings/close_black_icon.svg"),
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const HomeScreen()));
                                   },
                                 ),
                               ])),

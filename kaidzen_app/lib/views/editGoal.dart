@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:kaidzen_app/views/utils.dart';
 import 'package:kaidzen_app/widgets/taskType.dart';
 import 'package:kaidzen_app/widgets/taskDifficulty.dart';
 
@@ -40,83 +41,86 @@ class _EditGoalState extends State<EditGoal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Column(children: [
         Expanded(
-            child: Stack(fit: StackFit.expand, children: [
-              Column(children: [
-                Expanded(
-                    child: Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Row(children: [
-                          Expanded(
-                              child: IconButton(
-                                icon: SvgPicture.asset(
-                                    "assets/shevron-left-black.svg"),
-                                onPressed: () async {
-                                  await FirebaseAnalytics.instance.logEvent(
-                                      name: AnalyticsEventType
-                                          .create_goal_screen_back_button.name);
-                                  Navigator.of(context).pop();
+            child: Column(children: [
+              Expanded(
+                  child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Row(children: [
+                        Expanded(
+                            child: IconButton(
+                              icon: SvgPicture.asset(
+                                  "assets/shevron-left-black.svg"),
+                              onPressed: () async {
+                                await FirebaseAnalytics.instance.logEvent(
+                                    name: AnalyticsEventType
+                                        .create_goal_screen_back_button.name);
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            flex: 1),
+                        Expanded(
+                            child: Center(
+                                child: Text(
+                              "Goal",
+                              style: Fonts.screenTytleTextStyle,
+                            )),
+                            flex: 9),
+                        const Expanded(child: SizedBox(), flex: 1)
+                      ])),
+                  flex: 3),
+              Expanded(
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: TextField(
+                        autofocus: true,
+                        decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  newTaskController.clear();
+                                  _taskTypeWidgetKey.currentState!._value = -1;
                                 },
-                              ),
-                              flex: 1),
-                          Expanded(
-                              child: Center(
-                                  child: Text(
-                                "Goal",
-                                style: Fonts.screenTytleTextStyle,
-                              )),
-                              flex: 9),
-                          const Expanded(child: SizedBox(), flex: 1)
-                        ])),
-                    flex: 3),
-                Expanded(
-                    child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        child: TextField(
-                          autofocus: true,
-                          decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                  onPressed: () {
-                                    newTaskController.clear();
-                                    _taskTypeWidgetKey.currentState!._value =
-                                        -1;
-                                  },
-                                  icon: Visibility(
-                                      visible:
-                                          newTaskController.text.isNotEmpty,
-                                      child: SvgPicture.asset(
-                                          "assets/close-grey.svg"))),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                  borderSide: const BorderSide(
-                                      color: inputInactiveBorderColor)),
-                              hintStyle: Fonts.inputHintTextStyle),
-                          controller: newTaskController,
-                        )),
-                    flex: 3),
-                Expanded(
-                    child: Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: SizedBox(
-                            width: double.infinity,
-                            child: Text("Life sphere to be affected",
-                                textAlign: TextAlign.left,
-                                style: Fonts.largeTextStyle))),
-                    flex: 1),
-                Expanded(
-                    child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: TaskTypeWidget(
-                            key: _taskTypeWidgetKey,
-                            callback: (value) => setState(() {
-                                  _currentCategory = value!;
-                                }),
-                            initialCategory: _currentCategory)),
-                    flex: 4),
-                Expanded(child: getDiff(), flex: 7),
-              ])
+                                icon: Visibility(
+                                    visible: newTaskController.text.isNotEmpty,
+                                    child: SvgPicture.asset(
+                                        "assets/close-grey.svg"))),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                borderSide: const BorderSide(
+                                    color: inputInactiveBorderColor)),
+                            hintStyle: Fonts.inputHintTextStyle),
+                        controller: newTaskController,
+                      )),
+                  flex: 3),
+              Expanded(
+                  child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: SizedBox(
+                          width: double.infinity,
+                          child: Text("Life sphere to be affected",
+                              textAlign: TextAlign.left,
+                              style: Fonts.largeTextStyle))),
+                  flex: 1),
+              Expanded(
+                  child: Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: Column(children: [
+                        Expanded(
+                            child: TaskTypeWidget(
+                                initialCategory: _currentCategory,
+                                key: _taskTypeWidgetKey,
+                                callback: (value) => setState(() {
+                                      _currentCategory = value!;
+                                      Utils.tryToLostFocus(context);
+                                    })),
+                            flex: 2),
+                        const Expanded(child: SizedBox(), flex: 1)
+                      ])),
+                  flex: 4),
+              Expanded(child: getDiff(), flex: 7),
             ]),
             flex: 9),
         Expanded(
@@ -160,7 +164,10 @@ class _EditGoalState extends State<EditGoal> {
               width: double.infinity,
               child: TaskDifficultyWidget(
                   key: _taskDifficultyWidgetKey,
-                  callback: (value) => _currentDifficulty = value!,
+                  callback: (value) => setState(() {
+                        _currentDifficulty = value!;
+                        Utils.tryToLostFocus(context);
+                      }),
                   initialDifficulty: _currentDifficulty)))
     ]);
   }

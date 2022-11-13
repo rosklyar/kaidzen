@@ -4,6 +4,8 @@ import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'package:kaidzen_app/achievements/eggWidget.dart';
 import 'package:kaidzen_app/achievements/style.dart';
 
+import '../main.dart';
+
 class AchievementDetailsScreen extends StatelessWidget {
   final AchievementSnapshot achievementSnapshot;
   final Widget details;
@@ -29,7 +31,10 @@ class AchievementDetailsScreen extends StatelessWidget {
                     IconButton(
                       icon: Image.asset("assets/close_icon.png"),
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomeScreen()));
                       },
                     )
                   ], mainAxisAlignment: MainAxisAlignment.spaceBetween)),

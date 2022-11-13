@@ -9,6 +9,7 @@ import 'package:kaidzen_app/feedback/MoreFeedbackScreen.dart';
 import 'dart:math';
 
 import '../assets/constants.dart';
+import '../main.dart';
 
 class EmailSender extends StatefulWidget {
   const EmailSender({Key? key}) : super(key: key);
@@ -113,7 +114,10 @@ class _EmailSenderState extends State<EmailSender> {
                     child: SvgPicture.asset(
                         "assets/settings/close_black_icon.svg"),
                     onTap: () {
-                      Navigator.of(context).pop();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomeScreen()));
                     },
                   )
                 ], mainAxisAlignment: MainAxisAlignment.spaceBetween),

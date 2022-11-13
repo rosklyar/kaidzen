@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kaidzen_app/achievements/AchievementsState.dart';
-import 'package:kaidzen_app/achievements/event.dart';
-import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:kaidzen_app/views/utils.dart';
 
 import '../models/task.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +26,7 @@ class _EditSubGoalState extends State<EditSubGoal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
           backgroundColor: Color(widget.parent.category.backgroundColor),
           centerTitle: true,
@@ -42,32 +41,35 @@ class _EditSubGoalState extends State<EditSubGoal> {
           ])),
       body: Column(children: [
         Expanded(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-                  child: TextField(
-                    autofocus: true,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Subtask title',
-                        labelText: 'Subtask title'),
-                    controller: newTaskController,
-                  )),
-              Wrap(
-                alignment: WrapAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 5),
-                    child: Image.asset("assets/back_arrow.png"),
-                  ),
-                  Text(
-                      style: const TextStyle(color: Colors.grey),
-                      widget.parent.name)
-                ],
-              )
-            ]),
+            child: GestureDetector(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 16),
+                          child: TextField(
+                            autofocus: true,
+                            decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Subtask title',
+                                labelText: 'Subtask title'),
+                            controller: newTaskController,
+                          )),
+                      Wrap(
+                        alignment: WrapAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 5),
+                            child: Image.asset("assets/back_arrow.png"),
+                          ),
+                          Text(
+                              style: const TextStyle(color: Colors.grey),
+                              widget.parent.name)
+                        ],
+                      )
+                    ]),
+                onTap: () => Utils.tryToLostFocus(context)),
             flex: 7),
         Expanded(
             child: Padding(
