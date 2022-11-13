@@ -3,6 +3,7 @@ import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/achievements/event.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:kaidzen_app/views/utils.dart';
 
 import '../models/task.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
           backgroundColor: Color(widget.parent.category.backgroundColor),
           centerTitle: true,
@@ -38,52 +40,56 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
             ),
             const Text('Subgoal'),
           ])),
-      body: Column(children: [
-        Expanded(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-                  child: TextField(
-                    autofocus: true,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Subgoal title',
-                        labelText: 'Subgoal title'),
-                    controller: newTaskController,
-                  )),
-              Wrap(
-                alignment: WrapAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15, right: 5),
-                    child: Image.asset("assets/back_arrow.png"),
-                  ),
-                  Text(
-                      style: const TextStyle(color: Colors.grey),
-                      widget.parent.name)
-                ],
-              )
-            ]),
-            flex: 7),
-        Expanded(
-            child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                child: SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.black,
+      body: GestureDetector(
+          child: Column(children: [
+            Expanded(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 50, vertical: 20)),
-                      onPressed: submit,
-                      child: const Text('Create',
-                          style: TextStyle(color: Colors.white, fontSize: 20)),
-                    ))),
-            flex: 1)
-      ]),
+                              horizontal: 10, vertical: 16),
+                          child: TextField(
+                            autofocus: true,
+                            decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Subgoal title',
+                                labelText: 'Subgoal title'),
+                            controller: newTaskController,
+                          )),
+                      Wrap(
+                        alignment: WrapAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 5),
+                            child: Image.asset("assets/back_arrow.png"),
+                          ),
+                          Text(
+                              style: const TextStyle(color: Colors.grey),
+                              widget.parent.name)
+                        ],
+                      )
+                    ]),
+                flex: 7),
+            Expanded(
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 15),
+                    child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.black,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 20)),
+                          onPressed: submit,
+                          child: const Text('Create',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                        ))),
+                flex: 1)
+          ]),
+          onTap: () => Utils.tryToLostFocus(context)),
     );
   }
 
