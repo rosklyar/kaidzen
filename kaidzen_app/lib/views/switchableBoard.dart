@@ -115,7 +115,7 @@ class SwitchableBoardState extends State<SwitchableBoard> {
           )),
         ),
         Visibility(
-          visible: isOpen,
+          visible: false, //TODO fix position to match floating button 
           child: Positioned.directional(
             textDirection: Directionality.of(context),
             bottom: MediaQuery.of(context).size.height * 0.05,
