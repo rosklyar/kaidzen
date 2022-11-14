@@ -48,7 +48,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                   color: widget.parent.category.color,
                   size: 10.0 + Difficulty.EASY.id * 3),
             ),
-            const Text('Subgoal'),
+            Text('Subgoal', style: Fonts.screenTytleTextStyle),
           ])),
       body: GestureDetector(
           child: Column(children: [
@@ -61,10 +61,11 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                               horizontal: 10, vertical: 16),
                           child: TextField(
                             autofocus: true,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
+                            decoration: InputDecoration(
+                                border: const OutlineInputBorder(),
                                 hintText: 'Subgoal title',
-                                labelText: 'Subgoal title'),
+                                labelText: 'Subgoal title',
+                                hintStyle: Fonts.inputHintTextStyle),
                             controller: newTaskController,
                           )),
                       Wrap(
@@ -75,7 +76,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                             child: Image.asset("assets/back_arrow.png"),
                           ),
                           Text(
-                              style: const TextStyle(color: Colors.grey),
+                              style: Fonts.graySubtitle,
                               widget.parent.shortenedName(200))
                         ],
                       )
@@ -112,9 +113,9 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                 submit();
                                 Navigator.pop(context);
                               },
-                              child: const Text('Create',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
+                              child: Text('Create',
+                                  style: Fonts.largeTextStyle20
+                                      .copyWith(color: Colors.white)),
                             ))),
                   ],
                 ),

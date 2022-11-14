@@ -120,7 +120,7 @@ class Fonts {
   static TextStyle mediumWhiteTextStyle = GoogleFonts.montserrat(
       textStyle: const TextStyle(fontSize: 12, color: Colors.white));
 
-static TextStyle xLargeTextStyle = GoogleFonts.montserrat(
+  static TextStyle xLargeTextStyle = GoogleFonts.montserrat(
       textStyle: const TextStyle(
     fontSize: 18,
     color: Colors.black,
@@ -128,7 +128,7 @@ static TextStyle xLargeTextStyle = GoogleFonts.montserrat(
 
   static TextStyle xLargeWhiteTextStyle = GoogleFonts.montserrat(
       textStyle: const TextStyle(
-        fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.bold,
     fontSize: 18,
     color: Colors.white,
   ));
@@ -136,13 +136,16 @@ static TextStyle xLargeTextStyle = GoogleFonts.montserrat(
   static TextStyle inputHintTextStyle = GoogleFonts.montserrat(
       textStyle:
           const TextStyle(fontSize: 16, color: inputInactiveBorderColor));
+
+  static TextStyle graySubtitle =
+      GoogleFonts.montserrat(textStyle: const TextStyle(color: Colors.grey));
 }
 
 enum Emotion {
-  VERY_SAD (0, "assets/emotions/sad03.png"),
-  SAD (1, "assets/emotions/sad02.png"),
-  A_BIT_SAD (2, "assets/emotions/sad01.png"),
-  REGULAR (3, "assets/emotions/regular.png"),
+  VERY_SAD(0, "assets/emotions/sad03.png"),
+  SAD(1, "assets/emotions/sad02.png"),
+  A_BIT_SAD(2, "assets/emotions/sad01.png"),
+  REGULAR(3, "assets/emotions/regular.png"),
   A_BIT_HAPPY(4, "assets/emotions/happy01.png"),
   HAPPY(5, "assets/emotions/happy02.png"),
   VERY_HAPPY(6, "assets/emotions/happy03.png");

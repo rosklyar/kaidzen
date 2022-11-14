@@ -82,12 +82,9 @@ class _ViewGoalState extends State<ViewGoal> {
                                     color: task.category.color,
                                     size: 10.0 + task.difficulty.id * 3),
                                 Text(
-                                  "${task.difficulty.noun} impact on my ${task.category.id >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == widget.task.category.id).name : 'life sphere'} ",
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(
-                                      color:
-                                          Color.fromARGB(204, 147, 138, 138)),
-                                )
+                                    "${task.difficulty.noun} impact on my ${task.category.id >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == widget.task.category.id).name : 'life sphere'} ",
+                                    textAlign: TextAlign.left,
+                                    style: Fonts.graySubtitle)
                               ],
                             ))),
                   ]),
