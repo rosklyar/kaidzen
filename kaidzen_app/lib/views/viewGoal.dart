@@ -116,8 +116,8 @@ class _ViewGoalState extends State<ViewGoal> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      CreateSubGoal(parent: task)));
+                                  builder: (context) => CreateSubGoal(task,
+                                      popTarget: "parentTask")));
                         },
                       ),
                       title: const Text('Add subgoal',
@@ -127,8 +127,8 @@ class _ViewGoalState extends State<ViewGoal> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    CreateSubGoal(parent: task)));
+                                builder: (context) => CreateSubGoal(task,
+                                    popTarget: "parentTask")));
                       },
                     ),
                   ),

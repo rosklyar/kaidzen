@@ -38,7 +38,7 @@ class AchievementDetailsScreen extends StatelessWidget {
                       },
                     )
                   ], mainAxisAlignment: MainAxisAlignment.spaceBetween)),
-              flex: 1),
+              flex: 2),
           Expanded(
               child: Padding(
                   padding: const EdgeInsets.only(bottom: 15),
