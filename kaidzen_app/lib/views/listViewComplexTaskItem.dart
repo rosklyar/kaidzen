@@ -65,7 +65,7 @@ List<Widget> buildExpandableContent(BuildContext context, Task task) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => CreateSubGoal(parent: task)));
+                    builder: (context) => CreateSubGoal(task)));
           },
         ),
         title: const Text('Add subgoal',
@@ -74,7 +74,7 @@ List<Widget> buildExpandableContent(BuildContext context, Task task) {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CreateSubGoal(parent: task)));
+                  builder: (context) => CreateSubGoal(task)));
         },
       ),
     ));

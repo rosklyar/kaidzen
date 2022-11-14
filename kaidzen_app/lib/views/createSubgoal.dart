@@ -12,8 +12,10 @@ import '../service/TasksState.dart';
 
 class CreateSubGoal extends StatefulWidget {
   final Task parent;
+  final String? popTarget;
 
-  const CreateSubGoal({Key? key, required this.parent}) : super(key: key);
+  const CreateSubGoal(this.parent, {Key? key, this.popTarget})
+      : super(key: key);
 
   @override
   State<CreateSubGoal> createState() {
@@ -27,6 +29,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
   @override
   Widget build(BuildContext context) {
     var parentHeight = MediaQuery.of(context).size.height;
+    var parentWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(widget.parent.category.backgroundColor),
@@ -37,7 +40,12 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
           leading: BackButton(
             color: Colors.black,
             onPressed: () {
-              Navigator.of(context).popUntil(ModalRoute.withName("parentTask"));
+              if (widget.popTarget == null) {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              } else {
+                Navigator.of(context)
+                    .popUntil(ModalRoute.withName(widget.popTarget!));
+              }
             },
           ),
           backgroundColor: Colors.white.withOpacity(0),
@@ -72,12 +80,18 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                         alignment: WrapAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 15, right: 5),
+                            padding: EdgeInsets.only(left: parentWidth * 0.03, right: 5),
                             child: Image.asset("assets/back_arrow.png"),
                           ),
-                          Text(
-                              style: Fonts.graySubtitle,
-                              widget.parent.shortenedName(200))
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: parentWidth * 0.06,
+                                top: 5,
+                                right: 5),
+                            child: Text(
+                                style: Fonts.graySubtitle,
+                                widget.parent.shortenedName(200)),
+                          )
                         ],
                       )
                     ]),
@@ -86,7 +100,9 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(bottom: parentHeight * 0.01),
+                      padding: EdgeInsets.only(
+                          top: parentHeight * 0.04,
+                          bottom: parentHeight * 0.01),
                       child: GestureDetector(
                           child: Text('Create and start another one',
                               style: Fonts.largeTextStyle.copyWith(
@@ -96,15 +112,16 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        CreateSubGoal(parent: widget.parent)));
+                                    builder: (context) => CreateSubGoal(
+                                          widget.parent,
+                                          popTarget: widget.popTarget,
+                                        )));
                           }),
                     ),
                     Padding(
-                        padding: EdgeInsets.only(
-                            right: 15, left: 15, bottom: parentHeight * 0.001),
+                        padding: EdgeInsets.only(right: 15, left: 15),
                         child: SizedBox(
-                            height: parentHeight * 0.07,
+                            height: parentHeight * 0.08,
                             width: double.infinity,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -119,7 +136,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                             ))),
                   ],
                 ),
-                flex: 1)
+                flex: 2)
           ]),
           onTap: () => Utils.tryToLostFocus(context)),
     );
