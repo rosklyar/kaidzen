@@ -26,11 +26,21 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
 
   @override
   Widget build(BuildContext context) {
+    var parentHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      backgroundColor: Color(widget.parent.category.backgroundColor),
       appBar: AppBar(
-          backgroundColor: Color(widget.parent.category.backgroundColor),
+          automaticallyImplyLeading: false,
+          elevation: 0.0,
           centerTitle: true,
+          leading: BackButton(
+            color: Colors.black,
+            onPressed: () {
+              Navigator.of(context).popUntil(ModalRoute.withName("parentTask"));
+            },
+          ),
+          backgroundColor: Colors.white.withOpacity(0),
           title: Wrap(children: [
             Padding(
               padding: const EdgeInsets.only(top: 5, right: 15),
@@ -38,7 +48,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                   color: widget.parent.category.color,
                   size: 10.0 + Difficulty.EASY.id * 3),
             ),
-            const Text('Subgoal'),
+            Text('Subgoal', style: Fonts.screenTytleTextStyle),
           ])),
       body: GestureDetector(
           child: Column(children: [
@@ -51,10 +61,11 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                               horizontal: 10, vertical: 16),
                           child: TextField(
                             autofocus: true,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
+                            decoration: InputDecoration(
+                                border: const OutlineInputBorder(),
                                 hintText: 'Subgoal title',
-                                labelText: 'Subgoal title'),
+                                labelText: 'Subgoal title',
+                                hintStyle: Fonts.inputHintTextStyle),
                             controller: newTaskController,
                           )),
                       Wrap(
@@ -65,28 +76,49 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                             child: Image.asset("assets/back_arrow.png"),
                           ),
                           Text(
-                              style: const TextStyle(color: Colors.grey),
-                              widget.parent.name)
+                              style: Fonts.graySubtitle,
+                              widget.parent.shortenedName(200))
                         ],
                       )
                     ]),
                 flex: 7),
             Expanded(
-                child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 15),
-                    child: SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.black,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 50, vertical: 20)),
-                          onPressed: submit,
-                          child: const Text('Create',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20)),
-                        ))),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: parentHeight * 0.01),
+                      child: GestureDetector(
+                          child: Text('Create and start another one',
+                              style: Fonts.largeTextStyle.copyWith(
+                                  decoration: TextDecoration.underline)),
+                          onTap: () {
+                            submit();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CreateSubGoal(parent: widget.parent)));
+                          }),
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            right: 15, left: 15, bottom: parentHeight * 0.001),
+                        child: SizedBox(
+                            height: parentHeight * 0.07,
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: activeButtonColor),
+                              onPressed: () {
+                                submit();
+                                Navigator.pop(context);
+                              },
+                              child: Text('Create',
+                                  style: Fonts.largeTextStyle20
+                                      .copyWith(color: Colors.white)),
+                            ))),
+                  ],
+                ),
                 flex: 1)
           ]),
           onTap: () => Utils.tryToLostFocus(context)),
@@ -103,7 +135,6 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
     Provider.of<AchievementsState>(context, listen: false).addEvent(event);
     Provider.of<EmotionsState>(context, listen: false)
         .updateEmotionPoints(event);
-    Navigator.pop(context);
   }
 
   @override

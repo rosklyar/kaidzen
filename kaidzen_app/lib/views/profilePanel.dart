@@ -76,7 +76,7 @@ class ProfilePanelState extends State<ProfilePanel>
                       child: Column(children: [
                         Padding(
                           padding: EdgeInsets.only(
-                              top: parentHeight * 0.07,
+                              top: parentHeight * 0.05,
                               right: parentWidth * 0.02),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -95,22 +95,39 @@ class ProfilePanelState extends State<ProfilePanel>
                                   },
                                   child: Padding(
                                       padding: EdgeInsets.only(
-                                          right: parentWidth * 0.02),
+                                          top: parentWidth * 0.04,
+                                          right: parentWidth * 0.03),
                                       child: Image.asset(
-                                          "assets/achievements_icon.png")),
+                                          "assets/achievements_icon.png",
+                                          height: parentWidth * 0.07)),
                                 ),
                                 Visibility(
                                     visible: achievementsState
                                             .getCompletedAchievementsCount() >
                                         0,
                                     child: Positioned(
-                                        top: parentHeight * 0.02,
-                                        right: parentWidth * 0.01,
-                                        child: Text(
+                                      top: parentWidth * 0.01,
+                                      right: 0,
+                                      child: Container(
+                                        width: parentWidth * 0.05,
+                                        height: parentWidth * 0.04,
+                                        decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Color.fromARGB(
+                                                255, 204, 158, 243)),
+                                        child: Center(
+                                          child: Text(
                                             achievementsState
                                                 .getCompletedAchievementsCount()
                                                 .toString(),
-                                            style: Fonts.mediumBoldTextStyle)))
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )),
                               ]),
                               GestureDetector(
                                 onTap: () async {
@@ -124,9 +141,10 @@ class ProfilePanelState extends State<ProfilePanel>
                                           .settings_screen_opened.name);
                                 },
                                 child: Padding(
-                                    padding: const EdgeInsets.only(right: 5),
-                                    child:
-                                        Image.asset("assets/burger_icon.png")),
+                                    padding: EdgeInsets.only(
+                                        top: parentWidth * 0.04, right: 7),
+                                    child: Image.asset("assets/burger_icon.png",
+                                        height: parentWidth * 0.06)),
                               )
                             ],
                           ),

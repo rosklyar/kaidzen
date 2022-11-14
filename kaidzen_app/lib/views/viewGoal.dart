@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/views/createSubgoal.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/views/editSubgoal.dart';
@@ -42,7 +43,12 @@ class _ViewGoalState extends State<ViewGoal> {
     return Scaffold(
       backgroundColor: Color(task.category.backgroundColor),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        elevation: 0.0,
         centerTitle: true,
+        leading: BackButton(
+            color: Colors.black, onPressed: () => Navigator.pop(context)),
+        backgroundColor: Colors.white.withOpacity(0),
       ),
       body: Column(children: [
         Expanded(
@@ -59,10 +65,10 @@ class _ViewGoalState extends State<ViewGoal> {
                         child: SizedBox(
                             width: double.infinity,
                             child: Text(
-                              task.name,
+                              task.shortenedName(200),
                               textAlign: TextAlign.left,
                               style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 24.0),
+                                  fontWeight: FontWeight.bold, fontSize: 20.0),
                             ))),
                     Padding(
                         padding: const EdgeInsets.symmetric(
@@ -76,12 +82,9 @@ class _ViewGoalState extends State<ViewGoal> {
                                     color: task.category.color,
                                     size: 10.0 + task.difficulty.id * 3),
                                 Text(
-                                  "${task.difficulty.noun} impact on my ${task.category.id >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == widget.task.category.id).name : 'life sphere'} ",
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(
-                                      color:
-                                          Color.fromARGB(204, 147, 138, 138)),
-                                )
+                                    "${task.difficulty.noun} impact on my ${task.category.id >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == widget.task.category.id).name : 'life sphere'} ",
+                                    textAlign: TextAlign.left,
+                                    style: Fonts.graySubtitle)
                               ],
                             ))),
                   ]),
@@ -117,7 +120,7 @@ class _ViewGoalState extends State<ViewGoal> {
                                       CreateSubGoal(parent: task)));
                         },
                       ),
-                      title: const Text('Add subtask',
+                      title: const Text('Add subgoal',
                           style:
                               TextStyle(decoration: TextDecoration.underline)),
                       onTap: () {
@@ -177,8 +180,11 @@ class _ViewGoalState extends State<ViewGoal> {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return task.parent == null
                         ? EditGoal(task)
-                        : EditSubGoal(parent: Provider.of<TasksState>(context, listen: false)
-                        .getById(task.parent!)!, task: task);
+                        : EditSubGoal(
+                            parent:
+                                Provider.of<TasksState>(context, listen: false)
+                                    .getById(task.parent!)!,
+                            task: task);
                   }));
                 },
               ),
