@@ -29,7 +29,8 @@ class SwitchableBoardState extends State<SwitchableBoard> {
 
   var currentBoard = toggleBoards[1];
   var scrollEnabled = false;
-
+  var isOpen = false;
+  final pc = PanelController();
   void addItem(Task newTask) {
     Provider.of<TasksState>(context, listen: false).addTask(newTask);
   }
@@ -44,68 +45,96 @@ class SwitchableBoardState extends State<SwitchableBoard> {
     var parentHeight = MediaQuery.of(context).size.height;
     debugPrint("building Panel");
     var sc = ScrollController();
-    return SlidingUpPanel(
-      onPanelClosed: () {
-        if (scrollEnabled) {
-          setState(() {
-            scrollEnabled = false;
-          });
-        }
 
-        sc.animateTo(0,
-            duration: Duration(milliseconds: 300), curve: Curves.ease);
-      },
-      onPanelOpened: () {
-        if (!scrollEnabled) {
-          setState(() {
-            scrollEnabled = true;
-          });
-        }
-      },
-      boxShadow: const <BoxShadow>[
-        BoxShadow(
-          blurRadius: 8.0,
-          color: Color.fromRGBO(255, 255, 255, 0),
+    return Stack(
+      children: [
+        SlidingUpPanel(
+          controller: pc,
+          onPanelClosed: () {
+            if (scrollEnabled) {
+              setState(() {
+                isOpen = false;
+                scrollEnabled = false;
+              });
+            }
+            sc.animateTo(0,
+                duration: Duration(milliseconds: 300), curve: Curves.ease);
+          },
+          onPanelOpened: () {
+            if (!scrollEnabled) {
+              setState(() {
+                isOpen = true;
+                scrollEnabled = true;
+              });
+            }
+          },
+          boxShadow: const <BoxShadow>[
+            BoxShadow(
+              blurRadius: 8.0,
+              color: Color.fromRGBO(255, 255, 255, 0),
+            )
+          ],
+          color: Colors.white.withOpacity(0),
+          maxHeight: parentHeight * 0.97,
+          minHeight: parentHeight * 0.63,
+          panel: SizedBox(
+              //width: parentWidth,
+              //height: parentHeight,
+              child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(30)),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 20.0,
+                sigmaY: 20.0,
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    child: SwitchableBoardsToggleWidget(
+                        (value) => setState(() {
+                              currentBoard = toggleBoards[value!];
+                            }),
+                        currentBoard.id),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: 50),
+                      child: Consumer<TasksState>(
+                          builder: (context, state, child) {
+                        debugPrint("building SwitchableBoardContainer");
+                        return SwitchableBoardContainer(
+                            state, currentBoard, sc, scrollEnabled,
+                            key: _switchableBoardContainerKey);
+                      }),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )),
+        ),
+        Visibility(
+          visible: isOpen,
+          child: Positioned.directional(
+            textDirection: Directionality.of(context),
+            bottom: MediaQuery.of(context).size.height * 0.05,
+            start: MediaQuery.of(context).size.width * 0.1,
+            child: Visibility(
+                visible: true,
+                child: FloatingActionButton(
+                  backgroundColor: Colors.black,
+                  onPressed: () async {
+                    pc.close();
+                  },
+                  child: const Icon(
+                    Icons.arrow_downward_outlined,
+                    color: Colors.white,
+                  ),
+                )),
+          ),
         )
       ],
-      color: Colors.white.withOpacity(0),
-      maxHeight: parentHeight * 0.97,
-      minHeight: parentHeight * 0.63,
-      panel: SizedBox(
-          //width: parentWidth,
-          //height: parentHeight,
-          child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.circular(30)),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(
-            sigmaX: 20.0,
-            sigmaY: 20.0,
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                child: SwitchableBoardsToggleWidget(
-                    (value) => setState(() {
-                          currentBoard = toggleBoards[value!];
-                        }),
-                    currentBoard.id),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 50),
-                  child: Consumer<TasksState>(builder: (context, state, child) {
-                    debugPrint("building SwitchableBoardContainer");
-                    return SwitchableBoardContainer(
-                        state, currentBoard, sc, scrollEnabled,
-                        key: _switchableBoardContainerKey);
-                  }),
-                ),
-              )
-            ],
-          ),
-        ),
-      )),
     );
   }
 }

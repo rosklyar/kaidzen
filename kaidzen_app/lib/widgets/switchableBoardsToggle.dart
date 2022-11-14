@@ -65,32 +65,35 @@ class _SwitchableBoardsToggleWidgetState
                                                 : Fonts.xLargeTextStyle),
                                       ])),
                             ),
-                            Consumer<TasksState>(
-                              builder: (context, taskState, child) => Visibility(
-                                visible: taskState.getCountByStatus(board.name) > 0,
-                                child: Positioned(
-                                    top: 0,
-                                    right: -2,
-                                    child: Container(
-                                      width:
-                                          MediaQuery.of(context).size.width * 0.05,
-                                      height:
-                                          MediaQuery.of(context).size.width * 0.04,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white.withOpacity(0)),
-                                      child: Center(
-                                        child: Text(
-                                          taskState.getCountByStatus(board.name).toString(),
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: board.index == _value
-                                                ? Colors.white
-                                                : Colors.black,
+                            Visibility(
+                              visible: board == ToggleBoard.DOING,
+                              child: Consumer<TasksState>(
+                                builder: (context, taskState, child) => Visibility(
+                                  visible: taskState.getCountByStatus(board.name) > 0,
+                                  child: Positioned(
+                                      top: 0,
+                                      right: -2,
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width * 0.05,
+                                        height:
+                                            MediaQuery.of(context).size.width * 0.04,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white.withOpacity(0)),
+                                        child: Center(
+                                          child: Text(
+                                            taskState.getCountByStatus(board.name).toString(),
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: board.index == _value
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    )),
+                                      )),
+                                ),
                               ),
                             )
                           ],
