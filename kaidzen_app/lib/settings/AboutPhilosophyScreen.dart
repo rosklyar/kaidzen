@@ -5,6 +5,8 @@ import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/settings/Story.dart';
 import 'package:story_view/story_view.dart';
 
+import '../main.dart';
+
 class AboutPhilosophyScreen extends StatelessWidget {
   final StoryController controller = StoryController();
 
@@ -15,7 +17,13 @@ class AboutPhilosophyScreen extends StatelessWidget {
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-            automaticallyImplyLeading: false,
+            leading: IconButton(
+              iconSize: 32,
+              icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
             elevation: 0.0,
             centerTitle: true,
             actions: [
@@ -23,7 +31,10 @@ class AboutPhilosophyScreen extends StatelessWidget {
                 iconSize: 32,
                 icon: SvgPicture.asset("assets/settings/close_black_icon.svg"),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomeScreen()));
                 },
               )
             ],
@@ -33,6 +44,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
               style: Fonts.screenTytleTextStyle,
             )),
         body: StoryView(
+            indicatorColor: Colors.black,
             controller: controller,
             storyItems: [
               StoryItem(

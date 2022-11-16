@@ -76,7 +76,7 @@ class SwitchableBoardState extends State<SwitchableBoard> {
           ],
           color: Colors.white.withOpacity(0),
           maxHeight: parentHeight * 0.97,
-          minHeight: parentHeight * 0.63,
+          minHeight: parentHeight * 0.65,
           panel: SizedBox(
               //width: parentWidth,
               //height: parentHeight,
@@ -115,7 +115,7 @@ class SwitchableBoardState extends State<SwitchableBoard> {
           )),
         ),
         Visibility(
-          visible: false, //TODO fix position to match floating button 
+          visible: false, //TODO fix position to match floating button
           child: Positioned.directional(
             textDirection: Directionality.of(context),
             bottom: MediaQuery.of(context).size.height * 0.05,

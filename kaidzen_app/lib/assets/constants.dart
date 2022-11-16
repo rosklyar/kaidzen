@@ -79,6 +79,12 @@ class Fonts {
     color: Colors.black,
   ));
 
+  static TextStyle smallTextStyleLvl = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+    fontSize: 8,
+    color: Color.fromRGBO(72, 76, 79, 1),
+  ));
+
   static TextStyle mediumTextStyle = GoogleFonts.montserrat(
       textStyle: const TextStyle(
     fontSize: 12,

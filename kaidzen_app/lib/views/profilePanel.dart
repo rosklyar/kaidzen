@@ -149,7 +149,7 @@ class ProfilePanelState extends State<ProfilePanel>
                             ],
                           ),
                         ),
-                        SizedBox(height: parentHeight * 0.01),
+                        SizedBox(height: parentHeight * 0.0375),
                         Padding(
                           padding: EdgeInsets.only(right: parentWidth * 0.02),
                           child: Row(
@@ -213,7 +213,7 @@ class ProfilePanelState extends State<ProfilePanel>
                                               .RELATIONS.name,
                                           progressColor: DevelopmentCategory
                                               .RELATIONS.color),
-                                      const SizedBox(height: 32.0),
+                                      const SizedBox(height: 29.0),
                                     ],
                                   ),
                                   flex: 5)
@@ -275,7 +275,6 @@ class ProgressIndicator extends StatefulWidget {
 class _ProgressIndicatorState extends State<ProgressIndicator>
     with TickerProviderStateMixin {
   late AnimationController _controller;
-  double _height = 8.0;
   Color? _color;
 
   @override
@@ -294,7 +293,6 @@ class _ProgressIndicatorState extends State<ProgressIndicator>
     super.didUpdateWidget(oldWidget);
     if (oldWidget.percent == widget.percent) {
       setState(() {
-        _height = 8.0;
         _color = widget.progressColor;
       });
     } else {
@@ -308,8 +306,7 @@ class _ProgressIndicatorState extends State<ProgressIndicator>
             duration: const Duration(milliseconds: 500));
       }
       setState(() {
-        _height = 12.0;
-        _color = lighten(_color!, 0.2);
+        _color = lighten(_color!, 0.1);
       });
     }
   }
@@ -320,18 +317,21 @@ class _ProgressIndicatorState extends State<ProgressIndicator>
         padding: const EdgeInsets.symmetric(vertical: 5),
         child: Column(children: [
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 7),
+              padding: const EdgeInsets.only(right: 8),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      " ${widget.title}",
-                      style: Fonts.mediumTextStyle,
-                    ),
+                    Padding(
+                        child: Text(
+                          " ${widget.title}",
+                          style: Fonts.mediumTextStyle,
+                          textAlign: TextAlign.left,
+                        ),
+                        padding: EdgeInsets.zero),
                     Row(children: [
                       Text(
                         "LVL   ",
-                        style: Fonts.smallTextStyle,
+                        style: Fonts.smallTextStyleLvl,
                       ),
                       Text(
                         "${widget.level}",
@@ -340,11 +340,11 @@ class _ProgressIndicatorState extends State<ProgressIndicator>
                     ]),
                   ])),
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 7),
+              padding: const EdgeInsets.only(left: 3, right: 10),
               child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(3.0)),
+                  borderRadius: const BorderRadius.all(Radius.circular(1.0)),
                   child: AnimatedContainer(
-                      height: _height,
+                      height: 4.0,
                       duration: const Duration(seconds: 1),
                       curve: Curves.fastOutSlowIn,
                       child: LinearProgressIndicator(
