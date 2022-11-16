@@ -110,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Scaffold(
           body: Stack(children: [
             Column(children: [
-              Expanded(flex: 32, child: ProfilePanel(key: _profilePanelKey)),
+              Expanded(flex: 28, child: ProfilePanel(key: _profilePanelKey)),
               Expanded(
                 flex: 24,
                 child: Padding(
