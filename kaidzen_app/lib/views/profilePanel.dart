@@ -7,6 +7,7 @@ import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/ProgressState.dart';
 import 'package:kaidzen_app/achievements/achievementsScreen.dart';
 import 'package:kaidzen_app/settings/SettingsScreen.dart';
+import 'package:kaidzen_app/views/utils.dart';
 import 'package:provider/provider.dart';
 
 import '../tutorial/TutorialState.dart';
@@ -43,39 +44,34 @@ class ProfilePanelState extends State<ProfilePanel>
                   Expanded(
                       child: Column(children: [
                         Expanded(
-                            child: Stack(children: [
-                              Padding(
-                                  padding:
-                                      EdgeInsets.only(top: parentHeight * 0.09),
-                                  child: AnimatedSwitcher(
-                                      duration:
-                                          const Duration(milliseconds: 800),
-                                      transitionBuilder: (Widget child,
-                                          Animation<double> animation) {
-                                        return FadeTransition(
-                                            opacity: animation, child: child);
-                                      },
-                                      child: avatar(
-                                          tutorialState, emotionsState))),
-                            ]),
-                            flex: 5),
-                        Expanded(
-                            child: Row(children: [
-                              Padding(
-                                  padding: EdgeInsets.only(
-                                      left: parentHeight * 0.07),
-                                  child: Text("TOTAL LVL  ",
-                                      style: Fonts.smallTextStyle)),
-                              Padding(
+                            child: Padding(
                                 padding: EdgeInsets.only(
-                                    bottom: parentHeight * 0.005),
-                                child: Text(
-                                  progressState.getTotalLevel().toString(),
-                                  style: Fonts.mediumBoldTextStyle,
-                                ),
+                                    top: parentHeight * 0.05,
+                                    left: parentWidth * 0.015),
+                                child: AnimatedSwitcher(
+                                    duration: const Duration(milliseconds: 800),
+                                    transitionBuilder: (Widget child,
+                                        Animation<double> animation) {
+                                      return FadeTransition(
+                                          opacity: animation, child: child);
+                                    },
+                                    child:
+                                        avatar(tutorialState, emotionsState))),
+                            flex: 4),
+                        Expanded(
+                            child: RichText(
+                                text: TextSpan(children: [
+                              TextSpan(
+                                  text: "TOTAL LVL  ",
+                                  style: Fonts.smallTextStyle.copyWith(
+                                      fontSize: 9, letterSpacing: 0.02)),
+                              TextSpan(
+                                text: progressState.getTotalLevel().toString(),
+                                style: Fonts.mediumBoldTextStyle
+                                    .copyWith(fontSize: 18),
                               )
-                            ]),
-                            flex: 1),
+                            ])),
+                            flex: 1)
                       ]),
                       flex: 4),
                   Expanded(
@@ -267,29 +263,11 @@ class ProfilePanelState extends State<ProfilePanel>
   }
 
   Image avatar(TutorialState tutorialState, EmotionsState emotionsState) {
-    var avatarPath = resolveEmotionedAvatar(tutorialState, emotionsState);
+    var avatarPath = Utils.resolveEmotionedAvatar(tutorialState, emotionsState);
     return Image.asset(
         key: ValueKey(avatarPath),
         avatarPath,
-        width: MediaQuery.of(context).size.width * 0.25);
-  }
-
-  String resolveEmotionedAvatar(
-      TutorialState tutorialState, EmotionsState emotionsState) {
-    var completedStepsCount =
-        tutorialState.getTutorialProgress().completedStepsCount();
-
-    if (completedStepsCount < 3) {
-      if (completedStepsCount == 0) {
-        return "assets/emotions/egg01.png";
-      } else if (completedStepsCount == 1) {
-        return "assets/emotions/egg02.png";
-      } else {
-        return "assets/emotions/egg03.png";
-      }
-    }
-
-    return emotionsState.getCurrentEmotion().assetPath;
+        width: MediaQuery.of(context).size.width * 0.4);
   }
 }
 
