@@ -6,6 +6,7 @@ import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/utils/margin.dart';
 import 'package:kaidzen_app/utils/theme.dart';
 import 'package:kaidzen_app/views/createSubgoal.dart';
+import 'package:kaidzen_app/views/listViewSubTaskItem.dart';
 import 'package:kaidzen_app/views/viewGoal.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +27,6 @@ class ListViewComplexTaskItem extends StatelessWidget {
     return ExpansionTile(
       tilePadding: EdgeInsets.only(right: 30),
       title: ListViewTaskItem(task: task),
-      //tilePadding: const EdgeInsets.all(5),
       children: <Widget>[
         Column(
           children: buildExpandableContent(context, task),
@@ -48,7 +48,7 @@ List<Widget> buildExpandableContent(BuildContext context, Task task) {
     if (subtask.status == task.status) {
       columnContent.add(Container(
           padding: const EdgeInsets.fromLTRB(25, 10, 5, 5),
-          child: ListViewTaskItem(task: subtask)));
+          child: ListViewSubTaskItem(task: subtask)));
       columnContent.add(divider);
     }
   }

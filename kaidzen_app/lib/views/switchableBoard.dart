@@ -58,7 +58,7 @@ class SwitchableBoardState extends State<SwitchableBoard> {
               });
             }
             sc.animateTo(0,
-                duration: Duration(milliseconds: 300), curve: Curves.ease);
+                duration: const Duration(milliseconds: 300), curve: Curves.ease);
           },
           onPanelOpened: () {
             if (!scrollEnabled) {
