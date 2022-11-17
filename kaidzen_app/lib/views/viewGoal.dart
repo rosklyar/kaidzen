@@ -164,7 +164,7 @@ class _ViewGoalState extends State<ViewGoal> {
               ),
               Padding(
                   padding: const EdgeInsets.only(left: 50),
-                  child: task.status != Status.TODO && task.subtasks.isEmpty
+                  child: task.status != Status.TODO
                       ? MoveTaskIconButton(
                           task: task, direction: Direction.BACKWARD)
                       : Image.asset("assets/left_inactive.png")),
