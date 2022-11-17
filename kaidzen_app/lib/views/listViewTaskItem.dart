@@ -21,6 +21,7 @@ class ListViewTaskItem extends ListTile {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      //contentPadding: EdgeInsets.symmetric(horizontal: 16),
       leading: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -30,9 +31,10 @@ class ListViewTaskItem extends ListTile {
       ),
       title: Text(
         task.shortenedName(75),
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
+        style: Fonts.largeBoldTextStyle,
       ),
-      subtitle: Text('For ' + task.category.nameLowercase),
+      horizontalTitleGap: -10,
+      subtitle: Text('For ' + task.category.nameLowercase, style: Fonts.graySubtitle,),
       trailing: ListTileTrail(task: task),
       onTap: () {
         Navigator.push(

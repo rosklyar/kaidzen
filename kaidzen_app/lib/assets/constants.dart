@@ -66,6 +66,7 @@ enum Difficulty {
   final String noun;
 }
 
+Color cardShadowColor = const Color(0xFFE1E1E1).withOpacity(0.8);
 const selectedToggleColor = Color.fromRGBO(86, 92, 95, 1);
 const unselectedToggleColor = Color.fromRGBO(231, 233, 234, 1);
 const whiteBackgroundColor = Color.fromRGBO(225, 218, 218, 1.0);
@@ -94,6 +95,13 @@ class Fonts {
   static TextStyle largeTextStyle = GoogleFonts.montserrat(
       textStyle: const TextStyle(
     fontSize: 16,
+    color: Colors.black,
+  ));
+
+  static TextStyle largeBoldTextStyle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
     color: Colors.black,
   ));
 
@@ -129,6 +137,7 @@ class Fonts {
   static TextStyle xLargeTextStyle = GoogleFonts.montserrat(
       textStyle: const TextStyle(
     fontSize: 18,
+    fontWeight: FontWeight.w600,
     color: Colors.black,
   ));
 
@@ -143,8 +152,9 @@ class Fonts {
       textStyle:
           const TextStyle(fontSize: 16, color: inputInactiveBorderColor));
 
-  static TextStyle graySubtitle =
-      GoogleFonts.montserrat(textStyle: const TextStyle(color: Colors.grey));
+  static TextStyle graySubtitle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+          color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500));
 }
 
 enum Emotion {
@@ -161,3 +171,5 @@ enum Emotion {
   final int id;
   final String assetPath;
 }
+
+const cardElavation = 8.0;

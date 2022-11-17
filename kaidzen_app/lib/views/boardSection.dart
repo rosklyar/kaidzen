@@ -46,7 +46,6 @@ class BoardState extends State<Board> {
         for (int i = from; i <= to; i++) {
           Task t = widget.list[i];
           t.priority = i;
-          debugPrint("new t priority" + t.priority.toString());
           tasksToUpdate.add(t);
         }
 
@@ -77,7 +76,7 @@ class BoardState extends State<Board> {
 
   Widget taskCard(Task task) {
     if (task.status == Status.TODO) {
-      return Card(elevation: 8, child: listItem(task));
+      return Card(shadowColor: cardShadowColor, elevation: cardElavation, child: listItem(task));
     }
     var background = task.status == Status.DOING
         ? AssetImage(
@@ -87,7 +86,8 @@ class BoardState extends State<Board> {
             ".png");
 
     return Card(
-        elevation: 8,
+        shadowColor: cardShadowColor,
+        elevation: cardElavation,
         child: Container(
           decoration: BoxDecoration(
             image: DecorationImage(

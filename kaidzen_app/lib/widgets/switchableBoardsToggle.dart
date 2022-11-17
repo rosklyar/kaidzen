@@ -48,7 +48,7 @@ class _SwitchableBoardsToggleWidgetState
                         disabledColor: unselectedToggleColor.withOpacity(0),
                         shape: const RoundedRectangleBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(30))),
+                                BorderRadius.all(Radius.circular(8))),
                         label: Stack(
                           children: [
                             SizedBox(
