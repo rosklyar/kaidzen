@@ -80,14 +80,13 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                         alignment: WrapAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: parentWidth * 0.03, right: 5),
+                            padding: EdgeInsets.only(
+                                left: parentWidth * 0.03, right: 5),
                             child: Image.asset("assets/back_arrow.png"),
                           ),
                           Padding(
                             padding: EdgeInsets.only(
-                                left: parentWidth * 0.06,
-                                top: 5,
-                                right: 5),
+                                left: parentWidth * 0.06, top: 5, right: 5),
                             child: Text(
                                 style: Fonts.graySubtitle,
                                 widget.parent.shortenedName(200)),
@@ -119,7 +118,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                           }),
                     ),
                     Padding(
-                        padding: EdgeInsets.only(right: 15, left: 15),
+                        padding: const EdgeInsets.only(right: 15, left: 15),
                         child: SizedBox(
                             height: parentHeight * 0.08,
                             width: double.infinity,
