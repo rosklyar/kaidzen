@@ -131,9 +131,12 @@ class TasksState extends ChangeNotifier {
   moveTaskAndNotify(Task task, String newStatus) async {
     await moveTask(task, newStatus);
     if (task.parent != null) {
-      Task parentTask = _tasksMap[task.parent]!;
+      Task parentTask = getById(task.parent!)!;
       if (parentTask.subtasks.where((st) => st.status != Status.DONE).isEmpty) {
         await moveTask(parentTask, Status.DONE);
+      }
+      if (parentTask.status == Status.DONE && task.status != Status.DONE) {
+        await moveTask(parentTask, Status.TODO);
       }
     }
     await loadAll();

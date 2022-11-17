@@ -28,7 +28,6 @@ class MoveTaskIconButton extends StatelessWidget {
   }
 
   Future<void> moveTask(BuildContext context, Task task) async {
-    debugPrint('move task:');
     var newStatus = direction == Direction.FORWARD
         ? task.status == Status.DOING
             ? Status.DONE
@@ -39,6 +38,20 @@ class MoveTaskIconButton extends StatelessWidget {
     debugPrint('move task:' + newStatus);
     await Provider.of<TasksState>(context, listen: false)
         .moveTaskAndNotify(task, newStatus);
+  }
+
+  String getNewStatus() {
+    if (direction == Direction.FORWARD && task.hasSubtasks()) {
+      return Status.TODO;
+    } else {
+      return direction == Direction.FORWARD
+          ? task.status == Status.DOING
+              ? Status.DONE
+              : Status.DOING
+          : task.status == Status.DOING
+              ? Status.TODO
+              : Status.DOING;
+    }
   }
 }
 
