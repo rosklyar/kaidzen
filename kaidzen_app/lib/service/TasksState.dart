@@ -96,6 +96,10 @@ class TasksState extends ChangeNotifier {
   }
 
   updateTask(Task task) async {
+    for (var subtask in task.subtasks) {
+      subtask.category = task.category;
+      await repository.update(subtask);
+    }
     await repository.update(task);
     await loadAll();
     notifyListeners();

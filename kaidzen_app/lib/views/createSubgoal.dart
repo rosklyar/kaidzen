@@ -127,7 +127,13 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                   primary: activeButtonColor),
                               onPressed: () {
                                 submit();
-                                Navigator.pop(context);
+                                if (widget.popTarget == null) {
+                                  Navigator.of(context)
+                                      .popUntil((route) => route.isFirst);
+                                } else {
+                                  Navigator.of(context).popUntil(
+                                      ModalRoute.withName(widget.popTarget!));
+                                }
                               },
                               child: Text('Create',
                                   style: Fonts.largeTextStyle20
