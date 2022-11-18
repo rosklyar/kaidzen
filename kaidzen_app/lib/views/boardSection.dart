@@ -68,6 +68,9 @@ class BoardState extends State<Board> {
               details.globalPosition.direction < 1) {
             logging.log(details.toString());
             widget.pnc.close();
+          } else if (widget.pnc.isPanelClosed &&
+              details.globalPosition.direction > 1) {
+            widget.pnc.open();
           }
         },
         child: ReorderableListView(
