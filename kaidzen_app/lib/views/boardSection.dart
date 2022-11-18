@@ -60,17 +60,19 @@ class BoardState extends State<Board> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+        onVerticalDragEnd: (details) {
+          if (widget.pnc.isPanelClosed &&
+              details.velocity.pixelsPerSecond.direction < 0) {
+            widget.pnc.open();
+          }
+        },
         onVerticalDragDown: (details) {
           var shouldClose = widget.list.isEmpty ||
               widget.sc.position.atEdge && widget.sc.position.pixels == 0;
           if (shouldClose &&
               widget.pnc.isPanelOpen &&
               details.globalPosition.direction < 1) {
-            logging.log(details.toString());
             widget.pnc.close();
-          } else if (widget.pnc.isPanelClosed &&
-              details.globalPosition.direction > 1) {
-            widget.pnc.open();
           }
         },
         child: ReorderableListView(
