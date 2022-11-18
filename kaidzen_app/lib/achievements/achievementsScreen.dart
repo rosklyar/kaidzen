@@ -20,12 +20,8 @@ class AchievementsScreen extends StatelessWidget {
         builder: (context, achievementsState, tutorialState, emotionsSate,
                 child) =>
             AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle(
-                    statusBarColor: AchievementsStyle
-                        .achievementScreenBackgroundColor
-                        .withOpacity(0),
-                    statusBarIconBrightness: Brightness.light,
-                    systemNavigationBarIconBrightness: Brightness.light),
+                value: SystemUiOverlayStyle.light
+                    .copyWith(statusBarColor: Colors.white.withOpacity(0)),
                 child: Scaffold(
                   body: NestedScrollView(
                     headerSliverBuilder:

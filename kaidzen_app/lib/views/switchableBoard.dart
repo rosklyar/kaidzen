@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -45,7 +46,6 @@ class SwitchableBoardState extends State<SwitchableBoard> {
     var parentHeight = MediaQuery.of(context).size.height;
     debugPrint("building Panel");
     var sc = ScrollController();
-
     return Stack(
       children: [
         SlidingUpPanel(
@@ -58,7 +58,8 @@ class SwitchableBoardState extends State<SwitchableBoard> {
               });
             }
             sc.animateTo(0,
-                duration: const Duration(milliseconds: 300), curve: Curves.ease);
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.ease);
           },
           onPanelOpened: () {
             if (!scrollEnabled) {
@@ -99,12 +100,12 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: 50),
+                      padding: const EdgeInsets.only(bottom: 50),
                       child: Consumer<TasksState>(
                           builder: (context, state, child) {
                         debugPrint("building SwitchableBoardContainer");
                         return SwitchableBoardContainer(
-                            state, currentBoard, sc, scrollEnabled,
+                            state, currentBoard, sc, pc, scrollEnabled,
                             key: _switchableBoardContainerKey);
                       }),
                     ),
@@ -143,12 +144,14 @@ class SwitchableBoardContainer extends StatefulWidget {
   final TasksState tasksState;
   ToggleBoard currentBoard;
   final ScrollController sc;
+  final PanelController pc;
   final bool scrollEnabled;
 
   SwitchableBoardContainer(
     this.tasksState,
     this.currentBoard,
     this.sc,
+    this.pc,
     this.scrollEnabled, {
     Key? key,
   }) : super(key: key);
@@ -166,6 +169,7 @@ class SwitchableBoardContainerState extends State<SwitchableBoardContainer> {
         name: widget.currentBoard.name,
         list: widget.tasksState.getByStatus(widget.currentBoard.name),
         sc: widget.sc,
+        pnc: widget.pc,
         scrollEnabled: widget.scrollEnabled);
   }
 }

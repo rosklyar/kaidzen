@@ -1,12 +1,12 @@
 import 'dart:developer';
+import 'dart:math' as math;
 
-import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kaidzen_app/feedback/MoreFeedbackScreen.dart';
-import 'dart:math';
+import 'package:flutter/services.dart';
 
 import '../assets/constants.dart';
 import '../main.dart';
@@ -79,8 +79,8 @@ class _EmailSenderState extends State<EmailSender> {
                                   color: Colors.blue,
                                   decoration: TextDecoration.underline)),
                           onTap: () async {
-                            await FlutterClipboard.copy(
-                                "funworkstudio.helper@gmail.com");
+                            await Clipboard.setData(const ClipboardData(
+                                text: "funworkstudio.helper@gmail.com"));
                           },
                         )
                       ]),
@@ -97,8 +97,9 @@ class _EmailSenderState extends State<EmailSender> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: <Widget>[
             Expanded(
@@ -121,7 +122,7 @@ class _EmailSenderState extends State<EmailSender> {
                     },
                   )
                 ], mainAxisAlignment: MainAxisAlignment.spaceBetween),
-                flex: 2),
+                flex: 3),
             Expanded(
                 child: Padding(
                     child: Align(
@@ -144,7 +145,7 @@ class _EmailSenderState extends State<EmailSender> {
                               color: Color.fromRGBO(117, 30, 132, 1))),
                       hintStyle: Fonts.inputHintTextStyle),
                 ),
-                flex: 6),
+                flex: 7),
             Expanded(
                 child: Column(
                   children: <Widget>[
@@ -172,7 +173,7 @@ class _EmailSenderState extends State<EmailSender> {
                                     ],
                                   );
                                 }),
-                            flex: min(attachments.length + 1, 3))),
+                            flex: math.min(attachments.length + 1, 3))),
                     Expanded(
                         child: Row(children: [
                           IconButton(
@@ -187,14 +188,14 @@ class _EmailSenderState extends State<EmailSender> {
                                       decoration: TextDecoration.underline)),
                               onTap: _openImagePicker)
                         ]),
-                        flex: max(1, 4 - attachments.length)),
+                        flex: math.max(1, 4 - attachments.length)),
                   ],
                 ),
                 flex: 6),
             Expanded(
                 child: Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                     child: SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(

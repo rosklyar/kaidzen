@@ -103,10 +103,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-            statusBarColor: Colors.white.withOpacity(0),
-            statusBarIconBrightness: Brightness.dark,
-            systemNavigationBarIconBrightness: Brightness.dark),
+        value: SystemUiOverlayStyle.dark
+            .copyWith(statusBarColor: Colors.white.withOpacity(0)),
         child: Scaffold(
           body: Stack(children: [
             Column(children: [
