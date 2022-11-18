@@ -1,26 +1,28 @@
 import 'dart:math';
-
+import 'dart:developer' as logging;
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
-import 'package:kaidzen_app/utils/margin.dart';
 import 'package:kaidzen_app/views/listViewComplexTaskItem.dart';
 import 'package:provider/provider.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import '../assets/constants.dart';
 import 'ListViewTaskItem.dart';
 
 class Board extends StatefulWidget {
-  const Board(
-      {Key? key,
-      required this.name,
-      required this.list,
-      required this.sc,
-      required this.scrollEnabled})
-      : super(key: key);
+  const Board({
+    Key? key,
+    required this.name,
+    required this.list,
+    required this.sc,
+    required this.scrollEnabled,
+    required this.pnc,
+  }) : super(key: key);
 
   final List<Task> list;
   final String name;
   final ScrollController sc;
+  final PanelController pnc;
   final bool scrollEnabled;
 
   @override
@@ -57,26 +59,40 @@ class BoardState extends State<Board> {
 
   @override
   Widget build(BuildContext context) {
-    return ReorderableListView(
-      physics: widget.scrollEnabled
-          ? const AlwaysScrollableScrollPhysics()
-          : const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
-      onReorder: _onReorder,
-      scrollController: widget.sc,
-      children: List.generate(
-        widget.list.length,
-        (index) {
-          return Column(
-              key: Key('$index'), children: [taskCard(widget.list[index])]);
+    return GestureDetector(
+        onVerticalDragDown: (details) {
+          var shouldClose = widget.list.isEmpty ||
+              widget.sc.position.atEdge && widget.sc.position.pixels == 0;
+          if (shouldClose &&
+              widget.pnc.isPanelOpen &&
+              details.globalPosition.direction < 1) {
+            logging.log(details.toString());
+            widget.pnc.close();
+          }
         },
-      ),
-    );
+        child: ReorderableListView(
+          physics: widget.scrollEnabled
+              ? const AlwaysScrollableScrollPhysics()
+              : const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
+          onReorder: _onReorder,
+          scrollController: widget.sc,
+          children: List.generate(
+            widget.list.length,
+            (index) {
+              return Column(
+                  key: Key('$index'), children: [taskCard(widget.list[index])]);
+            },
+          ),
+        ));
   }
 
   Widget taskCard(Task task) {
     if (task.status == Status.TODO) {
-      return Card(shadowColor: cardShadowColor, elevation: cardElavation, child: listItem(task));
+      return Card(
+          shadowColor: cardShadowColor,
+          elevation: cardElavation,
+          child: listItem(task));
     }
     var background = task.status == Status.DOING
         ? AssetImage(

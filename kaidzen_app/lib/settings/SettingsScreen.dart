@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -67,49 +69,37 @@ class SettingsScreen extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                              Row(children: [
-                                InkWell(
-                                    child: Text(
+                                  Row(children: [
+                                    Text(
                                       "About philosophy",
                                       style: Fonts.largeTextStyle20,
                                       textAlign: TextAlign.left,
-                                    ),
-                                    onTap: () async {
-                                      await _goToAboutPhilosophy(context);
-                                    })
-                              ]),
-                              IconButton(
-                                  padding: EdgeInsets.zero,
-                                  onPressed: () async {
-                                    await _goToAboutPhilosophy(context);
-                                  },
-                                  icon: SvgPicture.asset(
-                                      "assets/shevron-right-black.svg"))
-                            ])),
+                                    )
+                                  ]),
+                                  SvgPicture.asset(
+                                      "assets/shevron-right-black.svg")
+                                ]),
+                            onTap: () async {
+                              await _goToAboutPhilosophy(context);
+                            }),
                         ListTile(
                             title: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                              Row(children: [
-                                InkWell(
-                                    child: Text(
+                                  Row(children: [
+                                    Text(
                                       "Send feedback",
                                       style: Fonts.largeTextStyle20,
                                       textAlign: TextAlign.left,
-                                    ),
-                                    onTap: () async {
-                                      await _goToSendFeedback(context);
-                                    })
-                              ]),
-                              IconButton(
-                                  padding: EdgeInsets.zero,
-                                  onPressed: () async {
-                                    await _goToSendFeedback(context);
-                                  },
-                                  icon: SvgPicture.asset(
-                                      "assets/shevron-right-black.svg"))
-                            ])),
+                                    )
+                                  ]),
+                                  SvgPicture.asset(
+                                      "assets/shevron-right-black.svg")
+                                ]),
+                            onTap: () async {
+                              await _goToSendFeedback(context);
+                            }),
                         Visibility(
                             visible: progress.getTotalLevel() > 10,
                             child: ListTile(
@@ -117,49 +107,37 @@ class SettingsScreen extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                  Row(children: [
-                                    InkWell(
-                                        child: Text(
+                                      Row(children: [
+                                        Text(
                                           "Love the app? Leave a review",
                                           style: Fonts.largeTextStyle20,
                                           textAlign: TextAlign.left,
-                                        ),
-                                        onTap: () async {
-                                          ReviewUtils.requestReview();
-                                        })
-                                  ]),
-                                  IconButton(
-                                      padding: EdgeInsets.zero,
-                                      onPressed: () async {
-                                        ReviewUtils.requestReview();
-                                      },
-                                      icon: SvgPicture.asset(
-                                          "assets/shevron-right-black.svg"))
-                                ]))),
+                                        )
+                                      ]),
+                                      SvgPicture.asset(
+                                          "assets/shevron-right-black.svg")
+                                    ]),
+                                onTap: () async {
+                                  ReviewUtils.requestReview();
+                                })),
                         ListTile(
                             title: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                              Row(children: [
-                                InkWell(
-                                    child: Text(
+                                  Row(children: [
+                                    Text(
                                       "Share app",
                                       style: Fonts.largeTextStyle20,
                                       textAlign: TextAlign.left,
-                                    ),
-                                    onTap: () async {
-                                      await _shareApp();
-                                    })
-                              ]),
-                              IconButton(
-                                  padding: EdgeInsets.zero,
-                                  onPressed: () async {
-                                    await _shareApp();
-                                  },
-                                  icon: SvgPicture.asset(
-                                      "assets/shevron-right-black.svg"))
-                            ]))
+                                    )
+                                  ]),
+                                  SvgPicture.asset(
+                                      "assets/shevron-right-black.svg")
+                                ]),
+                            onTap: () async {
+                              await _shareApp();
+                            })
                       ]).toList()),
                       flex: 4),
                   Expanded(
@@ -174,50 +152,37 @@ class SettingsScreen extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                              Row(children: [
-                                InkWell(
-                                  child: Text(
-                                    "Terms of use",
-                                    style: Fonts.largeTextStyle20,
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  onTap: () async {
-                                    await _goToTermsOfUse(context);
-                                  },
-                                )
-                              ]),
-                              IconButton(
-                                  padding: EdgeInsets.zero,
-                                  onPressed: () async {
-                                    await _goToTermsOfUse(context);
-                                  },
-                                  icon: SvgPicture.asset(
-                                      "assets/shevron-right-black.svg"))
-                            ])),
+                                  Row(children: [
+                                    Text(
+                                      "Terms of use",
+                                      style: Fonts.largeTextStyle20,
+                                      textAlign: TextAlign.left,
+                                    )
+                                  ]),
+                                  SvgPicture.asset(
+                                      "assets/shevron-right-black.svg")
+                                ]),
+                            onTap: () async {
+                              await _goToTermsOfUse(context);
+                            }),
                         ListTile(
                             title: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                              Row(children: [
-                                InkWell(
-                                    child: Text(
+                                  Row(children: [
+                                    Text(
                                       "Privacy policy",
                                       style: Fonts.largeTextStyle20,
                                       textAlign: TextAlign.left,
-                                    ),
-                                    onTap: () async {
-                                      await _goToPrivacyPolicy(context);
-                                    })
-                              ]),
-                              IconButton(
-                                  padding: EdgeInsets.zero,
-                                  onPressed: () async {
-                                    await _goToPrivacyPolicy(context);
-                                  },
-                                  icon: SvgPicture.asset(
-                                      "assets/shevron-right-black.svg"))
-                            ]))
+                                    )
+                                  ]),
+                                  SvgPicture.asset(
+                                      "assets/shevron-right-black.svg")
+                                ]),
+                            onTap: () async {
+                              await _goToPrivacyPolicy(context);
+                            }),
                       ]).toList()),
                       flex: 4),
                   Expanded(
