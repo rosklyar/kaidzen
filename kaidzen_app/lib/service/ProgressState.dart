@@ -26,6 +26,13 @@ class ProgressState extends ChangeNotifier {
     var currentProgress = _progress[task.category]!;
     var updatedProgress = ProgressCalculator.progress(currentProgress, task);
     if (updatedProgress != currentProgress) {
+      await FirebaseAnalytics.instance.setUserProperty(
+          name: levelPropertiesMap[task.category]!.name.toLowerCase(),
+          value: updatedProgress.level.toString());
+      await FirebaseAnalytics.instance.setUserProperty(
+          name: pointsPropertiesMap[task.category]!.name.toLowerCase(),
+          value: updatedProgress.points.toString());
+          
       if (updatedProgress.level > currentProgress.level) {
         //We do this 3 step update to be able to correctly display progress animation
         var progressToMax = Progress(currentProgress.level,
@@ -41,6 +48,13 @@ class ProgressState extends ChangeNotifier {
 
         await repository.updateProgress(task.category, updatedProgress);
         _progress[task.category] = updatedProgress;
+
+        await FirebaseAnalytics.instance.logEvent(
+            name: AnalyticsEventType.level_up.name,
+            parameters: {
+              "sphere": task.category.id,
+              "level": updatedProgress.level
+            });
 
         if (getTotalLevel() % 10 == 0) {
           ReviewUtils.requestReview();
