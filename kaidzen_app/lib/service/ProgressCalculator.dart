@@ -4,6 +4,7 @@ import '../models/progress.dart';
 import '../models/task.dart';
 
 class ProgressCalculator {
+  static const int MAX_POINTS_VALUE = 10000;
   static Progress progress(Progress progress, Task task) {
     if (task.category.id == DevelopmentCategory.NO_CATEGORY.id) {
       return progress;
@@ -28,6 +29,12 @@ class ProgressCalculator {
       DevelopmentCategory category, Progress progress) {
     var cap = _levelToPointsMap[progress.level + 1]!;
     return progress.points / cap;
+  }
+
+  static int getMaxLevelPoints(int level) {
+    return _levelToPointsMap.containsKey(level)
+        ? _levelToPointsMap[level]!
+        : MAX_POINTS_VALUE;
   }
 
   static final Map<Difficulty, int> _difficultyPointsMap = {

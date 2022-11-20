@@ -317,10 +317,8 @@ class _ProgressIndicatorState extends State<ProgressIndicator>
         _controller.animateTo(widget.percent,
             duration: const Duration(seconds: 1));
       } else {
-        _controller.animateTo(1.0, duration: const Duration(milliseconds: 500));
-        _controller.animateTo(0.0, duration: const Duration(microseconds: 1));
         _controller.animateTo(widget.percent,
-            duration: const Duration(milliseconds: 500));
+            duration: const Duration(milliseconds: 1));
       }
       setState(() {
         _color = lighten(_color!, 0.1);

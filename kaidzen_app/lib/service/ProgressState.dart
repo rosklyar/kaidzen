@@ -26,27 +26,36 @@ class ProgressState extends ChangeNotifier {
     var currentProgress = _progress[task.category]!;
     var updatedProgress = ProgressCalculator.progress(currentProgress, task);
     if (updatedProgress != currentProgress) {
-      await repository.updateProgress(task.category, updatedProgress);
-      _progress[task.category] = updatedProgress;
-      await FirebaseAnalytics.instance.setUserProperty(
-          name: levelPropertiesMap[task.category]!.name.toLowerCase(),
-          value: updatedProgress.level.toString());
-      await FirebaseAnalytics.instance.setUserProperty(
-          name: pointsPropertiesMap[task.category]!.name.toLowerCase(),
-          value: updatedProgress.points.toString());
       if (updatedProgress.level > currentProgress.level) {
-        await FirebaseAnalytics.instance.logEvent(
-            name: AnalyticsEventType.level_up.name,
-            parameters: {
-              "sphere": task.category.id,
-              "level": updatedProgress.level
-            });
+        //We do this 3 step update to be able to correctly display progress animation
+        var progressToMax = Progress(currentProgress.level,
+            ProgressCalculator.getMaxLevelPoints(currentProgress.level + 1));
+        await repository.updateProgress(task.category, progressToMax);
+        _progress[task.category] = progressToMax;
+        await notifyWithDelay();
+
+        var progressToZero = Progress(updatedProgress.level, 0);
+        await repository.updateProgress(task.category, progressToZero);
+        _progress[task.category] = progressToZero;
+        await notifyWithDelay();
+
+        await repository.updateProgress(task.category, updatedProgress);
+        _progress[task.category] = updatedProgress;
+
         if (getTotalLevel() % 10 == 0) {
           ReviewUtils.requestReview();
         }
+      } else {
+        await repository.updateProgress(task.category, updatedProgress);
+        _progress[task.category] = updatedProgress;
       }
-      notifyListeners();
     }
+    notifyListeners();
+  }
+
+  Future<void> notifyWithDelay() async {
+    notifyListeners();
+    await Future.delayed(const Duration(milliseconds: 100));
   }
 
   int getTotalLevel() {
