@@ -39,6 +39,10 @@ class SwitchableBoardState extends State<SwitchableBoard> {
   @override
   void initState() {
     super.initState();
+    var taskState = Provider.of<TasksState>(context, listen: false);
+
+    var countInDoing = taskState.getCountByStatus(toggleBoards[1].name);
+    currentBoard = countInDoing == 0 ? toggleBoards[0] : toggleBoards[1];
   }
 
   @override
