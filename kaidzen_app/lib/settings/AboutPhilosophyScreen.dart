@@ -55,7 +55,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                         text: TextSpan(children: [
                           TextSpan(
                               text:
-                                  "The idea is to aim for small and consistent growth.\n\nYour regular efforts and progress will eventually lead to significant results.",
+                                  "\nThe idea is to aim for small and consistent growth.\n\nYour regular efforts and progress will eventually lead to significant results.",
                               style: Fonts.screenTytleTextStyle)
                         ]),
                       )),
@@ -67,7 +67,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "Set life mission\n\n\n",
+                              text: "\nSet life mission\n\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
@@ -92,7 +92,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "Clear your mind\n\n\n",
+                              text: "\nClear your mind\n\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
@@ -108,11 +108,11 @@ class AboutPhilosophyScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "Focus on your goals\n\n\n",
+                              text: "\nFocus on your goals\n\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
-                                  "Sift everything you've written down through your life mission.\n\n\nIf a goal was \"buy a new car\" - is it what you truly want?\nDo you like driving?\nHow much time do you spend driving?\nWill it make you happy?\nWill it be good for the environment and society?\n\n If you like driving, do it a lot, in your free time going to track - then definitely it will make you happy, and it's your true goal.",
+                                  "Sift everything you've written down through your life mission.\n\n\nIf a goal was \"buy a new car\" - is it what you truly want?\nDo you like driving?\nHow much time do you spend driving?\nWill it make you happy?\nWill it be good for the environment and society?\n\nIf you like driving, do it a lot, in your free time going to track - then definitely it will make you happy, and it's your true goal.",
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
@@ -124,7 +124,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "Choose spheres to affect\n\n\n",
+                              text: "\nChoose spheres to affect\n\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
@@ -140,7 +140,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "Consistency is the key\n\n\n",
+                              text: "\nConsistency is the key\n\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
@@ -156,7 +156,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "And...\n\n\n",
+                              text: "\nAnd...\n\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
