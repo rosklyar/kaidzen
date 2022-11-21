@@ -48,28 +48,28 @@ void main() async {
       emotionsState: emotionsState,
       tutorialState: tutorialState);
 
+  await taskState.loadAll();
+  await progressState.loadAll();
+  await achievementsState.loadAll();
+  await tutorialState.loadAll();
+  await emotionsState.loadAll();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(MultiProvider(providers: [
             ChangeNotifierProvider(create: (context) {
-              taskState.loadAll();
               AnalyticsService.initUserProperties(
                   taskState, emotionsState, tutorialState);
               return taskState;
             }),
             ChangeNotifierProvider(create: (context) {
-              progressState.loadAll();
               return progressState;
             }),
             ChangeNotifierProvider(create: (context) {
-              achievementsState.loadAll();
               return achievementsState;
             }),
             ChangeNotifierProvider(create: (context) {
-              tutorialState.loadAll();
               return tutorialState;
             }),
             ChangeNotifierProvider(create: (context) {
-              emotionsState.loadAll();
               return emotionsState;
             }),
           ], child: const MyApp())));
