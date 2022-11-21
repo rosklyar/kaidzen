@@ -142,7 +142,7 @@ class _ViewGoalState extends State<ViewGoal> {
                 style: const TextStyle(color: Colors.grey),
                 textAlign: TextAlign.center)),
         Padding(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 50),
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 40),
           child: ButtonBar(
             alignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[

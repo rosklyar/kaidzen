@@ -49,7 +49,6 @@ void main() async {
       tutorialState: tutorialState);
 
   await taskState.loadAll();
-  await progressState.loadAll();
   await achievementsState.loadAll();
   await tutorialState.loadAll();
   await emotionsState.loadAll();
@@ -61,6 +60,7 @@ void main() async {
               return taskState;
             }),
             ChangeNotifierProvider(create: (context) {
+              progressState.loadAll();
               return progressState;
             }),
             ChangeNotifierProvider(create: (context) {
@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const CreateTask()));
             },
-            tooltip: 'Add task',
+            tooltip: 'Add goal',
             child: const Icon(
               Icons.add,
               color: Colors.white,

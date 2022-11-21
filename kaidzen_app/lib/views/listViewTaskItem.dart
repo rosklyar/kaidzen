@@ -26,7 +26,7 @@ class ListViewTaskItem extends ListTile {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(Icons.circle_rounded,
-              color: task.category.color, size: 10.0 + task.difficulty.id * 3),
+              color: task.category.color, size: 8.0 + task.difficulty.id * 4),
         ],
       ),
       title: Text(
