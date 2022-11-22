@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../assets/constants.dart';
-import '../main.dart';
 
 class MoreFeedbackScreen extends StatelessWidget {
   const MoreFeedbackScreen({Key? key}) : super(key: key);
@@ -28,10 +27,8 @@ class MoreFeedbackScreen extends StatelessWidget {
                           child: SvgPicture.asset(
                               "assets/settings/close_black_icon.svg"),
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomeScreen()));
+                            int count = 0;
+                            Navigator.of(context).popUntil((_) => count++ >= 3);
                           },
                         ),
                       ]),

@@ -31,10 +31,8 @@ class AchievementDetailsScreen extends StatelessWidget {
                     IconButton(
                       icon: Image.asset("assets/close_icon.png"),
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomeScreen()));
+                        int count = 0;
+                        Navigator.of(context).popUntil((_) => count++ >= 2);
                       },
                     )
                   ], mainAxisAlignment: MainAxisAlignment.spaceBetween)),

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -9,7 +8,6 @@ import 'package:kaidzen_app/feedback/MoreFeedbackScreen.dart';
 import 'package:flutter/services.dart';
 
 import '../assets/constants.dart';
-import '../main.dart';
 
 class EmailSender extends StatefulWidget {
   const EmailSender({Key? key}) : super(key: key);
@@ -115,10 +113,8 @@ class _EmailSenderState extends State<EmailSender> {
                     child: SvgPicture.asset(
                         "assets/settings/close_black_icon.svg"),
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeScreen()));
+                      int count = 0;
+                      Navigator.of(context).popUntil((_) => count++ >= 2);
                     },
                   )
                 ], mainAxisAlignment: MainAxisAlignment.spaceBetween),

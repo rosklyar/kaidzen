@@ -12,7 +12,6 @@ import 'package:kaidzen_app/settings/ReviewUtils.dart';
 import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
-import '../main.dart';
 import '../service/AnalyticsService.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 
@@ -24,7 +23,7 @@ class SettingsScreen extends StatelessWidget {
         title: 'Sticky Goals',
         text: 'Sticky Goals',
         linkUrl: defaultTargetPlatform == TargetPlatform.android
-            ? 'https://play.google.com/apps/test/com.funworkstudio.stickygoals.android/11'
+            ? 'https://play.google.com/apps/test/com.funworkstudio.stickygoals.android/15'
             : "https://https://www.apple.com/app-store",
         chooserTitle: 'Share \'Sticky Goals\'');
   }
@@ -48,11 +47,7 @@ class SettingsScreen extends StatelessWidget {
                                   icon: SvgPicture.asset(
                                       "assets/settings/close_black_icon.svg"),
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const HomeScreen()));
+                                    Navigator.of(context).pop();
                                   },
                                 ),
                               ])),

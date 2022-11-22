@@ -123,7 +123,7 @@ class _EditGoalState extends State<EditGoal> {
                                           _currentCategory = value!;
                                           Utils.tryToLostFocus(context);
                                         })),
-                                flex: 2),
+                                flex: 1),
                             const Expanded(child: SizedBox(), flex: 1)
                           ])),
                       flex: 4),
@@ -133,7 +133,7 @@ class _EditGoalState extends State<EditGoal> {
             Expanded(
                 child: Padding(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        const EdgeInsets.only(left: 10, right: 10, bottom: 10),
                     child: SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
