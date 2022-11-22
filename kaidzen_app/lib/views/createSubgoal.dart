@@ -49,15 +49,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
             },
           ),
           backgroundColor: Colors.white.withOpacity(0),
-          title: Wrap(children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 5, right: 15),
-              child: Icon(Icons.circle_rounded,
-                  color: widget.parent.category.color,
-                  size: 10.0 + Difficulty.EASY.id * 3),
-            ),
-            Text('Subgoal', style: Fonts.screenTytleTextStyle),
-          ])),
+          title: Text('Subgoal', style: Fonts.screenTytleTextStyle)),
       body: GestureDetector(
           child: Column(children: [
             Expanded(
@@ -101,7 +93,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                     Padding(
                       padding: EdgeInsets.only(
                           top: parentHeight * 0.04,
-                          bottom: parentHeight * 0.01),
+                          bottom: parentHeight * 0.03),
                       child: GestureDetector(
                           child: Text('Create and start another one',
                               style: Fonts.largeTextStyle.copyWith(

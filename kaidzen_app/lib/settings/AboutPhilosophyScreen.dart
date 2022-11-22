@@ -55,7 +55,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                         text: TextSpan(children: [
                           TextSpan(
                               text:
-                                  "The idea is to aim for small and consistent growth.\n\nYour regular efforts and progress would eventually lead to significant results.",
+                                  "\nThe idea is to aim for small and consistent growth.\n\nYour regular efforts and progress will eventually lead to significant results.",
                               style: Fonts.screenTytleTextStyle)
                         ]),
                       )),
@@ -67,15 +67,15 @@ class AboutPhilosophyScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "Set life mission\n\n\n",
+                              text: "\nSet life mission\n\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
-                                  "Find time and calm environment to think about your life mission. Something that describes you. Your strives and dreams.Lets imagine that it could be smth general in the begining:\n\n\n",
+                                  "Find time and a calm environment to think about your life mission. Something that describes you. Your strives and dreams. Let's imagine that it could be smth general in the beginning:\n\n\n",
                               style: Fonts.largeTextStyle),
                           TextSpan(
                               text:
-                                  "\"I want to live happy life providing benefits to society and environment\"\n\n\n",
+                                  "\"I want to live happy life providing benefits to society and the environment\"\n\n\n",
                               style: Fonts.largeTextStyle20
                                   .copyWith(fontWeight: FontWeight.bold)),
                           TextSpan(
@@ -92,11 +92,11 @@ class AboutPhilosophyScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "Clear your mind\n\n\n",
+                              text: "\nClear your mind\n\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
-                                  "Surfing through your mind for important things you could forget and sorting them out can be very exuasting. You can't even imagine how many times you go through this cycle daily. It consumes huge amounts of your mental energy.\n\nEmpty your mind.\nCompletely.\nWrite down everything what is important and throw away everything else.\n\nDo it once and you'll save a ton of your energy.\nTurn it into a habit and you'l enjoy how it will reshape your life.",
+                                  "Surfing through your mind for important things you could forget and sorting them out can be very exhausting. You can't even imagine how often you go through this cycle daily. It consumes huge amounts of your mental energy.\n\nEmpty your mind.\nCompletely.\nWrite down everything that is important and throw away everything else.\n\nDo it once, and you'll save a ton of your energy.\nTurn it into a habit, and you'll enjoy how it will reshape your life.",
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
@@ -108,11 +108,11 @@ class AboutPhilosophyScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "Focus on your goals\n\n\n",
+                              text: "\nFocus on your goals\n\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
-                                  "Sift everything you've written down through you life mission initial list accordingly to your life mission.\n\n\nIf goal was \"buy a new car\" - is it what you trully want?\nDo you like driving?\nHow much time do you spend driving?\nWill it make you happy?\nWill it be good for environment and society?\n\nIf you like driving, do it a lot, in a free time going to track - then definetely it will make you happy and it's your true goal.",
+                                  "Sift everything you've written down through your life mission.\n\n\nIf a goal was \"buy a new car\" - is it what you truly want?\nDo you like driving?\nHow much time do you spend driving?\nWill it make you happy?\nWill it be good for the environment and society?\n\nIf you like driving, do it a lot, in your free time going to track - then definitely it will make you happy, and it's your true goal.",
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
@@ -124,11 +124,11 @@ class AboutPhilosophyScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "Choose spheres to affect\n\n\n",
+                              text: "\nChoose spheres to affect\n\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
-                                  "Split your goals by 5 spheres:\n\u2022 Wealth\n\u2022 Energy\n\u2022 Health\n\u2022 Mind\n\u2022 Relations\n\n\nSometimes goal could be splitted by more than one sphere. In that case choose one sphere that you think will suit best for it.",
+                                  "Split your goals by 5 spheres:\n\u2022 Wealth\n\u2022 Energy\n\u2022 Health\n\u2022 Mind\n\u2022 Relations\n\n\nSometimes your goal could match more than one sphere. In that case, choose one sphere that you think will suit it best.",
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
@@ -140,11 +140,11 @@ class AboutPhilosophyScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "Consistency is the key\n\n\n",
+                              text: "\nConsistency is the key\n\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
-                                  "Choose a consistent time period that is comfortable for you.\nIt can be day or week.\n\n\nRegularly check your `Do` list and move goals to `Doing`.\nFocus to finish it during the chosen period.",
+                                  "Regularly update your boards and keep them up to date.\n\nChoose a consistent period that is comfortable for you to sort everything out. Be it a morning routine with a cup of coffee or weekly revision on weekends. \nStick to it.",
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
@@ -156,7 +156,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "And...\n\n\n",
+                              text: "\nAnd...\n\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
