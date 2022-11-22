@@ -64,6 +64,9 @@ class BoardState extends State<Board> {
           if (widget.pnc.isPanelClosed &&
               details.velocity.pixelsPerSecond.direction < 0) {
             widget.pnc.open();
+          } else if (widget.pnc.isPanelOpen &&
+              details.velocity.pixelsPerSecond.direction > 0) {
+            widget.pnc.close();
           }
         },
         onVerticalDragDown: (details) {
@@ -77,7 +80,7 @@ class BoardState extends State<Board> {
         },
         child: ReorderableListView(
           physics: widget.scrollEnabled
-              ? const AlwaysScrollableScrollPhysics()
+              ? const ClampingScrollPhysics()
               : const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
           onReorder: _onReorder,
