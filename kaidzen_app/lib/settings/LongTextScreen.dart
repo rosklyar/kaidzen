@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:kaidzen_app/settings/SettingsScreen.dart';
-
-import '../main.dart';
 
 class LongTextScreen extends StatelessWidget {
   final String title;
@@ -22,31 +19,31 @@ class LongTextScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.only(top: 20),
             child: Column(children: [
               Expanded(
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        GestureDetector(
-                          child:
+                        IconButton(
+                          iconSize: 32,
+                          icon:
                               SvgPicture.asset("assets/shevron-left-black.svg"),
-                          onTap: () {
+                          onPressed: () {
                             Navigator.pop(context);
                           },
                         ),
-                        GestureDetector(
-                          child: SvgPicture.asset(
+                        IconButton(
+                          iconSize: 32,
+                          icon: SvgPicture.asset(
                               "assets/settings/close_black_icon.svg"),
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomeScreen()));
+                          onPressed: () {
+                            int count = 0;
+                            Navigator.of(context).popUntil((_) => count++ >= 2);
                           },
-                        ),
+                        )
                       ]),
-                  flex: 1),
+                  flex: 3),
               Expanded(
                   child: FutureBuilder<String>(
                       future: Future.delayed(const Duration(milliseconds: 150))
@@ -57,7 +54,7 @@ class LongTextScreen extends StatelessWidget {
                         }
                         return const Center(child: CircularProgressIndicator());
                       }),
-                  flex: 9),
+                  flex: 22),
             ])));
   }
 }
