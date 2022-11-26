@@ -9,6 +9,7 @@ import '../models/task.dart';
 import 'package:provider/provider.dart';
 
 import '../service/TasksState.dart';
+import '../utils/snackbar.dart';
 
 class CreateSubGoal extends StatefulWidget {
   final Task parent;
@@ -107,6 +108,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                           widget.parent,
                                           popTarget: widget.popTarget,
                                         )));
+                            showSnackbar("Subgoal created", context);
                           }),
                     ),
                     Padding(
@@ -126,6 +128,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                   Navigator.of(context).popUntil(
                                       ModalRoute.withName(widget.popTarget!));
                                 }
+                                showSnackbar("Subgoal created", context);
                               },
                               child: Text('Create',
                                   style: Fonts.largeTextStyle20

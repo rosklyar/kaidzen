@@ -24,6 +24,14 @@ class Task extends Equatable {
     return subtasks.isNotEmpty;
   }
 
+  int uncompletedSubtaskCount() {
+    return subtasks.where((st) => st.status != Status.DONE).length;
+  }
+
+  bool isSubtask() {
+    return parent != null;
+  }
+
   String shortenedName(int maxLength) {
     if (name.isNotEmpty && name.length > maxLength) {
       return name.substring(0, maxLength) + "...";

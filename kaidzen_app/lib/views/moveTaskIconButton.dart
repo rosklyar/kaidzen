@@ -35,10 +35,101 @@ class MoveTaskIconButton extends StatelessWidget {
         : task.status == Status.DOING
             ? Status.TODO
             : Status.DOING;
-    debugPrint('move task:' + newStatus);
-    await Provider.of<TasksState>(context, listen: false)
-        .moveTaskAndNotify(task, newStatus);
+
+    var tasksState = Provider.of<TasksState>(context, listen: false);
+    if (lastSubtaskIsDone(newStatus, task, tasksState)) {
+      await showModalRegardingParent(context, tasksState, task, newStatus);
+    } else {
+      await Provider.of<TasksState>(context, listen: false)
+          .moveTaskAndNotify(task, newStatus);
+    }
   }
+
+  Future<void> showModalRegardingParent(BuildContext context,
+      TasksState tasksState, Task task, String newStatus) async {
+    var parentHeight = MediaQuery.of(context).size.height;
+    var parentWidth = MediaQuery.of(context).size.width;
+    var parentTask = tasksState.getById(task.parent!)!;
+    showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.4,
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.only(top: 15),
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 15, left: 15),
+                          child: Text(
+                              "'" +
+                                  parentTask.shortenedName(50) +
+                                  "' will be moved to 'Done'",
+                              style: Fonts.screenTytleTextStyle),
+                        )),
+                    flex: 2),
+                const Expanded(child: SizedBox(), flex: 1),
+                Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10, left: 10),
+                      child: Text(
+                          "Congratulations! You have completed the last subgoal and '" +
+                              parentTask.shortenedName(50) +
+                              "' is about to be moved to 'Done'",
+                          style: Fonts.largeTextStyle),
+                    ),
+                    flex: 3),
+                Expanded(
+                    child: GestureDetector(
+                        child: Text('I want to keep it in \'Do\'',
+                            style: Fonts.largeTextStyle.copyWith(
+                                decoration: TextDecoration.underline)),
+                        onTap: () {
+                          Provider.of<TasksState>(context, listen: false)
+                              .moveSubtaskOnlyAndNotify(task, newStatus);
+                          Navigator.pop(context);
+                        }),
+                    flex: 1),
+                Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.only(
+                            right: 15, left: 15, bottom: 20),
+                        child: SizedBox(
+                            height: parentHeight * 0.08,
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              child: Text('Ok',
+                                  style: Fonts.largeTextStyle20
+                                      .copyWith(color: Colors.white)),
+                              onPressed: () async {
+                                await Provider.of<TasksState>(context,
+                                        listen: false)
+                                    .moveTaskAndNotify(task, newStatus);
+                                Navigator.pop(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  primary: activeButtonColor),
+                            ))),
+                    flex: 3),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  bool lastSubtaskIsDone(String newStatus, Task task, TasksState tasksState) =>
+      newStatus == Status.DONE &&
+      task.isSubtask() &&
+      tasksState.getById(task.parent!)!.uncompletedSubtaskCount() == 1;
 
   String getNewStatus() {
     if (direction == Direction.FORWARD && task.hasSubtasks()) {
