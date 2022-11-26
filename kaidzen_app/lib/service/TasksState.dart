@@ -144,6 +144,13 @@ class TasksState extends ChangeNotifier {
     notifyListeners();
   }
 
+  moveSubtaskOnlyAndNotify(Task task, String newStatus) async {
+    await moveTask(task, newStatus);
+    await loadAll();
+    await updatePropertiesAfterTaskMoved();
+    notifyListeners();
+  }
+
   Future<void> updatePropertiesAfterTaskMoved() async {
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.CURRENT_GOALS_DO.name.toLowerCase(),
