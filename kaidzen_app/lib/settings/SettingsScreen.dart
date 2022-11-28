@@ -9,6 +9,7 @@ import 'package:kaidzen_app/service/ProgressState.dart';
 import 'package:kaidzen_app/settings/AboutPhilosophyScreen.dart';
 import 'package:kaidzen_app/settings/LongTextScreen.dart';
 import 'package:kaidzen_app/settings/ReviewUtils.dart';
+import 'package:kaidzen_app/settings/SpheresExplanationScreen.dart';
 import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
@@ -53,30 +54,57 @@ class SettingsScreen extends StatelessWidget {
                               ])),
                       flex: 2),
                   Expanded(
-                      child: SvgPicture.asset("assets/settings/line_12.svg"),
-                      flex: 1),
+                      child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 10, right: 10, top: 10, bottom: 10),
+                          child: Row(children: [
+                            Expanded(
+                                child: GestureDetector(
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                            ),
+                                            color: const Color.fromRGBO(
+                                                252, 245, 201, 1),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(10))),
+                                        child: const SizedBox(
+                                            width: double.infinity,
+                                            height: double.infinity)),
+                                    onTap: () async {
+                                      await _goToAboutPhilosophy(context);
+                                    }),
+                                flex: 10),
+                            const Expanded(child: SizedBox(), flex: 1),
+                            Expanded(
+                                child: GestureDetector(
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            color: const Color.fromRGBO(
+                                                225, 218, 218, 1),
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                            ),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(10))),
+                                        child: const SizedBox(
+                                            width: double.infinity,
+                                            height: double.infinity)),
+                                    onTap: () async {
+                                      await _goToSpheresExplanation(context);
+                                    }),
+                                flex: 10),
+                            const Expanded(child: SizedBox(), flex: 1),
+                            const Expanded(child: SizedBox(), flex: 10)
+                          ])),
+                      flex: 3),
                   Expanded(
                       child: Column(
                           children:
                               ListTile.divideTiles(context: context, tiles: [
-                        ListTile(
-                            title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(children: [
-                                    Text(
-                                      "About philosophy",
-                                      style: Fonts.largeTextStyle20,
-                                      textAlign: TextAlign.left,
-                                    )
-                                  ]),
-                                  SvgPicture.asset(
-                                      "assets/shevron-right-black.svg")
-                                ]),
-                            onTap: () async {
-                              await _goToAboutPhilosophy(context);
-                            }),
                         ListTile(
                             title: Row(
                                 mainAxisAlignment:
@@ -233,5 +261,12 @@ class SettingsScreen extends StatelessWidget {
         .logEvent(name: AnalyticsEventType.about_philosophy_opened.name);
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => AboutPhilosophyScreen()));
+  }
+
+  Future<void> _goToSpheresExplanation(BuildContext context) async {
+    await FirebaseAnalytics.instance
+        .logEvent(name: AnalyticsEventType.spheres_explanation_opened.name);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => SpheresExplanationScreen()));
   }
 }
