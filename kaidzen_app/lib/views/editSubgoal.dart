@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
@@ -6,6 +7,7 @@ import 'package:kaidzen_app/views/utils.dart';
 import '../models/task.dart';
 import 'package:provider/provider.dart';
 
+import '../service/AnalyticsService.dart';
 import '../service/TasksState.dart';
 
 class EditSubGoal extends StatefulWidget {
@@ -23,9 +25,10 @@ class EditSubGoal extends StatefulWidget {
 
 class _EditSubGoalState extends State<EditSubGoal> {
   late TextEditingController newTaskController;
-
+  bool _isSaveButtonActive = true;
   @override
   Widget build(BuildContext context) {
+    var parentWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
@@ -53,7 +56,7 @@ class _EditSubGoalState extends State<EditSubGoal> {
                               flex: 8),
                           const Expanded(child: SizedBox(), flex: 1)
                         ]),
-                        flex: 2),
+                        flex: 3),
                     Expanded(
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,14 +72,23 @@ class _EditSubGoalState extends State<EditSubGoal> {
                                         hintStyle: Fonts.inputHintTextStyle),
                                     controller: newTaskController,
                                   )),
-                              Wrap(
-                                alignment: WrapAlignment.start,
+                              Row(
                                 children: [
-                                  Image.asset("assets/back_arrow.png"),
-                                  Text(
-                                      style:
-                                          const TextStyle(color: Colors.grey),
-                                      widget.parent.name)
+                                  Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          parentWidth * 0.03, 5, 5, 5),
+                                      child:
+                                          Image.asset("assets/back_arrow.png")),
+                                  SizedBox(
+                                    width: parentWidth * 0.8,
+                                    child: Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          parentWidth * 0.01, 5, 5, 5),
+                                      child: Text(
+                                          style: Fonts.graySubtitle,
+                                          widget.parent.shortenedName(200)),
+                                    ),
+                                  )
                                 ],
                               )
                             ]),
@@ -85,12 +97,23 @@ class _EditSubGoalState extends State<EditSubGoal> {
                         child: SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
+                              onPressed: () async {
+                                if (_isSaveButtonActive) {
+                                  await FirebaseAnalytics.instance.logEvent(
+                                      name: AnalyticsEventType
+                                          .edit_goal_screen_save_button.name);
+                                  submit();
+                                }
+                              },
+                              child: Text('Save',
+                                  style: _isSaveButtonActive
+                                      ? Fonts.largeTextStyle20
+                                          .copyWith(color: Colors.white)
+                                      : Fonts.largeTextStyle20),
                               style: ElevatedButton.styleFrom(
-                                  primary: Colors.black),
-                              onPressed: submit,
-                              child: const Text('Save',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
+                                  primary: _isSaveButtonActive
+                                      ? activeButtonColor
+                                      : unselectedToggleColor),
                             )),
                         flex: 2)
                   ]),
@@ -114,5 +137,10 @@ class _EditSubGoalState extends State<EditSubGoal> {
   void initState() {
     super.initState();
     newTaskController = TextEditingController(text: widget.task.name);
+    newTaskController.addListener(() {
+      setState(() {
+        _isSaveButtonActive = newTaskController.text.isNotEmpty;
+      });
+    });
   }
 }

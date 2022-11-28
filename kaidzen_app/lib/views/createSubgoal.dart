@@ -27,6 +27,7 @@ class CreateSubGoal extends StatefulWidget {
 
 class _CreateSubGoalState extends State<CreateSubGoal> {
   late TextEditingController newTaskController;
+  bool _isCreateButtonActive = false;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +65,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                               flex: 8),
                           const Expanded(child: SizedBox(), flex: 1)
                         ]),
-                        flex: 2),
+                        flex: 3),
                     Expanded(
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,18 +81,22 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                         hintStyle: Fonts.inputHintTextStyle),
                                     controller: newTaskController,
                                   )),
-                              Wrap(
-                                alignment: WrapAlignment.start,
+                              Row(
                                 children: [
-                                  Image.asset("assets/back_arrow.png"),
                                   Padding(
-                                    padding: EdgeInsets.only(
-                                        left: parentWidth * 0.06,
-                                        top: 5,
-                                        right: 5),
-                                    child: Text(
-                                        style: Fonts.graySubtitle,
-                                        widget.parent.shortenedName(200)),
+                                      padding: EdgeInsets.fromLTRB(
+                                          parentWidth * 0.03, 5, 5, 5),
+                                      child:
+                                          Image.asset("assets/back_arrow.png")),
+                                  SizedBox(
+                                    width: parentWidth * 0.8,
+                                    child: Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          parentWidth * 0.01, 5, 5, 5),
+                                      child: Text(
+                                          style: Fonts.graySubtitle,
+                                          widget.parent.shortenedName(200)),
+                                    ),
                                   )
                                 ],
                               )
@@ -124,23 +129,29 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                     width: double.infinity,
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                          primary: activeButtonColor),
+                                          primary: _isCreateButtonActive
+                                              ? activeButtonColor
+                                              : unselectedToggleColor),
                                       onPressed: () {
-                                        submit();
-                                        if (widget.popTarget == null) {
-                                          Navigator.of(context).popUntil(
-                                              (route) => route.isFirst);
-                                        } else {
-                                          Navigator.of(context).popUntil(
-                                              ModalRoute.withName(
-                                                  widget.popTarget!));
+                                        if (_isCreateButtonActive) {
+                                          submit();
+                                          if (widget.popTarget == null) {
+                                            Navigator.of(context).popUntil(
+                                                (route) => route.isFirst);
+                                          } else {
+                                            Navigator.of(context).popUntil(
+                                                ModalRoute.withName(
+                                                    widget.popTarget!));
+                                          }
+                                          showSnackbar(
+                                              "Subgoal created", context);
                                         }
-                                        showSnackbar(
-                                            "Subgoal created", context);
                                       },
                                       child: Text('Create',
-                                          style: Fonts.largeTextStyle20
-                                              .copyWith(color: Colors.white)),
+                                          style: _isCreateButtonActive
+                                              ? Fonts.largeTextStyle20
+                                                  .copyWith(color: Colors.white)
+                                              : Fonts.largeTextStyle20),
                                     )),
                                 flex: 4),
                           ],
@@ -173,5 +184,10 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
   void initState() {
     super.initState();
     newTaskController = TextEditingController();
+    newTaskController.addListener(() {
+      setState(() {
+        _isCreateButtonActive = newTaskController.text.isNotEmpty;
+      });
+    });
   }
 }

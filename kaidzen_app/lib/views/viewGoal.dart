@@ -40,6 +40,7 @@ class _ViewGoalState extends State<ViewGoal> {
   }
 
   Scaffold buildViewTask(BuildContext context, Task task) {
+    var parentWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Color(task.category.backgroundColor),
       appBar: AppBar(
@@ -73,6 +74,34 @@ class _ViewGoalState extends State<ViewGoal> {
                               textAlign: TextAlign.left,
                               style: Fonts.screenTytleTextStyle,
                             ))),
+                    Visibility(
+                      visible: task.parent != null,
+                      child: task.parent != null
+                          ? Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                      padding: EdgeInsets.fromLTRB(parentWidth * 0.03, 5, 5, 5),
+                                      child:
+                                          Image.asset("assets/back_arrow.png")),
+                                  SizedBox(
+                                    width: parentWidth * 0.8,
+                                    child: Padding(
+                                      padding: EdgeInsets.fromLTRB(parentWidth * 0.01, 5, 5, 5),
+                                      child: Text(
+                                          style: Fonts.graySubtitle,
+                                          Provider.of<TasksState>(context,
+                                                  listen: false)
+                                              .getById(task.parent!)!
+                                              .shortenedName(200)),
+                                    ),
+                                  )
+                                ],
+                              ))
+                          : const SizedBox(),
+                    ),
                     Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 8),
