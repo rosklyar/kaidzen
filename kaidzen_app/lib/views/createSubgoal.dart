@@ -4,6 +4,7 @@ import 'package:kaidzen_app/achievements/event.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/views/utils.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../models/task.dart';
 import 'package:provider/provider.dart';
@@ -29,115 +30,123 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
 
   @override
   Widget build(BuildContext context) {
-    var parentHeight = MediaQuery.of(context).size.height;
     var parentWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
-      backgroundColor: Color(widget.parent.category.backgroundColor),
-      appBar: AppBar(
-          automaticallyImplyLeading: false,
-          elevation: 0.0,
-          centerTitle: true,
-          leading: BackButton(
-            color: Colors.black,
-            onPressed: () {
-              if (widget.popTarget == null) {
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              } else {
-                Navigator.of(context)
-                    .popUntil(ModalRoute.withName(widget.popTarget!));
-              }
-            },
-          ),
-          backgroundColor: Colors.white.withOpacity(0),
-          title: Text('Subgoal', style: Fonts.screenTytleTextStyle)),
       body: GestureDetector(
-          child: Column(children: [
-            Expanded(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 16),
-                          child: TextField(
-                            autofocus: true,
-                            decoration: InputDecoration(
-                                border: const OutlineInputBorder(),
-                                hintText: 'Subgoal title',
-                                labelText: 'Subgoal title',
-                                hintStyle: Fonts.inputHintTextStyle),
-                            controller: newTaskController,
-                          )),
-                      Wrap(
-                        alignment: WrapAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: parentWidth * 0.03, right: 5),
-                            child: Image.asset("assets/back_arrow.png"),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: parentWidth * 0.06, top: 5, right: 5),
-                            child: Text(
-                                style: Fonts.graySubtitle,
-                                widget.parent.shortenedName(200)),
-                          )
-                        ],
-                      )
-                    ]),
-                flex: 7),
-            Expanded(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                          top: parentHeight * 0.04,
-                          bottom: parentHeight * 0.03),
-                      child: GestureDetector(
-                          child: Text('Create and start another one',
-                              style: Fonts.largeTextStyle.copyWith(
-                                  decoration: TextDecoration.underline)),
-                          onTap: () {
-                            submit();
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => CreateSubGoal(
-                                          widget.parent,
-                                          popTarget: widget.popTarget,
-                                        )));
-                            showSnackbar("Subgoal created", context);
-                          }),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.only(right: 15, left: 15),
-                        child: SizedBox(
-                            height: parentHeight * 0.08,
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: activeButtonColor),
-                              onPressed: () {
-                                submit();
-                                if (widget.popTarget == null) {
-                                  Navigator.of(context)
-                                      .popUntil((route) => route.isFirst);
-                                } else {
-                                  Navigator.of(context).popUntil(
-                                      ModalRoute.withName(widget.popTarget!));
-                                }
-                                showSnackbar("Subgoal created", context);
-                              },
-                              child: Text('Create',
-                                  style: Fonts.largeTextStyle20
-                                      .copyWith(color: Colors.white)),
-                            ))),
-                  ],
-                ),
-                flex: 2)
-          ]),
+          child: Container(
+              color: Color(widget.parent.category.backgroundColor),
+              child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(children: [
+                    Expanded(
+                        child: Row(children: [
+                          Expanded(
+                              child: IconButton(
+                                icon: SvgPicture.asset(
+                                    "assets/shevron-left-black.svg"),
+                                onPressed: () {
+                                  if (widget.popTarget == null) {
+                                    Navigator.of(context)
+                                        .popUntil((route) => route.isFirst);
+                                  } else {
+                                    Navigator.of(context).popUntil(
+                                        ModalRoute.withName(widget.popTarget!));
+                                  }
+                                },
+                              ),
+                              flex: 1),
+                          Expanded(
+                              child: Center(
+                                  child: Text('Subgoal',
+                                      style: Fonts.screenTytleTextStyle)),
+                              flex: 8),
+                          const Expanded(child: SizedBox(), flex: 1)
+                        ]),
+                        flex: 2),
+                    Expanded(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                  padding: const EdgeInsets.only(bottom: 16),
+                                  child: TextField(
+                                    autofocus: true,
+                                    decoration: InputDecoration(
+                                        border: const OutlineInputBorder(),
+                                        hintText: 'Subgoal title',
+                                        labelText: 'Subgoal title',
+                                        hintStyle: Fonts.inputHintTextStyle),
+                                    controller: newTaskController,
+                                  )),
+                              Wrap(
+                                alignment: WrapAlignment.start,
+                                children: [
+                                  Image.asset("assets/back_arrow.png"),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: parentWidth * 0.06,
+                                        top: 5,
+                                        right: 5),
+                                    child: Text(
+                                        style: Fonts.graySubtitle,
+                                        widget.parent.shortenedName(200)),
+                                  )
+                                ],
+                              )
+                            ]),
+                        flex: 13),
+                    Expanded(
+                        child: Column(
+                          children: [
+                            Expanded(
+                                child: GestureDetector(
+                                    child: Text('Create and start another one',
+                                        style: Fonts.largeTextStyle.copyWith(
+                                            decoration:
+                                                TextDecoration.underline)),
+                                    onTap: () {
+                                      submit();
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CreateSubGoal(
+                                                    widget.parent,
+                                                    popTarget: widget.popTarget,
+                                                  )));
+                                      showSnackbar("Subgoal created", context);
+                                    }),
+                                flex: 3),
+                            Expanded(
+                                child: SizedBox(
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: activeButtonColor),
+                                      onPressed: () {
+                                        submit();
+                                        if (widget.popTarget == null) {
+                                          Navigator.of(context).popUntil(
+                                              (route) => route.isFirst);
+                                        } else {
+                                          Navigator.of(context).popUntil(
+                                              ModalRoute.withName(
+                                                  widget.popTarget!));
+                                        }
+                                        showSnackbar(
+                                            "Subgoal created", context);
+                                      },
+                                      child: Text('Create',
+                                          style: Fonts.largeTextStyle20
+                                              .copyWith(color: Colors.white)),
+                                    )),
+                                flex: 4),
+                          ],
+                        ),
+                        flex: 3)
+                  ]))),
           onTap: () => Utils.tryToLostFocus(context)),
     );
   }

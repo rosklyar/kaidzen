@@ -46,8 +46,12 @@ class _ViewGoalState extends State<ViewGoal> {
         automaticallyImplyLeading: false,
         elevation: 0.0,
         centerTitle: true,
-        leading: BackButton(
-            color: Colors.black, onPressed: () => Navigator.pop(context)),
+        leading: IconButton(
+          icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+          onPressed: () async {
+            Navigator.of(context).pop();
+          },
+        ),
         backgroundColor: Colors.white.withOpacity(0),
       ),
       body: Column(children: [
