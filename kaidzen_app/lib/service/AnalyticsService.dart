@@ -82,7 +82,8 @@ class AnalyticsService {
         value: emotionsState.emotionPoints.toString());
 
     await FirebaseAnalytics.instance.setUserProperty(
-        name: AnalyticsUserProperties.TUTORIAL_STEPS_COMPLETED.name.toLowerCase(),
+        name:
+            AnalyticsUserProperties.TUTORIAL_STEPS_COMPLETED.name.toLowerCase(),
         value: tutorialState
             .getTutorialProgress()
             .completedStepsCount()
@@ -99,6 +100,7 @@ enum AnalyticsEventType {
   achievements_screen_opened,
   settings_screen_opened,
   about_philosophy_opened,
+  spheres_explanation_opened,
   send_feedback_opened,
   share_app_opened,
   terms_of_use_opened,
