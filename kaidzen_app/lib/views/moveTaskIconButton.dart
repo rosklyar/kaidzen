@@ -68,22 +68,28 @@ class MoveTaskIconButton extends StatelessWidget {
                         padding: const EdgeInsets.only(top: 15),
                         child: Padding(
                           padding: const EdgeInsets.only(right: 15, left: 15),
-                          child: Text(
-                              "'" +
-                                  parentTask.shortenedName(50) +
-                                  "' will be moved to 'Done'",
-                              style: Fonts.screenTytleTextStyle),
+                          child: SizedBox(
+                            width: parentWidth * 0.9,
+                            child: Text(
+                                "'" +
+                                    parentTask.shortenedName(50) +
+                                    "' will be moved to 'Done'",
+                                style: Fonts.screenTytleTextStyle),
+                          ),
                         )),
-                    flex: 2),
+                    flex: 3),
                 const Expanded(child: SizedBox(), flex: 1),
                 Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 10, left: 10),
-                      child: Text(
-                          "Congratulations! You have completed the last subgoal and '" +
-                              parentTask.shortenedName(50) +
-                              "' is about to be moved to 'Done'",
-                          style: Fonts.largeTextStyle),
+                      child: SizedBox(
+                        width: parentWidth * 0.9,
+                        child: Text(
+                            "Congratulations! You have completed the last subgoal and '" +
+                                parentTask.shortenedName(50) +
+                                "' is about to be moved to 'Done'",
+                            style: Fonts.largeTextStyle),
+                      ),
                     ),
                     flex: 3),
                 Expanded(
