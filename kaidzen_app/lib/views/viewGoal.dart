@@ -67,8 +67,7 @@ class _ViewGoalState extends State<ViewGoal> {
                             child: Text(
                               task.shortenedName(200),
                               textAlign: TextAlign.left,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20.0),
+                              style: Fonts.screenTytleTextStyle,
                             ))),
                     Padding(
                         padding: const EdgeInsets.symmetric(
