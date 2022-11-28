@@ -29,11 +29,17 @@ class _EditGoalState extends State<EditGoal> {
   int _currentDifficulty = 0;
   final GlobalKey<dynamic> _taskTypeWidgetKey = GlobalKey();
   final GlobalKey<dynamic> _taskDifficultyWidgetKey = GlobalKey();
+  bool _isSaveButtonActive = true;
 
   @override
   void initState() {
     super.initState();
     newTaskController = TextEditingController(text: widget.task.name);
+    newTaskController.addListener(() {
+      setState(() {
+        _isSaveButtonActive = newTaskController.text.isNotEmpty;
+      });
+    });
     _currentCategory = widget.task.category.id;
     _currentDifficulty = widget.task.difficulty.id;
   }
@@ -140,16 +146,22 @@ class _EditGoalState extends State<EditGoal> {
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: () async {
-                                await FirebaseAnalytics.instance.logEvent(
-                                    name: AnalyticsEventType
-                                        .edit_goal_screen_save_button.name);
-                                submit();
+                                if (_isSaveButtonActive) {
+                                  await FirebaseAnalytics.instance.logEvent(
+                                      name: AnalyticsEventType
+                                          .edit_goal_screen_save_button.name);
+                                  submit();
+                                }
                               },
                               child: Text('Save',
-                                  style: Fonts.largeTextStyle20
-                                      .copyWith(color: Colors.white)),
+                                  style: _isSaveButtonActive
+                                      ? Fonts.largeTextStyle20
+                                          .copyWith(color: Colors.white)
+                                      : Fonts.largeTextStyle20),
                               style: ElevatedButton.styleFrom(
-                                  primary: activeButtonColor),
+                                  primary: _isSaveButtonActive
+                                      ? activeButtonColor
+                                      : unselectedToggleColor),
                             ))),
                     flex: 1)
               ]),
