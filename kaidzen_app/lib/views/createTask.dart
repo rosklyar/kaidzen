@@ -63,215 +63,223 @@ class _CreateTaskState extends State<CreateTask> {
     return Scaffold(
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
-        body: Container(
-          color: Color(DevelopmentCategory.values
-              .firstWhere((element) => element.id == _currentCategory)
-              .backgroundColor),
-          child: Column(children: [
-            Expanded(
-                child: Column(children: [
-                  Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Row(children: [
-                            Expanded(
-                                child: IconButton(
-                                  icon: SvgPicture.asset(
-                                      "assets/shevron-left-black.svg"),
-                                  onPressed: () async {
+        body: GestureDetector(
+          child: Container(
+            color: Color(DevelopmentCategory.values
+                .firstWhere((element) => element.id == _currentCategory)
+                .backgroundColor),
+            child: Column(children: [
+              Expanded(
+                  child: Column(children: [
+                    Expanded(
+                        child: Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Row(children: [
+                              Expanded(
+                                  child: IconButton(
+                                    icon: SvgPicture.asset(
+                                        "assets/shevron-left-black.svg"),
+                                    onPressed: () async {
+                                      await FirebaseAnalytics.instance.logEvent(
+                                          name: AnalyticsEventType
+                                              .create_goal_screen_back_button
+                                              .name);
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  flex: 1),
+                              Expanded(
+                                  child: Center(
+                                      child: Text(
+                                    "Goal",
+                                    style: Fonts.screenTytleTextStyle,
+                                  )),
+                                  flex: 9),
+                              const Expanded(child: SizedBox(), flex: 1)
+                            ])),
+                        flex: 3),
+                    Expanded(
+                        child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: TextField(
+                              autofocus: true,
+                              decoration: InputDecoration(
+                                  suffixIcon: IconButton(
+                                      onPressed: () {
+                                        newTaskController.clear();
+                                        _taskTypeWidgetKey
+                                            .currentState!._value = -1;
+                                        _taskDifficultyWidgetKey.currentState
+                                            ._currentDifficulty = 0;
+                                      },
+                                      icon: Visibility(
+                                          visible:
+                                              newTaskController.text.isNotEmpty,
+                                          child: SvgPicture.asset(
+                                              "assets/close-grey.svg"))),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                      borderSide: const BorderSide(
+                                          color: inputInactiveBorderColor)),
+                                  hintText: 'Goal title',
+                                  hintStyle: Fonts.inputHintTextStyle),
+                              controller: newTaskController,
+                            )),
+                        flex: 3),
+                    Expanded(
+                        child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: SizedBox(
+                                width: double.infinity,
+                                child: Text("Life sphere to be affected",
+                                    textAlign: TextAlign.left,
+                                    style: Fonts.largeTextStyle))),
+                        flex: 1),
+                    Expanded(
+                        child: Padding(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            child: Column(children: [
+                              Expanded(
+                                  child: TaskTypeWidget(
+                                      initialCategory: -1,
+                                      key: _taskTypeWidgetKey,
+                                      callback: (value) => setState(() {
+                                            _currentCategory = value!;
+                                            Utils.tryToLostFocus(context);
+                                          })),
+                                  flex: 1),
+                              const Expanded(child: SizedBox(), flex: 1)
+                            ])),
+                        flex: 4),
+                    Expanded(child: getDiff(), flex: 7),
+                  ]),
+                  flex: 9),
+              Expanded(
+                  child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 10, right: 10, bottom: 10),
+                      child: SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: _isCreateButtonActive
+                                ? () async {
+                                    if (_currentCategory == -1) {
+                                      showModalBottomSheet<void>(
+                                        context: context,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(
+                                            top: Radius.circular(20),
+                                          ),
+                                        ),
+                                        builder: (BuildContext context) {
+                                          return SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.6,
+                                            child: Center(
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Expanded(
+                                                      child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  top: 15),
+                                                          child: Text(
+                                                              'Choose the life sphere to\nreinforce your motivation',
+                                                              style: Fonts
+                                                                  .screenTytleTextStyle)),
+                                                      flex: 4),
+                                                  const Expanded(
+                                                      child: SizedBox(),
+                                                      flex: 1),
+                                                  Expanded(
+                                                      child: Text(
+                                                          "Sometimes we set goals we don’t need.\nChoosing the sphere helps to\nunderstand why this goal is important\n— will it improve your mind, health,\nrelationships, make you more wealthy,\nor fulfill with energy.\n\n\nAnd adds you some extra points.",
+                                                          style: Fonts
+                                                              .largeTextStyle),
+                                                      flex: 10),
+                                                  const Expanded(
+                                                      child: SizedBox(),
+                                                      flex: 1),
+                                                  Expanded(
+                                                      child: GestureDetector(
+                                                          child: Text(
+                                                              'Create without sphere',
+                                                              style: Fonts
+                                                                  .largeTextStyle
+                                                                  .copyWith(
+                                                                      decoration:
+                                                                          TextDecoration
+                                                                              .underline)),
+                                                          onTap: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                            submit();
+                                                          }),
+                                                      flex: 2),
+                                                  Expanded(
+                                                      child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 10,
+                                                                  right: 10,
+                                                                  bottom: 10),
+                                                          child: SizedBox(
+                                                              width: double
+                                                                  .infinity,
+                                                              child:
+                                                                  ElevatedButton(
+                                                                child: Text(
+                                                                    'Choose from the spheres',
+                                                                    style: Fonts
+                                                                        .largeTextStyle20
+                                                                        .copyWith(
+                                                                            color:
+                                                                                Colors.white)),
+                                                                onPressed: () =>
+                                                                    Navigator.pop(
+                                                                        context),
+                                                                style: ElevatedButton
+                                                                    .styleFrom(
+                                                                        primary:
+                                                                            activeButtonColor),
+                                                              ))),
+                                                      flex: 3),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      submit();
+                                    }
                                     await FirebaseAnalytics.instance.logEvent(
                                         name: AnalyticsEventType
-                                            .create_goal_screen_back_button
+                                            .create_goal_screen_create_button
                                             .name);
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                flex: 1),
-                            Expanded(
-                                child: Center(
-                                    child: Text(
-                                  "Goal",
-                                  style: Fonts.screenTytleTextStyle,
-                                )),
-                                flex: 9),
-                            const Expanded(child: SizedBox(), flex: 1)
-                          ])),
-                      flex: 3),
-                  Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 5),
-                          child: TextField(
-                            autofocus: true,
-                            decoration: InputDecoration(
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      newTaskController.clear();
-                                      _taskTypeWidgetKey.currentState!._value =
-                                          -1;
-                                      _taskDifficultyWidgetKey
-                                          .currentState._currentDifficulty = 0;
-                                    },
-                                    icon: Visibility(
-                                        visible:
-                                            newTaskController.text.isNotEmpty,
-                                        child: SvgPicture.asset(
-                                            "assets/close-grey.svg"))),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: const BorderSide(
-                                        color: inputInactiveBorderColor)),
-                                hintText: 'Goal title',
-                                hintStyle: Fonts.inputHintTextStyle),
-                            controller: newTaskController,
-                          )),
-                      flex: 3),
-                  Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: SizedBox(
-                              width: double.infinity,
-                              child: Text("Life sphere to be affected",
-                                  textAlign: TextAlign.left,
-                                  style: Fonts.largeTextStyle))),
-                      flex: 1),
-                  Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          child: Column(children: [
-                            Expanded(
-                                child: TaskTypeWidget(
-                                    initialCategory: -1,
-                                    key: _taskTypeWidgetKey,
-                                    callback: (value) => setState(() {
-                                          _currentCategory = value!;
-                                          Utils.tryToLostFocus(context);
-                                        })),
-                                flex: 1),
-                            const Expanded(child: SizedBox(), flex: 1)
-                          ])),
-                      flex: 4),
-                  Expanded(child: getDiff(), flex: 7),
-                ]),
-                flex: 9),
-            Expanded(
-                child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                    child: SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: _isCreateButtonActive
-                              ? () async {
-                                  if (_currentCategory == -1) {
-                                    showModalBottomSheet<void>(
-                                      context: context,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(20),
-                                        ),
-                                      ),
-                                      builder: (BuildContext context) {
-                                        return SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.6,
-                                          child: Center(
-                                            child: Column(
-                                              children: <Widget>[
-                                                Expanded(
-                                                    child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(top: 15),
-                                                        child: Text(
-                                                            'Choose the life sphere to\nreinforce your motivation',
-                                                            style: Fonts
-                                                                .screenTytleTextStyle)),
-                                                    flex: 4),
-                                                const Expanded(
-                                                    child: SizedBox(), flex: 1),
-                                                Expanded(
-                                                    child: Text(
-                                                        "Sometimes we set goals we don’t need.\nChoosing the sphere helps to\nunderstand why this goal is important\n— will it improve your mind, health,\nrelationships, make you more wealthy,\nor fulfill with energy.\n\n\nAnd adds you some extra points.",
-                                                        style: Fonts
-                                                            .largeTextStyle),
-                                                    flex: 10),
-                                                const Expanded(
-                                                    child: SizedBox(), flex: 1),
-                                                Expanded(
-                                                    child: GestureDetector(
-                                                        child: Text(
-                                                            'Create without sphere',
-                                                            style: Fonts
-                                                                .largeTextStyle
-                                                                .copyWith(
-                                                                    decoration:
-                                                                        TextDecoration
-                                                                            .underline)),
-                                                        onTap: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                          submit();
-                                                        }),
-                                                    flex: 2),
-                                                Expanded(
-                                                    child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 10,
-                                                                right: 10,
-                                                                bottom: 10),
-                                                        child: SizedBox(
-                                                            width:
-                                                                double.infinity,
-                                                            child:
-                                                                ElevatedButton(
-                                                              child: Text(
-                                                                  'Choose from the spheres',
-                                                                  style: Fonts
-                                                                      .largeTextStyle20
-                                                                      .copyWith(
-                                                                          color:
-                                                                              Colors.white)),
-                                                              onPressed: () =>
-                                                                  Navigator.pop(
-                                                                      context),
-                                                              style: ElevatedButton
-                                                                  .styleFrom(
-                                                                      primary:
-                                                                          activeButtonColor),
-                                                            ))),
-                                                    flex: 3),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  } else {
-                                    submit();
                                   }
-                                  await FirebaseAnalytics.instance.logEvent(
-                                      name: AnalyticsEventType
-                                          .create_goal_screen_create_button
-                                          .name);
-                                }
-                              : null,
-                          child: Text('Create',
-                              style: _isCreateButtonActive
-                                  ? Fonts.largeTextStyle20
-                                      .copyWith(color: Colors.white)
-                                  : Fonts.largeTextStyle20),
-                          style: ElevatedButton.styleFrom(
-                              primary: _isCreateButtonActive
-                                  ? activeButtonColor
-                                  : unselectedToggleColor),
-                        ))),
-                flex: 1)
-          ]),
+                                : null,
+                            child: Text('Create',
+                                style: _isCreateButtonActive
+                                    ? Fonts.largeTextStyle20
+                                        .copyWith(color: Colors.white)
+                                    : Fonts.largeTextStyle20),
+                            style: ElevatedButton.styleFrom(
+                                primary: _isCreateButtonActive
+                                    ? activeButtonColor
+                                    : unselectedToggleColor),
+                          ))),
+                  flex: 1)
+            ]),
+          ),
+          onTap: () {
+            Utils.tryToLostFocus(context);
+          },
         ));
   }
 
