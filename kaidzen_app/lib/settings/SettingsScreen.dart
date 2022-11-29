@@ -60,45 +60,27 @@ class SettingsScreen extends StatelessWidget {
                           child: Row(children: [
                             Expanded(
                                 child: GestureDetector(
-                                    child: Container(
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.grey,
-                                            ),
-                                            color: const Color.fromRGBO(
-                                                252, 245, 201, 1),
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(10))),
-                                        child: const SizedBox(
-                                            width: double.infinity,
-                                            height: double.infinity)),
+                                    child: Image.asset(
+                                        "assets/settings/philosophy.png",
+                                        width: double.infinity,
+                                        height: double.infinity),
                                     onTap: () async {
                                       await _goToAboutPhilosophy(context);
                                     }),
-                                flex: 10),
+                                flex: 6),
                             const Expanded(child: SizedBox(), flex: 1),
                             Expanded(
                                 child: GestureDetector(
-                                    child: Container(
-                                        decoration: BoxDecoration(
-                                            color: const Color.fromRGBO(
-                                                225, 218, 218, 1),
-                                            border: Border.all(
-                                              color: Colors.grey,
-                                            ),
-                                            borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(10))),
-                                        child: const SizedBox(
-                                            width: double.infinity,
-                                            height: double.infinity)),
+                                    child: Image.asset(
+                                        "assets/settings/spheres.png",
+                                        width: double.infinity,
+                                        height: double.infinity),
                                     onTap: () async {
                                       await _goToSpheresExplanation(context);
                                     }),
-                                flex: 10),
+                                flex: 6),
                             const Expanded(child: SizedBox(), flex: 1),
-                            const Expanded(child: SizedBox(), flex: 10)
+                            const Expanded(child: SizedBox(), flex: 6)
                           ])),
                       flex: 3),
                   Expanded(
