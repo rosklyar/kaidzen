@@ -6,7 +6,6 @@ import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 import 'package:kaidzen_app/views/boardSection.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 
@@ -20,8 +19,6 @@ class SwitchableBoard extends StatefulWidget {
 }
 
 class SwitchableBoardState extends State<SwitchableBoard> {
-  final GlobalKey<SwitchableBoardContainerState> _switchableBoardContainerKey =
-      GlobalKey();
   final List<String> _boards = [
     Status.TODO,
     Status.DOING,
@@ -108,9 +105,11 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                       child: Consumer<TasksState>(
                           builder: (context, state, child) {
                         debugPrint("building SwitchableBoardContainer");
-                        return SwitchableBoardContainer(
-                            state, currentBoard, sc, pc, scrollEnabled,
-                            key: _switchableBoardContainerKey);
+                        return Board(
+                            name: currentBoard.name,
+                            list: state.getByStatus(currentBoard.name),
+                            sc: sc,
+                            scrollEnabled: scrollEnabled);
                       }),
                     ),
                   )
@@ -141,39 +140,5 @@ class SwitchableBoardState extends State<SwitchableBoard> {
         )
       ],
     );
-  }
-}
-
-class SwitchableBoardContainer extends StatefulWidget {
-  final TasksState tasksState;
-  ToggleBoard currentBoard;
-  final ScrollController sc;
-  final PanelController pc;
-  final bool scrollEnabled;
-
-  SwitchableBoardContainer(
-    this.tasksState,
-    this.currentBoard,
-    this.sc,
-    this.pc,
-    this.scrollEnabled, {
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  SwitchableBoardContainerState createState() =>
-      SwitchableBoardContainerState();
-}
-
-class SwitchableBoardContainerState extends State<SwitchableBoardContainer> {
-  @override
-  Widget build(BuildContext context) {
-    debugPrint("building Board " + widget.currentBoard.name);
-    return Board(
-        name: widget.currentBoard.name,
-        list: widget.tasksState.getByStatus(widget.currentBoard.name),
-        sc: widget.sc,
-        pnc: widget.pc,
-        scrollEnabled: widget.scrollEnabled);
   }
 }
