@@ -104,6 +104,7 @@ class _CreateTaskState extends State<CreateTask> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             child: TextField(
+                              maxLength: maxInputCharCount,
                               autofocus: true,
                               decoration: InputDecoration(
                                   suffixIcon: IconButton(
