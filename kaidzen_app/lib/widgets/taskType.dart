@@ -55,7 +55,7 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5))),
       label: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 2, 2),
+          padding: const EdgeInsets.fromLTRB(0, 0, 5, 5),
           child: SizedBox(
             child: Center(
                 child: Row(mainAxisSize: MainAxisSize.min, children: [

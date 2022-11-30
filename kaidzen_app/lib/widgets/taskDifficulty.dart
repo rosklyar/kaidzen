@@ -49,19 +49,37 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
         width: double.infinity);
   }
 
-  StatelessWidget getDiffOptionLayout(Difficulty difficulty, bool selected) {
+  Widget getDiffOptionLayout(Difficulty difficulty, bool selected) {
     return selected
         ? Container(
             width: double.infinity,
             height: double.infinity,
             color: selectedToggleColor,
             child: Center(
-                child: Text(difficulty.name, style: Fonts.largeTextStyleWhite)))
+                child: Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Icon(Icons.circle_rounded,
+                    color: Colors.grey, size: 8.0 + difficulty.id * 4),
+                const SizedBox(width: 5),
+                Text(difficulty.name, style: Fonts.largeTextStyleWhite)
+              ]),
+            )))
         : Container(
             width: double.infinity,
             height: double.infinity,
             color: unselectedToggleColor,
             child: Center(
-                child: Text(difficulty.name, style: Fonts.largeTextStyle)));
+                child: Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Icon(Icons.circle_rounded,
+                    color: Colors.grey, size: 8.0 + difficulty.id * 4),
+                const SizedBox(width: 5),
+                Text(difficulty.name, style: Fonts.largeTextStyle)
+              ]),
+            )));
   }
 }
