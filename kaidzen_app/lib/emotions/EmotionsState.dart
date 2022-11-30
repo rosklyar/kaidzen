@@ -13,24 +13,22 @@ class EmotionsState extends ChangeNotifier {
   EmotionPointsRepository emotionPointsRepository;
   EventsRepository eventsRepository;
   TutorialState tutorialState;
-  EmotionPoints emotionPoints = EmotionPoints(1, 0, DateTime.now());
+  late EmotionPoints emotionPoints;
 
   EmotionsState(
       this.eventsRepository, this.emotionPointsRepository, this.tutorialState);
 
   loadAll() async {
-    debugPrint('Init points');
     emotionPoints = await emotionPointsRepository.getEmotionPoints();
 
     int currentPoints = emotionPoints.points;
     final lastUpdateTs = emotionPoints.updateTs;
     final now = DateTime.now();
     final daysPast = now.difference(lastUpdateTs).inDays;
-    debugPrint('daysPast' + daysPast.toString());
-    currentPoints -= daysPast * 2;
 
-    var events = await eventsRepository.getEventsAfter(emotionPoints.updateTs);
     if (tutorialState.tutorialCompleted()) {
+      currentPoints -= daysPast * 2;
+      var events = await eventsRepository.getEventsAfter(emotionPoints.updateTs);
       for (var event in events) {
         currentPoints += getPointsFromEvent(event);
       }
@@ -44,13 +42,11 @@ class EmotionsState extends ChangeNotifier {
     await emotionPointsRepository.updateEmotionPoints(
         EmotionPoints(emotionPoints.id, currentPoints, now));
     refreshEmotionPoints();
-    debugPrint('Current points $currentPoints');
     notifyListeners();
   }
 
   Future<EmotionPoints> updateEmotionPoints(Event event) async {
     int points = getPointsFromEvent(event);
-    debugPrint('updating points $points');
     if (points > 0 || !tutorialState.tutorialCompleted()) {
       await emotionPointsRepository.updateEmotionPoints(EmotionPoints(
           emotionPoints.id, emotionPoints.points + points, DateTime.now()));
@@ -75,11 +71,11 @@ class EmotionsState extends ChangeNotifier {
   int getPointsFromEvent(Event event) {
     switch (event.type) {
       case EventType.taskCreated:
-        return 5;
+        return 2;
       case EventType.taskInProgress:
-        return 5;
+        return 1;
       case EventType.taskCompleted:
-        return 5;
+        return 3;
       default:
         return 0;
     }
