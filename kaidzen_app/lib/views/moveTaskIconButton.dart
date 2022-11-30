@@ -4,6 +4,7 @@ import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
+import '../utils/snackbar.dart';
 
 class MoveTaskIconButton extends StatelessWidget {
   const MoveTaskIconButton({
@@ -42,6 +43,7 @@ class MoveTaskIconButton extends StatelessWidget {
     } else {
       await Provider.of<TasksState>(context, listen: false)
           .moveTaskAndNotify(task, newStatus);
+      showDefaultTopFlushbar('Moved to $newStatus', context);
     }
   }
 
@@ -119,6 +121,8 @@ class MoveTaskIconButton extends StatelessWidget {
                                         listen: false)
                                     .moveTaskAndNotify(task, newStatus);
                                 Navigator.pop(context);
+                                showDefaultTopFlushbar(
+                                    'Moved to $newStatus', context);
                               },
                               style: ElevatedButton.styleFrom(
                                   primary: activeButtonColor),
