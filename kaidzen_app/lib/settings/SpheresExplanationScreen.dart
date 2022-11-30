@@ -48,7 +48,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                         text: TextSpan(children: [
                           TextSpan(
                               text:
-                                  "\nYou are the main character of you own game of Life.\n\nEach decision you make, each goal you achieve\nhave a positive impact on one of your character's traits.",
+                                  "\n\nYou are the main character of you own game of Life.\n\nEach decision you make, each goal you achieve\nhave a positive impact on one of your character's traits.",
                               style: Fonts.screenTytleTextStyle)
                         ]),
                       )),
@@ -63,7 +63,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "\nMind\n\n\n",
+                              text: "\n\nMind\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
@@ -82,7 +82,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "\nHealth\n\n\n",
+                              text: "\n\nHealth\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
@@ -101,7 +101,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "\nEnergy\n\n\n",
+                              text: "\n\nEnergy\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
@@ -120,7 +120,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "\nRelations\n\n\n",
+                              text: "\n\nRelations\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
@@ -139,7 +139,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "\nWealth\n\n\n",
+                              text: "\n\nWealth\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
@@ -155,7 +155,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                         text: TextSpan(children: [
                           TextSpan(
                               text:
-                                  "\nWhat if the goal matches more than one shpere?\n\n\n",
+                                  "\n\nWhat if the goal matches more than one shpere?\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
@@ -171,7 +171,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                         text: TextSpan(children: [
                           TextSpan(
                               text:
-                                  "\nGood luck and have fun on your way to the best version of Yourself!",
+                                  "\n\nGood luck and have fun on your way to the best version of Yourself!",
                               style: Fonts.screenTytleTextStyle)
                         ]),
                       )),
