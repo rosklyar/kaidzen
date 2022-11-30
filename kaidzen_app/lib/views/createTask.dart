@@ -15,6 +15,7 @@ import '../models/task.dart';
 import 'package:provider/provider.dart';
 
 import '../service/TasksState.dart';
+import '../utils/snackbar.dart';
 import '../widgets/taskDifficulty.dart';
 import '../widgets/taskType.dart';
 
@@ -377,6 +378,7 @@ class _CreateTaskState extends State<CreateTask> {
     Provider.of<EmotionsState>(context, listen: false)
         .updateEmotionPoints(event);
     Navigator.pop(context);
+    showDefaultTopFlushbar("Goal created", context);
   }
 
   @override

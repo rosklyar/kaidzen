@@ -10,7 +10,9 @@ import 'package:kaidzen_app/settings/SettingsScreen.dart';
 import 'package:kaidzen_app/views/utils.dart';
 import 'package:provider/provider.dart';
 
+import '../service/TasksState.dart';
 import '../tutorial/TutorialState.dart';
+import '../utils/snackbar.dart';
 
 class ProfilePanel extends StatefulWidget {
   const ProfilePanel({Key? key}) : super(key: key);
@@ -55,8 +57,13 @@ class ProfilePanelState extends State<ProfilePanel>
                                       return FadeTransition(
                                           opacity: animation, child: child);
                                     },
-                                    child:
-                                        avatar(tutorialState, emotionsState))),
+                                    child: GestureDetector(
+                                        onTap: () => showDefaultTopFlushbar(
+                                            getTextForEmotion(
+                                                tutorialState, emotionsState),
+                                            context),
+                                        child: avatar(
+                                            tutorialState, emotionsState)))),
                             flex: 4),
                         Expanded(
                             child: RichText(
@@ -268,6 +275,20 @@ class ProfilePanelState extends State<ProfilePanel>
         key: ValueKey(avatarPath),
         avatarPath,
         width: MediaQuery.of(context).size.width * 0.4);
+  }
+
+  String getTextForEmotion(
+      TutorialState tutorialState, EmotionsState emotionsState) {
+    if (!tutorialState.tutorialCompleted()) {
+      return "...";
+    }
+    if (Provider.of<TasksState>(context, listen: false)
+            .getCountByStatus(Status.TODO) ==
+        0) {
+      return "How are you going to achieve your goals if you don't have any?";
+    }
+    
+    return emotionsState.getCurrentEmotion().text;
   }
 }
 

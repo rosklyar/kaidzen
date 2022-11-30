@@ -155,21 +155,28 @@ class Fonts {
   static TextStyle graySubtitle = GoogleFonts.montserrat(
       textStyle: const TextStyle(
           color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500));
+
+  static TextStyle flushbarText = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+          color: Color.fromARGB(255, 117, 117, 117), fontSize: 12, fontWeight: FontWeight.w500));
 }
 
 enum Emotion {
-  VERY_SAD(0, "assets/emotions/sad03.png"),
-  SAD(1, "assets/emotions/sad02.png"),
-  A_BIT_SAD(2, "assets/emotions/sad01.png"),
-  REGULAR(3, "assets/emotions/regular.png"),
-  A_BIT_HAPPY(4, "assets/emotions/happy01.png"),
-  HAPPY(5, "assets/emotions/happy02.png"),
-  VERY_HAPPY(6, "assets/emotions/happy03.png");
+  VERY_SAD(0, "assets/emotions/sad03.png",
+      "*Don't want to talk with you right now*"),
+  SAD(1, "assets/emotions/sad02.png", "You could do better"),
+  A_BIT_SAD(2, "assets/emotions/sad01.png", "You could do even better"),
+  REGULAR(3, "assets/emotions/regular.png", "Consistency is the key!"),
+  A_BIT_HAPPY(4, "assets/emotions/happy01.png",
+      "You are moving in the right direction"),
+  HAPPY(5, "assets/emotions/happy02.png", "Doing great!"),
+  VERY_HAPPY(6, "assets/emotions/happy03.png", "You are amazing!");
 
-  const Emotion(this.id, this.assetPath);
+  const Emotion(this.id, this.assetPath, this.text);
 
   final int id;
   final String assetPath;
+  final String text;
 }
 
 const cardElavation = 8.0;

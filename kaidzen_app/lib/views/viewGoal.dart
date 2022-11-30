@@ -83,13 +83,15 @@ class _ViewGoalState extends State<ViewGoal> {
                               child: Row(
                                 children: [
                                   Padding(
-                                      padding: EdgeInsets.fromLTRB(parentWidth * 0.03, 5, 5, 5),
+                                      padding: EdgeInsets.fromLTRB(
+                                          parentWidth * 0.03, 5, 5, 5),
                                       child:
                                           Image.asset("assets/back_arrow.png")),
                                   SizedBox(
                                     width: parentWidth * 0.8,
                                     child: Padding(
-                                      padding: EdgeInsets.fromLTRB(parentWidth * 0.01, 5, 5, 5),
+                                      padding: EdgeInsets.fromLTRB(
+                                          parentWidth * 0.01, 5, 5, 5),
                                       child: Text(
                                           style: Fonts.graySubtitle,
                                           Provider.of<TasksState>(context,
@@ -237,7 +239,7 @@ class _ViewGoalState extends State<ViewGoal> {
       ),
       builder: (BuildContext context) {
         return SizedBox(
-          height: MediaQuery.of(context).size.height * 0.2,
+          height: MediaQuery.of(context).size.height * 0.3,
           child: Center(
             child: Column(
               children: <Widget>[
@@ -246,20 +248,39 @@ class _ViewGoalState extends State<ViewGoal> {
                         padding: const EdgeInsets.all(15),
                         child: Text('Are you sure?',
                             style: Fonts.screenTytleTextStyle)),
-                    flex: 4),
+                    flex: 5),
                 const Expanded(child: SizedBox(), flex: 1),
                 Expanded(
                     child: GestureDetector(
                         child: Text('Delete',
                             style: Fonts.largeTextStyle.copyWith(
-                                decoration: TextDecoration.underline)),
-                        onTap: () {
+                                decoration: TextDecoration.underline,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xFFE50000))),
+                        onTap: () async {
                           Navigator.pop(context);
-                          Provider.of<TasksState>(context, listen: false)
+                          await Provider.of<TasksState>(context, listen: false)
                               .deleteTask(task);
                           Navigator.pop(context);
                         }),
                     flex: 2),
+                Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                      child: SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: activeButtonColor),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('Cancel',
+                                style: Fonts.largeTextStyle20
+                                    .copyWith(color: Colors.white)),
+                          )),
+                    ),
+                    flex: 4),
               ],
             ),
           ),
