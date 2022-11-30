@@ -105,10 +105,10 @@ class KaizenDb {
     const intitialStatus = Status.TODO;
     await db.execute('''
             insert into $tableTask values
-                (0, 'Break the egg', 0, 0, 0, '$intitialStatus', null),
-                (1, 'Move this subgoal through DOING to DONE', 0, 0, 0, '$intitialStatus', 0),
-                (2, 'Read about the "Continuous improvement" concept (in Main menu)', 0, 0, 0, '$intitialStatus', 0),
-                (3, 'Clear you mind', 0, 0, 0, '$intitialStatus', 0);
+                (0, 'Help it to hatch out!', 0, 0, 0, '$intitialStatus', null),
+                (1, 'Press the arrow to move this task to "Doing", and then to "Done"', 0, 0, 0, '$intitialStatus', 0),
+                (2, 'Read the "Philosophy" concept (find it in the Menu)', 0, 0, 0, '$intitialStatus', 0),
+                (3, 'Clear your mind by adding goals (press “+” button)', 0, 0, 0, '$intitialStatus', 0);
           ''');
 
     await db.execute('''
@@ -171,7 +171,7 @@ class KaizenDb {
     final now = DateTime.now().toString();
     await db.execute('''
             insert into $tableEmotionPoints values
-                (1, 0, '$now');
+                (1, 40, '$now');
           ''');
 
     await db.execute('''
