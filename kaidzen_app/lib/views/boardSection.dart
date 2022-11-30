@@ -16,13 +16,11 @@ class Board extends StatefulWidget {
     required this.list,
     required this.sc,
     required this.scrollEnabled,
-    required this.pnc,
   }) : super(key: key);
 
   final List<Task> list;
   final String name;
   final ScrollController sc;
-  final PanelController pnc;
   final bool scrollEnabled;
 
   @override
@@ -60,27 +58,9 @@ class BoardState extends State<Board> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onVerticalDragEnd: (details) {
-          if (widget.pnc.isPanelClosed &&
-              details.velocity.pixelsPerSecond.direction < 0) {
-            widget.pnc.open();
-          } else if (widget.pnc.isPanelOpen &&
-              details.velocity.pixelsPerSecond.direction > 0) {
-            widget.pnc.close();
-          }
-        },
-        onVerticalDragDown: (details) {
-          var shouldClose = widget.list.isEmpty ||
-              widget.sc.position.atEdge && widget.sc.position.pixels == 0;
-          if (shouldClose &&
-              widget.pnc.isPanelOpen &&
-              details.globalPosition.direction < 1) {
-            widget.pnc.close();
-          }
-        },
         child: ReorderableListView(
           physics: widget.scrollEnabled
-              ? const ClampingScrollPhysics()
+              ? const AlwaysScrollableScrollPhysics()
               : const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
           onReorder: _onReorder,
