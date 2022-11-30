@@ -106,7 +106,7 @@ class KaizenDb {
     await db.execute('''
             insert into $tableTask values
                 (0, 'Help it to hatch out!', 0, 0, 0, '$intitialStatus', null),
-                (1, 'Press the arrow to move this task to "Doing", and then to "Done"', 0, 0, 0, '$intitialStatus', 0),
+                (1, 'Press the arrow to move this goal to "Doing", and then to "Done"', 0, 0, 0, '$intitialStatus', 0),
                 (2, 'Read the "Philosophy" concept (find it in the Menu)', 0, 0, 0, '$intitialStatus', 0),
                 (3, 'Clear your mind by adding goals (press “+” button)', 0, 0, 0, '$intitialStatus', 0);
           ''');
@@ -133,18 +133,18 @@ class KaizenDb {
 
     await db.execute('''
             insert into $tableAchievements values
-                (0, 0, 'Initiator', 'Create 25 tasks', 'Fish.svg', 0, 0, 0.0),
-                (1, 0, 'Composer', 'Create 50 tasks', 'Duck.svg', 0, 0, 0.0),
-                (2, 0, 'Writer', 'Create 100 tasks', 'Seahorse.svg', 0, 0, 0.0),
-                (3, 0, 'Beginner', 'Complete 5 tasks in one sphere', 'Hedgehog.svg', 0, 0, 0.0),
-                (4, 0, 'Skilled', 'Complete 50 tasks in one sphere', 'Cat.svg', 0, 0, 0.0),
-                (5, 0, 'Expert', 'Complete 150 tasks in one sphere', 'Dog.svg', 0, 0, 0.0),
-                (6, 0, 'Toddler', 'Complete 5 tasks in each sphere', 'Owl.svg', 0, 0, 0.0),
-                (7, 0, 'Teenager', 'Complete 15 tasks in each sphere', 'Flamingo.svg', 0, 0, 0.0),
-                (8, 0, 'Adult', 'Complete 40 tasks in each sphere', 'Bird.svg', 0, 0, 0.0),
-                (9, 0, 'Sprinter', '2 weeks in a row close at least 5 tasks', 'Elephant.svg', 0, 0, 0.0),
-                (10, 0, 'Half marathoner', '3 weeks in a row close at least 10 tasks', 'Unicorn.svg', 0, 0, 0.0),
-                (11, 0, 'Marathoner', '4 weeks in a row close at least 20 tasks', 'Dragon.svg', 0, 0, 0.0);
+                (0, 0, 'Initiator', 'Create 25 goals', 'Fish.svg', 0, 0, 0.0),
+                (1, 0, 'Composer', 'Create 50 goals', 'Duck.svg', 0, 0, 0.0),
+                (2, 0, 'Writer', 'Create 100 goals', 'Seahorse.svg', 0, 0, 0.0),
+                (3, 0, 'Beginner', 'Complete 5 goals in one sphere', 'Hedgehog.svg', 0, 0, 0.0),
+                (4, 0, 'Skilled', 'Complete 50 goals in one sphere', 'Cat.svg', 0, 0, 0.0),
+                (5, 0, 'Expert', 'Complete 150 goals in one sphere', 'Dog.svg', 0, 0, 0.0),
+                (6, 0, 'Toddler', 'Complete 5 goals in each sphere', 'Owl.svg', 0, 0, 0.0),
+                (7, 0, 'Teenager', 'Complete 15 goals in each sphere', 'Flamingo.svg', 0, 0, 0.0),
+                (8, 0, 'Adult', 'Complete 40 goals in each sphere', 'Bird.svg', 0, 0, 0.0),
+                (9, 0, 'Sprinter', '2 weeks in a row close at least 5 goals', 'Elephant.svg', 0, 0, 0.0),
+                (10, 0, 'Half marathoner', '3 weeks in a row close at least 10 goals', 'Unicorn.svg', 0, 0, 0.0),
+                (11, 0, 'Marathoner', '4 weeks in a row close at least 20 goals', 'Dragon.svg', 0, 0, 0.0);
           ''');
 
     await db.execute('''
