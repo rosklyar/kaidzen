@@ -180,3 +180,4 @@ enum Emotion {
 }
 
 const cardElavation = 8.0;
+const maxInputCharCount = 150;

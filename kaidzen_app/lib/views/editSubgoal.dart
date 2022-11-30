@@ -64,6 +64,7 @@ class _EditSubGoalState extends State<EditSubGoal> {
                               Padding(
                                   padding: const EdgeInsets.only(bottom: 16),
                                   child: TextField(
+                                    maxLength: maxInputCharCount,
                                     autofocus: true,
                                     decoration: InputDecoration(
                                         border: const OutlineInputBorder(),
@@ -86,7 +87,7 @@ class _EditSubGoalState extends State<EditSubGoal> {
                                           parentWidth * 0.01, 5, 5, 5),
                                       child: Text(
                                           style: Fonts.graySubtitle,
-                                          widget.parent.shortenedName(200)),
+                                          widget.parent.name),
                                     ),
                                   )
                                 ],

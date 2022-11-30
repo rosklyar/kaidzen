@@ -70,7 +70,7 @@ class _ViewGoalState extends State<ViewGoal> {
                         child: SizedBox(
                             width: double.infinity,
                             child: Text(
-                              task.shortenedName(200),
+                              task.name,
                               textAlign: TextAlign.left,
                               style: Fonts.screenTytleTextStyle,
                             ))),
@@ -97,7 +97,7 @@ class _ViewGoalState extends State<ViewGoal> {
                                           Provider.of<TasksState>(context,
                                                   listen: false)
                                               .getById(task.parent!)!
-                                              .shortenedName(200)),
+                                              .name),
                                     ),
                                   )
                                 ],
