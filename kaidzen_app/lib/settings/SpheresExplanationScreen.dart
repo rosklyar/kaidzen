@@ -171,7 +171,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                         text: TextSpan(children: [
                           TextSpan(
                               text:
-                                  "\n\nGood luck and have fun on your way to the best version of Yourself!",
+                                  "\nGood luck and have fun on your way to the best version of Yourself!",
                               style: Fonts.screenTytleTextStyle)
                         ]),
                       )),
