@@ -57,7 +57,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                   }
                                 },
                               ),
-                              flex: 1),
+                              flex: 2),
                           Expanded(
                               child: Center(
                                   child: Text('Subgoal',
