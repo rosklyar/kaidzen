@@ -168,10 +168,11 @@ class TasksState extends ChangeNotifier {
 
     String oldStatus = task.status;
     task.status = newStatus;
-    await repository.update(task);
-    if (newStatus == Status.DONE) {
+    if (newStatus == Status.DONE && task.doneTs == null) {
+      task.doneTs = DateTime.now();
       await progressState.updateProgress(task);
     }
+    await repository.update(task);
     var type = newStatus == Status.DOING
         ? EventType.taskInProgress
         : EventType.taskCompleted;

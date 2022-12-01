@@ -36,23 +36,21 @@ class SettingsScreen extends StatelessWidget {
               body: Column(
                 children: [
                   Expanded(
-                      child: Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const SizedBox(width: 32),
-                                Text('More', style: Fonts.screenTytleTextStyle),
-                                IconButton(
-                                  iconSize: 32,
-                                  icon: SvgPicture.asset(
-                                      "assets/settings/close_black_icon.svg"),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ])),
-                      flex: 2),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const SizedBox(width: 32),
+                            Text('More', style: Fonts.screenTytleTextStyle),
+                            IconButton(
+                              iconSize: 32,
+                              icon: SvgPicture.asset(
+                                  "assets/settings/close_black_icon.svg"),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ]),
+                      flex: 6),
                   Expanded(
                       child: Padding(
                           padding: const EdgeInsets.only(
@@ -67,8 +65,7 @@ class SettingsScreen extends StatelessWidget {
                                     onTap: () async {
                                       await _goToAboutPhilosophy(context);
                                     }),
-                                flex: 6),
-                            const Expanded(child: SizedBox(), flex: 1),
+                                flex: 1),
                             Expanded(
                                 child: GestureDetector(
                                     child: Image.asset(
@@ -78,36 +75,69 @@ class SettingsScreen extends StatelessWidget {
                                     onTap: () async {
                                       await _goToSpheresExplanation(context);
                                     }),
-                                flex: 6),
-                            const Expanded(child: SizedBox(), flex: 1),
-                            const Expanded(child: SizedBox(), flex: 6)
+                                flex: 1),
+                            const Expanded(child: SizedBox(), flex: 1)
                           ])),
-                      flex: 3),
+                      flex: 12),
                   Expanded(
                       child: Column(
                           children:
                               ListTile.divideTiles(context: context, tiles: [
                         ListTile(
-                            title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(children: [
-                                    Text(
-                                      "Send feedback",
-                                      style: Fonts.largeTextStyle20,
-                                      textAlign: TextAlign.left,
-                                    )
+                            title: Column(children: [
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          const Icon(Icons.circle,
+                                              color: Color.fromRGBO(
+                                                  234, 125, 98, 1.0),
+                                              size: 8),
+                                          Row(children: [
+                                            Text(
+                                              " Send feedback",
+                                              style: Fonts.largeTextStyle20,
+                                              textAlign: TextAlign.left,
+                                            )
+                                          ])
+                                        ]),
+                                    SvgPicture.asset(
+                                        "assets/shevron-right-black.svg")
                                   ]),
-                                  SvgPicture.asset(
-                                      "assets/shevron-right-black.svg")
-                                ]),
+                              const SizedBox(height: 5),
+                              Row(children: [
+                                const SizedBox(width: 13),
+                                Text("Share ideas or tell about bugs",
+                                    style: Fonts.mediumTextStyle.copyWith(
+                                        color: const Color.fromRGBO(
+                                            114, 118, 121, 1.0)))
+                              ])
+                            ]),
                             onTap: () async {
                               await _goToSendFeedback(context);
                             }),
-                        Visibility(
-                            visible: progress.getTotalLevel() > 10,
-                            child: ListTile(
+                        ListTile(
+                            title: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Icon(Icons.circle,
+                                      color: Color.fromRGBO(240, 213, 76, 1.0),
+                                      size: 8),
+                                  Text(
+                                    " Share app",
+                                    style: Fonts.largeTextStyle20,
+                                    textAlign: TextAlign.left,
+                                  )
+                                ]),
+                            onTap: () async {
+                              await _shareApp();
+                            }),
+                        progress.getTotalLevel() > 10
+                            ? ListTile(
                                 title: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -124,29 +154,12 @@ class SettingsScreen extends StatelessWidget {
                                     ]),
                                 onTap: () async {
                                   ReviewUtils.requestReview();
-                                })),
-                        ListTile(
-                            title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(children: [
-                                    Text(
-                                      "Share app",
-                                      style: Fonts.largeTextStyle20,
-                                      textAlign: TextAlign.left,
-                                    )
-                                  ]),
-                                  SvgPicture.asset(
-                                      "assets/shevron-right-black.svg")
-                                ]),
-                            onTap: () async {
-                              await _shareApp();
-                            })
+                                })
+                            : const ListTile()
                       ]).toList()),
-                      flex: 4),
+                      flex: 12),
                   Expanded(
-                      child: SvgPicture.asset("assets/settings/line_12.svg"),
+                      child: Image.asset("assets/settings/line_12.png"),
                       flex: 1),
                   Expanded(
                       child: Column(
@@ -189,11 +202,25 @@ class SettingsScreen extends StatelessWidget {
                               await _goToPrivacyPolicy(context);
                             }),
                       ]).toList()),
+                      flex: 8),
+                  Expanded(
+                      child: Image.asset(
+                          "assets/settings/settings_bottom_line.png"),
                       flex: 4),
                   Expanded(
-                      child: SvgPicture.asset(
-                          "assets/settings/settings_bottom_line.svg"),
-                      flex: 2)
+                      child: Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Version 1.0",
+                                  style: Fonts.mediumTextStyle.copyWith(
+                                      color: const Color.fromRGBO(
+                                          114, 118, 121, 1.0)),
+                                )
+                              ])),
+                      flex: 1)
                 ],
               ),
             ));

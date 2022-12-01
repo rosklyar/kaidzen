@@ -59,20 +59,20 @@ class BoardState extends State<Board> {
   Widget build(BuildContext context) {
     return GestureDetector(
         child: ReorderableListView(
-          physics: widget.scrollEnabled
-              ? const AlwaysScrollableScrollPhysics()
-              : const NeverScrollableScrollPhysics(),
-          padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
-          onReorder: _onReorder,
-          scrollController: widget.sc,
-          children: List.generate(
-            widget.list.length,
-            (index) {
-              return Column(
-                  key: Key('$index'), children: [taskCard(widget.list[index])]);
-            },
-          ),
-        ));
+      physics: widget.scrollEnabled
+          ? const AlwaysScrollableScrollPhysics()
+          : const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
+      onReorder: _onReorder,
+      scrollController: widget.sc,
+      children: List.generate(
+        widget.list.length,
+        (index) {
+          return Column(
+              key: Key('$index'), children: [taskCard(widget.list[index])]);
+        },
+      ),
+    ));
   }
 
   Widget taskCard(Task task) {

@@ -43,7 +43,7 @@ class SpheresExplanationScreen extends StatelessWidget {
             storyItems: [
               StoryItem(
                   Story(
-                      backgroundColor: const Color.fromARGB(255, 182, 178, 157),
+                      backgroundColor: const Color.fromRGBO(225, 218, 218, 1.0),
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
@@ -150,7 +150,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                   duration: const Duration(seconds: 45)),
               StoryItem(
                   Story(
-                      backgroundColor: const Color.fromARGB(255, 148, 209, 224),
+                      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
@@ -166,7 +166,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                   duration: const Duration(seconds: 45)),
               StoryItem(
                   Story(
-                      backgroundColor: const Color.fromARGB(255, 182, 178, 157),
+                      backgroundColor: const Color.fromRGBO(225, 218, 218, 1.0),
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
