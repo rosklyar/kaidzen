@@ -36,7 +36,7 @@ class NTasksCompletedEachKDaysForMPeriodsAchievement extends Achievement {
         if (completedTasks >= numberOfTasks) {
           progress += periodDelta;
         } else {
-          if (from.difference(to).inDays == numberOfDays) {
+          if (from.difference(to).inDays >= numberOfDays) {
             eventsRepository.breakPeriodAchievement(info);
             progress = 0.0;
           }

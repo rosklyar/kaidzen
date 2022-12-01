@@ -15,31 +15,28 @@ class AboutPhilosophyScreen extends StatelessWidget {
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-            toolbarHeight: MediaQuery.of(context).size.height * 0.095,
-            leading: IconButton(
+          toolbarHeight: MediaQuery.of(context).size.height * 0.095,
+          leading: IconButton(
+            iconSize: 32,
+            icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          elevation: 0.0,
+          centerTitle: true,
+          actions: [
+            IconButton(
               iconSize: 32,
-              icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+              icon: SvgPicture.asset("assets/settings/close_black_icon.svg"),
               onPressed: () {
-                Navigator.pop(context);
+                int count = 0;
+                Navigator.of(context).popUntil((_) => count++ >= 2);
               },
-            ),
-            elevation: 0.0,
-            centerTitle: true,
-            actions: [
-              IconButton(
-                iconSize: 32,
-                icon: SvgPicture.asset("assets/settings/close_black_icon.svg"),
-                onPressed: () {
-                  int count = 0;
-                  Navigator.of(context).popUntil((_) => count++ >= 2);
-                },
-              )
-            ],
-            backgroundColor: Colors.white.withOpacity(0),
-            title: Text(
-              'Philosophy',
-              style: Fonts.screenTytleTextStyle,
-            )),
+            )
+          ],
+          backgroundColor: Colors.white.withOpacity(0),
+        ),
         body: StoryView(
             indicatorColor: Colors.black,
             controller: controller,
