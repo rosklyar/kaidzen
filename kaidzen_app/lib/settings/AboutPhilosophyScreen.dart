@@ -74,11 +74,11 @@ class AboutPhilosophyScreen extends StatelessWidget {
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
-                                  "Find time and a calm environment to think about your life mission.\nSomething that describes you.\nYour strives and dreams.\nLet's imagine that it could be something general in the beginning:\n\n\n",
+                                  "Find time and a calm environment to think about your life mission.\nSomething that describes you.\nYour strives and dreams.\nLet's imagine that it could be something general in the beginning:\n\n",
                               style: Fonts.largeTextStyle),
                           TextSpan(
                               text:
-                                  "\"I want to live happy life providing benefits to society and the environment\"\n\n\n",
+                                  "\"I want to live happy life providing benefits to society and the environment\"\n\n",
                               style: Fonts.largeTextStyle20
                                   .copyWith(fontWeight: FontWeight.bold)),
                           TextSpan(
@@ -121,7 +121,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
-                                  "Sift everything you've written down through your life mission.\n\n\nIf the goal was \"buy a new car\", - is it what you truly want? \nDo you like driving?\nHow much time do you spend driving?\nWill it make you happy?\nWill it be good for the environment and society?\n\nIf you like driving, do it a lot, in your free time going to track - then definitely it will make you happy, and it's your true goal.",
+                                  "Sift everything you've written down through your life mission.\n\nIf the goal was \"buy a new car\", - is it what you truly want? \nDo you like driving?\nHow much time do you spend driving?\nWill it make you happy?\nWill it be good for the environment and society?\n\nIf you like driving, do it a lot, in your free time going to track - then definitely it will make you happy, and it's your true goal.",
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
@@ -140,7 +140,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
-                                  "Split your goals by 5 spheres:\n\u2022 Wealth\n\u2022 Energy\n\u2022 Health\n\u2022 Mind\n\u2022 Relations\n\n\nSometimes your goal could match more than one sphere. In that case, choose one that you think will suit it best.",
+                                  "Split your goals by 5 spheres:\n\u2022 Wealth\n\u2022 Energy\n\u2022 Health\n\u2022 Mind\n\u2022 Relations\n\nSometimes your goal could match more than one sphere. In that case, choose one that you think will suit it best.",
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
