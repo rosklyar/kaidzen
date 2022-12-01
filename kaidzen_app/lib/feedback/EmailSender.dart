@@ -110,7 +110,7 @@ class _EmailSenderState extends State<EmailSender> {
         padding: const EdgeInsets.all(10),
         child: GestureDetector(
           onTap: () {
-            () => Utils.tryToLostFocus(context);
+            Utils.tryToLostFocus(context);
           },
           child: Column(
             children: <Widget>[
@@ -134,27 +134,27 @@ class _EmailSenderState extends State<EmailSender> {
                   ], mainAxisAlignment: MainAxisAlignment.spaceBetween),
                   flex: 3),
               Expanded(
-                  child: Padding(
-                      child: Align(
-                          child: Text(
-                              "Your feedback help us make the\napplication better. Any thought matter.",
-                              style: Fonts.largeTextStyle),
-                          alignment: Alignment.centerLeft),
-                      padding: const EdgeInsets.all(8.0)),
-                  flex: 3),
+                  child: Align(
+                      child: Text(
+                          "Your feedback help us make the\napplication better. Any thought matter.",
+                          style: Fonts.largeTextStyle),
+                      alignment: Alignment.topLeft),
+                  flex: 1),
               Expanded(
-                  child: TextField(
-                    controller: _bodyController,
-                    maxLines: null,
-                    expands: true,
-                    textAlignVertical: TextAlignVertical.top,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: const BorderSide(
-                                color: Color.fromRGBO(117, 30, 132, 1))),
-                        hintStyle: Fonts.inputHintTextStyle),
-                  ),
+                  child: Padding(
+                      child: TextField(
+                        controller: _bodyController,
+                        maxLines: null,
+                        expands: true,
+                        textAlignVertical: TextAlignVertical.top,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                borderSide: const BorderSide(
+                                    color: Color.fromRGBO(117, 30, 132, 1))),
+                            hintStyle: Fonts.inputHintTextStyle),
+                      ),
+                      padding: const EdgeInsets.only(top: 30)),
                   flex: 7),
               Expanded(
                   child: Column(
