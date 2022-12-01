@@ -156,6 +156,10 @@ class Fonts {
       textStyle: const TextStyle(
           color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500));
 
+  static TextStyle graySubtitleMedium = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+          color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w500));
+
   static TextStyle flushbarText = GoogleFonts.montserrat(
       textStyle: const TextStyle(
           color: Color.fromARGB(255, 117, 117, 117), fontSize: 12, fontWeight: FontWeight.w500));

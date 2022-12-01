@@ -57,7 +57,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                   }
                                 },
                               ),
-                              flex: 1),
+                              flex: 2),
                           Expanded(
                               child: Center(
                                   child: Text('Subgoal',
@@ -86,7 +86,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                 children: [
                                   Padding(
                                       padding: EdgeInsets.fromLTRB(
-                                          parentWidth * 0.03, 5, 5, 5),
+                                          parentWidth * 0.03, 0, 5, 8),
                                       child:
                                           Image.asset("assets/back_arrow.png")),
                                   SizedBox(
@@ -95,7 +95,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                       padding: EdgeInsets.fromLTRB(
                                           parentWidth * 0.01, 5, 5, 5),
                                       child: Text(
-                                          style: Fonts.graySubtitle,
+                                          style: Fonts.graySubtitleMedium,
                                           widget.parent.name),
                                     ),
                                   )

@@ -41,6 +41,7 @@ class _ViewGoalState extends State<ViewGoal> {
 
   Scaffold buildViewTask(BuildContext context, Task task) {
     var parentWidth = MediaQuery.of(context).size.width;
+    var parentHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Color(task.category.backgroundColor),
       appBar: AppBar(
@@ -84,7 +85,7 @@ class _ViewGoalState extends State<ViewGoal> {
                                 children: [
                                   Padding(
                                       padding: EdgeInsets.fromLTRB(
-                                          parentWidth * 0.03, 5, 5, 5),
+                                          parentWidth * 0.03, 0, 5, 8),
                                       child:
                                           Image.asset("assets/back_arrow.png")),
                                   SizedBox(
@@ -93,11 +94,11 @@ class _ViewGoalState extends State<ViewGoal> {
                                       padding: EdgeInsets.fromLTRB(
                                           parentWidth * 0.01, 5, 5, 5),
                                       child: Text(
-                                          style: Fonts.graySubtitle,
+                                          style: Fonts.graySubtitleMedium,
                                           Provider.of<TasksState>(context,
                                                   listen: false)
                                               .getById(task.parent!)!
-                                              .name),
+                                              .shortenedName(75)),
                                     ),
                                   )
                                 ],
@@ -112,13 +113,16 @@ class _ViewGoalState extends State<ViewGoal> {
                             child: Wrap(
                               spacing: 10,
                               children: [
-                                Icon(Icons.circle_rounded,
-                                    color: task.category.color,
-                                    size: 10.0 + task.difficulty.id * 3),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 4),
+                                  child: Icon(Icons.circle_rounded,
+                                      color: task.category.color,
+                                      size: 10.0 + task.difficulty.id * 3),
+                                ),
                                 Text(
                                     "${task.difficulty.noun} impact on my ${task.category.id >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == widget.task.category.id).name : 'life sphere'} ",
                                     textAlign: TextAlign.left,
-                                    style: Fonts.graySubtitle)
+                                    style: Fonts.graySubtitleMedium)
                               ],
                             ))),
                   ]),
@@ -307,9 +311,9 @@ List<Widget> buildExpandableContent(BuildContext context, Task task) {
         child: ListTile(
           title: Text(
             subtask.name,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0),
+            style: Fonts.largeTextStyle,
           ),
-          subtitle: Text('in ' + subtask.status),
+          subtitle: Text('in ' + subtask.status, style: Fonts.graySubtitle,),
           trailing: ListTileTrail(task: subtask),
           onTap: () {
             Navigator.push(context,

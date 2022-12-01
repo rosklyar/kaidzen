@@ -46,7 +46,8 @@ class AboutPhilosophyScreen extends StatelessWidget {
             storyItems: [
               StoryItem(
                   Story(
-                      backgroundColor: const Color.fromRGBO(251, 245, 206, 1.0),
+                      backgroundColor:
+                          const Color.fromRGBO(251, 245, 206, 1.0),
                       backgroundImage: Image.asset(
                           "assets/settings/philosophy/1.png",
                           width: MediaQuery.of(context).size.width),
@@ -54,29 +55,30 @@ class AboutPhilosophyScreen extends StatelessWidget {
                         text: TextSpan(children: [
                           TextSpan(
                               text:
-                                  "\nThe idea is to aim for small and consistent growth.\n\nYour regular efforts and progress will eventually lead to significant results.",
+                                  "\n\nThe idea is to aim for small and consistent growth.\n\nYour regular efforts and progress will eventually lead to significant results.",
                               style: Fonts.screenTytleTextStyle)
                         ]),
                       )),
                   duration: const Duration(seconds: 45)),
               StoryItem(
                   Story(
-                      backgroundColor: const Color.fromRGBO(241, 232, 252, 1.0),
+                      backgroundColor:
+                          const Color.fromRGBO(241, 232, 252, 1.0),
                       backgroundImage: Image.asset(
                           "assets/settings/philosophy/2.png",
                           width: MediaQuery.of(context).size.width),
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "\nSet a life mission\n\n\n",
+                              text: "\n\nSet a life mission\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
-                                  "Find time and a calm environment to think about your life mission.\nSomething that describes you.\nYour strives and dreams.\nLet's imagine that it could be something general in the beginning:\n\n\n",
+                                  "Find time and a calm environment to think about your life mission.\nSomething that describes you.\nYour strives and dreams.\nLet's imagine that it could be something general in the beginning:\n\n",
                               style: Fonts.largeTextStyle),
                           TextSpan(
                               text:
-                                  "\"I want to live happy life providing benefits to society and the environment\"\n\n\n",
+                                  "\"I want to live happy life providing benefits to society and the environment\"\n\n",
                               style: Fonts.largeTextStyle20
                                   .copyWith(fontWeight: FontWeight.bold)),
                           TextSpan(
@@ -88,14 +90,15 @@ class AboutPhilosophyScreen extends StatelessWidget {
                   duration: const Duration(seconds: 45)),
               StoryItem(
                   Story(
-                      backgroundColor: const Color.fromRGBO(237, 248, 250, 1.0),
+                      backgroundColor:
+                          const Color.fromRGBO(237, 248, 250, 1.0),
                       backgroundImage: Image.asset(
                           "assets/settings/philosophy/3.png",
                           width: MediaQuery.of(context).size.width),
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "\nClear your mind\n\n\n",
+                              text: "\n\nClear your mind\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
@@ -106,50 +109,53 @@ class AboutPhilosophyScreen extends StatelessWidget {
                   duration: const Duration(seconds: 45)),
               StoryItem(
                   Story(
-                      backgroundColor: const Color.fromRGBO(243, 250, 194, 1.0),
+                      backgroundColor:
+                          const Color.fromRGBO(243, 250, 194, 1.0),
                       backgroundImage: Image.asset(
                           "assets/settings/philosophy/4.png",
                           width: MediaQuery.of(context).size.width),
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "\nFocus on your goals\n\n\n",
+                              text: "\n\nFocus on your goals\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
-                                  "Sift everything you've written down through your life mission.\n\n\nIf the goal was \"buy a new car\", - is it what you truly want? \nDo you like driving?\nHow much time do you spend driving?\nWill it make you happy?\nWill it be good for the environment and society?\n\nIf you like driving, do it a lot, in your free time going to track - then definitely it will make you happy, and it's your true goal.",
+                                  "Sift everything you've written down through your life mission.\n\nIf the goal was \"buy a new car\", - is it what you truly want? \nDo you like driving?\nHow much time do you spend driving?\nWill it make you happy?\nWill it be good for the environment and society?\n\nIf you like driving, do it a lot, in your free time going to track - then definitely it will make you happy, and it's your true goal.",
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
                   duration: const Duration(seconds: 45)),
               StoryItem(
                   Story(
-                      backgroundColor: const Color.fromRGBO(252, 236, 230, 1.0),
+                      backgroundColor:
+                          const Color.fromRGBO(252, 236, 230, 1.0),
                       backgroundImage: Image.asset(
                           "assets/settings/philosophy/5.png",
                           width: MediaQuery.of(context).size.width),
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "\nChoose spheres to affect\n\n\n",
+                              text: "\n\nChoose spheres to affect\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
-                                  "Split your goals by 5 spheres:\n\u2022 Wealth\n\u2022 Energy\n\u2022 Health\n\u2022 Mind\n\u2022 Relations\n\n\nSometimes your goal could match more than one sphere. In that case, choose one that you think will suit it best.",
+                                  "Split your goals by 5 spheres:\n\u2022 Wealth\n\u2022 Energy\n\u2022 Health\n\u2022 Mind\n\u2022 Relations\n\nSometimes your goal could match more than one sphere. In that case, choose one that you think will suit it best.",
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
                   duration: const Duration(seconds: 45)),
               StoryItem(
                   Story(
-                      backgroundColor: const Color.fromRGBO(242, 233, 252, 1.0),
+                      backgroundColor:
+                          const Color.fromRGBO(242, 233, 252, 1.0),
                       backgroundImage: Image.asset(
                           "assets/settings/philosophy/6.png",
                           width: MediaQuery.of(context).size.width),
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "\nConsistency is the key\n\n\n",
+                              text: "\n\nConsistency is the key\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
@@ -160,14 +166,15 @@ class AboutPhilosophyScreen extends StatelessWidget {
                   duration: const Duration(seconds: 45)),
               StoryItem(
                   Story(
-                      backgroundColor: const Color.fromRGBO(251, 245, 206, 1.0),
+                      backgroundColor:
+                          const Color.fromRGBO(251, 245, 206, 1.0),
                       backgroundImage: Image.asset(
                           "assets/settings/philosophy/7.png",
                           width: MediaQuery.of(context).size.width),
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                              text: "\nAnd...\n\n\n",
+                              text: "\n\nAnd...\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
