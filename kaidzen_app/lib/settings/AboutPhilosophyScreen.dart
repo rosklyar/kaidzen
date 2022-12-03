@@ -15,9 +15,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-          toolbarHeight: MediaQuery.of(context).size.height * 0.095,
           leading: IconButton(
-            iconSize: 32,
             icon: SvgPicture.asset("assets/shevron-left-black.svg"),
             onPressed: () {
               Navigator.pop(context);
@@ -27,7 +25,6 @@ class AboutPhilosophyScreen extends StatelessWidget {
           centerTitle: true,
           actions: [
             IconButton(
-              iconSize: 32,
               icon: SvgPicture.asset("assets/settings/close_black_icon.svg"),
               onPressed: () {
                 int count = 0;
@@ -43,8 +40,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
             storyItems: [
               StoryItem(
                   Story(
-                      backgroundColor:
-                          const Color.fromRGBO(251, 245, 206, 1.0),
+                      backgroundColor: const Color.fromRGBO(251, 245, 206, 1.0),
                       backgroundImage: Image.asset(
                           "assets/settings/philosophy/1.png",
                           width: MediaQuery.of(context).size.width),
@@ -59,8 +55,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                   duration: const Duration(seconds: 45)),
               StoryItem(
                   Story(
-                      backgroundColor:
-                          const Color.fromRGBO(241, 232, 252, 1.0),
+                      backgroundColor: const Color.fromRGBO(241, 232, 252, 1.0),
                       backgroundImage: Image.asset(
                           "assets/settings/philosophy/2.png",
                           width: MediaQuery.of(context).size.width),
@@ -87,8 +82,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                   duration: const Duration(seconds: 45)),
               StoryItem(
                   Story(
-                      backgroundColor:
-                          const Color.fromRGBO(237, 248, 250, 1.0),
+                      backgroundColor: const Color.fromRGBO(237, 248, 250, 1.0),
                       backgroundImage: Image.asset(
                           "assets/settings/philosophy/3.png",
                           width: MediaQuery.of(context).size.width),
@@ -106,8 +100,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                   duration: const Duration(seconds: 45)),
               StoryItem(
                   Story(
-                      backgroundColor:
-                          const Color.fromRGBO(243, 250, 194, 1.0),
+                      backgroundColor: const Color.fromRGBO(243, 250, 194, 1.0),
                       backgroundImage: Image.asset(
                           "assets/settings/philosophy/4.png",
                           width: MediaQuery.of(context).size.width),
@@ -125,8 +118,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                   duration: const Duration(seconds: 45)),
               StoryItem(
                   Story(
-                      backgroundColor:
-                          const Color.fromRGBO(252, 236, 230, 1.0),
+                      backgroundColor: const Color.fromRGBO(252, 236, 230, 1.0),
                       backgroundImage: Image.asset(
                           "assets/settings/philosophy/5.png",
                           width: MediaQuery.of(context).size.width),
@@ -144,8 +136,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                   duration: const Duration(seconds: 45)),
               StoryItem(
                   Story(
-                      backgroundColor:
-                          const Color.fromRGBO(242, 233, 252, 1.0),
+                      backgroundColor: const Color.fromRGBO(242, 233, 252, 1.0),
                       backgroundImage: Image.asset(
                           "assets/settings/philosophy/6.png",
                           width: MediaQuery.of(context).size.width),
@@ -163,8 +154,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                   duration: const Duration(seconds: 45)),
               StoryItem(
                   Story(
-                      backgroundColor:
-                          const Color.fromRGBO(251, 245, 206, 1.0),
+                      backgroundColor: const Color.fromRGBO(251, 245, 206, 1.0),
                       backgroundImage: Image.asset(
                           "assets/settings/philosophy/7.png",
                           width: MediaQuery.of(context).size.width),

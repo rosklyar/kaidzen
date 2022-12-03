@@ -105,6 +105,27 @@ class _EmailSenderState extends State<EmailSender> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: moreScreenBackColor,
+      appBar: AppBar(
+          elevation: 0.0,
+          leading: IconButton(
+            icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: Text('Send feedback', style: Fonts.screenTytleTextStyle),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              icon: SvgPicture.asset("assets/settings/close_black_icon.svg"),
+              onPressed: () {
+                int count = 0;
+                Navigator.of(context).popUntil((_) => count++ >= 2);
+              },
+            )
+          ],
+          backgroundColor: moreScreenBackColor),
       resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -115,30 +136,13 @@ class _EmailSenderState extends State<EmailSender> {
           child: Column(
             children: <Widget>[
               Expanded(
-                  child: Row(children: [
-                    GestureDetector(
-                      child: SvgPicture.asset("assets/shevron-left-black.svg"),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    Text('Send feedback', style: Fonts.screenTytleTextStyle),
-                    GestureDetector(
-                      child: SvgPicture.asset(
-                          "assets/settings/close_black_icon.svg"),
-                      onTap: () {
-                        int count = 0;
-                        Navigator.of(context).popUntil((_) => count++ >= 2);
-                      },
-                    )
-                  ], mainAxisAlignment: MainAxisAlignment.spaceBetween),
-                  flex: 3),
-              Expanded(
-                  child: Align(
-                      child: Text(
-                          "Your feedback help us make the\napplication better. Any thought matter.",
-                          style: Fonts.largeTextStyle),
-                      alignment: Alignment.topLeft),
+                  child: Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Align(
+                          child: Text(
+                              "Your feedback help us make the\napplication better. Any thought matter.",
+                              style: Fonts.largeTextStyle),
+                          alignment: Alignment.topLeft)),
                   flex: 1),
               Expanded(
                   child: Padding(
@@ -154,7 +158,8 @@ class _EmailSenderState extends State<EmailSender> {
                                     color: Color.fromRGBO(117, 30, 132, 1))),
                             hintStyle: Fonts.inputHintTextStyle),
                       ),
-                      padding: const EdgeInsets.only(top: 30)),
+                      padding:
+                          const EdgeInsets.only(left: 10, top: 30, right: 10)),
                   flex: 7),
               Expanded(
                   child: Column(

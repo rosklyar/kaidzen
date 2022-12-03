@@ -9,30 +9,28 @@ class MoreFeedbackScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+            elevation: 0.0,
+            leading: IconButton(
+              icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            actions: [
+              IconButton(
+                icon: SvgPicture.asset("assets/settings/close_black_icon.svg"),
+                onPressed: () {
+                  int count = 0;
+                  Navigator.of(context).popUntil((_) => count++ >= 3);
+                },
+              )
+            ],
+            backgroundColor: moreScreenBackColor),
+        backgroundColor: moreScreenBackColor,
         body: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(10),
             child: Column(children: [
-              Expanded(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          child:
-                              SvgPicture.asset("assets/shevron-left-black.svg"),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        GestureDetector(
-                          child: SvgPicture.asset(
-                              "assets/settings/close_black_icon.svg"),
-                          onTap: () {
-                            int count = 0;
-                            Navigator.of(context).popUntil((_) => count++ >= 3);
-                          },
-                        ),
-                      ]),
-                  flex: 2),
               Expanded(
                   child: Image.asset("assets/emotions/communication.png"),
                   flex: 5),

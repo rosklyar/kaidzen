@@ -15,9 +15,7 @@ class SpheresExplanationScreen extends StatelessWidget {
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-          toolbarHeight: MediaQuery.of(context).size.height * 0.095,
           leading: IconButton(
-            iconSize: 32,
             icon: SvgPicture.asset("assets/shevron-left-black.svg"),
             onPressed: () {
               Navigator.pop(context);
@@ -27,7 +25,6 @@ class SpheresExplanationScreen extends StatelessWidget {
           centerTitle: true,
           actions: [
             IconButton(
-              iconSize: 32,
               icon: SvgPicture.asset("assets/settings/close_black_icon.svg"),
               onPressed: () {
                 int count = 0;

@@ -4,8 +4,6 @@ import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'package:kaidzen_app/achievements/eggWidget.dart';
 import 'package:kaidzen_app/achievements/style.dart';
 
-import '../main.dart';
-
 class AchievementDetailsScreen extends StatelessWidget {
   final AchievementSnapshot achievementSnapshot;
   final Widget details;
@@ -17,26 +15,26 @@ class AchievementDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AchievementsStyle.achievementScreenBackgroundColor,
+        appBar: AppBar(
+          elevation: 0.0,
+          leading: IconButton(
+            icon: Image.asset("assets/shevron-left.png"),
+            onPressed: () async {
+              Navigator.of(context).pop();
+            },
+          ),
+          actions: [
+            IconButton(
+              icon: Image.asset("assets/close_icon.png"),
+              onPressed: () {
+                int count = 0;
+                Navigator.of(context).popUntil((_) => count++ >= 2);
+              },
+            )
+          ],
+          backgroundColor: AchievementsStyle.achievementScreenBackgroundColor,
+        ),
         body: Column(children: [
-          Expanded(
-              child: Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Row(children: [
-                    IconButton(
-                      icon: Image.asset("assets/shevron-left.png"),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    IconButton(
-                      icon: Image.asset("assets/close_icon.png"),
-                      onPressed: () {
-                        int count = 0;
-                        Navigator.of(context).popUntil((_) => count++ >= 2);
-                      },
-                    )
-                  ], mainAxisAlignment: MainAxisAlignment.spaceBetween)),
-              flex: 2),
           Expanded(
               child: Padding(
                   padding: const EdgeInsets.only(bottom: 15),
