@@ -33,7 +33,26 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
   Widget build(BuildContext context) {
     var parentWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0.0,
+        leading: IconButton(
+          icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+          onPressed: () {
+            if (widget.popTarget == null) {
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            } else {
+              Navigator.of(context)
+                  .popUntil(ModalRoute.withName(widget.popTarget!));
+            }
+          },
+        ),
+        title: Text(
+          "Subgoal",
+          style: Fonts.screenTytleTextStyle,
+        ),
+        centerTitle: true,
+        backgroundColor: Color(widget.parent.category.backgroundColor),
+      ),
       resizeToAvoidBottomInset: false,
       body: GestureDetector(
           child: Container(
@@ -122,7 +141,8 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                                     widget.parent,
                                                     popTarget: widget.popTarget,
                                                   )));
-                                      showDefaultTopFlushbar("Subgoal created", context);
+                                      showDefaultTopFlushbar(
+                                          "Subgoal created", context);
                                     }),
                                 flex: 3),
                             Expanded(

@@ -313,7 +313,10 @@ List<Widget> buildExpandableContent(BuildContext context, Task task) {
             subtask.name,
             style: Fonts.largeTextStyle,
           ),
-          subtitle: Text('in ' + subtask.status, style: Fonts.graySubtitle,),
+          subtitle: Text(
+            'in ' + subtask.status,
+            style: Fonts.graySubtitle,
+          ),
           trailing: ListTileTrail(task: subtask),
           onTap: () {
             Navigator.push(context,

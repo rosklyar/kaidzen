@@ -62,7 +62,25 @@ class _CreateTaskState extends State<CreateTask> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          elevation: 0.0,
+          leading: IconButton(
+            icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+            onPressed: () async {
+              await FirebaseAnalytics.instance.logEvent(
+                  name: AnalyticsEventType.create_goal_screen_back_button.name);
+              Navigator.of(context).pop();
+            },
+          ),
+          title: Text(
+            "Goal",
+            style: Fonts.screenTytleTextStyle,
+          ),
+          centerTitle: true,
+          backgroundColor: Color(DevelopmentCategory.values
+              .firstWhere((element) => element.id == _currentCategory)
+              .backgroundColor),
+        ),
         resizeToAvoidBottomInset: false,
         body: GestureDetector(
           child: Container(
@@ -74,35 +92,8 @@ class _CreateTaskState extends State<CreateTask> {
                   child: Column(children: [
                     Expanded(
                         child: Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Row(children: [
-                              Expanded(
-                                  child: IconButton(
-                                    icon: SvgPicture.asset(
-                                        "assets/shevron-left-black.svg"),
-                                    onPressed: () async {
-                                      await FirebaseAnalytics.instance.logEvent(
-                                          name: AnalyticsEventType
-                                              .create_goal_screen_back_button
-                                              .name);
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  flex: 1),
-                              Expanded(
-                                  child: Center(
-                                      child: Text(
-                                    "Goal",
-                                    style: Fonts.screenTytleTextStyle,
-                                  )),
-                                  flex: 9),
-                              const Expanded(child: SizedBox(), flex: 1)
-                            ])),
-                        flex: 3),
-                    Expanded(
-                        child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 5),
+                            padding: const EdgeInsets.only(
+                                left: 10, right: 10, top: 20),
                             child: TextField(
                               maxLength: maxInputCharCount,
                               autofocus: true,

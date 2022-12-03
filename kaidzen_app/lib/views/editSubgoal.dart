@@ -30,33 +30,28 @@ class _EditSubGoalState extends State<EditSubGoal> {
   Widget build(BuildContext context) {
     var parentWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+        appBar: AppBar(
+          elevation: 0.0,
+          leading: IconButton(
+            icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          title: Text(
+            "Edit subgoal",
+            style: Fonts.screenTytleTextStyle,
+          ),
+          centerTitle: true,
+          backgroundColor: Color(widget.parent.category.backgroundColor),
+        ),
         resizeToAvoidBottomInset: false,
-        extendBodyBehindAppBar: true,
         body: GestureDetector(
             child: Container(
                 color: Color(widget.parent.category.backgroundColor),
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Column(children: [
-                    Expanded(
-                        child: Row(children: [
-                          Expanded(
-                              child: IconButton(
-                                icon: SvgPicture.asset(
-                                    "assets/shevron-left-black.svg"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              flex: 1),
-                          Expanded(
-                              child: Center(
-                                  child: Text('Edit subgoal',
-                                      style: Fonts.screenTytleTextStyle)),
-                              flex: 8),
-                          const Expanded(child: SizedBox(), flex: 1)
-                        ]),
-                        flex: 3),
                     Expanded(
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

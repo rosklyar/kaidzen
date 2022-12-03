@@ -72,6 +72,7 @@ const unselectedToggleColor = Color.fromRGBO(231, 233, 234, 1);
 const whiteBackgroundColor = Color.fromRGBO(225, 218, 218, 1.0);
 const inputInactiveBorderColor = Color.fromRGBO(114, 118, 121, 1);
 const activeButtonColor = Color.fromRGBO(18, 17, 17, 1);
+const moreScreenBackColor = Color.fromRGBO(245, 243, 243, 1.0);
 
 class Fonts {
   static TextStyle smallTextStyle = GoogleFonts.montserrat(
@@ -162,7 +163,9 @@ class Fonts {
 
   static TextStyle flushbarText = GoogleFonts.montserrat(
       textStyle: const TextStyle(
-          color: Color.fromARGB(255, 117, 117, 117), fontSize: 12, fontWeight: FontWeight.w500));
+          color: Color.fromARGB(255, 117, 117, 117),
+          fontSize: 12,
+          fontWeight: FontWeight.w500));
 }
 
 enum Emotion {

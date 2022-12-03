@@ -33,28 +33,29 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ProgressState>(
         builder: (context, progress, child) => Scaffold(
-              body: Column(
+            appBar: AppBar(
+              elevation: 0.0,
+              automaticallyImplyLeading: false,
+              title: Text('More', style: Fonts.screenTytleTextStyle),
+              centerTitle: true,
+              actions: [
+                IconButton(
+                  icon:
+                      SvgPicture.asset("assets/settings/close_black_icon.svg"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+              backgroundColor: moreScreenBackColor,
+            ),
+            body: Container(
+              color: moreScreenBackColor,
+              child: Column(
                 children: [
                   Expanded(
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const SizedBox(width: 32),
-                            Text('More', style: Fonts.screenTytleTextStyle),
-                            IconButton(
-                              iconSize: 32,
-                              icon: SvgPicture.asset(
-                                  "assets/settings/close_black_icon.svg"),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ]),
-                      flex: 6),
-                  Expanded(
                       child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 10, right: 10, top: 10, bottom: 10),
+                          padding: const EdgeInsets.only(left: 10, right: 10),
                           child: Row(children: [
                             Expanded(
                                 child: GestureDetector(
@@ -223,7 +224,7 @@ class SettingsScreen extends StatelessWidget {
                       flex: 1)
                 ],
               ),
-            ));
+            )));
   }
 
   Future<void> _goToPrivacyPolicy(BuildContext context) async {
