@@ -101,7 +101,7 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                   ),
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 50),
+                      padding: const EdgeInsets.only(bottom: 5),
                       child: Consumer<TasksState>(
                           builder: (context, state, child) {
                         debugPrint("building SwitchableBoardContainer");
@@ -112,7 +112,20 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                             scrollEnabled: scrollEnabled);
                       }),
                     ),
-                  )
+                    flex: 10,
+                  ),
+                  Expanded(
+                      child: GestureDetector(
+                          child: Column(children: [
+                            Text('Collapse',
+                                style: Fonts.graySubtitleMedium.copyWith(
+                                    decoration: TextDecoration.underline,
+                                    fontWeight: FontWeight.w600))
+                          ]),
+                          onTap: () async {
+                            pc.close();
+                          }),
+                      flex: 1)
                 ],
               ),
             ),
