@@ -114,12 +114,13 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                   ),
                   Expanded(
                       child: GestureDetector(
-                          child: Column(children: [
-                            Text('Collapse',
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text('Collapse',
                                 style: Fonts.graySubtitleMedium.copyWith(
                                     decoration: TextDecoration.underline,
-                                    fontWeight: FontWeight.w600))
-                          ]),
+                                    fontWeight: FontWeight.w600)),
+                          ),
                           onTap: () async {
                             pc.close();
                           }),
