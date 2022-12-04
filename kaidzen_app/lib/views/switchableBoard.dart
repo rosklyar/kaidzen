@@ -45,7 +45,6 @@ class SwitchableBoardState extends State<SwitchableBoard> {
   @override
   Widget build(BuildContext context) {
     var parentHeight = MediaQuery.of(context).size.height;
-    debugPrint("building Panel");
     var sc = ScrollController();
     return Stack(
       children: [
@@ -104,7 +103,6 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                       padding: const EdgeInsets.only(bottom: 5),
                       child: Consumer<TasksState>(
                           builder: (context, state, child) {
-                        debugPrint("building SwitchableBoardContainer");
                         return Board(
                             name: currentBoard.name,
                             list: state.getByStatus(currentBoard.name),
