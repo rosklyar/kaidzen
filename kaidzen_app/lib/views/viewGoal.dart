@@ -41,7 +41,6 @@ class _ViewGoalState extends State<ViewGoal> {
 
   Scaffold buildViewTask(BuildContext context, Task task) {
     var parentWidth = MediaQuery.of(context).size.width;
-    var parentHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Color(task.category.backgroundColor),
       appBar: AppBar(
