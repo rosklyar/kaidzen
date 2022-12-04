@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -128,9 +129,53 @@ class AboutPhilosophyScreen extends StatelessWidget {
                               text: "\n\nChoose spheres to affect\n\n",
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
+                              text: "Split your goals by 5 spheres:\n\n",
+                              style: Fonts.largeTextStyle),
+                          WidgetSpan(
+                              baseline: TextBaseline.alphabetic,
+                              alignment: PlaceholderAlignment.baseline,
+                              child: Icon(Icons.circle_rounded,
+                                  color: DevelopmentCategory.WEALTH.color,
+                                  size: 10.0)),
+                          TextSpan(
+                              text: "  Wealth\n", style: Fonts.largeTextStyle),
+                          WidgetSpan(
+                              baseline: TextBaseline.alphabetic,
+                              alignment: PlaceholderAlignment.baseline,
+                              child: Icon(Icons.circle_rounded,
+                                  color: DevelopmentCategory.ENERGY.color,
+                                  size: 10.0)),
+                          TextSpan(
+                              text: "  Energy\n", style: Fonts.largeTextStyle),
+                          WidgetSpan(
+                              baseline: TextBaseline.alphabetic,
+                              alignment: PlaceholderAlignment.baseline,
+                              child: Icon(Icons.circle_rounded,
+                                  color: DevelopmentCategory.HEALTH.color,
+                                  size: 10.0)),
+                          TextSpan(
+                              text: "  Health\n", style: Fonts.largeTextStyle),
+                          WidgetSpan(
+                              baseline: TextBaseline.alphabetic,
+                              alignment: PlaceholderAlignment.baseline,
+                              child: Icon(Icons.circle_rounded,
+                                  color: DevelopmentCategory.MIND.color,
+                                  size: 10.0)),
+                          TextSpan(
+                              text: "  Mind\n", style: Fonts.largeTextStyle),
+                          WidgetSpan(
+                              baseline: TextBaseline.alphabetic,
+                              alignment: PlaceholderAlignment.baseline,
+                              child: Icon(Icons.circle_rounded,
+                                  color: DevelopmentCategory.RELATIONS.color,
+                                  size: 10.0)),
+                          TextSpan(
+                              text: "  Relations\n",
+                              style: Fonts.largeTextStyle),
+                          TextSpan(
                               text:
-                                  "Split your goals by 5 spheres:\n\u2022 Wealth\n\u2022 Energy\n\u2022 Health\n\u2022 Mind\n\u2022 Relations\n\nSometimes your goal could match more than one sphere. In that case, choose one that you think will suit it best.",
-                              style: Fonts.largeTextStyle)
+                                  "\nSometimes your goal could match more than one sphere. In that case, choose one that you think will suit it best.",
+                              style: Fonts.largeTextStyle),
                         ]),
                       )),
                   duration: const Duration(seconds: 45)),
