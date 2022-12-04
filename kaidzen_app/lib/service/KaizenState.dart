@@ -56,7 +56,6 @@ class KaizenDb {
 
   static Future<Database> getDb() async {
     _db ??= await _open();
-    debugPrint(_db?.path);
     return _db!;
   }
 
