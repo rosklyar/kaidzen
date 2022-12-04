@@ -56,35 +56,11 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
       resizeToAvoidBottomInset: false,
       body: GestureDetector(
           child: Container(
+              padding: const EdgeInsets.only(bottom: 5),
               color: Color(widget.parent.category.backgroundColor),
               child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Column(children: [
-                    Expanded(
-                        child: Row(children: [
-                          Expanded(
-                              child: IconButton(
-                                icon: SvgPicture.asset(
-                                    "assets/shevron-left-black.svg"),
-                                onPressed: () {
-                                  if (widget.popTarget == null) {
-                                    Navigator.of(context)
-                                        .popUntil((route) => route.isFirst);
-                                  } else {
-                                    Navigator.of(context).popUntil(
-                                        ModalRoute.withName(widget.popTarget!));
-                                  }
-                                },
-                              ),
-                              flex: 2),
-                          Expanded(
-                              child: Center(
-                                  child: Text('Subgoal',
-                                      style: Fonts.screenTytleTextStyle)),
-                              flex: 8),
-                          const Expanded(child: SizedBox(), flex: 1)
-                        ]),
-                        flex: 3),
                     Expanded(
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
