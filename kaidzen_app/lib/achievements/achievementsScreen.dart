@@ -7,6 +7,7 @@ import 'package:kaidzen_app/achievements/eggWidget.dart';
 import 'package:kaidzen_app/achievements/style.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:provider/provider.dart';
+import '../assets/constants.dart';
 import '../tutorial/TutorialState.dart';
 import '../views/utils.dart';
 import 'achievementSnaphot.dart';
@@ -16,6 +17,11 @@ class AchievementsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setApplicationSwitcherDescription(
+        ApplicationSwitcherDescription(
+            label: "Sticky Goals",
+            primaryColor:
+                AchievementsStyle.achievementScreenBackgroundColor.value));
     return Consumer3<AchievementsState, TutorialState, EmotionsState>(
         builder: (context, achievementsState, tutorialState, emotionsSate,
                 child) =>
@@ -37,6 +43,10 @@ class AchievementsScreen extends StatelessWidget {
                             iconSize: 32,
                             icon: Image.asset("assets/close_icon.png"),
                             onPressed: () {
+                              SystemChrome.setApplicationSwitcherDescription(
+                                  ApplicationSwitcherDescription(
+                                      label: "Sticky Goals",
+                                      primaryColor: moreScreenBackColor.value));
                               Navigator.of(context).pop();
                             },
                           )

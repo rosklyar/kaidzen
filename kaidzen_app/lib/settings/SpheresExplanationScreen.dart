@@ -41,6 +41,9 @@ class SpheresExplanationScreen extends StatelessWidget {
               StoryItem(
                   Story(
                       backgroundColor: const Color.fromRGBO(225, 218, 218, 1.0),
+                      backgroundImage: Image.asset(
+                          "assets/settings/spheres/1.png",
+                          width: MediaQuery.of(context).size.width),
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
@@ -148,6 +151,9 @@ class SpheresExplanationScreen extends StatelessWidget {
               StoryItem(
                   Story(
                       backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+                      backgroundImage: Image.asset(
+                          "assets/settings/spheres/7.png",
+                          width: MediaQuery.of(context).size.width),
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
@@ -164,6 +170,9 @@ class SpheresExplanationScreen extends StatelessWidget {
               StoryItem(
                   Story(
                       backgroundColor: const Color.fromRGBO(225, 218, 218, 1.0),
+                      backgroundImage: Image.asset(
+                          "assets/settings/spheres/8.png",
+                          width: MediaQuery.of(context).size.width),
                       text: RichText(
                         text: TextSpan(children: [
                           TextSpan(
