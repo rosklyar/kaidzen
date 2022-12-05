@@ -147,7 +147,7 @@ class KaizenDb {
           ''',
       '''
             insert into $tableEmotionPoints values
-                (1, 40, '${DateTime.now().toString()}');
+                (1, 35, '${DateTime.now().toString()}');
           ''',
       '''
             create table $tableTutorialSteps ( 

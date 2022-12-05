@@ -28,7 +28,8 @@ class EmotionsState extends ChangeNotifier {
 
     if (tutorialState.tutorialCompleted()) {
       currentPoints -= daysPast * 2;
-      var events = await eventsRepository.getEventsAfter(emotionPoints.updateTs);
+      var events =
+          await eventsRepository.getEventsAfter(emotionPoints.updateTs);
       for (var event in events) {
         currentPoints += getPointsFromEvent(event);
       }
@@ -39,33 +40,21 @@ class EmotionsState extends ChangeNotifier {
     } else if (currentPoints < 0) {
       currentPoints = 0;
     }
-    await emotionPointsRepository.updateEmotionPoints(
-        EmotionPoints(emotionPoints.id, currentPoints, now));
-    refreshEmotionPoints();
+    var newPoints = EmotionPoints(emotionPoints.id, currentPoints, now);
+    await emotionPointsRepository.updateEmotionPoints(newPoints);
+    triggerEmotionEvent(emotionPoints.points, newPoints.points);
+    emotionPoints = newPoints;
     notifyListeners();
   }
 
-  Future<EmotionPoints> updateEmotionPoints(Event event) async {
-    int points = getPointsFromEvent(event);
-    if (points > 0 || !tutorialState.tutorialCompleted()) {
-      await emotionPointsRepository.updateEmotionPoints(EmotionPoints(
-          emotionPoints.id, emotionPoints.points + points, DateTime.now()));
-      await refreshEmotionPoints();
-    }
-    notifyListeners();
-    return emotionPoints;
-  }
-
-  Future<void> refreshEmotionPoints() async {
-    var newPoints = await emotionPointsRepository.getEmotionPoints();
-    var newEmotion = getEmotionIdFromPoints(newPoints.points);
-    var currentEmotion = getEmotionIdFromPoints(emotionPoints.points);
+  Future<void> triggerEmotionEvent(int oldPoints, int newPoints) async {
+    var newEmotion = getEmotionIdFromPoints(newPoints);
+    var currentEmotion = getEmotionIdFromPoints(oldPoints);
     if (newEmotion != currentEmotion) {
       await FirebaseAnalytics.instance.logEvent(
           name: AnalyticsEventType.emotion_changed.name,
           parameters: {"prev_id": currentEmotion.id, "cur_id": newEmotion.id});
     }
-    emotionPoints = newPoints;
   }
 
   int getPointsFromEvent(Event event) {

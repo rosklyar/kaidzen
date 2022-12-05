@@ -173,10 +173,6 @@ class TasksState extends ChangeNotifier {
       await progressState.updateProgress(task);
     }
     await repository.update(task);
-    var type = newStatus == Status.DOING
-        ? EventType.taskInProgress
-        : EventType.taskCompleted;
-    debugPrint('moving task $task & $type');
 
     if (task.id! > 0 && task.id! <= 3) {
       if (newStatus == Status.DONE) {
@@ -184,9 +180,12 @@ class TasksState extends ChangeNotifier {
             .updateTutorialState(TutorialStep(task.id!, DateTime.now()));
       }
     } else {
+      var type = newStatus == Status.DOING
+        ? EventType.taskInProgress
+        : EventType.taskCompleted;
       var event = Event(type, DateTime.now(), task.category);
       await achievementsState.addEvent(event);
-      await emotionsState.updateEmotionPoints(event);
+      await emotionsState.loadAll();
     }
 
     await FirebaseAnalytics.instance
