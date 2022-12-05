@@ -368,8 +368,7 @@ class _CreateTaskState extends State<CreateTask> {
         parent: widget.parent != null ? widget.parent!.id : null));
     var event = Event(EventType.taskCreated, DateTime.now(), category);
     Provider.of<AchievementsState>(context, listen: false).addEvent(event);
-    Provider.of<EmotionsState>(context, listen: false)
-        .updateEmotionPoints(event);
+    Provider.of<EmotionsState>(context, listen: false).loadAll();
     Navigator.pop(context);
     showDefaultTopFlushbar("Goal created", context);
   }

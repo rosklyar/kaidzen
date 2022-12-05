@@ -50,20 +50,21 @@ class ProfilePanelState extends State<ProfilePanel>
                                 padding: EdgeInsets.only(
                                     top: parentHeight * 0.05,
                                     left: parentWidth * 0.015),
-                                child: AnimatedSwitcher(
-                                    duration: const Duration(milliseconds: 800),
-                                    transitionBuilder: (Widget child,
-                                        Animation<double> animation) {
-                                      return FadeTransition(
-                                          opacity: animation, child: child);
-                                    },
-                                    child: GestureDetector(
-                                        onTap: () => showDefaultTopFlushbar(
+                                child: GestureDetector(
+                                  onTap: () => showDefaultTopFlushbar(
                                             getTextForEmotion(
                                                 tutorialState, emotionsState),
                                             context),
-                                        child: avatar(
-                                            tutorialState, emotionsState)))),
+                                  child: AnimatedSwitcher(
+                                      duration: const Duration(milliseconds: 1500),
+                                      transitionBuilder: (Widget child,
+                                          Animation<double> animation) {
+                                        return FadeTransition(
+                                            opacity: animation, child: child);
+                                      },
+                                      child: avatar(
+                                          tutorialState, emotionsState)),
+                                )),
                             flex: 4),
                         Expanded(
                             child: RichText(

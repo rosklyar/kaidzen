@@ -24,7 +24,6 @@ class EmotionPointsRepository {
   }
 
   Future<void> updateEmotionPoints(EmotionPoints emotionPoints) async {
-    debugPrint('updating points $emotionPoints');
     if (db == null) {
       await open();
     }

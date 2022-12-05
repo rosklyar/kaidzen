@@ -168,7 +168,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
         Event(EventType.taskCreated, DateTime.now(), widget.parent.category);
     Provider.of<AchievementsState>(context, listen: false).addEvent(event);
     Provider.of<EmotionsState>(context, listen: false)
-        .updateEmotionPoints(event);
+        .loadAll();
   }
 
   @override
