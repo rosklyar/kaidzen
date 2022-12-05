@@ -113,7 +113,7 @@ class _ViewGoalState extends State<ViewGoal> {
                               spacing: 10,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.only(top: 4),
+                                  padding: const EdgeInsets.only(top: 4),
                                   child: Icon(Icons.circle_rounded,
                                       color: task.category.color,
                                       size: 10.0 + task.difficulty.id * 3),

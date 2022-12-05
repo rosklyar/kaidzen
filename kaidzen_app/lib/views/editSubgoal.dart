@@ -48,7 +48,7 @@ class _EditSubGoalState extends State<EditSubGoal> {
         resizeToAvoidBottomInset: false,
         body: GestureDetector(
             child: Container(
-                padding: const EdgeInsets.only(bottom: 5),
+                padding: const EdgeInsets.only(bottom: 8),
                 color: Color(widget.parent.category.backgroundColor),
                 child: Padding(
                   padding: const EdgeInsets.all(10),

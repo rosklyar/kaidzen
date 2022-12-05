@@ -92,8 +92,10 @@ class ProfilePanelState extends State<ProfilePanel>
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Stack(children: [
-                                    GestureDetector(
-                                      onTap: () async {
+                                    IconButton(
+                                      padding: EdgeInsets.only(
+                                          right: parentWidth * 0.01),
+                                      onPressed: () async {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -105,20 +107,15 @@ class ProfilePanelState extends State<ProfilePanel>
                                                     .achievements_screen_opened
                                                     .name);
                                       },
-                                      child: Padding(
-                                          padding: EdgeInsets.only(
-                                              top: parentWidth * 0.04,
-                                              right: parentWidth * 0.03),
-                                          child: Image.asset(
-                                              "assets/achievements_icon.png",
-                                              height: parentWidth * 0.07)),
+                                      icon: Image.asset(
+                                          "assets/achievements_icon.png",
+                                          height: parentWidth * 0.06),
                                     ),
                                     Visibility(
                                         visible: achievementsState
                                                 .getCompletedAchievementsCount() >
                                             0,
                                         child: Positioned(
-                                          top: parentWidth * 0.01,
                                           right: 0,
                                           child: Container(
                                             width: parentWidth * 0.05,
@@ -141,8 +138,8 @@ class ProfilePanelState extends State<ProfilePanel>
                                           ),
                                         )),
                                   ]),
-                                  GestureDetector(
-                                    onTap: () async {
+                                  IconButton(
+                                    onPressed: () async {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -152,12 +149,8 @@ class ProfilePanelState extends State<ProfilePanel>
                                           name: AnalyticsEventType
                                               .settings_screen_opened.name);
                                     },
-                                    child: Padding(
-                                        padding: EdgeInsets.only(
-                                            top: parentWidth * 0.04, right: 7),
-                                        child: Image.asset(
-                                            "assets/burger_icon.png",
-                                            height: parentWidth * 0.06)),
+                                    icon: Image.asset("assets/burger_icon.png",
+                                        height: parentWidth * 0.06),
                                   )
                                 ],
                               ),
@@ -287,7 +280,7 @@ class ProfilePanelState extends State<ProfilePanel>
         0) {
       return "How are you going to achieve your goals if you don't have any?";
     }
-    
+
     return emotionsState.getCurrentEmotion().text;
   }
 }

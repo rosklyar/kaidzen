@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'package:kaidzen_app/achievements/eggWidget.dart';
 import 'package:kaidzen_app/achievements/style.dart';
+
+import '../assets/constants.dart';
 
 class AchievementDetailsScreen extends StatelessWidget {
   final AchievementSnapshot achievementSnapshot;
@@ -27,6 +30,10 @@ class AchievementDetailsScreen extends StatelessWidget {
             IconButton(
               icon: Image.asset("assets/close_icon.png"),
               onPressed: () {
+                SystemChrome.setApplicationSwitcherDescription(
+                    ApplicationSwitcherDescription(
+                        label: "Sticky Goals",
+                        primaryColor: moreScreenBackColor.value));
                 int count = 0;
                 Navigator.of(context).popUntil((_) => count++ >= 2);
               },

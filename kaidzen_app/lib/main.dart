@@ -4,6 +4,7 @@ import 'package:kaidzen_app/achievements/AchievementsRepository.dart';
 import 'package:kaidzen_app/achievements/EventsRepository.dart';
 
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
+import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/emotions/EmotionPointsRepository.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
@@ -102,6 +103,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setApplicationSwitcherDescription(
+        ApplicationSwitcherDescription(
+            label: "Sticky Goals", primaryColor: moreScreenBackColor.value));
     return AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.dark
             .copyWith(statusBarColor: Colors.white.withOpacity(0)),
@@ -127,7 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () async {
               await FirebaseAnalytics.instance.logEvent(
                   name: AnalyticsEventType.create_goal_button_pressed.name);
-
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const CreateTask()));
             },

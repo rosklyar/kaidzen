@@ -128,7 +128,7 @@ class _EmailSenderState extends State<EmailSender> {
           backgroundColor: moreScreenBackColor),
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.only(left: 10, right: 10, bottom: 18),
         child: GestureDetector(
           onTap: () {
             Utils.tryToLostFocus(context);
@@ -147,20 +147,21 @@ class _EmailSenderState extends State<EmailSender> {
               Expanded(
                   child: Padding(
                       child: TextField(
+                        keyboardType: TextInputType.text,
+                        maxLines: 15,
+                        autofocus: true,
                         controller: _bodyController,
-                        maxLines: null,
-                        expands: true,
-                        textAlignVertical: TextAlignVertical.top,
                         decoration: InputDecoration(
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),
                                 borderSide: const BorderSide(
                                     color: Color.fromRGBO(117, 30, 132, 1))),
+                            hintText: "Feedback",
                             hintStyle: Fonts.inputHintTextStyle),
                       ),
                       padding:
-                          const EdgeInsets.only(left: 10, top: 30, right: 10)),
-                  flex: 7),
+                          const EdgeInsets.only(left: 10, top: 10, right: 10)),
+                  flex: 6),
               Expanded(
                   child: Column(
                     children: <Widget>[
@@ -192,19 +193,22 @@ class _EmailSenderState extends State<EmailSender> {
                                   }),
                               flex: math.min(attachments.length + 1, 3))),
                       Expanded(
-                          child: Row(children: [
-                            IconButton(
-                              icon: SvgPicture.asset(
-                                  "assets/settings/attach.svg"),
-                              color: Colors.black,
-                              onPressed: _openImagePicker,
-                            ),
-                            InkWell(
-                                child: Text('Attach screenshot or video',
-                                    style: Fonts.largeTextStyle.copyWith(
-                                        decoration: TextDecoration.underline)),
-                                onTap: _openImagePicker)
-                          ]),
+                          child: Align(
+                              alignment: Alignment.topCenter,
+                              child: Row(children: [
+                                IconButton(
+                                  icon: SvgPicture.asset(
+                                      "assets/settings/attach.svg"),
+                                  color: Colors.black,
+                                  onPressed: _openImagePicker,
+                                ),
+                                InkWell(
+                                    child: Text('Attach screenshot or video',
+                                        style: Fonts.largeTextStyle.copyWith(
+                                            decoration:
+                                                TextDecoration.underline)),
+                                    onTap: _openImagePicker)
+                              ])),
                           flex: math.max(1, 4 - attachments.length)),
                     ],
                   ),
