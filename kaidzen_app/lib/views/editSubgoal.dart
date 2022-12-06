@@ -89,7 +89,7 @@ class _EditSubGoalState extends State<EditSubGoal> {
                                 ],
                               )
                             ]),
-                        flex: 16),
+                        flex: 20),
                     Expanded(
                         child: SizedBox(
                             width: double.infinity,
