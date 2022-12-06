@@ -83,9 +83,9 @@ class BoardState extends State<Board> {
     }
     var background = task.status == Status.DOING
         ? AssetImage(
-            "assets/doing" + ((task.priority + 1) % 2 + 1).toString() + ".png")
+            "assets/doing" + ((task.id! + 1) % 2 + 1).toString() + ".png")
         : AssetImage(task.category.backgroundLink +
-            ((task.priority + 1) % 2 + 1).toString() +
+            ((task.id! + 1) % 2 + 1).toString() +
             ".png");
 
     return Card(
