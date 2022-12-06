@@ -48,7 +48,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                         text: TextSpan(children: [
                           TextSpan(
                               text:
-                                  "\n\nYou are the main character of you own game of Life.\n\nEach decision you make, each goal you achieve\nhave a positive impact on one of your character's traits.",
+                                  "\n\nYou are the main character of your own Game of Life.\n\nEach decision you make, each goal you achieve\nhave a positive impact on one of your character's traits.",
                               style: Fonts.screenTytleTextStyle)
                         ]),
                       )),
@@ -86,7 +86,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
-                                  "Improves you overall physical wellbeing, performance in different kind of activities, ability to concentrate, restore and having a good sleep.\n\nStay active, build beneficial habits, fight bad ones, master your sleep, don't stop.",
+                                  "Improves your overall physical wellbeing, performance in different kind of activities, ability to concentrate, restore and have a good sleep.\n\nStay active, build beneficial habits, fight bad ones, master your sleep, don't stop.",
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
@@ -124,7 +124,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
-                                  "Increases your ability to build new social connections, strengthen existing ones. Improves you empathy. Increase overall level of happiness, and not only yours.\n\nYour friends, family and loved ones needs you attention, as well as you need theirs. Strong bonds are powerful drivers and reliable support at the same time.",
+                                  "Increases your ability to build new social connections, strengthen existing ones. Improves your empathy. Increases overall level of happiness, and not only yours.\n\nYour friends, family and loved ones needs your attention, as well as you need theirs. Strong bonds are powerful drivers and reliable support at the same time.",
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
@@ -162,7 +162,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                               style: Fonts.screenTytleTextStyle),
                           TextSpan(
                               text:
-                                  "‘I am going to play tennis with my kid’.\n\nIs it health, energy or relations? Just choose any of them that you feel is more important for you now.",
+                                  "‘I am going to play tennis with my kid’.\n\nIs it a health, energy or relations? Just choose any of them, that you feel is more important for you now.",
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
