@@ -97,7 +97,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                 ],
                               )
                             ]),
-                        flex: 13),
+                        flex: 16),
                     Expanded(
                         child: Column(
                           children: [
@@ -167,8 +167,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
     var event =
         Event(EventType.taskCreated, DateTime.now(), widget.parent.category);
     Provider.of<AchievementsState>(context, listen: false).addEvent(event);
-    Provider.of<EmotionsState>(context, listen: false)
-        .loadAll();
+    Provider.of<EmotionsState>(context, listen: false).loadAll();
   }
 
   @override

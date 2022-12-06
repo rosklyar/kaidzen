@@ -161,7 +161,7 @@ class _EmailSenderState extends State<EmailSender> {
                       ),
                       padding:
                           const EdgeInsets.only(left: 10, top: 10, right: 10)),
-                  flex: 6),
+                  flex: 9),
               Expanded(
                   child: Column(
                     children: <Widget>[
@@ -212,7 +212,7 @@ class _EmailSenderState extends State<EmailSender> {
                           flex: math.max(1, 4 - attachments.length)),
                     ],
                   ),
-                  flex: 6),
+                  flex: 7),
               Expanded(
                   child: Padding(
                       padding: const EdgeInsets.symmetric(
