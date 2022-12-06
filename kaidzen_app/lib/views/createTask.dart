@@ -370,7 +370,7 @@ class _CreateTaskState extends State<CreateTask> {
     Provider.of<AchievementsState>(context, listen: false).addEvent(event);
     Provider.of<EmotionsState>(context, listen: false).loadAll();
     Navigator.pop(context);
-    showDefaultTopFlushbar("Goal created", context);
+    showTutorialTopFlushbar("Goal created", context);
   }
 
   @override

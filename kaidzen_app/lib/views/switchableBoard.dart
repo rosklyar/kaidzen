@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:ui';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
@@ -9,6 +10,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:kaidzen_app/views/boardSection.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 
+import '../service/AnalyticsService.dart';
 import '../widgets/switchableBoardsToggle.dart';
 
 class SwitchableBoard extends StatefulWidget {
@@ -123,6 +125,9 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                           ),
                           onTap: () async {
                             pc.close();
+                            await FirebaseAnalytics.instance.logEvent(
+                                name: AnalyticsEventType
+                                    .collapse_button_pressed.name);
                           }),
                       flex: 1)
                 ],
