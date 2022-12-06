@@ -44,43 +44,48 @@ class ProfilePanelState extends State<ProfilePanel>
               Row(
                 children: [
                   Expanded(
-                      child: Column(children: [
-                        Expanded(
-                            child: Padding(
-                                padding: EdgeInsets.only(
-                                    top: parentHeight * 0.05,
-                                    left: parentWidth * 0.015),
-                                child: GestureDetector(
-                                  onTap: () => showDefaultTopFlushbar(
-                                            getTextForEmotion(
-                                                tutorialState, emotionsState),
-                                            context),
-                                  child: AnimatedSwitcher(
-                                      duration: const Duration(milliseconds: 1500),
-                                      transitionBuilder: (Widget child,
-                                          Animation<double> animation) {
-                                        return FadeTransition(
-                                            opacity: animation, child: child);
-                                      },
-                                      child: avatar(
-                                          tutorialState, emotionsState)),
-                                )),
-                            flex: 4),
-                        Expanded(
-                            child: RichText(
-                                text: TextSpan(children: [
-                              TextSpan(
-                                  text: "TOTAL LVL  ",
-                                  style: Fonts.smallTextStyle.copyWith(
-                                      fontSize: 9, letterSpacing: 0.02)),
-                              TextSpan(
-                                text: progressState.getTotalLevel().toString(),
-                                style: Fonts.mediumBoldTextStyle
-                                    .copyWith(fontSize: 18),
-                              )
-                            ])),
-                            flex: 1)
-                      ]),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: parentHeight * 0.055),
+                        child: Column(children: [
+                          Expanded(
+                              child: Padding(
+                                  padding: EdgeInsets.only(
+                                      top: parentHeight * 0.01,
+                                      left: parentWidth * 0.015),
+                                  child: GestureDetector(
+                                    onTap: () => showDefaultTopFlushbar(
+                                        getTextForEmotion(
+                                            tutorialState, emotionsState),
+                                        context),
+                                    child: AnimatedSwitcher(
+                                        duration:
+                                            const Duration(milliseconds: 1500),
+                                        transitionBuilder: (Widget child,
+                                            Animation<double> animation) {
+                                          return FadeTransition(
+                                              opacity: animation, child: child);
+                                        },
+                                        child: avatar(
+                                            tutorialState, emotionsState)),
+                                  )),
+                              flex: 4),
+                          Expanded(
+                              child: RichText(
+                                  text: TextSpan(children: [
+                                TextSpan(
+                                    text: "TOTAL LVL  ",
+                                    style: Fonts.smallTextStyle.copyWith(
+                                        fontSize: 9, letterSpacing: 0.02)),
+                                TextSpan(
+                                  text:
+                                      progressState.getTotalLevel().toString(),
+                                  style: Fonts.mediumBoldTextStyle
+                                      .copyWith(fontSize: 18),
+                                )
+                              ])),
+                              flex: 1)
+                        ]),
+                      ),
                       flex: 4),
                   Expanded(
                       child: Column(children: [
