@@ -43,7 +43,7 @@ class MoveTaskIconButton extends StatelessWidget {
     } else {
       await Provider.of<TasksState>(context, listen: false)
           .moveTaskAndNotify(task, newStatus);
-      showDefaultTopFlushbar('Moved to $newStatus', context);
+      showTutorialTopFlushbar('Moved to $newStatus', context);
     }
   }
 
@@ -121,7 +121,7 @@ class MoveTaskIconButton extends StatelessWidget {
                                         listen: false)
                                     .moveTaskAndNotify(task, newStatus);
                                 Navigator.pop(context);
-                                showDefaultTopFlushbar(
+                                showTutorialTopFlushbar(
                                     'Moved to $newStatus', context);
                               },
                               style: ElevatedButton.styleFrom(

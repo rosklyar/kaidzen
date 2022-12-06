@@ -117,7 +117,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                                     widget.parent,
                                                     popTarget: widget.popTarget,
                                                   )));
-                                      showDefaultTopFlushbar(
+                                      showTutorialTopFlushbar(
                                           "Subgoal created", context);
                                     }),
                                 flex: 3),
@@ -140,7 +140,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                                 ModalRoute.withName(
                                                     widget.popTarget!));
                                           }
-                                          showDefaultTopFlushbar(
+                                          showTutorialTopFlushbar(
                                               "Subgoal created", context);
                                         }
                                       },

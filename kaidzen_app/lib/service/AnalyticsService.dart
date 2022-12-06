@@ -79,7 +79,7 @@ class AnalyticsService {
 
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.EMOTION_POINTS.name.toLowerCase(),
-        value: emotionsState.emotionPoints.toString());
+        value: emotionsState.emotionPoints.points.toString());
 
     await FirebaseAnalytics.instance.setUserProperty(
         name:
@@ -111,7 +111,8 @@ enum AnalyticsEventType {
   achievement_collected,
   level_up,
   emotion_changed,
-  tutorial_step_completed;
+  tutorial_step_completed,
+  collapse_button_pressed;
 }
 
 enum AnalyticsUserProperties {
