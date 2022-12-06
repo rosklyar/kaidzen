@@ -27,7 +27,7 @@ class EmotionsState extends ChangeNotifier {
     final daysPast = now.difference(lastUpdateTs).inDays;
 
     if (tutorialState.tutorialCompleted()) {
-      currentPoints -= daysPast * 2;
+      currentPoints -= daysPast * 5;
       var events =
           await eventsRepository.getEventsAfter(emotionPoints.updateTs);
       for (var event in events) {
