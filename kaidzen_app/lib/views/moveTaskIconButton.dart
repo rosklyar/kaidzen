@@ -65,46 +65,34 @@ class MoveTaskIconButton extends StatelessWidget {
           child: Center(
             child: Column(
               children: <Widget>[
-                Expanded(
-                    child: Padding(
-                        padding: const EdgeInsets.only(top: 15),
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 15, left: 15),
-                          child: SizedBox(
-                            width: parentWidth * 0.9,
-                            child: Text(
-                                "'" +
-                                    parentTask.shortenedName(50) +
-                                    "' will be moved to 'Done'",
-                                style: Fonts.screenTytleTextStyle),
-                          ),
-                        )),
-                    flex: 3),
-                const Expanded(child: SizedBox(), flex: 1),
+                const Expanded(child: SizedBox(), flex: 2),
                 Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(right: 10, left: 10),
                       child: SizedBox(
                         width: parentWidth * 0.9,
                         child: Text(
-                            "Congratulations! You have completed the last subgoal and '" +
+                            "You have completed the last subgoal and '" +
                                 parentTask.shortenedName(50) +
                                 "' is about to be moved to 'Done'",
-                            style: Fonts.largeTextStyle),
+                            style: Fonts.largeBoldTextStyle),
                       ),
                     ),
-                    flex: 3),
-                Expanded(
-                    child: GestureDetector(
-                        child: Text('I want to keep it in \'Do\'',
-                            style: Fonts.largeTextStyle.copyWith(
-                                decoration: TextDecoration.underline)),
-                        onTap: () {
-                          Provider.of<TasksState>(context, listen: false)
-                              .moveSubtaskOnlyAndNotify(task, newStatus);
-                          Navigator.pop(context);
-                        }),
-                    flex: 1),
+                    flex: 5),
+                Visibility(
+                  visible: parentTask.id != 0,
+                  child: Expanded(
+                      child: GestureDetector(
+                          child: Text('I want to keep it in \'Do\'',
+                              style: Fonts.largeTextStyle.copyWith(
+                                  decoration: TextDecoration.underline)),
+                          onTap: () {
+                            Provider.of<TasksState>(context, listen: false)
+                                .moveSubtaskOnlyAndNotify(task, newStatus);
+                            Navigator.pop(context);
+                          }),
+                      flex: 2),
+                ),
                 Expanded(
                     child: Padding(
                         padding: const EdgeInsets.only(
