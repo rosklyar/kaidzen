@@ -79,17 +79,20 @@ class MoveTaskIconButton extends StatelessWidget {
                       ),
                     ),
                     flex: 5),
-                Expanded(
-                    child: GestureDetector(
-                        child: Text('I want to keep it in \'Do\'',
-                            style: Fonts.largeTextStyle.copyWith(
-                                decoration: TextDecoration.underline)),
-                        onTap: () {
-                          Provider.of<TasksState>(context, listen: false)
-                              .moveSubtaskOnlyAndNotify(task, newStatus);
-                          Navigator.pop(context);
-                        }),
-                    flex: 2),
+                Visibility(
+                  visible: parentTask.id != 0,
+                  child: Expanded(
+                      child: GestureDetector(
+                          child: Text('I want to keep it in \'Do\'',
+                              style: Fonts.largeTextStyle.copyWith(
+                                  decoration: TextDecoration.underline)),
+                          onTap: () {
+                            Provider.of<TasksState>(context, listen: false)
+                                .moveSubtaskOnlyAndNotify(task, newStatus);
+                            Navigator.pop(context);
+                          }),
+                      flex: 2),
+                ),
                 Expanded(
                     child: Padding(
                         padding: const EdgeInsets.only(
