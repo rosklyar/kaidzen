@@ -121,22 +121,25 @@ class SettingsScreen extends StatelessWidget {
                             onTap: () async {
                               await _goToSendFeedback(context);
                             }),
-                        ListTile(
-                            title: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  const Icon(Icons.circle,
-                                      color: Color.fromRGBO(240, 213, 76, 1.0),
-                                      size: 8),
-                                  Text(
-                                    " Share app",
-                                    style: Fonts.largeTextStyle20,
-                                    textAlign: TextAlign.left,
-                                  )
-                                ]),
-                            onTap: () async {
-                              await _shareApp();
-                            }),
+                        Visibility(
+                          visible: false, //TODO uncomment when we know real link
+                          child: ListTile(
+                              title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const Icon(Icons.circle,
+                                        color: Color.fromRGBO(240, 213, 76, 1.0),
+                                        size: 8),
+                                    Text(
+                                      " Share app",
+                                      style: Fonts.largeTextStyle20,
+                                      textAlign: TextAlign.left,
+                                    )
+                                  ]),
+                              onTap: () async {
+                                await _shareApp();
+                              }),
+                        ),
                         progress.getTotalLevel() > 10
                             ? ListTile(
                                 title: Row(
