@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,7 +12,6 @@ import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
 import '../service/AnalyticsService.dart';
-import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -23,9 +20,7 @@ class SettingsScreen extends StatelessWidget {
     await FlutterShare.share(
         title: 'Sticky Goals',
         text: 'Sticky Goals',
-        linkUrl: defaultTargetPlatform == TargetPlatform.android
-            ? 'https://play.google.com/apps/test/com.funworkstudio.stickygoals.android/15'
-            : "https://https://www.apple.com/app-store",
+        linkUrl: "stickygoals.app.link",
         chooserTitle: 'Share \'Sticky Goals\'');
   }
 
@@ -121,25 +116,22 @@ class SettingsScreen extends StatelessWidget {
                             onTap: () async {
                               await _goToSendFeedback(context);
                             }),
-                        Visibility(
-                          visible: false, //TODO uncomment when we know real link
-                          child: ListTile(
-                              title: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    const Icon(Icons.circle,
-                                        color: Color.fromRGBO(240, 213, 76, 1.0),
-                                        size: 8),
-                                    Text(
-                                      " Share app",
-                                      style: Fonts.largeTextStyle20,
-                                      textAlign: TextAlign.left,
-                                    )
-                                  ]),
-                              onTap: () async {
-                                await _shareApp();
-                              }),
-                        ),
+                        ListTile(
+                            title: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Icon(Icons.circle,
+                                      color: Color.fromRGBO(240, 213, 76, 1.0),
+                                      size: 8),
+                                  Text(
+                                    " Share app",
+                                    style: Fonts.largeTextStyle20,
+                                    textAlign: TextAlign.left,
+                                  )
+                                ]),
+                            onTap: () async {
+                              await _shareApp();
+                            }),
                         progress.getTotalLevel() > 10
                             ? ListTile(
                                 title: Row(
