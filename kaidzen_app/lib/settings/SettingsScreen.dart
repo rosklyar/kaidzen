@@ -20,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
     await FlutterShare.share(
         title: 'Sticky Goals',
         text: 'Sticky Goals',
-        linkUrl: "stickygoals.app.link",
+        linkUrl: "https://stickygoals.app.link",
         chooserTitle: 'Share \'Sticky Goals\'');
   }
 
