@@ -2,13 +2,14 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_share/flutter_share.dart';
-import 'package:kaidzen_app/feedback/EmailSender.dart';
 import 'package:kaidzen_app/service/ProgressState.dart';
 import 'package:kaidzen_app/settings/AboutPhilosophyScreen.dart';
 import 'package:kaidzen_app/settings/LongTextScreen.dart';
 import 'package:kaidzen_app/settings/ReviewUtils.dart';
 import 'package:kaidzen_app/settings/SpheresExplanationScreen.dart';
+import 'package:kaidzen_app/tutorial/TutorialState.dart';
 import 'package:provider/provider.dart';
+import 'package:instabug_flutter/instabug_flutter.dart';
 
 import '../assets/constants.dart';
 import '../service/AnalyticsService.dart';
@@ -26,8 +27,8 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ProgressState>(
-        builder: (context, progress, child) => Scaffold(
+    return Consumer2<ProgressState, TutorialState>(
+        builder: (context, progress, tutorial, child) => Scaffold(
             appBar: AppBar(
               elevation: 0.0,
               automaticallyImplyLeading: false,
@@ -132,7 +133,7 @@ class SettingsScreen extends StatelessWidget {
                             onTap: () async {
                               await _shareApp();
                             }),
-                        progress.getTotalLevel() > 10
+                        tutorial.tutorialCompleted()
                             ? ListTile(
                                 title: Row(
                                     mainAxisAlignment:
@@ -257,8 +258,8 @@ class SettingsScreen extends StatelessWidget {
   Future<void> _goToSendFeedback(BuildContext context) async {
     await FirebaseAnalytics.instance
         .logEvent(name: AnalyticsEventType.send_feedback_opened.name);
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const EmailSender()));
+    BugReporting.show(
+        ReportType.feedback, [InvocationOption.emailFieldOptional]);
   }
 
   Future<void> _goToAboutPhilosophy(BuildContext context) async {

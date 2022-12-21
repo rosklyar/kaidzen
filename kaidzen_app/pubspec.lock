@@ -387,6 +387,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.4"
+  instabug_flutter:
+    dependency: "direct main"
+    description:
+      name: instabug_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "11.5.0"
   intl:
     dependency: "direct main"
     description:
