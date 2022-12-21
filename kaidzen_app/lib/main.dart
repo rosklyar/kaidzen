@@ -22,6 +22,9 @@ import 'service/ProgressState.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:instabug_flutter/instabug_flutter.dart';
+import 'dart:async';
+import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,27 +56,39 @@ void main() async {
   await achievementsState.loadAll();
   await tutorialState.loadAll();
   await emotionsState.loadAll();
+
+  FlutterError.onError = (FlutterErrorDetails details) {
+    Zone.current.handleUncaughtError(details.exception, details.stack!);
+  };
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) => runApp(MultiProvider(providers: [
-            ChangeNotifierProvider(create: (context) {
-              AnalyticsService.initUserProperties(
-                  taskState, emotionsState, tutorialState);
-              return taskState;
-            }),
-            ChangeNotifierProvider(create: (context) {
-              progressState.loadAll();
-              return progressState;
-            }),
-            ChangeNotifierProvider(create: (context) {
-              return achievementsState;
-            }),
-            ChangeNotifierProvider(create: (context) {
-              return tutorialState;
-            }),
-            ChangeNotifierProvider(create: (context) {
-              return emotionsState;
-            }),
-          ], child: const MyApp())));
+      .then((value) => runZonedGuarded(
+          () => runApp(MultiProvider(providers: [
+                ChangeNotifierProvider(create: (context) {
+                  AnalyticsService.initUserProperties(
+                      taskState, emotionsState, tutorialState);
+                  return taskState;
+                }),
+                ChangeNotifierProvider(create: (context) {
+                  progressState.loadAll();
+                  return progressState;
+                }),
+                ChangeNotifierProvider(create: (context) {
+                  return achievementsState;
+                }),
+                ChangeNotifierProvider(create: (context) {
+                  return tutorialState;
+                }),
+                ChangeNotifierProvider(create: (context) {
+                  return emotionsState;
+                }),
+              ], child: const MyApp())),
+          CrashReporting.reportCrash));
+  Instabug.start(
+      defaultTargetPlatform == TargetPlatform.iOS
+          ? '5512d7634f2aa086cb94903be6939bc3'
+          : 'a1b46ee08c00dec58122306994a09310',
+      [InvocationEvent.screenshot]);
 }
 
 class MyApp extends StatelessWidget {
@@ -82,6 +97,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorObservers: [InstabugNavigatorObserver()],
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),

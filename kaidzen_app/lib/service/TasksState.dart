@@ -7,8 +7,10 @@ import 'package:kaidzen_app/models/task.dart';
 import "package:collection/collection.dart";
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
+import 'package:kaidzen_app/settings/ReviewUtils.dart';
 import 'package:kaidzen_app/tutorial/TutorialState.dart';
 import 'package:kaidzen_app/tutorial/tutorialProgress.dart';
+import 'package:kaidzen_app/views/utils.dart';
 
 import '../achievements/event.dart';
 import 'ProgressState.dart';
@@ -178,11 +180,14 @@ class TasksState extends ChangeNotifier {
       if (newStatus == Status.DONE) {
         tutorialState
             .updateTutorialState(TutorialStep(task.id!, DateTime.now()));
+        if (tutorialState.tutorialCompleted()) {
+          ReviewUtils.requestReview();
+        }
       }
     } else {
       var type = newStatus == Status.DOING
-        ? EventType.taskInProgress
-        : EventType.taskCompleted;
+          ? EventType.taskInProgress
+          : EventType.taskCompleted;
       var event = Event(type, DateTime.now(), task.category);
       await achievementsState.addEvent(event);
       await emotionsState.loadAll();
