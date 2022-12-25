@@ -52,7 +52,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                               style: Fonts.screenTytleTextStyle)
                         ]),
                       )),
-                  duration: const Duration(seconds: 45)),
+                  duration: const Duration(seconds: 20)),
               StoryItem(
                   Story(
                       backgroundColor:
@@ -71,7 +71,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
-                  duration: const Duration(seconds: 45)),
+                  duration: const Duration(seconds: 20)),
               StoryItem(
                   Story(
                       backgroundColor:
@@ -90,7 +90,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
-                  duration: const Duration(seconds: 45)),
+                  duration: const Duration(seconds: 20)),
               StoryItem(
                   Story(
                       backgroundColor:
@@ -109,7 +109,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
-                  duration: const Duration(seconds: 45)),
+                  duration: const Duration(seconds: 20)),
               StoryItem(
                   Story(
                       backgroundColor:
@@ -128,7 +128,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
-                  duration: const Duration(seconds: 45)),
+                  duration: const Duration(seconds: 20)),
               StoryItem(
                   Story(
                       backgroundColor:
@@ -147,7 +147,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
-                  duration: const Duration(seconds: 45)),
+                  duration: const Duration(seconds: 20)),
               StoryItem(
                   Story(
                       backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
@@ -166,7 +166,7 @@ class SpheresExplanationScreen extends StatelessWidget {
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
-                  duration: const Duration(seconds: 45)),
+                  duration: const Duration(seconds: 20)),
               StoryItem(
                   Story(
                       backgroundColor: const Color.fromRGBO(225, 218, 218, 1.0),
@@ -181,10 +181,11 @@ class SpheresExplanationScreen extends StatelessWidget {
                               style: Fonts.screenTytleTextStyle)
                         ]),
                       )),
-                  duration: const Duration(seconds: 45))
+                  duration: const Duration(seconds: 20))
             ],
             progressPosition: ProgressPosition.top,
-            repeat: true,
+            onComplete: () => Navigator.pop(context),
+            repeat: false,
             inline: true));
   }
 }

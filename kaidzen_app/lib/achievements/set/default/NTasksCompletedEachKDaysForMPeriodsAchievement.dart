@@ -36,7 +36,10 @@ class NTasksCompletedEachKDaysForMPeriodsAchievement extends Achievement {
         if (completedTasks >= numberOfTasks) {
           progress += periodDelta;
         } else {
-          if (from.difference(to).inDays >= numberOfDays) {
+          // It looks strange, but we try to erase possible missmath in edge hours
+          var periodExpired =
+              from.difference(to).inHours >= (numberOfDays * 24) - 1;
+          if (periodExpired) {
             eventsRepository.breakPeriodAchievement(info);
             progress = 0.0;
           }
