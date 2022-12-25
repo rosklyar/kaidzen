@@ -53,7 +53,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                               style: Fonts.screenTytleTextStyle)
                         ]),
                       )),
-                  duration: const Duration(seconds: 45)),
+                  duration: const Duration(seconds: 20)),
               StoryItem(
                   Story(
                       backgroundColor: const Color.fromRGBO(241, 232, 252, 1.0),
@@ -80,7 +80,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
-                  duration: const Duration(seconds: 45)),
+                  duration: const Duration(seconds: 20)),
               StoryItem(
                   Story(
                       backgroundColor: const Color.fromRGBO(237, 248, 250, 1.0),
@@ -98,7 +98,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
-                  duration: const Duration(seconds: 45)),
+                  duration: const Duration(seconds: 20)),
               StoryItem(
                   Story(
                       backgroundColor: const Color.fromRGBO(243, 250, 194, 1.0),
@@ -116,7 +116,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
-                  duration: const Duration(seconds: 45)),
+                  duration: const Duration(seconds: 20)),
               StoryItem(
                   Story(
                       backgroundColor: const Color.fromRGBO(252, 236, 230, 1.0),
@@ -178,7 +178,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                               style: Fonts.largeTextStyle),
                         ]),
                       )),
-                  duration: const Duration(seconds: 45)),
+                  duration: const Duration(seconds: 20)),
               StoryItem(
                   Story(
                       backgroundColor: const Color.fromRGBO(242, 233, 252, 1.0),
@@ -196,7 +196,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
-                  duration: const Duration(seconds: 45)),
+                  duration: const Duration(seconds: 20)),
               StoryItem(
                   Story(
                       backgroundColor: const Color.fromRGBO(251, 245, 206, 1.0),
@@ -214,10 +214,11 @@ class AboutPhilosophyScreen extends StatelessWidget {
                               style: Fonts.largeTextStyle)
                         ]),
                       )),
-                  duration: const Duration(seconds: 45))
+                  duration: const Duration(seconds: 20))
             ],
             progressPosition: ProgressPosition.top,
-            repeat: true,
+            onComplete: () => Navigator.pop(context),
+            repeat: false,
             inline: true));
   }
 }
