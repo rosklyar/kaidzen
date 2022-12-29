@@ -88,7 +88,7 @@ void main() async {
       defaultTargetPlatform == TargetPlatform.iOS
           ? '5512d7634f2aa086cb94903be6939bc3'
           : 'a1b46ee08c00dec58122306994a09310',
-      [InvocationEvent.screenshot]);
+      []);
 }
 
 class MyApp extends StatelessWidget {
