@@ -73,6 +73,7 @@ const whiteBackgroundColor = Color.fromRGBO(225, 218, 218, 1.0);
 const inputInactiveBorderColor = Color.fromRGBO(114, 118, 121, 1);
 const activeButtonColor = Color.fromRGBO(18, 17, 17, 1);
 const moreScreenBackColor = Color.fromRGBO(245, 243, 243, 1.0);
+const greyTextColor = Color.fromRGBO(114, 118, 121, 1.0);
 
 class Fonts {
   static TextStyle smallTextStyle = GoogleFonts.montserrat(

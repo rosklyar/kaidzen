@@ -106,7 +106,7 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                       child: Consumer<TasksState>(
                           builder: (context, state, child) {
                         return Board(
-                            name: currentBoard.name,
+                            board: currentBoard,
                             list: state.getByStatus(currentBoard.name),
                             sc: sc,
                             scrollEnabled: scrollEnabled);
