@@ -5,14 +5,15 @@ import '../models/task.dart';
 
 class ProgressCalculator {
   static const int MAX_POINTS_VALUE = 10000;
+
   static Progress progress(Progress progress, Task task) {
-    if (task.category.id == DevelopmentCategory.NO_CATEGORY.id) {
+    if (noProgressFilter(task)) {
       return progress;
     }
 
     var nextLevelCap = _levelToPointsMap[progress.level + 1]!;
-    var totalPoints = _difficultyPointsMap[task.difficulty]! +
-        adjustPoints(progress, nextLevelCap);
+    var totalPoints =
+        getEarnedPoints(task) + adjustPoints(progress, nextLevelCap);
     if (totalPoints >= nextLevelCap) {
       return Progress(
         progress.level + 1,
@@ -24,6 +25,21 @@ class ProgressCalculator {
         totalPoints,
       );
     }
+  }
+
+  static bool noProgressFilter(Task task) {
+    return task.category.id == DevelopmentCategory.NO_CATEGORY.id ||
+        (task.status == Status.DONE && task.doneTs != null) ||
+        (task.status == Status.DOING && task.inProgressTs != null);
+  }
+
+  static int getEarnedPoints(Task task) {
+    if (task.status == Status.DOING) {
+      return 5;
+    } else if (task.status == Status.TODO) {
+      return 10;
+    }
+    return _difficultyPointsMap[task.difficulty]!;
   }
 
   static double getLevelFraction(

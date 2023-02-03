@@ -10,7 +10,6 @@ import 'package:kaidzen_app/service/TaskRepository.dart';
 import 'package:kaidzen_app/settings/ReviewUtils.dart';
 import 'package:kaidzen_app/tutorial/TutorialState.dart';
 import 'package:kaidzen_app/tutorial/tutorialProgress.dart';
-import 'package:kaidzen_app/views/utils.dart';
 
 import '../achievements/event.dart';
 import 'ProgressState.dart';
@@ -82,6 +81,7 @@ class TasksState extends ChangeNotifier {
   addTask(Task newTask) async {
     newTask.priority = calculateNewPriority(newTask, newTask.status);
     Task task = await repository.insert(newTask);
+    await progressState.updateProgress(task);
     await loadAll();
     await updatePropertyAfterTaskAdded();
     await FirebaseAnalytics.instance
@@ -170,9 +170,9 @@ class TasksState extends ChangeNotifier {
 
     String oldStatus = task.status;
     task.status = newStatus;
-    if (newStatus == Status.DONE && task.doneTs == null) {
-      task.doneTs = DateTime.now();
+    if (task.status != Status.TODO) {
       await progressState.updateProgress(task);
+      updateTaskTimestamps(task);
     }
     await repository.update(task);
 
@@ -204,6 +204,14 @@ class TasksState extends ChangeNotifier {
       "goal_previous_status": oldStatus,
       "is_simple": task.subtasks.isEmpty
     });
+  }
+
+  void updateTaskTimestamps(Task task) {
+    if (task.status == Status.DOING && task.inProgressTs == null) {
+      task.inProgressTs = DateTime.now();
+    } else if (task.status == Status.DONE && task.doneTs == null) {
+      task.doneTs = DateTime.now();
+    }
   }
 
   int calculateNewPriority(Task task, String newStatus) {

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'dart:developer' as logging;
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/BoardMessageState.dart';
 import 'package:kaidzen_app/service/TasksState.dart';

@@ -19,6 +19,7 @@ const String columnTaskParentId = 'parent_id';
 const String columnTaskCategory = 'category_id';
 const String columnTaskDifficulty = 'difficulty_id';
 const String columnTaskDoneTs = 'done_ts';
+const String columnTaskInProgressTs = 'in_progress_ts';
 
 const String tableEvents = 'events';
 const String columnEventtId = '_id';
@@ -156,7 +157,12 @@ class KaizenDb {
           '''
     ];
 
-    List<String> migrationScripts = [];
+    List<String> migrationScripts = [
+      '''
+          alter table $tableTask add column $columnTaskInProgressTs datetime default null;
+          update $tableTask set $columnTaskInProgressTs = now() where $columnTaskStatus = '${Status.DOING}';
+        '''
+    ];
 
     return await openDatabase(join(await getDatabasesPath(), 'sticky_goals.db'),
         version: migrationScripts.length + 1,
