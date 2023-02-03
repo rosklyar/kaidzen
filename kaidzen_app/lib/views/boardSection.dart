@@ -1,10 +1,10 @@
 import 'dart:math';
-import 'dart:developer' as logging;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/BoardMessageState.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
+import 'package:kaidzen_app/tutorial/TutorialState.dart';
 import 'package:kaidzen_app/views/listViewComplexTaskItem.dart';
 import 'package:provider/provider.dart';
 import '../assets/constants.dart';
@@ -58,10 +58,12 @@ class BoardState extends State<Board> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BoardMessageState>(
-        builder: (context, boardMessageState, child) => GestureDetector(
+    return Consumer2<BoardMessageState, TutorialState>(
+        builder: (context, boardMessageState, tutorialState, child) =>
+            GestureDetector(
                 child: Stack(children: [
               Column(children: [
+                const Expanded(child: SizedBox(), flex: 1),
                 Expanded(
                     child: Align(
                         child: Text(
@@ -69,8 +71,15 @@ class BoardState extends State<Board> {
                             style: Fonts.largeTextStyle
                                 .copyWith(color: greyTextColor),
                             textAlign: TextAlign.center),
-                        alignment: Alignment.center)),
-                const Expanded(child: SizedBox())
+                        alignment: Alignment.bottomCenter),
+                    flex: 2),
+                !tutorialState.tutorialCompleted() &&
+                        widget.board == ToggleBoard.TODO
+                    ? Expanded(
+                        child: SvgPicture.asset("assets/arrow-to-create.svg"),
+                        flex: 2)
+                    : const Expanded(child: SizedBox(), flex: 2),
+                const Expanded(child: SizedBox(), flex: 3)
               ]),
               ReorderableListView(
                 physics: widget.scrollEnabled
