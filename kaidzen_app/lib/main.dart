@@ -8,6 +8,7 @@ import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/emotions/EmotionPointsRepository.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
+import 'package:kaidzen_app/service/BoardMessageState.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/tutorial/TutorialRepository.dart';
@@ -81,6 +82,9 @@ void main() async {
                 }),
                 ChangeNotifierProvider(create: (context) {
                   return emotionsState;
+                }),
+                ChangeNotifierProvider(create: (context) {
+                  return BoardMessageState();
                 }),
               ], child: const MyApp())),
           CrashReporting.reportCrash));

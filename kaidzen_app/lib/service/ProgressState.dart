@@ -32,7 +32,7 @@ class ProgressState extends ChangeNotifier {
       await FirebaseAnalytics.instance.setUserProperty(
           name: pointsPropertiesMap[task.category]!.name.toLowerCase(),
           value: updatedProgress.points.toString());
-          
+
       if (updatedProgress.level > currentProgress.level) {
         //We do this 3 step update to be able to correctly display progress animation
         var progressToMax = Progress(currentProgress.level,

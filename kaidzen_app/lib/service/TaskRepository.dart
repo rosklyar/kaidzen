@@ -12,7 +12,8 @@ Map<String, Object?> toMap(Task task) {
     columnTaskParentId: task.parent,
     columnTaskCategory: task.category.id,
     columnTaskDifficulty: task.difficulty.id,
-    columnTaskDoneTs: task.doneTs?.toString()
+    columnTaskDoneTs: task.doneTs?.toString(),
+    columnTaskInProgressTs: task.inProgressTs?.toString()
   };
   if (task.id != -1) {
     map[columnTaskId] = task.id;
@@ -33,6 +34,9 @@ Task fromMap(Map<String, Object?> map) {
       parent: map[columnTaskParentId] as int?,
       doneTs: map[columnTaskDoneTs] != null
           ? DateTime.parse(map[columnTaskDoneTs] as String)
+          : null,
+      inProgressTs: map[columnTaskInProgressTs] != null
+          ? DateTime.parse(map[columnTaskInProgressTs] as String)
           : null);
 }
 
@@ -63,7 +67,8 @@ class TaskRepository {
       columnTaskParentId,
       columnTaskTitle,
       columnTaskDifficulty,
-      columnTaskDoneTs
+      columnTaskDoneTs,
+      columnTaskInProgressTs
     ]);
     List<Task> tasks = maps
         .map((element) => fromMap(element as Map<String, Object?>))
@@ -79,7 +84,8 @@ class TaskRepository {
           columnTaskPriority,
           columnTaskTitle,
           columnTaskParentId,
-          columnTaskDoneTs
+          columnTaskDoneTs,
+          columnTaskInProgressTs
         ],
         where: '$columnTaskId = ?',
         whereArgs: [id]);

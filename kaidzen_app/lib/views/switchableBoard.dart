@@ -51,90 +51,91 @@ class SwitchableBoardState extends State<SwitchableBoard> {
     return Stack(
       children: [
         SlidingUpPanel(
-          controller: pc,
-          onPanelClosed: () {
-            if (scrollEnabled) {
-              setState(() {
-                isOpen = false;
-                scrollEnabled = false;
-              });
-            }
-            sc.animateTo(0,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.ease);
-          },
-          onPanelOpened: () {
-            if (!scrollEnabled) {
-              setState(() {
-                isOpen = true;
-                scrollEnabled = true;
-              });
-            }
-          },
-          boxShadow: const <BoxShadow>[
-            BoxShadow(
-              blurRadius: 8.0,
-              color: Color.fromRGBO(255, 255, 255, 0),
-            )
-          ],
-          color: Colors.white.withOpacity(0),
-          maxHeight: parentHeight * 0.95,
-          minHeight: parentHeight * 0.65,
-          panel: SizedBox(
-              //width: parentWidth,
-              //height: parentHeight,
-              child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(30)),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 20.0,
-                sigmaY: 20.0,
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    child: SwitchableBoardsToggleWidget(
-                        (value) => setState(() {
-                              currentBoard = toggleBoards[value!];
-                            }),
-                        currentBoard.id),
+            controller: pc,
+            onPanelClosed: () {
+              if (scrollEnabled) {
+                setState(() {
+                  isOpen = false;
+                  scrollEnabled = false;
+                });
+              }
+              sc.animateTo(0,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.ease);
+            },
+            onPanelOpened: () {
+              if (!scrollEnabled) {
+                setState(() {
+                  isOpen = true;
+                  scrollEnabled = true;
+                });
+              }
+            },
+            boxShadow: const <BoxShadow>[
+              BoxShadow(
+                blurRadius: 8.0,
+                color: Color.fromRGBO(255, 255, 255, 0),
+              )
+            ],
+            color: Colors.white.withOpacity(0),
+            maxHeight: parentHeight * 0.95,
+            minHeight: parentHeight * 0.65,
+            panel: Stack(children: [
+              SizedBox(
+                  //width: parentWidth,
+                  //height: parentHeight,
+                  child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(30)),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: 20.0,
+                    sigmaY: 20.0,
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 5),
-                      child: Consumer<TasksState>(
-                          builder: (context, state, child) {
-                        return Board(
-                            name: currentBoard.name,
-                            list: state.getByStatus(currentBoard.name),
-                            sc: sc,
-                            scrollEnabled: scrollEnabled);
-                      }),
-                    ),
-                    flex: 10,
-                  ),
-                  Expanded(
-                      child: GestureDetector(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Text('Collapse',
-                                style: Fonts.graySubtitleMedium.copyWith(
-                                    decoration: TextDecoration.underline,
-                                    fontWeight: FontWeight.w600)),
-                          ),
-                          onTap: () async {
-                            pc.close();
-                            await FirebaseAnalytics.instance.logEvent(
-                                name: AnalyticsEventType
-                                    .collapse_button_pressed.name);
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        child: SwitchableBoardsToggleWidget(
+                            (value) => setState(() {
+                                  currentBoard = toggleBoards[value!];
+                                }),
+                            currentBoard.id),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Consumer<TasksState>(
+                              builder: (context, state, child) {
+                            return Board(
+                                board: currentBoard,
+                                list: state.getByStatus(currentBoard.name),
+                                sc: sc,
+                                scrollEnabled: scrollEnabled);
                           }),
-                      flex: 1)
-                ],
-              ),
-            ),
-          )),
-        ),
+                        ),
+                        flex: 10,
+                      ),
+                      Expanded(
+                          child: GestureDetector(
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: Text('Collapse',
+                                    style: Fonts.graySubtitleMedium.copyWith(
+                                        decoration: TextDecoration.underline,
+                                        fontWeight: FontWeight.w600)),
+                              ),
+                              onTap: () async {
+                                pc.close();
+                                await FirebaseAnalytics.instance.logEvent(
+                                    name: AnalyticsEventType
+                                        .collapse_button_pressed.name);
+                              }),
+                          flex: 1)
+                    ],
+                  ),
+                ),
+              )),
+            ])),
         Visibility(
           visible: false, //TODO fix position to match floating button
           child: Positioned.directional(
