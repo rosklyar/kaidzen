@@ -84,7 +84,7 @@ void main() async {
                   return emotionsState;
                 }),
                 ChangeNotifierProvider(create: (context) {
-                  return BoardMessageState();
+                  return BoardMessageState(tutorialState);
                 }),
               ], child: const MyApp())),
           CrashReporting.reportCrash));

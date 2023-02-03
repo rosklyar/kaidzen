@@ -171,6 +171,10 @@ class KaizenDb {
         log("Initial scripts [" + script + "]");
         await db.execute(script);
       }
+      for (var i = 0; i < version - 1; i++) {
+        log("Migration script [" + migrationScripts[i] + "]");
+        await db.execute(migrationScripts[i]);
+      }
     }, onUpgrade: (Database db, int oldVersion, int newVersion) async {
       for (var i = oldVersion - 1; i < newVersion - 1; i++) {
         log("Migration script [" + migrationScripts[i] + "]");
