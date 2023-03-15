@@ -189,3 +189,22 @@ enum Emotion {
 
 const cardElavation = 8.0;
 const maxInputCharCount = 150;
+
+enum RepeatType {
+  DAILY(0, "Daily"),
+  WEEKLY(1, "Weekly");
+
+  const RepeatType(this.id, this.name);
+
+  final int id;
+  final String name;
+}
+
+enum AppNotifications {
+  REMINDER(0, "Mindful moments reminder");
+  
+  const AppNotifications(this.id, this.name);
+
+  final int id;
+  final String name;
+}

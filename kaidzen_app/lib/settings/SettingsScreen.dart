@@ -5,6 +5,7 @@ import 'package:flutter_share/flutter_share.dart';
 import 'package:kaidzen_app/service/ProgressState.dart';
 import 'package:kaidzen_app/settings/AboutPhilosophyScreen.dart';
 import 'package:kaidzen_app/settings/LongTextScreen.dart';
+import 'package:kaidzen_app/settings/MindfulMomentsScreen.dart';
 import 'package:kaidzen_app/settings/ReviewUtils.dart';
 import 'package:kaidzen_app/settings/SpheresExplanationScreen.dart';
 import 'package:kaidzen_app/tutorial/TutorialState.dart';
@@ -80,6 +81,42 @@ class SettingsScreen extends StatelessWidget {
                       child: Column(
                           children:
                               ListTile.divideTiles(context: context, tiles: [
+                        ListTile(
+                            title: Column(children: [
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                         Icon(Icons.circle,
+                                              color: DevelopmentCategory.MIND.color,
+                                              size: 8),
+                                          Row(children: [
+                                            Text(
+                                              " Mindful moments",
+                                              style: Fonts.largeTextStyle20,
+                                              textAlign: TextAlign.left,
+                                            )
+                                          ])
+                                        ]),
+                                    SvgPicture.asset(
+                                        "assets/shevron-right-black.svg")
+                                  ]),
+                              const SizedBox(height: 5),
+                              Row(children: [
+                                const SizedBox(width: 13),
+                                Text("Plan your goals on scheduled basis",
+                                    style: Fonts.mediumTextStyle.copyWith(
+                                        color: const Color.fromRGBO(
+                                            114, 118, 121, 1.0)))
+                              ])
+                            ]),
+                            onTap: () async {
+                              await _goToMindfulMoments(context);
+                            }),
                         ListTile(
                             title: Column(children: [
                               Row(
@@ -274,5 +311,12 @@ class SettingsScreen extends StatelessWidget {
         .logEvent(name: AnalyticsEventType.spheres_explanation_opened.name);
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => SpheresExplanationScreen()));
+  }
+
+  Future<void> _goToMindfulMoments(BuildContext context) async {
+    await FirebaseAnalytics.instance
+        .logEvent(name: AnalyticsEventType.mindful_moments_opened.name);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => MindfulMomentsScreen()));
   }
 }

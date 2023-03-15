@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:kaidzen_app/achievements/AchievementsRepository.dart';
 import 'package:kaidzen_app/achievements/EventsRepository.dart';
 
@@ -9,6 +11,7 @@ import 'package:kaidzen_app/emotions/EmotionPointsRepository.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/BoardMessageState.dart';
+import 'package:kaidzen_app/service/NotificationService.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/tutorial/TutorialRepository.dart';
@@ -17,6 +20,8 @@ import 'package:kaidzen_app/views/createTask.dart';
 import 'package:kaidzen_app/views/profilePanel.dart';
 import 'package:kaidzen_app/views/switchableBoard.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/data/latest.dart';
+import 'package:timezone/timezone.dart';
 
 import 'service/ProgressRepository.dart';
 import 'service/ProgressState.dart';
@@ -25,7 +30,7 @@ import 'firebase_options.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:instabug_flutter/instabug_flutter.dart';
 import 'dart:async';
-import 'package:flutter/foundation.dart' show defaultTargetPlatform;
+import 'package:flutter/foundation.dart' show Int64List, defaultTargetPlatform;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,6 +62,8 @@ void main() async {
   await achievementsState.loadAll();
   await tutorialState.loadAll();
   await emotionsState.loadAll();
+
+  await NotificationService.initState();
 
   FlutterError.onError = (FlutterErrorDetails details) {
     Zone.current.handleUncaughtError(details.exception, details.stack!);

@@ -8,6 +8,7 @@ import 'package:kaidzen_app/service/ProgressState.dart';
 import 'package:kaidzen_app/achievements/achievementsScreen.dart';
 import 'package:kaidzen_app/settings/SettingsScreen.dart';
 import 'package:kaidzen_app/views/utils.dart';
+import 'package:kaidzen_app/widgets/animation/shake.dart';
 import 'package:provider/provider.dart';
 
 import '../service/TasksState.dart';
@@ -62,8 +63,16 @@ class ProfilePanelState extends State<ProfilePanel>
                                             const Duration(milliseconds: 1500),
                                         transitionBuilder: (Widget child,
                                             Animation<double> animation) {
-                                          return FadeTransition(
+                                          var fadeTransition = FadeTransition(
                                               opacity: animation, child: child);
+                                          return tutorialState
+                                                  .tutorialCompleted()
+                                              ? fadeTransition
+                                              : RotationTransition(
+                                                  child: child,
+                                                  alignment: Alignment.center,
+                                                  turns: shackingAnimation()
+                                                      .animate(animation));
                                         },
                                         child: avatar(
                                             tutorialState, emotionsState)),
@@ -288,6 +297,38 @@ class ProfilePanelState extends State<ProfilePanel>
     }
 
     return emotionsState.getCurrentEmotion().text;
+  }
+
+  TweenSequence<double> shackingAnimation() {
+    return TweenSequence<double>(
+      [
+        TweenSequenceItem(
+          tween: Tween(begin: 0.0, end: 0.01)
+              .chain(CurveTween(curve: Curves.easeInOut)),
+          weight: 1,
+        ),
+        TweenSequenceItem(
+          tween: Tween(begin: 0.01, end: -0.01)
+              .chain(CurveTween(curve: Curves.easeInOut)),
+          weight: 1,
+        ),
+        TweenSequenceItem(
+          tween: Tween(begin: -0.01, end: 0.01)
+              .chain(CurveTween(curve: Curves.easeInOut)),
+          weight: 1,
+        ),
+        TweenSequenceItem(
+          tween: Tween(begin: 0.01, end: -0.01)
+              .chain(CurveTween(curve: Curves.easeInOut)),
+          weight: 1,
+        ),
+        TweenSequenceItem(
+          tween: Tween(begin: -0.01, end: 0.0)
+              .chain(CurveTween(curve: Curves.easeInOut)),
+          weight: 1,
+        ),
+      ],
+    );
   }
 }
 

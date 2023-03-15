@@ -112,7 +112,9 @@ enum AnalyticsEventType {
   level_up,
   emotion_changed,
   tutorial_step_completed,
-  collapse_button_pressed;
+  collapse_button_pressed,
+  goals_reordered,
+  mindful_moments_opened;
 }
 
 enum AnalyticsUserProperties {
