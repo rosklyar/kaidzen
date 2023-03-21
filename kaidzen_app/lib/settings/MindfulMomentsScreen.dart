@@ -17,7 +17,7 @@ class MindfulMomentsScreen extends StatefulWidget {
 }
 
 class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
-  late String _backgroundImage = 'assets/settings/reminder/on.png';
+  late String _backgroundImage = 'assets/settings/reminder/off.png';
   bool _isReminderOn = false;
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
@@ -120,23 +120,23 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
     }
   }
 
-  Widget _buildSettingRow(String label, Widget value, VoidCallback onTap) {
+  Widget _buildSettingRow(double screenWidth, String label, Widget value, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+        padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04, horizontal: screenWidth * 0.04),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               label,
-              style: TextStyle(fontSize: 16.0),
+              style: Fonts.largeTextStyle,
             ),
             Row(
               children: [
                 value,
-                SizedBox(width: 16.0),
-                Icon(Icons.arrow_forward_ios),
+                SizedBox(width: screenWidth * 0.04),
+                Image.asset("assets/edit.png"),
               ],
             ),
           ],
@@ -147,6 +147,8 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -157,6 +159,7 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
             },
           ),
           elevation: 0.0,
+          title: Text('Mindful moments', style: Fonts.screenTytleTextStyle),
           centerTitle: true,
           actions: [
             IconButton(
@@ -175,18 +178,23 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
             Expanded(
               flex: 4,
               child: Container(
-                padding: EdgeInsets.all(30),
-                //color: Colors.blue[100],
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.08,
+                  vertical: screenWidth * 0.08,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    SizedBox(height: screenWidth * 0.025),
                     Text(
-                        'Set aside regular time for self-reflection and mindfulness to achieve greater results.',
-                        style: Fonts.largeTextStyle),
-                    SizedBox(height: 16),
+                      'Set aside regular time for self-reflection and mindfulness to achieve greater results.',
+                      style: Fonts.largeTextStyle,
+                    ),
+                    SizedBox(height: screenWidth * 0.05),
                     Text(
-                        'Use this time for planning your life, establishing meaningful goals, and focusing on the ones that matter the most.',
-                        style: Fonts.largeTextStyle),
+                      'Use this time for planning your life, establishing meaningful goals, and focusing on the ones that matter the most.',
+                      style: Fonts.largeTextStyle,
+                    ),
                   ],
                 ),
               ),
@@ -205,39 +213,60 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(16),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.05,
+                      vertical: screenWidth * 0.02,
+                    ),
                     color: Colors.transparent,
                     child: Column(
                       children: [
                         _buildSettingRow(
-                            'Remind me',
-                            Text(DateFormat('MMM dd, yyyy')
-                                .format(_selectedDate)),
-                            _showDayPickerDialog),
-                        Divider(height: 5),
+                          screenWidth,
+                          'Remind me',
+                          Text(
+                            DateFormat('MMM dd, yyyy').format(_selectedDate),
+                            style: Fonts.mindfulMomentTextStyle,
+                          ),
+                          _showDayPickerDialog,
+                        ),
+                        Divider(height: screenWidth * 0.01),
                         _buildSettingRow(
-                            'On time',
-                            Text(_selectedTime.format(context)),
-                            _showTimePickerDialog),
-                        Divider(height: 5),
+                          screenWidth,
+                          'On time',
+                          Text(
+                            _selectedTime.format(context),
+                            style: Fonts.mindfulMomentTextStyle,
+                          ),
+                          _showTimePickerDialog,
+                        ),
+                        Divider(height: screenWidth * 0.01),
                         _buildSettingRow(
-                            "Repeat",
-                            Text(_selectedRepeatType != null
+                          screenWidth, 
+                          "Repeat",
+                          Text(
+                            _selectedRepeatType != null
                                 ? _selectedRepeatType.name
-                                : "None"),
-                            _showRepeatTypePickerDialog),
-                        Divider(height: 5),
+                                : "None",
+                            style: Fonts.mindfulMomentTextStyle,
+                          ),
+                          _showRepeatTypePickerDialog,
+                        ),
+                        Divider(height: screenWidth * 0.01),
                         Container(
                             padding: EdgeInsets.symmetric(
-                                vertical: 16.0, horizontal: 16.0),
+                              vertical: screenWidth * 0.04,
+                              horizontal: screenWidth * 0.04,
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   'Reminder is ${_isReminderOn ? 'on' : 'off'}',
-                                  style: TextStyle(fontSize: 16.0),
+                                  style: Fonts.largeTextStyle,
                                 ),
                                 Switch(
+                                  activeColor: Colors.white,
+                                  activeTrackColor: Colors.deepPurpleAccent,
                                   value: _isReminderOn,
                                   onChanged: (value) async {
                                     setState(() {
@@ -264,17 +293,15 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
 
   void refreshReminderState() {
     if (_isReminderOn) {
-      NotificationService
-          .scheduleNotification(
-              AppNotifications.REMINDER.id,
-              "Time to sort up your goals",
-              "",
-              _selectedDate,
-              _selectedTime,
-              _selectedRepeatType);
+      NotificationService.scheduleNotification(
+          AppNotifications.REMINDER.id,
+          "Time to sort up your goals",
+          "",
+          _selectedDate,
+          _selectedTime,
+          _selectedRepeatType);
     } else {
-      NotificationService.cancelNotification(
-          AppNotifications.REMINDER.id);
+      NotificationService.cancelNotification(AppNotifications.REMINDER.id);
     }
   }
 }
@@ -301,28 +328,55 @@ class _RepeatTypePickerDialogState extends State<RepeatTypePickerDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Select repeat type'),
+      title: const Text('Repeat type', textAlign: TextAlign.center,),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            RadioListTile<RepeatType>(
-              title: const Text('Daily'),
-              value: RepeatType.DAILY,
-              groupValue: _selectedRepeatType,
-              onChanged: (RepeatType? value) {
+            ListTile(
+              title: Text(RepeatType.DAILY.name, style: Fonts.largeTextStyle),
+              trailing: _selectedRepeatType == RepeatType.DAILY
+                  ? const Icon(Icons.check)
+                  : null,
+              onTap: () {
                 setState(() {
-                  _selectedRepeatType = value!;
+                  _selectedRepeatType = RepeatType.DAILY;
                 });
               },
             ),
-            RadioListTile<RepeatType>(
-              title: const Text('Weekly'),
-              value: RepeatType.WEEKLY,
-              groupValue: _selectedRepeatType,
-              onChanged: (RepeatType? value) {
+            const Divider(),
+            ListTile(
+              title: Text(RepeatType.WEEKLY.name, style: Fonts.largeTextStyle),
+              trailing: _selectedRepeatType == RepeatType.WEEKLY
+                  ? const Icon(Icons.check)
+                  : null,
+              onTap: () {
                 setState(() {
-                  _selectedRepeatType = value!;
+                  _selectedRepeatType = RepeatType.WEEKLY;
+                });
+              },
+            ),
+            const Divider(),
+            ListTile(
+              title: Text(RepeatType.BIWEEKLY.name, style: Fonts.largeTextStyle),
+              trailing: _selectedRepeatType == RepeatType.BIWEEKLY
+                  ? const Icon(Icons.check)
+                  : null,
+              onTap: () {
+                setState(() {
+                  _selectedRepeatType = RepeatType.BIWEEKLY;
+                });
+              },
+            ),
+            const Divider(),
+            ListTile(
+              title: Text(RepeatType.MONTHLY.name, style: Fonts.largeTextStyle),
+              trailing: _selectedRepeatType == RepeatType.MONTHLY
+                  ? const Icon(Icons.check)
+                  : null,
+              onTap: () {
+                setState(() {
+                  _selectedRepeatType = RepeatType.MONTHLY;
                 });
               },
             ),
@@ -346,3 +400,4 @@ class _RepeatTypePickerDialogState extends State<RepeatTypePickerDialog> {
     );
   }
 }
+

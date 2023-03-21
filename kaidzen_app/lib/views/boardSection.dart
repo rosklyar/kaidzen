@@ -55,7 +55,8 @@ class BoardState extends State<Board> {
         Provider.of<TasksState>(context, listen: false)
             .updateTasks(tasksToUpdate);
 
-        FirebaseAnalytics.instance.logEvent(name: AnalyticsEventType.goals_reordered.name);
+        FirebaseAnalytics.instance
+            .logEvent(name: AnalyticsEventType.goals_reordered.name);
       },
     );
   }
@@ -80,7 +81,10 @@ class BoardState extends State<Board> {
                 !tutorialState.tutorialCompleted() &&
                         widget.board == ToggleBoard.TODO
                     ? Expanded(
-                        child: SvgPicture.asset("assets/arrow-to-create.svg"),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: SvgPicture.asset("assets/arrow-to-create.svg"),
+                        ),
                         flex: 2)
                     : const Expanded(child: SizedBox(), flex: 2),
                 const Expanded(child: SizedBox(), flex: 3)

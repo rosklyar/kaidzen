@@ -74,20 +74,18 @@ class NotificationService {
       DateTime startDate, TimeOfDay timeOfDay, RepeatType repeatType) {
     final TZDateTime now = TZDateTime.now(local);
 
-    int dayShift = repeatType == RepeatType.DAILY ? 1 : 7;
-
     TZDateTime scheduledDate = TZDateTime(
         local,
         startDate.year,
         startDate.month,
-        startDate.day + dayShift,
+        startDate.day + repeatType.daysShift,
         timeOfDay.hour,
         timeOfDay.minute,
         0);
 
     debugPrint(scheduledDate.toString());
     while (scheduledDate.isBefore(now)) {
-      scheduledDate = scheduledDate.add(Duration(days: dayShift));
+      scheduledDate = scheduledDate.add(Duration(days: repeatType.daysShift));
     }
     return scheduledDate;
   }
