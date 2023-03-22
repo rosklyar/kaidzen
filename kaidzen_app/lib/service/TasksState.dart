@@ -82,6 +82,16 @@ class TasksState extends ChangeNotifier {
     newTask.priority = calculateNewPriority(newTask, newTask.status);
     Task task = await repository.insert(newTask);
     await progressState.updateProgress(task);
+
+    if (!tutorialState.tutorialCompleted()) {
+      tutorialState.updateTutorialState(TutorialStep(
+          tutorialState.tutorialProgress.completedStepsCount() + 1,
+          DateTime.now()));
+      if (tutorialState.tutorialCompleted()) {
+        ReviewUtils.requestReview();
+      }
+    }
+
     await loadAll();
     await updatePropertyAfterTaskAdded();
     await FirebaseAnalytics.instance
@@ -176,22 +186,12 @@ class TasksState extends ChangeNotifier {
     }
     await repository.update(task);
 
-    if (task.id! > 0 && task.id! <= 3) {
-      if (newStatus == Status.DONE) {
-        tutorialState
-            .updateTutorialState(TutorialStep(task.id!, DateTime.now()));
-        if (tutorialState.tutorialCompleted()) {
-          ReviewUtils.requestReview();
-        }
-      }
-    } else {
-      var type = newStatus == Status.DOING
-          ? EventType.taskInProgress
-          : EventType.taskCompleted;
-      var event = Event(type, DateTime.now(), task.category);
-      await achievementsState.addEvent(event);
-      await emotionsState.loadAll();
-    }
+    var type = newStatus == Status.DOING
+        ? EventType.taskInProgress
+        : EventType.taskCompleted;
+    var event = Event(type, DateTime.now(), task.category);
+    await achievementsState.addEvent(event);
+    await emotionsState.loadAll();
 
     await FirebaseAnalytics.instance
         .logEvent(name: AnalyticsEventType.goal_action.name, parameters: {

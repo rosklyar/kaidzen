@@ -167,6 +167,12 @@ class Fonts {
           color: Color.fromARGB(255, 117, 117, 117),
           fontSize: 12,
           fontWeight: FontWeight.w500));
+
+  static TextStyle mindfulMomentTextStyle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+    fontSize: 14,
+    color: Colors.deepPurpleAccent,
+  ));
 }
 
 enum Emotion {
@@ -189,3 +195,24 @@ enum Emotion {
 
 const cardElavation = 8.0;
 const maxInputCharCount = 150;
+
+enum RepeatType {
+  DAILY(0, "Daily", 1),
+  WEEKLY(1, "Weekly", 7),
+  BIWEEKLY(2, "Every two weeks", 14);
+
+  const RepeatType(this.id, this.name, this.daysShift);
+
+  final int id;
+  final String name;
+  final int daysShift;
+}
+
+enum AppNotifications {
+  REMINDER(0, "Mindful moments reminder");
+
+  const AppNotifications(this.id, this.name);
+
+  final int id;
+  final String name;
+}

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/models/task.dart';
@@ -8,6 +9,7 @@ import 'package:kaidzen_app/tutorial/TutorialState.dart';
 import 'package:kaidzen_app/views/listViewComplexTaskItem.dart';
 import 'package:provider/provider.dart';
 import '../assets/constants.dart';
+import '../service/AnalyticsService.dart';
 import 'ListViewTaskItem.dart';
 
 class Board extends StatefulWidget {
@@ -52,6 +54,9 @@ class BoardState extends State<Board> {
 
         Provider.of<TasksState>(context, listen: false)
             .updateTasks(tasksToUpdate);
+
+        FirebaseAnalytics.instance
+            .logEvent(name: AnalyticsEventType.goals_reordered.name);
       },
     );
   }
@@ -76,7 +81,10 @@ class BoardState extends State<Board> {
                 !tutorialState.tutorialCompleted() &&
                         widget.board == ToggleBoard.TODO
                     ? Expanded(
-                        child: SvgPicture.asset("assets/arrow-to-create.svg"),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: SvgPicture.asset("assets/arrow-to-create.svg"),
+                        ),
                         flex: 2)
                     : const Expanded(child: SizedBox(), flex: 2),
                 const Expanded(child: SizedBox(), flex: 3)

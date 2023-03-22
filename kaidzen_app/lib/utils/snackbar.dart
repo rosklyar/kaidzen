@@ -26,6 +26,6 @@ showDefaultTopFlushbar(String text, BuildContext context) {
 
 showTutorialTopFlushbar(String text, BuildContext context) {
   if (!Provider.of<TutorialState>(context, listen: false).tutorialCompleted()) {
-    showTopFlushbar(text, context, 1500);
+    //showTopFlushbar(text, context, 1500);
   }
 }
