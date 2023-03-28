@@ -295,8 +295,8 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
     if (_isReminderOn) {
       NotificationService.scheduleNotification(
           AppNotifications.REMINDER.id,
+          "Mindful moment",
           "Time to sort up your goals",
-          "",
           _selectedDate,
           _selectedTime,
           _selectedRepeatType);
@@ -365,18 +365,6 @@ class _RepeatTypePickerDialogState extends State<RepeatTypePickerDialog> {
               onTap: () {
                 setState(() {
                   _selectedRepeatType = RepeatType.BIWEEKLY;
-                });
-              },
-            ),
-            const Divider(),
-            ListTile(
-              title: Text(RepeatType.MONTHLY.name, style: Fonts.largeTextStyle),
-              trailing: _selectedRepeatType == RepeatType.MONTHLY
-                  ? const Icon(Icons.check)
-                  : null,
-              onTap: () {
-                setState(() {
-                  _selectedRepeatType = RepeatType.MONTHLY;
                 });
               },
             ),

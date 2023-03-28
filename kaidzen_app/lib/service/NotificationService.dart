@@ -10,6 +10,8 @@ class NotificationService {
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
+  static bool initialized = false;
+
   static Future initState() async {
     var initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
@@ -19,6 +21,7 @@ class NotificationService {
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse: onSelectNotification);
+    initialized = true;
   }
 
   static Future<void> onDidReceiveLocalNotification(
@@ -36,6 +39,9 @@ class NotificationService {
 
   static Future<void> scheduleNotification(int id, String title, String body,
       DateTime startDate, TimeOfDay timeOfDay, RepeatType repeatType) async {
+    if (!initialized) {
+      await initState();
+    }
     var vibrationPattern = Int64List(4);
     vibrationPattern[0] = 0;
     vibrationPattern[1] = 1000;
@@ -67,6 +73,9 @@ class NotificationService {
   }
 
   static Future<void> cancelNotification(int id) async {
+    if (!initialized) {
+      await initState();
+    }
     await flutterLocalNotificationsPlugin.cancel(id);
   }
 

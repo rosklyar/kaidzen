@@ -63,8 +63,6 @@ void main() async {
   await tutorialState.loadAll();
   await emotionsState.loadAll();
 
-  await NotificationService.initState();
-
   FlutterError.onError = (FlutterErrorDetails details) {
     Zone.current.handleUncaughtError(details.exception, details.stack!);
   };
