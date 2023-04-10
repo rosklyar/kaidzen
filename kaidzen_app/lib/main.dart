@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:kaidzen_app/achievements/AchievementsRepository.dart';
 import 'package:kaidzen_app/achievements/EventsRepository.dart';
 
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
+import 'package:kaidzen_app/announcements/AnnouncementsRepository.dart';
+import 'package:kaidzen_app/announcements/AnnouncementsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/emotions/EmotionPointsRepository.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/BoardMessageState.dart';
-import 'package:kaidzen_app/service/NotificationService.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/tutorial/TutorialRepository.dart';
@@ -20,8 +19,6 @@ import 'package:kaidzen_app/views/createTask.dart';
 import 'package:kaidzen_app/views/profilePanel.dart';
 import 'package:kaidzen_app/views/switchableBoard.dart';
 import 'package:provider/provider.dart';
-import 'package:timezone/data/latest.dart';
-import 'package:timezone/timezone.dart';
 
 import 'service/ProgressRepository.dart';
 import 'service/ProgressState.dart';
@@ -30,7 +27,7 @@ import 'firebase_options.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:instabug_flutter/instabug_flutter.dart';
 import 'dart:async';
-import 'package:flutter/foundation.dart' show Int64List, defaultTargetPlatform;
+import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,6 +48,9 @@ void main() async {
   EmotionsState emotionsState =
       EmotionsState(eventsRepository, EmotionPointsRepository(), tutorialState);
 
+  AnnouncementsState announcementsState =
+      AnnouncementsState(announcementsRepository: AnnouncementsRepository());
+
   TasksState taskState = TasksState(
       repository: TaskRepository(),
       progressState: progressState,
@@ -62,6 +62,7 @@ void main() async {
   await achievementsState.loadAll();
   await tutorialState.loadAll();
   await emotionsState.loadAll();
+  await announcementsState.loadAll();
 
   FlutterError.onError = (FlutterErrorDetails details) {
     Zone.current.handleUncaughtError(details.exception, details.stack!);
@@ -91,13 +92,16 @@ void main() async {
                 ChangeNotifierProvider(create: (context) {
                   return BoardMessageState(tutorialState);
                 }),
+                ChangeNotifierProvider(create: (context) {
+                  return announcementsState;
+                }),
               ], child: const MyApp())),
           CrashReporting.reportCrash));
-  Instabug.start(
-      defaultTargetPlatform == TargetPlatform.iOS
+  Instabug.init(
+      token: defaultTargetPlatform == TargetPlatform.iOS
           ? '5512d7634f2aa086cb94903be6939bc3'
           : 'a1b46ee08c00dec58122306994a09310',
-      []);
+      invocationEvents: [InvocationEvent.none]);
 }
 
 class MyApp extends StatelessWidget {

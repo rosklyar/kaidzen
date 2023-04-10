@@ -1,5 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
@@ -87,9 +87,6 @@ class TasksState extends ChangeNotifier {
       tutorialState.updateTutorialState(TutorialStep(
           tutorialState.tutorialProgress.completedStepsCount() + 1,
           DateTime.now()));
-      if (tutorialState.tutorialCompleted()) {
-        ReviewUtils.requestReview();
-      }
     }
 
     await loadAll();
@@ -101,8 +98,8 @@ class TasksState extends ChangeNotifier {
       "goal_sphere": task.category.id,
       "goal_impact": task.difficulty.id,
       "goal_status": Status.TODO,
-      "is_created": true,
-      "is_simple": task.subtasks.isEmpty
+      "is_created": "true",
+      "is_simple": task.subtasks.isEmpty.toString()
     });
     notifyListeners();
   }
@@ -163,6 +160,10 @@ class TasksState extends ChangeNotifier {
     notifyListeners();
   }
 
+  Widget? getTopCard(String boardName) {
+    return null;
+  }
+
   Future<void> updatePropertiesAfterTaskMoved() async {
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.CURRENT_GOALS_DO.name.toLowerCase(),
@@ -184,6 +185,14 @@ class TasksState extends ChangeNotifier {
       await progressState.updateProgress(task);
       updateTaskTimestamps(task);
     }
+
+    if (newStatus == Status.DONE && task.difficulty == Difficulty.HARD) {
+      int doneCount = getCountByStatus(Status.DONE);
+      if (doneCount > 3 && doneCount % 4 == 0) {
+        await ReviewUtils.requestReview();
+      }
+    }
+
     await repository.update(task);
 
     var type = newStatus == Status.DOING
@@ -200,9 +209,9 @@ class TasksState extends ChangeNotifier {
       "goal_sphere": task.category.id,
       "goal_impact": task.difficulty.id,
       "goal_status": newStatus,
-      "is_created": false,
+      "is_created": "false",
       "goal_previous_status": oldStatus,
-      "is_simple": task.subtasks.isEmpty
+      "is_simple": task.subtasks.isEmpty.toString()
     });
   }
 

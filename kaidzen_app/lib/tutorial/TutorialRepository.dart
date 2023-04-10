@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:kaidzen_app/service/KaizenState.dart';
 import 'package:kaidzen_app/tutorial/tutorialProgress.dart';
 import 'package:sqflite/sqflite.dart';
