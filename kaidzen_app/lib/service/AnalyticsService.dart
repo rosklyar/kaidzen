@@ -114,7 +114,9 @@ enum AnalyticsEventType {
   tutorial_step_completed,
   collapse_button_pressed,
   goals_reordered,
-  mindful_moments_opened;
+  mindful_moments_opened,
+  announcement_closed,
+  survey_opened;
 }
 
 enum AnalyticsUserProperties {

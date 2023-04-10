@@ -1,9 +1,10 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:kaidzen_app/assets/constants.dart';
+
+import '../announcements/AnnouncementsRepository.dart';
 
 const String tableProgress = 'progress';
 const String columnProgressId = '_id';
@@ -161,7 +162,21 @@ class KaizenDb {
       '''
           alter table $tableTask add column $columnTaskInProgressTs datetime default null;
           update $tableTask set $columnTaskInProgressTs = now() where $columnTaskStatus = '${Status.DOING}';
-        '''
+        ''',
+      '''
+          create table $tableAnnouncements ( 
+            $columnAnnouncementId integer primary key autoincrement, 
+            $columnAnnouncementTitle text not null,
+            $columnAnnouncementDetails text not null,
+            $columnAnnouncementPriority integer not null,
+            $columnAnnouncementClosedTs datetime default null,
+            $columnAnnouncementValidUntil datetime default null);
+        ''',
+      '''
+          insert into $tableAnnouncements values
+            (0, 'Survey', 'Announcement for survey', 0, null, '2023-05-10 23:23:59'),
+            (1, 'Reorder your goals', 'Announcement for reordering goals', 1, null, null);
+        ''',
     ];
 
     return await openDatabase(join(await getDatabasesPath(), 'sticky_goals.db'),

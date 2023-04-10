@@ -91,8 +91,9 @@ class SettingsScreen extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                         Icon(Icons.circle,
-                                              color: DevelopmentCategory.MIND.color,
+                                          Icon(Icons.circle,
+                                              color: DevelopmentCategory
+                                                  .MIND.color,
                                               size: 8),
                                           Row(children: [
                                             Text(
@@ -169,27 +170,7 @@ class SettingsScreen extends StatelessWidget {
                                 ]),
                             onTap: () async {
                               await _shareApp();
-                            }),
-                        tutorial.tutorialCompleted()
-                            ? ListTile(
-                                title: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(children: [
-                                        Text(
-                                          "Love the app? Leave a review",
-                                          style: Fonts.largeTextStyle20,
-                                          textAlign: TextAlign.left,
-                                        )
-                                      ]),
-                                      SvgPicture.asset(
-                                          "assets/shevron-right-black.svg")
-                                    ]),
-                                onTap: () async {
-                                  ReviewUtils.requestReview();
-                                })
-                            : const ListTile()
+                            })
                       ]).toList()),
                       flex: 12),
                   Expanded(
