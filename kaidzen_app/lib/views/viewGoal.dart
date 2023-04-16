@@ -183,21 +183,15 @@ class _ViewGoalState extends State<ViewGoal> {
           child: ButtonBar(
             alignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Visibility(
-                visible: task.id! > 3,
-                maintainState: true,
-                maintainAnimation: true,
-                maintainSize: true,
-                child: IconButton(
-                  icon: Image.asset("assets/delete.png"),
-                  color: Theme.of(context).errorColor,
-                  onPressed: () async {
-                    setState(() {
-                      deleteOverlayVisible = true;
-                    });
-                    await deletePopup(context, task);
-                  },
-                ),
+              IconButton(
+                icon: Image.asset("assets/delete.png"),
+                color: Theme.of(context).errorColor,
+                onPressed: () async {
+                  setState(() {
+                    deleteOverlayVisible = true;
+                  });
+                  await deletePopup(context, task);
+                },
               ),
               Padding(
                   padding: const EdgeInsets.only(left: 50),
@@ -212,7 +206,7 @@ class _ViewGoalState extends State<ViewGoal> {
                           task: task, direction: Direction.FORWARD)
                       : Image.asset("assets/right_inactive.png")),
               IconButton(
-                icon: Image.asset("assets/edit.png"),
+                icon: SvgPicture.asset("assets/edit.svg"),
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return task.parent == null

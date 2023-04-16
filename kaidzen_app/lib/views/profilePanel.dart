@@ -8,7 +8,6 @@ import 'package:kaidzen_app/service/ProgressState.dart';
 import 'package:kaidzen_app/achievements/achievementsScreen.dart';
 import 'package:kaidzen_app/settings/SettingsScreen.dart';
 import 'package:kaidzen_app/views/utils.dart';
-import 'package:kaidzen_app/widgets/animation/shake.dart';
 import 'package:provider/provider.dart';
 
 import '../service/TasksState.dart';
@@ -60,7 +59,7 @@ class ProfilePanelState extends State<ProfilePanel>
                                         context),
                                     child: AnimatedSwitcher(
                                         duration:
-                                            const Duration(milliseconds: 1500),
+                                            const Duration(milliseconds: 1200),
                                         transitionBuilder: (Widget child,
                                             Animation<double> animation) {
                                           var fadeTransition = FadeTransition(
@@ -131,20 +130,18 @@ class ProfilePanelState extends State<ProfilePanel>
                                                 .getCompletedAchievementsCount() >
                                             0,
                                         child: Positioned(
-                                          right: 0,
+                                          right: parentWidth * 0.01,
+                                          top: parentWidth * 0.01,
                                           child: Container(
-                                            width: parentWidth * 0.05,
-                                            height: parentWidth * 0.04,
+                                            width: parentWidth * 0.03,
+                                            height: parentWidth * 0.02,
                                             decoration: const BoxDecoration(
                                                 shape: BoxShape.circle,
-                                                color: Color.fromARGB(
-                                                    255, 204, 158, 243)),
-                                            child: Center(
+                                                color: Colors.red),
+                                            child: const Center(
                                               child: Text(
-                                                achievementsState
-                                                    .getCompletedAchievementsCount()
-                                                    .toString(),
-                                                style: const TextStyle(
+                                                '',
+                                                style: TextStyle(
                                                   fontSize: 12,
                                                   color: Colors.black,
                                                 ),
@@ -153,19 +150,48 @@ class ProfilePanelState extends State<ProfilePanel>
                                           ),
                                         )),
                                   ]),
-                                  IconButton(
-                                    onPressed: () async {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const SettingsScreen()));
-                                      await FirebaseAnalytics.instance.logEvent(
-                                          name: AnalyticsEventType
-                                              .settings_screen_opened.name);
-                                    },
-                                    icon: Image.asset("assets/burger_icon.png",
-                                        height: parentWidth * 0.06),
+                                  Stack(
+                                    children: <Widget>[
+                                      IconButton(
+                                        onPressed: () async {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const SettingsScreen()));
+                                          await FirebaseAnalytics.instance
+                                              .logEvent(
+                                                  name: AnalyticsEventType
+                                                      .settings_screen_opened
+                                                      .name);
+                                        },
+                                        icon: Image.asset(
+                                            "assets/burger_icon.png",
+                                            height: parentWidth * 0.06),
+                                      ),
+                                      Visibility(
+                                          visible: true,
+                                          child: Positioned(
+                                            right: parentWidth * 0.01,
+                                            top: parentWidth * 0.01,
+                                            child: Container(
+                                              width: parentWidth * 0.03,
+                                              height: parentWidth * 0.02,
+                                              decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.red),
+                                              child: const Center(
+                                                child: Text(
+                                                  '',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          )),
+                                    ],
                                   )
                                 ],
                               ),

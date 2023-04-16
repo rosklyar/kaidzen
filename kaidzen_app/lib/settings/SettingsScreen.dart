@@ -28,6 +28,9 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var parentHeight = MediaQuery.of(context).size.height;
+    var parentWidth = MediaQuery.of(context).size.width;
+
     return Consumer2<ProgressState, TutorialState>(
         builder: (context, progress, tutorial, child) => Scaffold(
             appBar: AppBar(
@@ -103,8 +106,17 @@ class SettingsScreen extends StatelessWidget {
                                             )
                                           ])
                                         ]),
-                                    SvgPicture.asset(
-                                        "assets/shevron-right-black.svg")
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Visibility(
+                                              visible: false,
+                                              child: SvgPicture.asset(
+                                                  "assets/new.svg")),
+                                          SvgPicture.asset(
+                                              "assets/shevron-right-black.svg")
+                                        ]),
                                   ]),
                               const SizedBox(height: 5),
                               Row(children: [

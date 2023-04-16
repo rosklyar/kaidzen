@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:notification_permissions/notification_permissions.dart';
 import 'package:timezone/data/latest_all.dart';
 import 'package:timezone/timezone.dart';
 
@@ -37,11 +38,21 @@ class NotificationService {
     // do something with the payload
   }
 
+  static Future<bool> permissionGranted() async {
+    return await NotificationPermissions.getNotificationPermissionStatus() ==
+        PermissionStatus.granted;
+  }
+
   static Future<void> scheduleNotification(int id, String title, String body,
       DateTime startDate, TimeOfDay timeOfDay, RepeatType repeatType) async {
     if (!initialized) {
       await initState();
     }
+    if (!await permissionGranted()) {
+      NotificationPermissions.requestNotificationPermissions();
+      return;
+    }
+
     var vibrationPattern = Int64List(4);
     vibrationPattern[0] = 0;
     vibrationPattern[1] = 1000;

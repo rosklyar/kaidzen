@@ -90,7 +90,7 @@ void main() async {
                   return emotionsState;
                 }),
                 ChangeNotifierProvider(create: (context) {
-                  return BoardMessageState(tutorialState);
+                  return BoardMessageState(tutorialState, taskState);
                 }),
                 ChangeNotifierProvider(create: (context) {
                   return announcementsState;

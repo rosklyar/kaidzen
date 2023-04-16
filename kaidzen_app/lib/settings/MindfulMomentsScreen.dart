@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/service/NotificationService.dart';
 import 'package:kaidzen_app/settings/Story.dart';
+import 'package:notification_permissions/notification_permissions.dart';
 import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:story_view/story_view.dart';
@@ -97,9 +98,9 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
 
   void _showTimePickerDialog() async {
     final time = await showTimePicker(
-      context: this.context,
-      initialTime: _selectedTime,
-    );
+        context: this.context,
+        initialTime: _selectedTime,
+        initialEntryMode: TimePickerEntryMode.input);
     if (time != null) {
       setState(() => _selectedTime = time);
       await _savePreferences();
@@ -120,11 +121,13 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
     }
   }
 
-  Widget _buildSettingRow(double screenWidth, String label, Widget value, VoidCallback onTap) {
+  Widget _buildSettingRow(
+      double screenWidth, String label, Widget value, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04, horizontal: screenWidth * 0.04),
+        padding: EdgeInsets.symmetric(
+            vertical: screenWidth * 0.04, horizontal: screenWidth * 0.04),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -136,7 +139,7 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
               children: [
                 value,
                 SizedBox(width: screenWidth * 0.04),
-                Image.asset("assets/edit.png"),
+                SvgPicture.asset("assets/edit.svg"),
               ],
             ),
           ],
@@ -187,7 +190,7 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                   children: [
                     SizedBox(height: screenWidth * 0.025),
                     Text(
-                      'Set aside regular time for self-reflection and mindfulness to achieve greater results.',
+                      '\nSet aside regular time for self-reflection and mindfulness to achieve greater results.',
                       style: Fonts.largeTextStyle,
                     ),
                     SizedBox(height: screenWidth * 0.05),
@@ -241,7 +244,7 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                         ),
                         Divider(height: screenWidth * 0.01),
                         _buildSettingRow(
-                          screenWidth, 
+                          screenWidth,
                           "Repeat",
                           Text(
                             _selectedRepeatType != null
@@ -269,14 +272,22 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                                   activeTrackColor: Colors.deepPurpleAccent,
                                   value: _isReminderOn,
                                   onChanged: (value) async {
-                                    setState(() {
-                                      _isReminderOn = value;
-                                      _backgroundImage = value
-                                          ? 'assets/settings/reminder/on.png'
-                                          : 'assets/settings/reminder/off.png';
-                                      refreshReminderState();
-                                    });
-                                    await _savePreferences();
+                                    if (!value ||
+                                        value &&
+                                            await NotificationService
+                                                .permissionGranted()) {
+                                      setState(() {
+                                        _isReminderOn = value;
+                                        _backgroundImage = value
+                                            ? 'assets/settings/reminder/on.png'
+                                            : 'assets/settings/reminder/off.png';
+                                        refreshReminderState();
+                                      });
+                                      await _savePreferences();
+                                    } else {
+                                      await NotificationPermissions
+                                          .requestNotificationPermissions();
+                                    }
                                   },
                                 ),
                               ],
@@ -328,7 +339,10 @@ class _RepeatTypePickerDialogState extends State<RepeatTypePickerDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Repeat type', textAlign: TextAlign.center,),
+      title: const Text(
+        'Repeat type',
+        textAlign: TextAlign.center,
+      ),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -358,7 +372,8 @@ class _RepeatTypePickerDialogState extends State<RepeatTypePickerDialog> {
             ),
             const Divider(),
             ListTile(
-              title: Text(RepeatType.BIWEEKLY.name, style: Fonts.largeTextStyle),
+              title:
+                  Text(RepeatType.BIWEEKLY.name, style: Fonts.largeTextStyle),
               trailing: _selectedRepeatType == RepeatType.BIWEEKLY
                   ? const Icon(Icons.check)
                   : null,
@@ -388,4 +403,3 @@ class _RepeatTypePickerDialogState extends State<RepeatTypePickerDialog> {
     );
   }
 }
-
