@@ -68,6 +68,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                               Padding(
                                   padding: const EdgeInsets.only(bottom: 16),
                                   child: TextField(
+                                    textCapitalization: TextCapitalization.sentences,
                                     maxLength: maxInputCharCount,
                                     autofocus: true,
                                     decoration: InputDecoration(

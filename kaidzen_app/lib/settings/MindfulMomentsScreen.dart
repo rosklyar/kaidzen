@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
 
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:kaidzen_app/features/FeaturesState.dart';
 import 'package:kaidzen_app/service/NotificationService.dart';
-import 'package:kaidzen_app/settings/Story.dart';
-import 'package:path/path.dart';
+import 'package:notification_permissions/notification_permissions.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:story_view/story_view.dart';
-
-import '../views/dayPickerDialog.dart';
-
 class MindfulMomentsScreen extends StatefulWidget {
+  const MindfulMomentsScreen({super.key});
+
   @override
   _MindfulMomentsScreenState createState() => _MindfulMomentsScreenState();
 }
@@ -19,9 +17,10 @@ class MindfulMomentsScreen extends StatefulWidget {
 class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
   late String _backgroundImage = 'assets/settings/reminder/off.png';
   bool _isReminderOn = false;
-  DateTime _selectedDate = DateTime.now();
+  final DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
   RepeatType _selectedRepeatType = RepeatType.DAILY;
+  WeekDay _selectedWeekDay = WeekDay.MON;
 
   @override
   _MindfulMomentsScreenState createState() => _MindfulMomentsScreenState();
@@ -30,6 +29,10 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
   void initState() {
     super.initState();
     _loadPreferences();
+    var featuresState = Provider.of<FeaturesState>(context, listen: false);
+    if (!featuresState.isFeatureDiscovered(Features.REMINDER.id)) {
+      featuresState.discoverFeature(Features.REMINDER.id);
+    }
   }
 
   Future<void> _savePreferences() async {
@@ -44,6 +47,7 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
     );
     await prefs.setString('selectedDateTime', dateTime.toString());
     await prefs.setString('repeatType', _selectedRepeatType.toString());
+    await prefs.setString('weekDay', _selectedWeekDay.toString());
     await prefs.setBool('reminderEnabled', _isReminderOn);
   }
 
@@ -60,15 +64,6 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
       });
     }
 
-    final dateTimeString = prefs.getString('selectedDateTime');
-    if (dateTimeString != null) {
-      final dateTime = DateTime.parse(dateTimeString);
-      setState(() {
-        _selectedDate = dateTime;
-        _selectedTime = TimeOfDay(hour: dateTime.hour, minute: dateTime.minute);
-      });
-    }
-
     final repeatTypeString = prefs.getString('repeatType');
     if (repeatTypeString != null) {
       setState(() {
@@ -78,53 +73,68 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
         );
       });
     }
-  }
 
-  void _showDayPickerDialog() async {
-    final DateTime? picked = await showDatePicker(
-        context: this.context,
-        initialDate: _selectedDate,
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != _selectedDate) {
+    final weekDayString = prefs.getString('weekDay');
+    if (weekDayString != null) {
       setState(() {
-        _selectedDate = picked;
+        _selectedWeekDay = WeekDay.values.firstWhere(
+          (e) => e.toString() == weekDayString,
+          orElse: () => WeekDay.MON,
+        );
       });
-      await _savePreferences();
-      refreshReminderState();
     }
   }
 
   void _showTimePickerDialog() async {
     final time = await showTimePicker(
-      context: this.context,
-      initialTime: _selectedTime,
-    );
+        context: context,
+        initialTime: _selectedTime,
+        initialEntryMode: TimePickerEntryMode.input);
     if (time != null) {
       setState(() => _selectedTime = time);
       await _savePreferences();
-      refreshReminderState();
+      if (_isReminderOn) {
+        await refreshReminderState();
+      }
+    }
+  }
+
+  void _showWeekDayPickerDialog() async {
+    final weekDay = await showDialog<WeekDay>(
+      context: context,
+      builder: (context) => WeekDayPickerDialog(selectedDay: _selectedWeekDay),
+    );
+    if (weekDay != null) {
+      setState(() => _selectedWeekDay = weekDay);
+      await _savePreferences();
+      if (_isReminderOn) {
+        await refreshReminderState();
+      }
     }
   }
 
   void _showRepeatTypePickerDialog() async {
     final repeatType = await showDialog<RepeatType>(
-      context: this.context,
+      context: context,
       builder: (context) =>
           RepeatTypePickerDialog(initialRepeatType: _selectedRepeatType),
     );
     if (repeatType != null) {
       setState(() => _selectedRepeatType = repeatType);
       await _savePreferences();
-      refreshReminderState();
+      if (_isReminderOn) {
+        await refreshReminderState();
+      }
     }
   }
 
-  Widget _buildSettingRow(double screenWidth, String label, Widget value, VoidCallback onTap) {
+  Widget _buildSettingRow(
+      double screenWidth, String label, Widget value, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04, horizontal: screenWidth * 0.04),
+        padding: EdgeInsets.symmetric(
+            vertical: screenWidth * 0.04, horizontal: screenWidth * 0.04),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -136,7 +146,7 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
               children: [
                 value,
                 SizedBox(width: screenWidth * 0.04),
-                Image.asset("assets/edit.png"),
+                SvgPicture.asset("assets/edit.svg"),
               ],
             ),
           ],
@@ -187,7 +197,7 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                   children: [
                     SizedBox(height: screenWidth * 0.025),
                     Text(
-                      'Set aside regular time for self-reflection and mindfulness to achieve greater results.',
+                      '\nSet aside regular time for self-reflection and mindfulness to achieve greater results.',
                       style: Fonts.largeTextStyle,
                     ),
                     SizedBox(height: screenWidth * 0.05),
@@ -224,32 +234,37 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                           screenWidth,
                           'Remind me',
                           Text(
-                            DateFormat('MMM dd, yyyy').format(_selectedDate),
+                            _selectedRepeatType.name,
                             style: Fonts.mindfulMomentTextStyle,
                           ),
-                          _showDayPickerDialog,
+                          _showRepeatTypePickerDialog,
+                        ),
+                        Visibility(
+                          visible: _selectedRepeatType == RepeatType.WEEKLY,
+                          child: Column(
+                            children: [
+                              Divider(height: screenWidth * 0.01),
+                              _buildSettingRow(
+                                screenWidth,
+                                "on ",
+                                Text(
+                                  _selectedWeekDay.name,
+                                  style: Fonts.mindfulMomentTextStyle,
+                                ),
+                                _showWeekDayPickerDialog,
+                              ),
+                            ],
+                          ),
                         ),
                         Divider(height: screenWidth * 0.01),
                         _buildSettingRow(
                           screenWidth,
-                          'On time',
+                          'at ',
                           Text(
                             _selectedTime.format(context),
                             style: Fonts.mindfulMomentTextStyle,
                           ),
                           _showTimePickerDialog,
-                        ),
-                        Divider(height: screenWidth * 0.01),
-                        _buildSettingRow(
-                          screenWidth, 
-                          "Repeat",
-                          Text(
-                            _selectedRepeatType != null
-                                ? _selectedRepeatType.name
-                                : "None",
-                            style: Fonts.mindfulMomentTextStyle,
-                          ),
-                          _showRepeatTypePickerDialog,
                         ),
                         Divider(height: screenWidth * 0.01),
                         Container(
@@ -265,20 +280,13 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                                   style: Fonts.largeTextStyle,
                                 ),
                                 Switch(
-                                  activeColor: Colors.white,
-                                  activeTrackColor: Colors.deepPurpleAccent,
-                                  value: _isReminderOn,
-                                  onChanged: (value) async {
-                                    setState(() {
-                                      _isReminderOn = value;
-                                      _backgroundImage = value
-                                          ? 'assets/settings/reminder/on.png'
-                                          : 'assets/settings/reminder/off.png';
-                                      refreshReminderState();
-                                    });
-                                    await _savePreferences();
-                                  },
-                                ),
+                                    activeColor: Colors.white,
+                                    activeTrackColor: Colors.deepPurpleAccent,
+                                    value: _isReminderOn,
+                                    onChanged: (value) async {
+                                      await requestPermissionPopup(
+                                          context, value);
+                                    })
                               ],
                             )),
                       ],
@@ -291,18 +299,185 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
         ));
   }
 
-  void refreshReminderState() {
+  Future<void> refreshReminderState() async {
+    //cancel existing notification because we could have already set up a daily reminder for tomorrow
+    await NotificationService.cancelNotification(AppNotifications.REMINDER.id);
     if (_isReminderOn) {
-      NotificationService.scheduleNotification(
+      await NotificationService.scheduleNotification(
           AppNotifications.REMINDER.id,
           "Mindful moment",
           "Time to sort up your goals",
           _selectedDate,
           _selectedTime,
           _selectedRepeatType);
-    } else {
-      NotificationService.cancelNotification(AppNotifications.REMINDER.id);
     }
+  }
+
+  Future<void> requestPermissionPopup(BuildContext context, bool value) async {
+    PermissionStatus permissionStatus =
+        await NotificationService.getPermissionStatus();
+    bool initial = permissionStatus == PermissionStatus.unknown;
+
+    if (!value || value && await NotificationService.permissionGranted()) {
+      await updateReminderToggle(value);
+    } else {
+      showModalBottomSheet<void>(
+        context: context,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
+        builder: (BuildContext context) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.4,
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                      child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                              textAlign: TextAlign.center,
+                              initial
+                                  ? "Allow notifications to activate reminder"
+                                  : 'Notifications should be enabled in settings',
+                              style: Fonts.screenTytleTextStyle)),
+                      flex: 6),
+                  Expanded(
+                      child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                              textAlign: TextAlign.center,
+                              initial
+                                  ? "Next, you'll see a system message asking to allow notifications. We'll take it from there."
+                                  : "Next, you'll need to turn on the 'Allow Notifications' option in your phone settings. ",
+                              style: Fonts.largeTextStyle)),
+                      flex: 5),
+                  const Expanded(child: SizedBox(), flex: 1),
+                  const Expanded(child: SizedBox(), flex: 1),
+                  Expanded(
+                      child: GestureDetector(
+                          child: Text('Cancel',
+                              style: Fonts.largeTextStyle.copyWith(
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black)),
+                          onTap: () async {
+                            Navigator.pop(context);
+                          }),
+                      flex: 2),
+                  Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                        child: SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: activeButtonColor),
+                              onPressed: () async {
+                                Navigator.pop(context);
+                                if (permissionStatus !=
+                                    PermissionStatus.granted) {
+                                  await NotificationPermissions
+                                      .requestNotificationPermissions();
+                                }
+                                if (!value ||
+                                    value &&
+                                        await NotificationService
+                                            .permissionGranted()) {
+                                  await updateReminderToggle(value);
+                                }
+                              },
+                              child: Text(
+                                  initial ? 'Continue' : 'Open settings',
+                                  style: Fonts.largeTextStyle20
+                                      .copyWith(color: Colors.white)),
+                            )),
+                      ),
+                      flex: 4),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+  }
+
+  Future<void> updateReminderToggle(bool value) async {
+    setState(() {
+      _isReminderOn = value;
+      _backgroundImage = value
+          ? 'assets/settings/reminder/on.png'
+          : 'assets/settings/reminder/off.png';
+      refreshReminderState();
+    });
+    await _savePreferences();
+  }
+}
+
+class WeekDayPickerDialog extends StatefulWidget {
+  final WeekDay selectedDay;
+
+  const WeekDayPickerDialog({Key? key, required this.selectedDay})
+      : super(key: key);
+
+  @override
+  _WeekDayPickerDialogState createState() => _WeekDayPickerDialogState();
+}
+
+class _WeekDayPickerDialogState extends State<WeekDayPickerDialog> {
+  late WeekDay _selectedDay = WeekDay.MON;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDay = widget.selectedDay;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(
+        'Day of the week',
+        textAlign: TextAlign.center,
+        style: Fonts.screenTytleTextStyle,
+      ),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(
+              7,
+              (index) => ListTile(
+                    title:
+                        Text(weekDays[index].name, style: Fonts.largeTextStyle),
+                    tileColor: _selectedDay.isoId == index + 1
+                        ? AppColors.mindfulMomentsSelection
+                        : Colors.white,
+                    onTap: () {
+                      setState(() {
+                        _selectedDay = weekDays[index];
+                      });
+                    },
+                  )),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: const Text('CANCEL'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(_selectedDay);
+          },
+          child: const Text('OK'),
+        ),
+      ],
+    );
   }
 }
 
@@ -328,43 +503,34 @@ class _RepeatTypePickerDialogState extends State<RepeatTypePickerDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Repeat type', textAlign: TextAlign.center,),
+      title: Text(
+        'Repeat type',
+        textAlign: TextAlign.center,
+        style: Fonts.screenTytleTextStyle
+      ),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
               title: Text(RepeatType.DAILY.name, style: Fonts.largeTextStyle),
-              trailing: _selectedRepeatType == RepeatType.DAILY
-                  ? const Icon(Icons.check)
-                  : null,
+              tileColor: _selectedRepeatType == RepeatType.DAILY
+                  ? AppColors.mindfulMomentsSelection
+                  : Colors.white,
               onTap: () {
                 setState(() {
                   _selectedRepeatType = RepeatType.DAILY;
                 });
               },
             ),
-            const Divider(),
             ListTile(
               title: Text(RepeatType.WEEKLY.name, style: Fonts.largeTextStyle),
-              trailing: _selectedRepeatType == RepeatType.WEEKLY
-                  ? const Icon(Icons.check)
-                  : null,
+              tileColor: _selectedRepeatType == RepeatType.WEEKLY
+                  ? AppColors.mindfulMomentsSelection
+                  : Colors.white,
               onTap: () {
                 setState(() {
                   _selectedRepeatType = RepeatType.WEEKLY;
-                });
-              },
-            ),
-            const Divider(),
-            ListTile(
-              title: Text(RepeatType.BIWEEKLY.name, style: Fonts.largeTextStyle),
-              trailing: _selectedRepeatType == RepeatType.BIWEEKLY
-                  ? const Icon(Icons.check)
-                  : null,
-              onTap: () {
-                setState(() {
-                  _selectedRepeatType = RepeatType.BIWEEKLY;
                 });
               },
             ),
@@ -388,4 +554,3 @@ class _RepeatTypePickerDialogState extends State<RepeatTypePickerDialog> {
     );
   }
 }
-

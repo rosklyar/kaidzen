@@ -116,7 +116,8 @@ enum AnalyticsEventType {
   goals_reordered,
   mindful_moments_opened,
   announcement_closed,
-  survey_opened;
+  survey_opened,
+  feature_discovered;
 }
 
 enum AnalyticsUserProperties {

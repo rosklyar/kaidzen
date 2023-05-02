@@ -96,6 +96,7 @@ class _CreateTaskState extends State<CreateTask> {
                             padding: const EdgeInsets.only(
                                 left: 10, right: 10, top: 20),
                             child: TextField(
+                              textCapitalization: TextCapitalization.sentences,
                               maxLength: maxInputCharCount,
                               autofocus: true,
                               decoration: InputDecoration(

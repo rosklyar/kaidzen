@@ -1,19 +1,20 @@
 import 'package:flutter/widgets.dart';
+import 'package:kaidzen_app/service/TasksState.dart';
 
 import '../assets/constants.dart';
 import '../tutorial/TutorialState.dart';
 
 class BoardMessageState extends ChangeNotifier {
   final TutorialState tutorialState;
+  final TasksState tasksState;
 
   Map<ToggleBoard, String> _boardMessages = {
     ToggleBoard.TODO: "Create meaningful goals to\ndevelop your life spheres",
-    ToggleBoard.DOING: "Keep here goals you want\nconcentrate on",
-    ToggleBoard.DONE:
-        "Feel satisfied by seeing here all\ngoals you will achieve",
+    ToggleBoard.DOING: "Keep here the goals \nyou want to concentrate on",
+    ToggleBoard.DONE: "Experience fulfillment and satisfaction\nas you visualize your accomplishments",
   };
 
-  BoardMessageState(this.tutorialState);
+  BoardMessageState(this.tutorialState, this.tasksState);
 
   void setShowBoardMessage(ToggleBoard board, String boardMessage) {
     _boardMessages[board] = boardMessage;
@@ -21,9 +22,11 @@ class BoardMessageState extends ChangeNotifier {
   }
 
   String getBoardMessage(ToggleBoard board) {
-    if (!tutorialState.tutorialCompleted() && board == ToggleBoard.TODO) {
-      return "You will hatch the egg\nby creating meaningful goals";
-    }
-    return _boardMessages[board] ?? "";
+    var message =
+        !tutorialState.tutorialCompleted() && board == ToggleBoard.TODO
+            ? "You will hatch the egg\nby creating meaningful goals"
+            : _boardMessages[board] ?? "";
+
+    return tasksState.getCountByStatus(board.name) > 2 ? "" : message;
   }
 }

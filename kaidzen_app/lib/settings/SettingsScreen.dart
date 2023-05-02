@@ -2,6 +2,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:kaidzen_app/features/FeaturesState.dart';
 import 'package:kaidzen_app/service/ProgressState.dart';
 import 'package:kaidzen_app/settings/AboutPhilosophyScreen.dart';
 import 'package:kaidzen_app/settings/LongTextScreen.dart';
@@ -28,8 +29,11 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<ProgressState, TutorialState>(
-        builder: (context, progress, tutorial, child) => Scaffold(
+    var parentHeight = MediaQuery.of(context).size.height;
+    var parentWidth = MediaQuery.of(context).size.width;
+
+    return Consumer3<ProgressState, TutorialState, FeaturesState>(
+        builder: (context, progress, tutorial, featuresState, child) => Scaffold(
             appBar: AppBar(
               elevation: 0.0,
               automaticallyImplyLeading: false,
@@ -103,8 +107,17 @@ class SettingsScreen extends StatelessWidget {
                                             )
                                           ])
                                         ]),
-                                    SvgPicture.asset(
-                                        "assets/shevron-right-black.svg")
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Visibility(
+                                              visible: !featuresState.isFeatureDiscovered(Features.REMINDER.id),
+                                              child: SvgPicture.asset(
+                                                  "assets/new.svg")),
+                                          SvgPicture.asset(
+                                              "assets/shevron-right-black.svg")
+                                        ]),
                                   ]),
                               const SizedBox(height: 5),
                               Row(children: [

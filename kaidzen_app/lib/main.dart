@@ -9,6 +9,8 @@ import 'package:kaidzen_app/announcements/AnnouncementsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/emotions/EmotionPointsRepository.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
+import 'package:kaidzen_app/features/FeaturesRepository.dart';
+import 'package:kaidzen_app/features/FeaturesState.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/BoardMessageState.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
@@ -51,6 +53,10 @@ void main() async {
   AnnouncementsState announcementsState =
       AnnouncementsState(announcementsRepository: AnnouncementsRepository());
 
+  FeaturesState featuresState =
+      FeaturesState(featuresRepository: FeaturesRepository());
+
+
   TasksState taskState = TasksState(
       repository: TaskRepository(),
       progressState: progressState,
@@ -63,6 +69,7 @@ void main() async {
   await tutorialState.loadAll();
   await emotionsState.loadAll();
   await announcementsState.loadAll();
+  await featuresState.loadAll();
 
   FlutterError.onError = (FlutterErrorDetails details) {
     Zone.current.handleUncaughtError(details.exception, details.stack!);
@@ -90,10 +97,13 @@ void main() async {
                   return emotionsState;
                 }),
                 ChangeNotifierProvider(create: (context) {
-                  return BoardMessageState(tutorialState);
+                  return BoardMessageState(tutorialState, taskState);
                 }),
                 ChangeNotifierProvider(create: (context) {
                   return announcementsState;
+                }),
+                ChangeNotifierProvider(create: (context) {
+                  return featuresState;
                 }),
               ], child: const MyApp())),
           CrashReporting.reportCrash));
