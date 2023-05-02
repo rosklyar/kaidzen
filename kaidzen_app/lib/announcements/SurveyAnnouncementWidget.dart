@@ -24,36 +24,39 @@ class SurveyAnnouncementWidget extends AnnouncementWidget {
             Align(
                 child: Padding(
                     child: Text("Shape our future:\nTake a survey!",
-                        style: Fonts.announcementBoldTextStyle.copyWith(
-                            color: const Color.fromRGBO(55, 22, 190, 1.0))),
-                    padding: const EdgeInsets.fromLTRB(15, 14, 0, 0)),
+                        style: Fonts.announcementBoldTextStyle),
+                    padding: const EdgeInsets.fromLTRB(40, 19, 10, 0)),
                 alignment: Alignment.topLeft),
             Padding(
                 child: Text(
                     "Make an impact on entire community by spending 3-5 mins",
                     style: Fonts.mediumTextStyle),
-                padding: const EdgeInsets.fromLTRB(15, 14, 0, 0))
+                padding: const EdgeInsets.fromLTRB(40, 19, 10, 0))
           ]),
           GestureDetector(
               child: Padding(
                   child: Row(children: [
-                    SvgPicture.asset("assets/announcement/PlusInCircle.svg"),
-                    const SizedBox(width: 10),
-                    Text("Go to survey",
-                        style: Fonts.largeBoldTextStyle
-                            .copyWith(decoration: TextDecoration.underline))
+                    SvgPicture.asset("assets/announcement/ExternalLink.svg"),
+                    const SizedBox(width: 5),
+                    Text("Open survey",
+                        style: Fonts.largeBoldTextStyle.copyWith(
+                            decoration: TextDecoration.underline,
+                            color: const Color.fromRGBO(55, 22, 190, 1.0)))
                   ], mainAxisAlignment: MainAxisAlignment.end),
-                  padding: const EdgeInsets.fromLTRB(0, 0, 14, 15)),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 25, 25)),
               onTap: () => _launchURL()),
         ], mainAxisAlignment: MainAxisAlignment.spaceBetween),
         Align(
             alignment: Alignment.topRight,
-            child: IconButton(
-              icon: SvgPicture.asset("assets/settings/close_black_icon.svg"),
-              onPressed: () async {
-                await close();
-              },
-            ))
+            child: Padding(
+                child: IconButton(
+                  icon:
+                      SvgPicture.asset("assets/settings/close_black_icon.svg"),
+                  onPressed: () async {
+                    await close();
+                  },
+                ),
+                padding: const EdgeInsets.only(right: 5, top: 5)))
       ]);
 
   _launchURL() async {

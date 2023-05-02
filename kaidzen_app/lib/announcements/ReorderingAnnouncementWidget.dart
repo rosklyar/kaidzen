@@ -21,25 +21,27 @@ class ReorderingAnnouncementWidget extends AnnouncementWidget {
             Align(
                 child: Padding(
                     child: Text("Did you know?\nReorder your goals!",
-                        style: Fonts.announcementBoldTextStyle.copyWith(
-                            color: const Color.fromRGBO(117, 30, 132, 1.0))),
-                    padding: const EdgeInsets.fromLTRB(15, 14, 0, 0)),
+                        style: Fonts.announcementBoldTextStyle),
+                    padding: const EdgeInsets.fromLTRB(40, 19, 10, 0)),
                 alignment: Alignment.topLeft),
             Padding(
                 child: Text(
                     "Press and hold the goal tile, then move it up or down",
                     style: Fonts.mediumTextStyle),
-                padding: const EdgeInsets.fromLTRB(15, 14, 0, 0))
+                padding: const EdgeInsets.fromLTRB(40, 19, 10, 0))
           ]),
         ], mainAxisAlignment: MainAxisAlignment.spaceBetween),
         Align(
             alignment: Alignment.topRight,
-            child: IconButton(
-              icon: SvgPicture.asset("assets/settings/close_black_icon.svg"),
-              onPressed: () async {
-                await close();
-              },
-            ))
+            child: Padding(
+                child: IconButton(
+                  icon:
+                      SvgPicture.asset("assets/settings/close_black_icon.svg"),
+                  onPressed: () async {
+                    await close();
+                  },
+                ),
+                padding: const EdgeInsets.only(right: 5, top: 5)))
       ]);
 
   @override
