@@ -191,6 +191,9 @@ class KaizenDb {
           insert or ignore into $tableFeatures values
             (0, 'Reminder', 0);
         ''',
+      '''
+          update $tableAnnouncements set $columnAnnouncementValidUntil = '2023-06-10 23:23:59' where $columnAnnouncementId = 0;
+        ''',
     ];
 
     return await openDatabase(join(await getDatabasesPath(), 'sticky_goals.db'),

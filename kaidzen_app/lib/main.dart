@@ -56,7 +56,6 @@ void main() async {
   FeaturesState featuresState =
       FeaturesState(featuresRepository: FeaturesRepository());
 
-
   TasksState taskState = TasksState(
       repository: TaskRepository(),
       progressState: progressState,

@@ -98,11 +98,11 @@ class BoardState extends State<Board> {
                             child: Row(children: [
                               Expanded(
                                   child: Column(children: [
+                                    const Expanded(child: SizedBox(), flex: 1),
                                     Expanded(
                                         child: Image.asset(
                                             "assets/announcement/announcement-dragon.png"),
                                         flex: 1),
-                                    const Expanded(child: SizedBox(), flex: 2),
                                   ]),
                                   flex: 1),
                               Expanded(
@@ -113,8 +113,8 @@ class BoardState extends State<Board> {
                             ]),
                             padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
                           ),
-                          flex: 2),
-                      Expanded(child: reorderableListView(), flex: 5)
+                          flex: 4),
+                      Expanded(child: reorderableListView(), flex: 9)
                     ])
                   : reorderableListView()
             ])));
