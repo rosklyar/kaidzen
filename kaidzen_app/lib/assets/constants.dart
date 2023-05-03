@@ -94,6 +94,13 @@ class Fonts {
     color: Colors.black,
   ));
 
+static TextStyle medium14TextStyle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    color: Colors.black,
+  ));
+
   static TextStyle largeTextStyle = GoogleFonts.montserrat(
       textStyle: const TextStyle(
     fontSize: 16,
