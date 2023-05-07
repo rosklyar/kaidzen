@@ -7,6 +7,7 @@ import 'package:kaidzen_app/service/NotificationService.dart';
 import 'package:notification_permissions/notification_permissions.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class MindfulMomentsScreen extends StatefulWidget {
   const MindfulMomentsScreen({super.key});
 
@@ -56,8 +57,9 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
 
     final reminderEnabled = prefs.getBool('reminderEnabled');
     if (reminderEnabled != null) {
+      bool permissionGranted = await NotificationService.permissionGranted();
       setState(() {
-        _isReminderOn = reminderEnabled;
+        _isReminderOn = reminderEnabled && permissionGranted;
         _backgroundImage = _isReminderOn
             ? 'assets/settings/reminder/on.png'
             : 'assets/settings/reminder/off.png';
@@ -83,13 +85,22 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
         );
       });
     }
+
+    final dateTimeString = prefs.getString('selectedDateTime');
+    if (dateTimeString != null) {
+      final dateTime = DateTime.parse(dateTimeString);
+      setState(() {
+        _selectedTime = TimeOfDay(hour: dateTime.hour, minute: dateTime.minute);
+      });
+    }
   }
 
   void _showTimePickerDialog() async {
     final time = await showTimePicker(
         context: context,
         initialTime: _selectedTime,
-        initialEntryMode: TimePickerEntryMode.input);
+        initialEntryMode: TimePickerEntryMode.input,
+        builder: (context, childWidget) => ThemedDialog(context, childWidget));
     if (time != null) {
       setState(() => _selectedTime = time);
       await _savePreferences();
@@ -101,9 +112,9 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
 
   void _showWeekDayPickerDialog() async {
     final weekDay = await showDialog<WeekDay>(
-      context: context,
-      builder: (context) => WeekDayPickerDialog(selectedDay: _selectedWeekDay),
-    );
+        context: context,
+        builder: (context) => ThemedDialog(
+            context, WeekDayPickerDialog(selectedDay: _selectedWeekDay)));
     if (weekDay != null) {
       setState(() => _selectedWeekDay = weekDay);
       await _savePreferences();
@@ -115,10 +126,9 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
 
   void _showRepeatTypePickerDialog() async {
     final repeatType = await showDialog<RepeatType>(
-      context: context,
-      builder: (context) =>
-          RepeatTypePickerDialog(initialRepeatType: _selectedRepeatType),
-    );
+        context: context,
+        builder: (context) => ThemedDialog(context,
+            RepeatTypePickerDialog(initialRepeatType: _selectedRepeatType)));
     if (repeatType != null) {
       setState(() => _selectedRepeatType = repeatType);
       await _savePreferences();
@@ -126,6 +136,17 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
         await refreshReminderState();
       }
     }
+  }
+
+  Theme ThemedDialog(BuildContext context, Widget? childWidget) {
+    return Theme(
+        data: ThemeData(
+          colorScheme: const ColorScheme.light(
+            secondary: Colors.deepPurple, // OK button background color
+            onSecondary: Colors.black, // OK button text color
+          ),
+        ),
+        child: childWidget!);
   }
 
   Widget _buildSettingRow(
@@ -450,8 +471,10 @@ class _WeekDayPickerDialogState extends State<WeekDayPickerDialog> {
           children: List.generate(
               7,
               (index) => ListTile(
-                    title:
-                        Text(weekDays[index].name, style: Fonts.largeTextStyle),
+                    title: Text(weekDays[index].name,
+                        style: _selectedDay.isoId == index + 1
+                            ? Fonts.largeBoldTextStyle
+                            : Fonts.medium14TextStyle),
                     tileColor: _selectedDay.isoId == index + 1
                         ? AppColors.mindfulMomentsSelection
                         : Colors.white,
@@ -503,17 +526,17 @@ class _RepeatTypePickerDialogState extends State<RepeatTypePickerDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
-        'Repeat type',
-        textAlign: TextAlign.center,
-        style: Fonts.screenTytleTextStyle
-      ),
+      title: Text('Repeat type',
+          textAlign: TextAlign.center, style: Fonts.screenTytleTextStyle),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              title: Text(RepeatType.DAILY.name, style: Fonts.largeTextStyle),
+              title: Text(RepeatType.DAILY.name,
+                  style: _selectedRepeatType == RepeatType.DAILY
+                      ? Fonts.largeBoldTextStyle
+                      : Fonts.medium14TextStyle),
               tileColor: _selectedRepeatType == RepeatType.DAILY
                   ? AppColors.mindfulMomentsSelection
                   : Colors.white,
@@ -524,7 +547,10 @@ class _RepeatTypePickerDialogState extends State<RepeatTypePickerDialog> {
               },
             ),
             ListTile(
-              title: Text(RepeatType.WEEKLY.name, style: Fonts.largeTextStyle),
+              title: Text(RepeatType.WEEKLY.name,
+                  style: _selectedRepeatType == RepeatType.WEEKLY
+                      ? Fonts.largeBoldTextStyle
+                      : Fonts.medium14TextStyle),
               tileColor: _selectedRepeatType == RepeatType.WEEKLY
                   ? AppColors.mindfulMomentsSelection
                   : Colors.white,
