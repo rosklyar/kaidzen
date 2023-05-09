@@ -27,6 +27,6 @@ class BoardMessageState extends ChangeNotifier {
             ? "You will hatch the egg\nby creating meaningful goals"
             : _boardMessages[board] ?? "";
 
-    return tasksState.getCountByStatus(board.name) > 2 ? "" : message;
+    return tasksState.getCountByStatus(board.name) > 0 ? "" : message;
   }
 }
