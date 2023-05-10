@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:notification_permissions/notification_permissions.dart';
 import 'package:timezone/data/latest_all.dart';
@@ -43,6 +44,10 @@ class NotificationService {
         PermissionStatus.granted;
   }
 
+  static Future<PermissionStatus> getPermissionStatus() async {
+    return await NotificationPermissions.getNotificationPermissionStatus();
+  }
+
   static Future<void> scheduleNotification(int id, String title, String body,
       DateTime startDate, TimeOfDay timeOfDay, RepeatType repeatType) async {
     if (!initialized) {
@@ -80,7 +85,9 @@ class NotificationService {
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.time);
+        matchDateTimeComponents: repeatType == RepeatType.WEEKLY
+            ? DateTimeComponents.dayOfWeekAndTime
+            : DateTimeComponents.time);
   }
 
   static Future<void> cancelNotification(int id) async {
@@ -94,19 +101,19 @@ class NotificationService {
       DateTime startDate, TimeOfDay timeOfDay, RepeatType repeatType) {
     final TZDateTime now = TZDateTime.now(local);
 
-    TZDateTime scheduledDate = TZDateTime(
-        local,
-        startDate.year,
-        startDate.month,
-        startDate.day + repeatType.daysShift,
-        timeOfDay.hour,
-        timeOfDay.minute,
-        0);
+    TZDateTime scheduledDate = TZDateTime(local, startDate.year,
+        startDate.month, startDate.day, timeOfDay.hour, timeOfDay.minute, 0);
+
+    while (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+      if (repeatType == RepeatType.WEEKLY) {
+        while (scheduledDate.weekday != startDate.weekday) {
+          scheduledDate = scheduledDate.add(const Duration(days: 1));
+        }
+      }
+    }
 
     debugPrint(scheduledDate.toString());
-    while (scheduledDate.isBefore(now)) {
-      scheduledDate = scheduledDate.add(Duration(days: repeatType.daysShift));
-    }
     return scheduledDate;
   }
 }

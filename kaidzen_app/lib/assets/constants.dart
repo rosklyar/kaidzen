@@ -181,7 +181,9 @@ class Fonts {
     color: Colors.deepPurpleAccent,
   ));
 }
-
+class AppColors {
+  static const Color mindfulMomentsSelection = Color.fromARGB(160, 124, 77, 255);
+}
 enum Emotion {
   VERY_SAD(0, "assets/emotions/sad03.png",
       "*Don't want to talk with you right now*"),
@@ -215,6 +217,31 @@ enum RepeatType {
   final int daysShift;
 }
 
+enum WeekDay {
+  MON(1, "Mon"),
+  TUE(2, "Tue"),
+  WED(3, "Wed"),
+  THU(4, "Thu"),
+  FRI(5, "Fri"),
+  SAT(6, "Sat"),
+  SUN(7, "Sun");
+
+  const WeekDay(this.isoId, this.name);
+
+  final int isoId;
+  final String name;
+}
+
+const List<WeekDay> weekDays = [
+  WeekDay.MON,
+  WeekDay.TUE,
+  WeekDay.WED,
+  WeekDay.THU,
+  WeekDay.FRI,
+  WeekDay.SAT,
+  WeekDay.SUN,
+];
+
 enum AppNotifications {
   REMINDER(0, "Mindful moments reminder");
 
@@ -222,4 +249,11 @@ enum AppNotifications {
 
   final int id;
   final String name;
+}
+
+enum Features {
+  REMINDER(0);
+
+  const Features(this.id);
+  final int id;
 }

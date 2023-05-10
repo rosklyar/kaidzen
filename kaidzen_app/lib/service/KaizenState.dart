@@ -5,6 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 
 import '../announcements/AnnouncementsRepository.dart';
+import '../features/FeaturesRepository.dart';
 
 const String tableProgress = 'progress';
 const String columnProgressId = '_id';
@@ -148,7 +149,17 @@ class KaizenDb {
             create table $tableTutorialSteps ( 
             $columnTutorialStepId integer primary key, 
             $columnTutorialUpdateTs datetime not null)
-          '''
+          ''',
+      '''
+          create table $tableFeatures ( 
+            $columnFeatureId integer primary key autoincrement, 
+            $columnFeatureName text not null,
+            $columnFeatureDiscovered boolean not null);
+        ''',
+      '''
+          insert into $tableFeatures values
+            (0, 'Reminder', 1);
+        '''
     ];
 
     List<String> migrationScripts = [
@@ -169,6 +180,16 @@ class KaizenDb {
           insert into $tableAnnouncements values
             (0, 'Survey', 'Announcement for survey', 0, null, '2023-05-10 23:23:59'),
             (1, 'Reorder your goals', 'Announcement for reordering goals', 1, null, null);
+        ''',
+      '''
+          create table if not exists $tableFeatures ( 
+            $columnFeatureId integer primary key autoincrement, 
+            $columnFeatureName text not null,
+            $columnFeatureDiscovered boolean not null);
+        ''',
+      '''
+          insert or ignore into $tableFeatures values
+            (0, 'Reminder', 0);
         ''',
     ];
 

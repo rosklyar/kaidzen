@@ -147,6 +147,7 @@ class _EmailSenderState extends State<EmailSender> {
               Expanded(
                   child: Padding(
                       child: TextField(
+                        textCapitalization: TextCapitalization.sentences,
                         keyboardType: TextInputType.text,
                         maxLines: 15,
                         autofocus: true,

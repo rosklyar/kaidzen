@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
+import 'package:kaidzen_app/features/FeaturesState.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/ProgressState.dart';
 import 'package:kaidzen_app/achievements/achievementsScreen.dart';
@@ -36,10 +37,10 @@ class ProfilePanelState extends State<ProfilePanel>
   Widget build(BuildContext context) {
     var parentHeight = MediaQuery.of(context).size.height;
     var parentWidth = MediaQuery.of(context).size.width;
-    return Consumer4<ProgressState, AchievementsState, EmotionsState,
-            TutorialState>(
+    return Consumer5<ProgressState, AchievementsState, EmotionsState,
+            TutorialState, FeaturesState>(
         builder: (context, progressState, achievementsState, emotionsState,
-                tutorialState, child) =>
+                tutorialState, featuresState, child) =>
             Stack(children: [
               Row(
                 children: [
@@ -170,7 +171,7 @@ class ProfilePanelState extends State<ProfilePanel>
                                             height: parentWidth * 0.06),
                                       ),
                                       Visibility(
-                                          visible: true,
+                                          visible: !featuresState.isFeatureDiscovered(Features.REMINDER.id),
                                           child: Positioned(
                                             right: parentWidth * 0.01,
                                             top: parentWidth * 0.01,
