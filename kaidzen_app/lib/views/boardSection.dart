@@ -113,8 +113,8 @@ class BoardState extends State<Board> {
                             ]),
                             padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
                           ),
-                          flex: 4),
-                      Expanded(child: reorderableListView(), flex: 9)
+                          flex: 1),
+                      Expanded(child: reorderableListView(), flex: 2)
                     ])
                   : reorderableListView()
             ])));
