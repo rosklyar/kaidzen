@@ -98,22 +98,23 @@ class NotificationService {
   }
 
   static TZDateTime nextInstanceOfReminder(
-      DateTime startDate, TimeOfDay timeOfDay, RepeatType repeatType) {
-    final TZDateTime now = TZDateTime.now(local);
+    DateTime startDate, TimeOfDay timeOfDay, RepeatType repeatType) {
+  final TZDateTime now = TZDateTime.now(local);
 
-    TZDateTime scheduledDate = TZDateTime(local, startDate.year,
-        startDate.month, startDate.day, timeOfDay.hour, timeOfDay.minute, 0);
+  TZDateTime scheduledDate = TZDateTime(local, startDate.year,
+      startDate.month, startDate.day, timeOfDay.hour, timeOfDay.minute, 0);
 
+  if (repeatType == RepeatType.WEEKLY) {
+    while (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 7));
+    }
+  } else {
     while (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
-      if (repeatType == RepeatType.WEEKLY) {
-        while (scheduledDate.weekday != startDate.weekday) {
-          scheduledDate = scheduledDate.add(const Duration(days: 1));
-        }
-      }
     }
-
-    debugPrint(scheduledDate.toString());
-    return scheduledDate;
   }
+
+  debugPrint(scheduledDate.toString());
+  return scheduledDate;
+}
 }
