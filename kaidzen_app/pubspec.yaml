@@ -37,7 +37,7 @@ dependencies:
   flutter_feather_icons: ^2.0.0+1
   flutter_native_splash: ^2.2.13
   expandable: ^5.0.1
-  google_fonts: ^3.0.1
+  google_fonts: ^4.0.4
   toggle_switch: ^2.0.1
   percent_indicator: ^4.0.1
   sqflite: ^2.0.2+1

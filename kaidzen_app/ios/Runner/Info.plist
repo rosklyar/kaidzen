@@ -51,5 +51,7 @@
     	<string>Sticky Goals needs access to your photo library for you to be able to attach images.</string>
 		<key>NSMicrophoneUsageDescription</key>
     	<string>Sticky Goals needs access to the microphone to be able to attach voice notes.</string>
-	</dict>
+		<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+</dict>
 </plist>
