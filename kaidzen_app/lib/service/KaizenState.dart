@@ -194,6 +194,9 @@ class KaizenDb {
       '''
           update $tableAnnouncements set $columnAnnouncementValidUntil = '2023-06-10 23:23:59' where $columnAnnouncementId = 0;
         ''',
+      '''
+          update $tableAnnouncements set $columnAnnouncementValidUntil = '2023-07-15 23:59:59' where $columnAnnouncementId = 0;
+        ''',
     ];
 
     return await openDatabase(join(await getDatabasesPath(), 'sticky_goals.db'),
