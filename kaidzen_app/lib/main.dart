@@ -21,6 +21,7 @@ import 'package:kaidzen_app/views/createTask.dart';
 import 'package:kaidzen_app/views/profilePanel.dart';
 import 'package:kaidzen_app/views/switchableBoard.dart';
 import 'package:provider/provider.dart';
+import 'package:time_machine/time_machine.dart';
 
 import 'service/ProgressRepository.dart';
 import 'service/ProgressState.dart';
@@ -33,6 +34,10 @@ import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await TimeMachine.initialize({
+    'rootBundle': rootBundle,
+  });
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -51,7 +56,7 @@ void main() async {
       EmotionsState(eventsRepository, EmotionPointsRepository(), tutorialState);
 
   AnnouncementsState announcementsState =
-      AnnouncementsState(announcementsRepository: AnnouncementsRepository());
+      AnnouncementsState(tutorialState: tutorialState, announcementsRepository: AnnouncementsRepository());
 
   FeaturesState featuresState =
       FeaturesState(featuresRepository: FeaturesRepository());
@@ -74,7 +79,7 @@ void main() async {
     Zone.current.handleUncaughtError(details.exception, details.stack!);
   };
 
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runZonedGuarded(
           () => runApp(MultiProvider(providers: [
                 ChangeNotifierProvider(create: (context) {

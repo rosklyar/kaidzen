@@ -1,10 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:notification_permissions/notification_permissions.dart';
+import 'package:time_machine/time_machine.dart';
 import 'package:timezone/data/latest_all.dart';
 import 'package:timezone/timezone.dart';
 
@@ -16,8 +15,8 @@ class NotificationService {
 
   static Future initState() async {
     var initializationSettingsAndroid =
-        AndroidInitializationSettings('app_icon');
-    var initializationSettingsIOS = DarwinInitializationSettings(
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettingsIOS = const DarwinInitializationSettings(
         onDidReceiveLocalNotification: onDidReceiveLocalNotification);
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
@@ -73,8 +72,7 @@ class NotificationService {
         iOS: iOSPlatformChannelSpecifics);
 
     initializeTimeZones();
-    final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
-    setLocalLocation(getLocation(timeZoneName!));
+    setLocalLocation(getLocation(DateTimeZone.local.id));
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
         id,
@@ -104,12 +102,13 @@ class NotificationService {
     TZDateTime scheduledDate = TZDateTime(local, startDate.year,
         startDate.month, startDate.day, timeOfDay.hour, timeOfDay.minute, 0);
 
-    while (scheduledDate.isBefore(now)) {
-      scheduledDate = scheduledDate.add(const Duration(days: 1));
-      if (repeatType == RepeatType.WEEKLY) {
-        while (scheduledDate.weekday != startDate.weekday) {
-          scheduledDate = scheduledDate.add(const Duration(days: 1));
-        }
+    if (repeatType == RepeatType.WEEKLY) {
+      while (scheduledDate.isBefore(now)) {
+        scheduledDate = scheduledDate.add(const Duration(days: 7));
+      }
+    } else {
+      while (scheduledDate.isBefore(now)) {
+        scheduledDate = scheduledDate.add(const Duration(days: 1));
       }
     }
 
