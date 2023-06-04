@@ -37,6 +37,23 @@ class AnnouncementsRepository {
     return announcements;
   }
 
+  Future<Announcement?> getLastClosedAnnouncement() async {
+    if (db == null) {
+      await open();
+    }
+
+    List<Map> maps = await db!.query(
+      tableAnnouncements,
+      where: '$columnAnnouncementClosedTs IS NOT NULL',
+      orderBy: '$columnAnnouncementClosedTs DESC',
+      limit: 1,
+    );
+
+    return maps.isNotEmpty
+        ? Announcement.fromMap(maps.first as Map<String, Object?>)
+        : null;
+  }
+
   Future<void> closeAnnoucement(int id) async {
     if (db == null) {
       await open();

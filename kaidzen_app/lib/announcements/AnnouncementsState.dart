@@ -4,16 +4,20 @@ import 'package:kaidzen_app/announcements/Announcement.dart';
 import 'package:kaidzen_app/announcements/AnnouncementWidget.dart';
 import 'package:kaidzen_app/announcements/AnnouncementsRepository.dart';
 import 'package:kaidzen_app/announcements/SurveyAnnouncementWidget.dart';
+import 'package:kaidzen_app/tutorial/TutorialState.dart';
 
 import '../service/AnalyticsService.dart';
 import 'ReorderingAnnouncementWidget.dart';
 
 class AnnouncementsState extends ChangeNotifier {
+  TutorialState tutorialState;
   AnnouncementsRepository announcementsRepository;
   List<Announcement>? announcements;
+  Announcement? lastClosed;
   Map<int, AnnouncementWidget> announcementsWidgets = {};
 
-  AnnouncementsState({required this.announcementsRepository}) {
+  AnnouncementsState(
+      {required this.tutorialState, required this.announcementsRepository}) {
     announcementsWidgets.putIfAbsent(
         0, () => SurveyAnnouncementWidget(announcementsState: this));
     announcementsWidgets.putIfAbsent(
@@ -24,6 +28,7 @@ class AnnouncementsState extends ChangeNotifier {
     announcements = await announcementsRepository.getAll();
     // filter out closed announcements, not valid anymore and sort by priority
     announcements = announcements!..sort((a, b) => a.priority - b.priority);
+    lastClosed = await announcementsRepository.getLastClosedAnnouncement();
   }
 
   announcementClosed(int id) async {
@@ -36,8 +41,18 @@ class AnnouncementsState extends ChangeNotifier {
   }
 
   AnnouncementWidget? getTopAnnouncement() {
-    if (announcements == null || announcements!.isEmpty) {
+    if (!tutorialState.tutorialCompleted() ||
+        announcements == null ||
+        announcements!.isEmpty) {
       return null;
+    }
+    if (lastClosed != null) {
+      int daysDifference =
+          DateTime.now().difference(lastClosed!.closedTs!).inDays;
+
+      return daysDifference >= 1
+          ? announcementsWidgets[announcements![0].id]
+          : null;
     }
     return announcementsWidgets[announcements![0].id];
   }
