@@ -189,7 +189,7 @@ static TextStyle medium14TextStyle = GoogleFonts.montserrat(
   ));
 }
 class AppColors {
-  static const Color mindfulMomentsSelection = Color.fromARGB(160, 124, 77, 255);
+  static Color mindfulMomentsSelection = Colors.deepPurple.shade100;
 }
 enum Emotion {
   VERY_SAD(0, "assets/emotions/sad03.png",
