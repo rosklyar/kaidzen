@@ -56,7 +56,7 @@ void main() async {
       EmotionsState(eventsRepository, EmotionPointsRepository(), tutorialState);
 
   AnnouncementsState announcementsState =
-      AnnouncementsState(announcementsRepository: AnnouncementsRepository());
+      AnnouncementsState(tutorialState: tutorialState, announcementsRepository: AnnouncementsRepository());
 
   FeaturesState featuresState =
       FeaturesState(featuresRepository: FeaturesRepository());
