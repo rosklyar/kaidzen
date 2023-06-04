@@ -178,7 +178,7 @@ class KaizenDb {
         ''',
       '''
           insert into $tableAnnouncements values
-            (0, 'Survey', 'Announcement for survey', 0, null, '2023-06-15 23:59:59'),
+            (0, 'Survey', 'Announcement for survey', 0, null, '2023-05-10 23:23:59'),
             (1, 'Reorder your goals', 'Announcement for reordering goals', 1, null, null);
         ''',
       '''
@@ -193,6 +193,9 @@ class KaizenDb {
         ''',
       '''
           update $tableAnnouncements set $columnAnnouncementValidUntil = '2023-06-10 23:23:59' where $columnAnnouncementId = 0;
+        ''',
+      '''
+          update $tableAnnouncements set $columnAnnouncementValidUntil = '2023-07-15 23:59:59' where $columnAnnouncementId = 0;
         ''',
     ];
 
