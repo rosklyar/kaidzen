@@ -64,60 +64,84 @@ class BoardState extends State<Board> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<BoardMessageState, TutorialState, AnnouncementsState>(
+    return Consumer4<BoardMessageState, TutorialState, AnnouncementsState,
+            TasksState>(
         builder: (context, boardMessageState, tutorialState, announcementState,
-                child) =>
-            GestureDetector(
-                child: Stack(children: [
-              Column(children: [
+            tasksState, child) {
+      String boardMessage = boardMessageState.getBoardMessage(widget.board);
+
+      return GestureDetector(
+        child: Stack(
+          children: [
+            Column(
+              children: [
                 const Expanded(child: SizedBox(), flex: 1),
                 Expanded(
-                    child: Align(
-                        child: Text(
-                            boardMessageState.getBoardMessage(widget.board),
-                            style: Fonts.largeTextStyle
-                                .copyWith(color: greyTextColor),
-                            textAlign: TextAlign.center),
-                        alignment: Alignment.bottomCenter),
-                    flex: 2),
-                !tutorialState.tutorialCompleted() &&
-                        widget.board == ToggleBoard.TODO
+                  child: Align(
+                    child: Text(
+                      boardMessage,
+                      style:
+                          Fonts.largeTextStyle.copyWith(color: greyTextColor),
+                      textAlign: TextAlign.center,
+                    ),
+                    alignment: Alignment.bottomCenter,
+                  ),
+                  flex: 2,
+                ),
+                widget.board == ToggleBoard.TODO &&
+                        !tutorialState.tutorialCompleted() &&
+                        boardMessage != ""
                     ? Expanded(
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: SvgPicture.asset("assets/arrow-to-create.svg"),
                         ),
-                        flex: 2)
+                        flex: 2,
+                      )
                     : const Expanded(child: SizedBox(), flex: 2),
-                const Expanded(child: SizedBox(), flex: 3)
-              ]),
-              announcementState.getTopAnnouncement() != null
-                  ? Column(children: [
+                const Expanded(child: SizedBox(), flex: 3),
+              ],
+            ),
+            announcementState.getTopAnnouncement() != null
+                ? Column(
+                    children: [
                       Expanded(
-                          child: Padding(
-                            child: Row(children: [
+                        child: Padding(
+                          child: Row(
+                            children: [
                               Expanded(
-                                  child: Column(children: [
+                                child: Column(
+                                  children: [
                                     const Expanded(child: SizedBox(), flex: 1),
                                     Expanded(
-                                        child: Image.asset(
-                                            "assets/announcement/announcement-dragon.png"),
-                                        flex: 1),
-                                  ]),
-                                  flex: 1),
+                                      child: Image.asset(
+                                          "assets/announcement/announcement-dragon.png"),
+                                      flex: 1,
+                                    ),
+                                  ],
+                                ),
+                                flex: 1,
+                              ),
                               Expanded(
-                                  child: announcementState
-                                      .getTopAnnouncement()!
-                                      .widget,
-                                  flex: 4),
-                            ]),
-                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
+                                child: announcementState
+                                    .getTopAnnouncement()!
+                                    .widget,
+                                flex: 4,
+                              ),
+                            ],
                           ),
-                          flex: 1),
+                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
+                        ),
+                        flex: 1,
+                      ),
                       Expanded(child: reorderableListView(), flex: 2)
-                    ])
-                  : reorderableListView()
-            ])));
+                    ],
+                  )
+                : reorderableListView()
+          ],
+        ),
+      );
+    });
   }
 
   ReorderableListView reorderableListView() {
