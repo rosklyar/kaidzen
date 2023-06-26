@@ -15,7 +15,7 @@ class NotificationService {
 
   static Future initState() async {
     var initializationSettingsAndroid =
-        const AndroidInitializationSettings('@mipmap/ic_launcher');
+        const AndroidInitializationSettings('@mipmap/reminder_icon');
     var initializationSettingsIOS = const DarwinInitializationSettings(
         onDidReceiveLocalNotification: onDidReceiveLocalNotification);
     var initializationSettings = InitializationSettings(
@@ -63,9 +63,12 @@ class NotificationService {
     vibrationPattern[2] = 5000;
     vibrationPattern[3] = 2000;
 
-    const androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'your channel id', 'your channel name',
-        importance: Importance.max, priority: Priority.high, ticker: 'ticker');
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'sticky_goals_mindful', 'sticky_goals_mindful',
+        importance: Importance.max,
+        priority: Priority.high,
+        ticker: 'ticker',
+        color: DevelopmentCategory.RELATIONS.color);
     var iOSPlatformChannelSpecifics = const DarwinNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,

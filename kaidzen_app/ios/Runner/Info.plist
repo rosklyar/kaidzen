@@ -48,10 +48,10 @@
 		<key>UIStatusBarHidden</key>
 		<false/>
 		<key>NSPhotoLibraryUsageDescription</key>
-    	<string>Sticky Goals needs access to your photo library for you to be able to attach images.</string>
+		<string>Sticky Goals needs access to your photo library for you to be able to attach images.</string>
 		<key>NSMicrophoneUsageDescription</key>
-    	<string>Sticky Goals needs access to the microphone to be able to attach voice notes.</string>
+		<string>Sticky Goals needs access to the microphone to be able to attach voice notes.</string>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-</dict>
+		<true/>
+	</dict>
 </plist>
