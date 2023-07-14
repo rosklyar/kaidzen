@@ -48,7 +48,7 @@ class NotificationService {
   }
 
   static Future<void> scheduleNotification(int id, String title, String body,
-      DateTime startDate, TimeOfDay timeOfDay, RepeatType repeatType) async {
+      DateTime startDate, TimeOfDay timeOfDay, WeekDay weekDay, RepeatType repeatType) async {
     if (!initialized) {
       await initState();
     }
@@ -81,7 +81,7 @@ class NotificationService {
         id,
         title,
         body,
-        nextInstanceOfReminder(startDate, timeOfDay, repeatType),
+        nextInstanceOfReminder(startDate, timeOfDay, weekDay, repeatType),
         platformChannelSpecifics,
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
@@ -99,13 +99,16 @@ class NotificationService {
   }
 
   static TZDateTime nextInstanceOfReminder(
-      DateTime startDate, TimeOfDay timeOfDay, RepeatType repeatType) {
+      DateTime startDate, TimeOfDay timeOfDay, WeekDay weekDay, RepeatType repeatType) {
     final TZDateTime now = TZDateTime.now(local);
 
     TZDateTime scheduledDate = TZDateTime(local, startDate.year,
         startDate.month, startDate.day, timeOfDay.hour, timeOfDay.minute, 0);
 
     if (repeatType == RepeatType.WEEKLY) {
+      while (scheduledDate.weekday != weekDay.isoId) {
+        scheduledDate = scheduledDate.add(const Duration(days: 1));
+      }
       while (scheduledDate.isBefore(now)) {
         scheduledDate = scheduledDate.add(const Duration(days: 7));
       }
@@ -115,7 +118,6 @@ class NotificationService {
       }
     }
 
-    debugPrint(scheduledDate.toString());
     return scheduledDate;
   }
 }
