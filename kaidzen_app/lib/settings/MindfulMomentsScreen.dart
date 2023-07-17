@@ -330,6 +330,7 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
           "Time to sort up your goals",
           _selectedDate,
           _selectedTime,
+          _selectedWeekDay,
           _selectedRepeatType);
     }
   }
