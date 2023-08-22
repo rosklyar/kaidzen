@@ -160,10 +160,6 @@ class TasksState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Widget? getTopCard(String boardName) {
-    return null;
-  }
-
   Future<void> updatePropertiesAfterTaskMoved() async {
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.CURRENT_GOALS_DO.name.toLowerCase(),

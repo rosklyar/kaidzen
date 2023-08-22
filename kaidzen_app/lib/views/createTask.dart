@@ -7,10 +7,12 @@ import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/models/inspiration.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
+import 'package:kaidzen_app/service/HabitState.dart';
 import 'package:kaidzen_app/views/utils.dart';
 
 import '../achievements/AchievementsState.dart';
 import '../achievements/event.dart';
+import '../models/habit.dart';
 import '../models/task.dart';
 import 'package:provider/provider.dart';
 
@@ -35,6 +37,7 @@ class _CreateTaskState extends State<CreateTask> {
   int _currentCategory = -1;
   int _currentDifficulty = 0;
   bool _isCreateButtonActive = false;
+  bool _isHabit = false;
   late Future<List<Inspiration>>? _inspirationsFuture;
   final GlobalKey<dynamic> _taskTypeWidgetKey = GlobalKey();
   final GlobalKey<dynamic> _taskDifficultyWidgetKey = GlobalKey();
@@ -148,6 +151,18 @@ class _CreateTaskState extends State<CreateTask> {
                             ])),
                         flex: 4),
                     Expanded(child: getDiff(), flex: 7),
+                    Expanded(
+                      child: SwitchListTile(
+                        title: Text("Repeated"),
+                        value: _isHabit,
+                        onChanged: (value) {
+                          setState(() {
+                            _isHabit = value;
+                          });
+                        },
+                      ),
+                      flex: 1,
+                    ),
                   ]),
                   flex: 9),
               Expanded(
@@ -361,12 +376,27 @@ class _CreateTaskState extends State<CreateTask> {
   void submit() {
     var category = DevelopmentCategory.values
         .firstWhere((element) => element.id == _currentCategory);
-    Provider.of<TasksState>(context, listen: false).addTask(Task(
-        newTaskController.text,
-        category,
-        Difficulty.values
-            .firstWhere((element) => element.id == _currentDifficulty),
-        parent: widget.parent != null ? widget.parent!.id : null));
+    if (_isHabit) {
+      Provider.of<HabitState>(context, listen: false).addHabit(Habit(
+          Task(
+              newTaskController.text,
+              category,
+              Difficulty.values
+                  .firstWhere((element) => element.id == _currentDifficulty),
+              parent: widget.parent != null ? widget.parent!.id : null),
+          1,
+          1,
+          10,
+          HabitType.FIXED.id));
+    } else {
+      Provider.of<TasksState>(context, listen: false).addTask(Task(
+          newTaskController.text,
+          category,
+          Difficulty.values
+              .firstWhere((element) => element.id == _currentDifficulty),
+          parent: widget.parent != null ? widget.parent!.id : null));
+    }
+
     var event = Event(EventType.taskCreated, DateTime.now(), category);
     Provider.of<AchievementsState>(context, listen: false).addEvent(event);
     Provider.of<EmotionsState>(context, listen: false).loadAll();

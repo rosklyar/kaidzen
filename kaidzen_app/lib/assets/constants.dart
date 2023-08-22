@@ -264,3 +264,13 @@ enum Features {
   const Features(this.id);
   final int id;
 }
+
+enum HabitType {
+  FIXED(0),
+  GIVE_A_TRY(1),
+  SOLID(2);
+
+  const HabitType(this.id);
+
+  final int id;
+}

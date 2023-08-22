@@ -5,11 +5,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/announcements/AnnouncementsState.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/BoardMessageState.dart';
+import 'package:kaidzen_app/service/HabitState.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/tutorial/TutorialState.dart';
 import 'package:kaidzen_app/views/listViewComplexTaskItem.dart';
 import 'package:provider/provider.dart';
 import '../assets/constants.dart';
+import '../models/habit.dart';
 import '../service/AnalyticsService.dart';
 import 'ListViewTaskItem.dart';
 
@@ -17,12 +19,14 @@ class Board extends StatefulWidget {
   Board(
       {Key? key,
       required this.board,
-      required this.list,
+      required this.tasks,
+      required this.habits,
       required this.sc,
       required this.scrollEnabled})
       : super(key: key);
 
-  final List<Task> list;
+  final List<Task> tasks;
+  final List<Habit> habits;
   final ToggleBoard board;
   final ScrollController sc;
   final bool scrollEnabled;
@@ -41,14 +45,14 @@ class BoardState extends State<Board> {
         if (newIndex > oldIndex) {
           newIndex -= 1;
         }
-        final Task item = widget.list.removeAt(oldIndex);
-        widget.list.insert(newIndex, item);
+        final Task item = widget.tasks.removeAt(oldIndex);
+        widget.tasks.insert(newIndex, item);
 
         List<Task> tasksToUpdate = List.empty(growable: true);
         int from = newIndex > oldIndex ? oldIndex : newIndex;
         int to = newIndex > oldIndex ? newIndex : oldIndex;
         for (int i = from; i <= to; i++) {
-          Task t = widget.list[i];
+          Task t = widget.tasks[i];
           t.priority = i;
           tasksToUpdate.add(t);
         }
@@ -64,10 +68,10 @@ class BoardState extends State<Board> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer4<BoardMessageState, TutorialState, AnnouncementsState,
-            TasksState>(
+    return Consumer5<BoardMessageState, TutorialState, AnnouncementsState,
+            TasksState, HabitState>(
         builder: (context, boardMessageState, tutorialState, announcementState,
-            tasksState, child) {
+            tasksState, habitState, child) {
       String boardMessage = boardMessageState.getBoardMessage(widget.board);
 
       return GestureDetector(
@@ -134,14 +138,39 @@ class BoardState extends State<Board> {
                         ),
                         flex: 1,
                       ),
-                      Expanded(child: reorderableListView(), flex: 2)
+                      Expanded(child: habitsAndTasksListViews(), flex: 2)
                     ],
                   )
-                : reorderableListView()
+                : habitsAndTasksListViews()
           ],
         ),
       );
     });
+  }
+
+  Widget habitsAndTasksListViews() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // The collapsible section on top
+        ExpansionTile(
+          title: Text("Repated goals"),
+          children: <Widget>[
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: widget.habits
+                  .map((item) => ListTile(
+                        title: Text(item.task.name),
+                      ))
+                  .toList(),
+            )
+          ],
+        ),
+
+        // Your reorderable list view
+        Expanded(child: reorderableListView()),
+      ],
+    );
   }
 
   ReorderableListView reorderableListView() {
@@ -153,10 +182,10 @@ class BoardState extends State<Board> {
       onReorder: _onReorder,
       scrollController: widget.sc,
       children: List.generate(
-        widget.list.length,
+        widget.tasks.length,
         (index) {
           return Column(
-              key: Key('$index'), children: [taskCard(widget.list[index])]);
+              key: Key('$index'), children: [taskCard(widget.tasks[index])]);
         },
       ),
     );

@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
+import 'package:kaidzen_app/service/HabitState.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -104,11 +105,13 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 5),
-                          child: Consumer<TasksState>(
-                              builder: (context, state, child) {
+                          child: Consumer2<TasksState, HabitState>(
+                              builder: (context, taskState, habitState, child) {
                             return Board(
                                 board: currentBoard,
-                                list: state.getByStatus(currentBoard.name),
+                                tasks: taskState.getByStatus(currentBoard.name),
+                                habits:
+                                    habitState.getByStatus(currentBoard.name),
                                 sc: sc,
                                 scrollEnabled: scrollEnabled);
                           }),

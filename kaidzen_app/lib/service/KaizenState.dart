@@ -23,6 +23,22 @@ const String columnTaskDifficulty = 'difficulty_id';
 const String columnTaskDoneTs = 'done_ts';
 const String columnTaskInProgressTs = 'in_progress_ts';
 
+const String tableHabit = 'habit';
+const String columnHabitId = '_id';
+const String columnHabitTitle = 'title';
+const String columnHabitStatus = 'status';
+const String columnHabitPriority = '_priority';
+const String columnHabitParentId = 'parent_id';
+const String columnHabitCategory = 'category_id';
+const String columnHabitDifficulty = 'difficulty_id';
+const String columnHabitDoneTs = 'done_ts';
+const String columnHabitInProgressTs = 'in_progress_ts';
+const String columnHabitStage = 'stage';
+const String columnHabitStageCount = 'stage_count';
+const String columnHabitTotalCount = 'total_count';
+const String columnHabitType = 'type';
+const String columnHabitLastCompleteTs = 'last_complete_ts';
+
 const String tableEvents = 'events';
 const String columnEventtId = '_id';
 const String columnEventType = 'type';
@@ -197,6 +213,23 @@ class KaizenDb {
       '''
           update $tableAnnouncements set $columnAnnouncementValidUntil = '2023-07-15 23:59:59' where $columnAnnouncementId = 0;
         ''',
+      '''
+          create table $tableHabit (
+            $columnHabitId integer primary key autoincrement,
+            $columnHabitTitle text not null,
+            $columnHabitPriority integer not null,
+            $columnHabitCategory integer not null,
+            $columnHabitDifficulty integer not null,
+            $columnHabitStatus text not null,
+            $columnHabitParentId integer,
+            $columnHabitDoneTs datetime default null,
+            $columnHabitInProgressTs datetime default null,
+            $columnHabitStage integer not null,
+            $columnHabitStageCount integer not null,
+            $columnHabitTotalCount integer not null,
+            $columnHabitType integer not null,
+            $columnHabitLastCompleteTs datetime default null)
+      '''
     ];
 
     return await openDatabase(join(await getDatabasesPath(), 'sticky_goals.db'),
