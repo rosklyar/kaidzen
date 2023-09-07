@@ -9,11 +9,13 @@ import 'package:kaidzen_app/service/HabitState.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/tutorial/TutorialState.dart';
 import 'package:kaidzen_app/views/listViewComplexTaskItem.dart';
+import 'package:kaidzen_app/views/taskCard.dart';
 import 'package:provider/provider.dart';
 import '../assets/constants.dart';
 import '../models/habit.dart';
 import '../service/AnalyticsService.dart';
 import 'ListViewTaskItem.dart';
+import 'habitCard.dart';
 
 class Board extends StatefulWidget {
   Board(
@@ -42,15 +44,22 @@ class BoardState extends State<Board> {
   void _onReorder(int oldIndex, int newIndex) {
     setState(
       () {
+        if (oldIndex == 0) {
+          return;
+        }
+        if (newIndex == 0) {
+          newIndex++;
+        }
         if (newIndex > oldIndex) {
           newIndex -= 1;
         }
-        final Task item = widget.tasks.removeAt(oldIndex);
-        widget.tasks.insert(newIndex, item);
+        debugPrint("old: $oldIndex new: $newIndex");
+        final Task item = widget.tasks.removeAt(oldIndex - 1);
+        widget.tasks.insert(newIndex - 1, item);
 
         List<Task> tasksToUpdate = List.empty(growable: true);
-        int from = newIndex > oldIndex ? oldIndex : newIndex;
-        int to = newIndex > oldIndex ? newIndex : oldIndex;
+        int from = newIndex > oldIndex ? oldIndex - 1 : newIndex - 1;
+        int to = newIndex > oldIndex ? newIndex - 1 : oldIndex - 1;
         for (int i = from; i <= to; i++) {
           Task t = widget.tasks[i];
           t.priority = i;
@@ -59,6 +68,33 @@ class BoardState extends State<Board> {
 
         Provider.of<TasksState>(context, listen: false)
             .updateTasks(tasksToUpdate);
+
+        FirebaseAnalytics.instance
+            .logEvent(name: AnalyticsEventType.goals_reordered.name);
+      },
+    );
+  }
+
+  void _onHabitReorder(int oldIndex, int newIndex) {
+    setState(
+      () {
+        if (newIndex > oldIndex) {
+          newIndex -= 1;
+        }
+        final Habit item = widget.habits.removeAt(oldIndex);
+        widget.habits.insert(newIndex, item);
+
+        List<Habit> habitsToUpdate = List.empty(growable: true);
+        int from = newIndex > oldIndex ? oldIndex : newIndex;
+        int to = newIndex > oldIndex ? newIndex : oldIndex;
+        for (int i = from; i <= to; i++) {
+          Habit h = widget.habits[i];
+          h.task.priority = i;
+          habitsToUpdate.add(h);
+        }
+
+        Provider.of<HabitState>(context, listen: false)
+            .updateHabits(habitsToUpdate);
 
         FirebaseAnalytics.instance
             .logEvent(name: AnalyticsEventType.goals_reordered.name);
@@ -137,43 +173,51 @@ class BoardState extends State<Board> {
                           padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
                         ),
                         flex: 1,
-                      ),
-                      Expanded(child: habitsAndTasksListViews(), flex: 2)
+                      )
                     ],
                   )
-                : habitsAndTasksListViews()
+                : reorderableListView()
           ],
         ),
       );
     });
   }
 
-  Widget habitsAndTasksListViews() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // The collapsible section on top
-        ExpansionTile(
-          title: Text("Repated goals"),
-          children: <Widget>[
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: widget.habits
-                  .map((item) => ListTile(
-                        title: Text(item.task.name),
-                      ))
-                  .toList(),
-            )
-          ],
-        ),
-
-        // Your reorderable list view
-        Expanded(child: reorderableListView()),
-      ],
-    );
-  }
 
   ReorderableListView reorderableListView() {
+    var habits = Visibility(
+      key: Key('habits'),
+      visible: widget.habits.isNotEmpty,
+      child: Column(
+        children: [
+          ExpansionTile(
+            title: Text("Recurring goals (${widget.habits.length})"),
+            children: <Widget>[
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: List.generate(
+                  widget.habits.length,
+                  (index) {
+                    return Column(
+                        key: Key('$index'),
+                        children: [habitCard(widget.habits[index])]);
+                  },
+                ),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+
+    List<Widget> tasks = List.generate(
+      widget.tasks.length,
+      (index) {
+        return Column(
+            key: Key('$index'), children: [taskCard(widget.tasks[index])]);
+      },
+    );
+
     return ReorderableListView(
       physics: widget.scrollEnabled
           ? const AlwaysScrollableScrollPhysics()
@@ -181,47 +225,9 @@ class BoardState extends State<Board> {
       padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
       onReorder: _onReorder,
       scrollController: widget.sc,
-      children: List.generate(
-        widget.tasks.length,
-        (index) {
-          return Column(
-              key: Key('$index'), children: [taskCard(widget.tasks[index])]);
-        },
-      ),
+      children: [habits, tasks],
     );
   }
-
-  Widget taskCard(Task task) {
-    if (task.status == Status.TODO) {
-      return Card(
-          shadowColor: cardShadowColor,
-          elevation: cardElavation,
-          child: listItem(task));
-    }
-    var background = task.status == Status.DOING
-        ? AssetImage(
-            "assets/doing" + ((task.id! + 1) % 2 + 1).toString() + ".png")
-        : AssetImage(task.category.backgroundLink +
-            ((task.id! + 1) % 2 + 1).toString() +
-            ".png");
-
-    return Card(
-        shadowColor: cardShadowColor,
-        elevation: cardElavation,
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: background,
-            ),
-          ),
-          child: listItem(task),
-        ));
-  }
-
-  Widget listItem(Task task) => task.hasSubtasks()
-      ? ListViewComplexTaskItem(task: task)
-      : ListViewTaskItem(task: task);
 }
 
 extension Num on num {

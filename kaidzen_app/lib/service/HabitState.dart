@@ -46,7 +46,6 @@ class HabitState extends ChangeNotifier {
     _habits[Status.TODO]!.sort((a, b) => a.task.priority - b.task.priority);
     _habits[Status.DOING]!.sort((a, b) => a.task.priority - b.task.priority);
     _habits[Status.DONE]!.sort((a, b) => a.task.priority - b.task.priority);
-    debugPrint('habits: $_habits');
     notifyListeners();
     
   }
@@ -83,7 +82,7 @@ class HabitState extends ChangeNotifier {
     await loadAll();
     await FirebaseAnalytics.instance
         .logEvent(name: AnalyticsEventType.habit_action.name, parameters: {
-      "habit_id": habit.task.id,
+      "habit_id": habit.id,
       "habit_name": habit.task.name,
       "habit_sphere": habit.task.category.id,
       "habit_impact": habit.task.difficulty.id,

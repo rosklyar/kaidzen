@@ -94,7 +94,7 @@ class Fonts {
     color: Colors.black,
   ));
 
-static TextStyle medium14TextStyle = GoogleFonts.montserrat(
+  static TextStyle medium14TextStyle = GoogleFonts.montserrat(
       textStyle: const TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.w500,
@@ -188,9 +188,11 @@ static TextStyle medium14TextStyle = GoogleFonts.montserrat(
     color: Colors.deepPurpleAccent,
   ));
 }
+
 class AppColors {
   static Color mindfulMomentsSelection = Colors.deepPurple.shade100;
 }
+
 enum Emotion {
   VERY_SAD(0, "assets/emotions/sad03.png",
       "*Don't want to talk with you right now*"),
@@ -266,11 +268,48 @@ enum Features {
 }
 
 enum HabitType {
-  FIXED(0),
-  GIVE_A_TRY(1),
-  SOLID(2);
+  FIXED(0, "Target total", {1: 0}),
+  GIVE_IT_A_TRY(1, "Strong habit", {
+    1: 3,
+    2: 5,
+    3: 8,
+  }),
+  SOLID(2, "Solid habit", {
+    1: 3,
+    2: 5,
+    3: 8,
+    4: 13,
+    5: 21,
+  });
 
-  const HabitType(this.id);
+  const HabitType(this.id, this.title, this.stageCount);
 
   final int id;
+  final String title;
+  final Map<int, int> stageCount;
+
+  static HabitType getById(int id) {
+    for (HabitType type in HabitType.values) {
+      if (type.id == id) {
+        return type;
+      }
+    }
+    throw ArgumentError('Invalid ID: $id');
+  }
+}
+
+enum Direction { FORWARD, BACKWARD }
+
+int calculateTotalAmountSoFar(
+    HabitType habitType, int currentStage, int currentAmount) {
+  int sumOfPreviousStages = habitType.stageCount.entries
+      .where((entry) => entry.key < currentStage)
+      .fold(0, (previousValue, entry) => previousValue + entry.value);
+
+  return currentAmount + sumOfPreviousStages;
+}
+
+int calculateMaxTotalAmount(HabitType habitType) {
+  return habitType.stageCount.entries
+      .fold(0, (previousValue, entry) => previousValue + entry.value);
 }

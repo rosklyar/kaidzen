@@ -116,7 +116,7 @@ void main() async {
                   return emotionsState;
                 }),
                 ChangeNotifierProvider(create: (context) {
-                  return BoardMessageState(tutorialState, taskState);
+                  return BoardMessageState(tutorialState, taskState, habitState);
                 }),
                 ChangeNotifierProvider(create: (context) {
                   return announcementsState;
