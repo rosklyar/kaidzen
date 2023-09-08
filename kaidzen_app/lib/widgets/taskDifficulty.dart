@@ -50,36 +50,19 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
   }
 
   Widget getDiffOptionLayout(Difficulty difficulty, bool selected) {
-    return selected
-        ? Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: selectedToggleColor,
-            child: Center(
-                child: Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Icon(Icons.circle_rounded,
-                    color: Colors.grey, size: 8.0 + difficulty.id * 4),
-                const SizedBox(width: 5),
-                Text(difficulty.name, style: Fonts.largeTextStyleWhite)
-              ]),
-            )))
-        : Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: unselectedToggleColor,
-            child: Center(
-                child: Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Icon(Icons.circle_rounded,
-                    color: Colors.grey, size: 8.0 + difficulty.id * 4),
-                const SizedBox(width: 5),
-                Text(difficulty.name, style: Fonts.largeTextStyle)
-              ]),
-            )));
+    return Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: selected ? selectedToggleColor : unselectedToggleColor,
+        child: Center(
+            child: Padding(
+          padding: const EdgeInsets.only(right: 5),
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Icon(Icons.circle_rounded,
+                color: Colors.grey, size: 8.0 + difficulty.id * 4),
+            const SizedBox(width: 5),
+            Text(difficulty.name, style: selected ? Fonts.largeTextStyleWhite : Fonts.largeTextStyle)
+          ]),
+        )));
   }
 }

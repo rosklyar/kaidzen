@@ -209,6 +209,7 @@ class BoardState extends State<Board> {
         ],
       ),
     );
+    List<Widget> all = [habits];
 
     List<Widget> tasks = List.generate(
       widget.tasks.length,
@@ -217,6 +218,7 @@ class BoardState extends State<Board> {
             key: Key('$index'), children: [taskCard(widget.tasks[index])]);
       },
     );
+    all.addAll(tasks);
 
     return ReorderableListView(
       physics: widget.scrollEnabled
@@ -225,7 +227,7 @@ class BoardState extends State<Board> {
       padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
       onReorder: _onReorder,
       scrollController: widget.sc,
-      children: [habits, tasks],
+      children: all,
     );
   }
 }

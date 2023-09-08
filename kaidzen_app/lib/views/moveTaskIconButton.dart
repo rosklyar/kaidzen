@@ -143,5 +143,3 @@ class MoveTaskIconButton extends StatelessWidget {
     }
   }
 }
-
-enum Direction { FORWARD, BACKWARD }
