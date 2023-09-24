@@ -35,9 +35,12 @@ class EggWidget extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                       builder: (context) => AchievementDetailsScreen(
-                          achievementSnapshot: achievement,
-                          details: achievementsState
-                              .getDetailsWidget(achievement.id))));
+                            achievementSnapshot: achievement,
+                            details: achievementsState
+                                .getDetailsWidget(achievement.id),
+                            completedDetails: achievementsState
+                                .getCompletedDetailsWidget(achievement.id),
+                          )));
               await FirebaseAnalytics.instance.logEvent(
                   name: AnalyticsEventType.achievement_status_checked.name,
                   parameters: {
@@ -58,7 +61,9 @@ class EggWidget extends StatelessWidget {
                       builder: (context) => AchievementDetailsScreen(
                           achievementSnapshot: achievement,
                           details: achievementsState
-                              .getDetailsWidget(achievement.id))));
+                              .getDetailsWidget(achievement.id),
+                          completedDetails: achievementsState
+                              .getCompletedDetailsWidget(achievement.id))));
               await FirebaseAnalytics.instance.logEvent(
                   name: AnalyticsEventType.achievement_status_checked.name,
                   parameters: {

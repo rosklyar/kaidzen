@@ -10,7 +10,7 @@ class TaskCreatedAchievement extends Achievement {
   final int achievementId;
 
   TaskCreatedAchievement(this.achievementId, this.numberOfTasks,
-      {required super.eventsRepository});
+      {required super.eventsRepository, required super.completedDetails});
 
   @override
   Future<double> get progress async {

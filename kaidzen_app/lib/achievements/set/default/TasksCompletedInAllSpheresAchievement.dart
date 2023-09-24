@@ -12,7 +12,7 @@ class TaskCompletedInAllSpheresAchievement extends Achievement {
   final int numberOfTasks;
   final int achievementId;
   TaskCompletedInAllSpheresAchievement(this.achievementId, this.numberOfTasks,
-      {required super.eventsRepository});
+      {required super.eventsRepository, required super.completedDetails});
 
   @override
   Future<double> get progress async {

@@ -15,7 +15,7 @@ class NTasksCompletedEachKDaysForMPeriodsAchievement extends Achievement {
 
   NTasksCompletedEachKDaysForMPeriodsAchievement(this.achievementId,
       this.numberOfTasks, this.numberOfDays, this.numberOfPeriods,
-      {required super.eventsRepository})
+      {required super.eventsRepository, required super.completedDetails})
       : periodDelta = 1.0 / numberOfPeriods;
 
   @override

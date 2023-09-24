@@ -12,6 +12,8 @@ import 'package:kaidzen_app/achievements/set/default/TaskCreatedAchievement.dart
 import 'package:kaidzen_app/achievements/set/default/TasksCompletedInAllSpheresAchievement.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 
+import 'style.dart';
+
 class AchievementsState extends ChangeNotifier {
   AchievementsRepository achievementsRepository;
   EventsRepository eventsRepository;
@@ -21,39 +23,52 @@ class AchievementsState extends ChangeNotifier {
 
   AchievementsState(
       {required this.eventsRepository, required this.achievementsRepository}) {
-    var fiveTasksCreatedAchievement =
-        TaskCreatedAchievement(0, 25, eventsRepository: eventsRepository);
-    var twentyFiveTasksCreatedAchievement =
-        TaskCreatedAchievement(1, 50, eventsRepository: eventsRepository);
-    var hundredTasksCreatedAchievement =
-        TaskCreatedAchievement(2, 100, eventsRepository: eventsRepository);
+    var fiveTasksCreatedAchievement = TaskCreatedAchievement(0, 25,
+        eventsRepository: eventsRepository,
+        completedDetails: comingSoonWidget());
+
+    var twentyFiveTasksCreatedAchievement = TaskCreatedAchievement(1, 50,
+        eventsRepository: eventsRepository,
+        completedDetails: comingSoonWidget());
+    var hundredTasksCreatedAchievement = TaskCreatedAchievement(2, 100,
+        eventsRepository: eventsRepository,
+        completedDetails: comingSoonWidget());
     var fiveTasksCompletedInSomeSphereAchievement =
         TaskCompletedInSomeSphereAchievement(3, 5,
-            eventsRepository: eventsRepository);
+            eventsRepository: eventsRepository,
+            completedDetails: comingSoonWidget());
     var fiftyTasksCompletedInSomeSphereAchievement =
         TaskCompletedInSomeSphereAchievement(4, 50,
-            eventsRepository: eventsRepository);
+            eventsRepository: eventsRepository,
+            completedDetails: comingSoonWidget());
     var hundredAndFiftyTasksCompletedInSomeSphereAchievement =
         TaskCompletedInSomeSphereAchievement(5, 150,
-            eventsRepository: eventsRepository);
+            eventsRepository: eventsRepository,
+            completedDetails: comingSoonWidget());
     var fiveTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
         6, 5,
-        eventsRepository: eventsRepository);
+        eventsRepository: eventsRepository,
+        completedDetails: comingSoonWidget());
     var tenTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
         7, 15,
-        eventsRepository: eventsRepository);
+        eventsRepository: eventsRepository,
+        completedDetails: comingSoonWidget());
     var thirtyTasksCompletedInEachSphere = TaskCompletedInAllSpheresAchievement(
         8, 40,
-        eventsRepository: eventsRepository);
+        eventsRepository: eventsRepository,
+        completedDetails: comingSoonWidget());
     var twoWeeks5tasksCompletedAchievement =
         NTasksCompletedEachKDaysForMPeriodsAchievement(9, 5, 7, 2,
-            eventsRepository: eventsRepository);
+            eventsRepository: eventsRepository,
+            completedDetails: comingSoonWidget());
     var threeWeeks10tasksCompletedAchievement =
         NTasksCompletedEachKDaysForMPeriodsAchievement(10, 10, 7, 3,
-            eventsRepository: eventsRepository);
+            eventsRepository: eventsRepository,
+            completedDetails: comingSoonWidget());
     var fourWeeks20tasksCompletedAchievement =
         NTasksCompletedEachKDaysForMPeriodsAchievement(11, 20, 7, 4,
-            eventsRepository: eventsRepository);
+            eventsRepository: eventsRepository,
+            completedDetails: comingSoonWidget());
 
     achievements = {
       fiveTasksCreatedAchievement.id: fiveTasksCreatedAchievement,
@@ -74,6 +89,12 @@ class AchievementsState extends ChangeNotifier {
       fourWeeks20tasksCompletedAchievement.id:
           fourWeeks20tasksCompletedAchievement
     };
+  }
+
+  Text comingSoonWidget() {
+    return Text("Coming soon...",
+        style: AchievementsStyle.achievementsDescriptionTextStyle,
+        textAlign: TextAlign.center);
   }
 
   loadAll() async {
@@ -141,6 +162,10 @@ class AchievementsState extends ChangeNotifier {
 
   Widget getDetailsWidget(int id) {
     return detailsWidgets[id]!;
+  }
+
+  Widget getCompletedDetailsWidget(int id) {
+    return achievements![id]!.completedDetails;
   }
 
   addEvent(Event event) async {

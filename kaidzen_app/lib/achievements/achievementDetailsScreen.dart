@@ -10,8 +10,12 @@ import '../assets/constants.dart';
 class AchievementDetailsScreen extends StatelessWidget {
   final AchievementSnapshot achievementSnapshot;
   final Widget details;
+  final Widget completedDetails;
   const AchievementDetailsScreen(
-      {Key? key, required this.achievementSnapshot, required this.details})
+      {Key? key,
+      required this.achievementSnapshot,
+      required this.details,
+      required this.completedDetails})
       : super(key: key);
 
   @override
@@ -84,7 +88,7 @@ class AchievementDetailsScreen extends StatelessWidget {
                             achievementSnapshot.status ==
                                 AchievementStatus.notCompleted
                         ? details
-                        : Container(),
+                        : completedDetails,
                     flex: 6)
               ]),
               flex: 6),
