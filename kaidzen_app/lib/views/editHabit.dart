@@ -48,6 +48,7 @@ class _EditHabitState extends State<EditHabit> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
@@ -83,7 +84,8 @@ class _EditHabitState extends State<EditHabit> {
                               padding: const EdgeInsets.only(
                                   left: 10, right: 10, top: 20),
                               child: TextField(
-                                textCapitalization: TextCapitalization.sentences,
+                                textCapitalization:
+                                    TextCapitalization.sentences,
                                 maxLength: maxInputCharCount,
                                 autofocus: true,
                                 decoration: InputDecoration(
@@ -136,6 +138,56 @@ class _EditHabitState extends State<EditHabit> {
                     ]),
                     flex: 9),
                 Expanded(
+                  child: Column(children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: SizedBox(
+                                child: Text("Recurring goal",
+                                    textAlign: TextAlign.left,
+                                    style: Fonts.largeTextStyle))),
+                      ],
+                    ),
+                    Visibility(
+                      visible: widget.habit.getType() ==
+                          HabitType.FIXED,
+                      child: GestureDetector(
+                        onTap: () async {
+                          int? newTargetTotal = await showNumberInputDialog(
+                              context, widget.habit.totalCount);
+                          if (newTargetTotal != null) {
+                            setState(() {
+                              widget.habit.totalCount = newTargetTotal;
+                            });
+                          }
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "${widget.habit.totalCount} times",
+                                style: Fonts.mindfulMomentTextStyleLarge,
+                              ),
+                              Row(
+                                children: [
+                                  SizedBox(width: screenWidth * 0.04),
+                                  SvgPicture.asset("assets/edit.svg"),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ]),
+                  flex: 2,
+                ),
+                Expanded(
                     child: Padding(
                         padding: const EdgeInsets.only(
                             left: 10, right: 10, bottom: 10),
@@ -160,7 +212,7 @@ class _EditHabitState extends State<EditHabit> {
                                       ? activeButtonColor
                                       : unselectedToggleColor),
                             ))),
-                    flex: 1)
+                    flex: 1),
               ]),
             ),
             onTap: () => Utils.tryToLostFocus(context)));

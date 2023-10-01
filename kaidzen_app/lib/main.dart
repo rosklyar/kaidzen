@@ -15,6 +15,7 @@ import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/BoardMessageState.dart';
 import 'package:kaidzen_app/service/HabitRepository.dart';
 import 'package:kaidzen_app/service/HabitState.dart';
+import 'package:kaidzen_app/service/LocalPropertiesService.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/tutorial/TutorialRepository.dart';
@@ -44,6 +45,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  LocalPropertiesService localPropertiesService = LocalPropertiesService();
 
   ProgressState progressState = ProgressState(
     repository: ProgressRepository(),
@@ -78,14 +81,14 @@ void main() async {
       emotionsState: emotionsState,
       tutorialState: tutorialState);
 
-
+  await localPropertiesService.loadAll();
   await taskState.loadAll();
   await habitState.loadAll();
   await achievementsState.loadAll();
   await tutorialState.loadAll();
   await emotionsState.loadAll();
   await announcementsState.loadAll();
-  await featuresState.loadAll();  
+  await featuresState.loadAll();
 
   FlutterError.onError = (FlutterErrorDetails details) {
     Zone.current.handleUncaughtError(details.exception, details.stack!);
@@ -94,6 +97,9 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runZonedGuarded(
           () => runApp(MultiProvider(providers: [
+                ChangeNotifierProvider(create: (context) {
+                  return localPropertiesService;
+                }),
                 ChangeNotifierProvider(create: (context) {
                   AnalyticsService.initUserProperties(
                       taskState, habitState, emotionsState, tutorialState);
@@ -116,7 +122,8 @@ void main() async {
                   return emotionsState;
                 }),
                 ChangeNotifierProvider(create: (context) {
-                  return BoardMessageState(tutorialState, taskState, habitState);
+                  return BoardMessageState(
+                      tutorialState, taskState, habitState);
                 }),
                 ChangeNotifierProvider(create: (context) {
                   return announcementsState;

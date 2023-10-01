@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/service/HabitState.dart';
 import 'package:kaidzen_app/views/viewGoal.dart';
 import 'package:kaidzen_app/views/viewHabit.dart';
+import 'package:progress_state_button/iconed_button.dart';
+import 'package:progress_state_button/progress_button.dart';
 import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
@@ -19,21 +24,24 @@ class ListViewHabitItem extends ListTile {
 
   @override
   Widget build(BuildContext context) {
-    var listText = 'For ' + habit.task.category.nameLowercase + ' ';
+    var listText = HabitStage.getById(habit.stage).title;
 
-    var habitType = HabitType.getById(habit.type);
+    var habitType = habit.getType();
     listText += habitType == HabitType.FIXED
-        ? ' ${habit.stageCount} out of ${habit.totalCount}'
-        : ' ${habit.stageCount}/${habitType.stageCount[habit.stage]} ~~ ${calculateTotalAmountSoFar(habitType, habit.stage, habit.stageCount)} out of ${calculateMaxTotalAmount(habitType)} in total';
+        ? ' • ${habit.stageCount} out of ${habit.totalCount}'
+        : ' • ${habit.stageCount} out of ${habitType.stageCount[habit.stage]}';
 
     return ListTile(
       //contentPadding: EdgeInsets.symmetric(horizontal: 16),
       leading: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(Icons.circle_rounded,
-              color: habit.task.category.color,
-              size: 8.0 + habit.task.difficulty.id * 4),
+          SvgPicture.asset(
+            'assets/recurring.svg',
+            color: habit.task.category.color,
+            width: 12.0 + habit.task.difficulty.id * 4,
+            height: 12.0 + habit.task.difficulty.id * 4,
+          ),
         ],
       ),
       title: Text(
@@ -66,7 +74,7 @@ class ListTileTrail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (habit.task.status == Status.DONE) {
-      return const DoneIconButton();
+      return const SizedBox();
     } else if (habit.task.status == Status.TODO) {
       return MoveHabitIconButton(habit: habit, direction: Direction.FORWARD);
     } else {
@@ -85,12 +93,12 @@ class TrackHabitIconButton extends StatelessWidget {
     return IconButton(
         icon: const Icon(Icons.add_circle_outline),
         onPressed: () async {
-          await trackHabit(context, habit);
+          await Provider.of<HabitState>(context, listen: false).trackHabit(habit);
         });
   }
 
   Future<void> trackHabit(BuildContext context, Habit habit) async {
-    var type = HabitType.getById(habit.type);
+    var type = habit.getType();
     var stageTotal = type == HabitType.FIXED
         ? habit.totalCount
         : type.stageCount[habit.stage];

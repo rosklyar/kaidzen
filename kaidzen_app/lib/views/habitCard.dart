@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/views/listViewHabitItem.dart';
 
 import '../assets/constants.dart';
@@ -8,12 +9,10 @@ import 'ListViewTaskItem.dart';
 import 'listViewComplexTaskItem.dart';
 
 Widget habitCard(Habit habit) {
-  var type = HabitType.getById(habit.type);
   double progressValue = calculateCurrentHabitProgress(habit);
 
   Widget progressBar = LinearProgressIndicator(
     value: progressValue,
-    backgroundColor: Colors.grey[200],
     valueColor: AlwaysStoppedAnimation<Color>(
         habit.task.category.color), // Or any color you prefer
   );
@@ -28,13 +27,6 @@ Widget habitCard(Habit habit) {
     );
   }
 
-  var background = habit.task.status == Status.DOING
-      ? AssetImage(
-          "assets/doing" + ((habit.task.id! + 1) % 2 + 1).toString() + ".png")
-      : AssetImage(habit.task.category.backgroundLink +
-          ((habit.task.id! + 1) % 2 + 1).toString() +
-          ".png");
-
   return Card(
     shadowColor: cardShadowColor,
     elevation: cardElavation,
@@ -42,7 +34,7 @@ Widget habitCard(Habit habit) {
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.fill,
-          image: background,
+          image: getBackgroundImage(habit),
         ),
       ),
       child: Column(
@@ -52,11 +44,22 @@ Widget habitCard(Habit habit) {
   );
 }
 
+AssetImage getBackgroundImage(Habit habit) {
+  if (habit.type == HabitType.FIXED.id) {
+    return AssetImage("assets/doing1.png");
+  }
+  var stagesCountInHabit = habit.getType().stageCount.length;
+
+  return stagesCountInHabit == habit.stage &&
+          habit.stageCount ==
+              habit.getType().stageCount[habit.stage]
+      ? AssetImage("assets/cards/habit_stage_done_cat_${habit.task.category.id}.png")
+      : AssetImage("assets/cards/habit_stage_${habit.stage}_cat_${habit.task.category.id}.png");
+}
+
 double calculateCurrentHabitProgress(Habit habit) {
-  var type = HabitType.getById(habit.type);
+  var type = habit.getType();
   return type == HabitType.FIXED
       ? habit.stageCount / habit.totalCount
       : habit.stageCount / type.stageCount[habit.stage]!;
 }
-
-

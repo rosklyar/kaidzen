@@ -47,7 +47,6 @@ class HabitState extends ChangeNotifier {
     _habits[Status.DOING]!.sort((a, b) => a.task.priority - b.task.priority);
     _habits[Status.DONE]!.sort((a, b) => a.task.priority - b.task.priority);
     notifyListeners();
-    
   }
 
   List<Habit> getByStatus(String status) {
@@ -90,7 +89,35 @@ class HabitState extends ChangeNotifier {
       "is_created": "true",
       "is_simple": habit.task.subtasks.isEmpty.toString()
     });
-    // Add/update any properties or log events specific to habits
+    var event =
+        Event(EventType.taskCreated, DateTime.now(), habit.task.category);
+    await achievementsState.addEvent(event);
+    notifyListeners();
+  }
+
+  trackHabit(Habit habit) async {
+    var type = habit.getType();
+    var stageTotal = type == HabitType.FIXED
+        ? habit.totalCount
+        : type.stageCount[habit.stage];
+    habit.stageCount += 1;
+    if (habit.stageCount == stageTotal) {
+      if (habit.stage == type.stageCount.length) {
+        await moveHabitAndNotify(habit, Status.DONE);
+      } else {
+        habit.stage += 1;
+        habit.stageCount = 0;
+        await updateHabit(habit);
+      }
+    } else {
+      await updateHabit(habit);
+    }
+
+    await progressState.updateProgress(habit.task);
+    updateHabitTimestamps(habit);
+    var event =
+        Event(EventType.habitTracked, DateTime.now(), habit.task.category);
+    await achievementsState.addEvent(event);
     notifyListeners();
   }
 
@@ -161,15 +188,22 @@ class HabitState extends ChangeNotifier {
       await progressState.updateProgress(habit.task);
       updateHabitTimestamps(habit);
     }
+    if (oldStatus == Status.DONE) {
+      var stageTotal = habit.getType() == HabitType.FIXED
+        ? habit.totalCount
+        : habit.getType().stageCount[habit.stage];
+      if(habit.stageCount == stageTotal) {
+          habit.stageCount--;
+      }
+    }
 
     await repository.update(habit);
 
-    //TODO add events
-    // var type = newStatus == Status.DOING
-    //     ? EventType.habitInProgress
-    //     : EventType.habitCompleted;
-    // var event = Event(type, DateTime.now(), habit.task.category);
-    // await achievementsState.addEvent(event);
+    var type = newStatus == Status.DOING
+        ? EventType.habitInProgress
+        : EventType.habitCompleted;
+    var event = Event(type, DateTime.now(), habit.task.category);
+    await achievementsState.addEvent(event);
     await emotionsState.loadAll();
 
     await FirebaseAnalytics.instance
@@ -192,7 +226,4 @@ class HabitState extends ChangeNotifier {
       habit.task.doneTs = DateTime.now();
     }
   }
-  // Other methods similar to TasksState but adjusted for Habit...
-
-  // You may also want to add specific methods for managing habit properties, such as stages, counts, types, etc.
 }

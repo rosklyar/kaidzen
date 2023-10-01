@@ -6,19 +6,19 @@ import 'package:kaidzen_app/announcements/AnnouncementsState.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/BoardMessageState.dart';
 import 'package:kaidzen_app/service/HabitState.dart';
+import 'package:kaidzen_app/service/LocalPropertiesService.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/tutorial/TutorialState.dart';
-import 'package:kaidzen_app/views/listViewComplexTaskItem.dart';
 import 'package:kaidzen_app/views/taskCard.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../assets/constants.dart';
 import '../models/habit.dart';
 import '../service/AnalyticsService.dart';
-import 'ListViewTaskItem.dart';
 import 'habitCard.dart';
 
 class Board extends StatefulWidget {
-  Board(
+  const Board(
       {Key? key,
       required this.board,
       required this.tasks,
@@ -173,7 +173,8 @@ class BoardState extends State<Board> {
                           padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
                         ),
                         flex: 1,
-                      )
+                      ),
+                      Expanded(child: reorderableListView(), flex: 2)
                     ],
                   )
                 : reorderableListView()
@@ -183,7 +184,6 @@ class BoardState extends State<Board> {
     });
   }
 
-
   ReorderableListView reorderableListView() {
     var habits = Visibility(
       key: Key('habits'),
@@ -191,7 +191,46 @@ class BoardState extends State<Board> {
       child: Column(
         children: [
           ExpansionTile(
-            title: Text("Recurring goals (${widget.habits.length})"),
+            onExpansionChanged: (value) {
+              Provider.of<LocalPropertiesService>(context, listen: false)
+                  .setBool(PropertyKey.HABITS_EXPANDED, value);
+            },
+            initiallyExpanded:
+                Provider.of<LocalPropertiesService>(context, listen: false)
+                        .getBool(PropertyKey.HABITS_EXPANDED) ??
+                    true,
+            title: Row(
+              children: [
+                SvgPicture.asset(
+                  'assets/recurring.svg',
+                  color: Colors.black,
+                  width: 20.0,
+                  height: 20.0,
+                ), // Replace with your desired icon
+                SizedBox(
+                    width: 8.0), // Adds some spacing between the icon and text
+                Expanded(
+                  child: RichText(
+                    text: TextSpan(
+                      style: DefaultTextStyle.of(context).style,
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: 'Recurring goals',
+                            style: Fonts.largeTextStyle,
+                            children: <InlineSpan>[
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.aboveBaseline,
+                                baseline: TextBaseline.alphabetic,
+                                child: Text('  ${widget.habits.length}',
+                                    style: Fonts.largeBoldTextStyle),
+                              ),
+                            ]),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
             children: <Widget>[
               Column(
                 mainAxisSize: MainAxisSize.min,
@@ -205,6 +244,14 @@ class BoardState extends State<Board> {
                 ),
               )
             ],
+          ),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(3, 0, 3, 3),
+            child: Divider(
+              color: Colors.grey, // or any color you want
+              height: 3.0, // control the height of the divider
+              thickness: 1.0, // control the thickness of the line
+            ),
           ),
         ],
       ),

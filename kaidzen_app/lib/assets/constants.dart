@@ -187,6 +187,12 @@ class Fonts {
     fontSize: 14,
     color: Colors.deepPurpleAccent,
   ));
+
+  static TextStyle mindfulMomentTextStyleLarge = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+    fontSize: 16,
+    color: Colors.deepPurpleAccent,
+  ));
 }
 
 class AppColors {
@@ -290,6 +296,26 @@ enum HabitType {
 
   static HabitType getById(int id) {
     for (HabitType type in HabitType.values) {
+      if (type.id == id) {
+        return type;
+      }
+    }
+    throw ArgumentError('Invalid ID: $id');
+  }
+}
+
+enum HabitStage {
+  STAGE_1(1, "1st Stage"),
+  STAGE_2(2, "2nd Stage"),
+  STAGE_3(3, "3rd Stage");
+
+  const HabitStage(this.id, this.title);
+
+  final int id;
+  final String title;
+
+  static HabitStage getById(int id) {
+    for (HabitStage type in HabitStage.values) {
       if (type.id == id) {
         return type;
       }

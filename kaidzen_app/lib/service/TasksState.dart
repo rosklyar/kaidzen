@@ -101,6 +101,8 @@ class TasksState extends ChangeNotifier {
       "is_created": "true",
       "is_simple": task.subtasks.isEmpty.toString()
     });
+    var event = Event(EventType.taskCreated, DateTime.now(), task.category);
+    await achievementsState.addEvent(event);
     notifyListeners();
   }
 

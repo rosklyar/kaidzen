@@ -188,7 +188,7 @@ class _CreateTaskState extends State<CreateTask> {
                             child: GestureDetector(
                               onTap: () async {
                                 int? newTargetTotal =
-                                    await _showNumberInputDialog(
+                                    await showNumberInputDialog(
                                         context, _targetTotal);
                                 if (newTargetTotal != null) {
                                   setState(() {
@@ -206,7 +206,7 @@ class _CreateTaskState extends State<CreateTask> {
                                   children: [
                                     Text(
                                       "$_targetTotal times",
-                                      style: Fonts.mindfulMomentTextStyle,
+                                      style: Fonts.mindfulMomentTextStyleLarge,
                                     ),
                                     Row(
                                       children: [
@@ -500,85 +500,10 @@ class _CreateTaskState extends State<CreateTask> {
               .firstWhere((element) => element.id == _currentDifficulty),
           parent: widget.parent != null ? widget.parent!.id : null));
     }
-
-    var event = Event(EventType.taskCreated, DateTime.now(), category);
-    Provider.of<AchievementsState>(context, listen: false).addEvent(event);
+    
     Provider.of<EmotionsState>(context, listen: false).loadAll();
     Navigator.pop(context);
     showTutorialTopFlushbar("Goal created", context);
-  }
-
-  Future<int?> _showNumberInputDialog(
-      BuildContext context, int currentValue) async {
-    TextEditingController controller =
-        TextEditingController(text: '$currentValue');
-    bool hasError = false; // to keep track of input error
-
-    return showDialog<int>(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return ThemedDialog(
-                context,
-                AlertDialog(
-                  title: Text('Enter target total'),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextField(
-                        controller: controller,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        onChanged: (value) {
-                          int? enteredNumber = int.tryParse(value);
-                          // Check for error and update state accordingly
-                          if (enteredNumber == null || enteredNumber > 10000) {
-                            setState(() {
-                              hasError = true;
-                            });
-                          } else {
-                            setState(() {
-                              hasError = false;
-                            });
-                          }
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'Enter number between 0 and 100',
-                          border: OutlineInputBorder(),
-                          errorText: hasError
-                              ? 'Max value is 10000'
-                              : null, // display errorText if there's an error
-                          errorStyle: TextStyle(color: Colors.red),
-                        ),
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context); // Closes dialog without saving
-                      },
-                      child: Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        if (!hasError) {
-                          int enteredNumber = int.parse(controller.text);
-                          Navigator.pop(context, enteredNumber);
-                        }
-                        // Else, the button will simply close the dialog without doing anything. You can also disable the OK button when there's an error if you prefer.
-                      },
-                      child: Text('OK'),
-                    ),
-                  ],
-                ));
-          },
-        );
-      },
-    );
   }
 
   @override
