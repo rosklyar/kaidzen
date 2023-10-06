@@ -190,10 +190,10 @@ class HabitState extends ChangeNotifier {
     }
     if (oldStatus == Status.DONE) {
       var stageTotal = habit.getType() == HabitType.FIXED
-        ? habit.totalCount
-        : habit.getType().stageCount[habit.stage];
-      if(habit.stageCount == stageTotal) {
-          habit.stageCount--;
+          ? habit.totalCount
+          : habit.getType().stageCount[habit.stage];
+      if (habit.stageCount == stageTotal) {
+        habit.stageCount--;
       }
     }
 
@@ -217,6 +217,7 @@ class HabitState extends ChangeNotifier {
       "habit_previous_status": oldStatus,
       "is_simple": true.toString() // Assuming habits are always simple for now
     });
+    notifyListeners();
   }
 
   void updateHabitTimestamps(Habit habit) {

@@ -188,8 +188,8 @@ class _CreateTaskState extends State<CreateTask> {
                             child: GestureDetector(
                               onTap: () async {
                                 int? newTargetTotal =
-                                    await showNumberInputDialog(
-                                        context, _targetTotal);
+                                    await showNumberInputDialog('Enter target total',
+                                        context, _targetTotal, maxFixedValue, 1);
                                 if (newTargetTotal != null) {
                                   setState(() {
                                     _targetTotal = newTargetTotal;
@@ -500,7 +500,7 @@ class _CreateTaskState extends State<CreateTask> {
               .firstWhere((element) => element.id == _currentDifficulty),
           parent: widget.parent != null ? widget.parent!.id : null));
     }
-    
+
     Provider.of<EmotionsState>(context, listen: false).loadAll();
     Navigator.pop(context);
     showTutorialTopFlushbar("Goal created", context);

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../models/habit.dart';
+
 class Status {
   static const String TODO = "Do";
   static const String DOING = "Doing";
@@ -326,16 +328,17 @@ enum HabitStage {
 
 enum Direction { FORWARD, BACKWARD }
 
-int calculateTotalAmountSoFar(
-    HabitType habitType, int currentStage, int currentAmount) {
-  int sumOfPreviousStages = habitType.stageCount.entries
-      .where((entry) => entry.key < currentStage)
+int calculateTotalAmountSoFar(Habit habit) {
+  int sumOfPreviousStages = habit.getType().stageCount.entries
+      .where((entry) => entry.key < habit.stage)
       .fold(0, (previousValue, entry) => previousValue + entry.value);
 
-  return currentAmount + sumOfPreviousStages;
+  return habit.stageCount + sumOfPreviousStages;
 }
 
 int calculateMaxTotalAmount(HabitType habitType) {
   return habitType.stageCount.entries
       .fold(0, (previousValue, entry) => previousValue + entry.value);
 }
+
+int maxFixedValue = 1000;

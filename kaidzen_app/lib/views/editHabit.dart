@@ -8,11 +8,9 @@ import 'package:kaidzen_app/views/utils.dart';
 import 'package:kaidzen_app/widgets/taskType.dart';
 import 'package:kaidzen_app/widgets/taskDifficulty.dart';
 
-import '../models/task.dart';
 import 'package:provider/provider.dart';
 
 import '../service/AnalyticsService.dart';
-import '../service/TasksState.dart';
 
 class EditHabit extends StatefulWidget {
   final Habit habit;
@@ -61,7 +59,7 @@ class _EditHabitState extends State<EditHabit> {
             },
           ),
           title: Text(
-            "Goal",
+            "Recurring goal",
             style: Fonts.screenTytleTextStyle,
           ),
           centerTitle: true,
@@ -145,43 +143,156 @@ class _EditHabitState extends State<EditHabit> {
                         Padding(
                             padding: const EdgeInsets.only(left: 10),
                             child: SizedBox(
-                                child: Text("Recurring goal",
+                                child: Text(
+                                    widget.habit.getType() == HabitType.FIXED
+                                        ? "Target total:"
+                                        : "Habit progress:",
                                     textAlign: TextAlign.left,
                                     style: Fonts.largeTextStyle))),
                       ],
                     ),
                     Visibility(
-                      visible: widget.habit.getType() ==
-                          HabitType.FIXED,
-                      child: GestureDetector(
-                        onTap: () async {
-                          int? newTargetTotal = await showNumberInputDialog(
-                              context, widget.habit.totalCount);
-                          if (newTargetTotal != null) {
-                            setState(() {
-                              widget.habit.totalCount = newTargetTotal;
-                            });
-                          }
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "${widget.habit.totalCount} times",
-                                style: Fonts.mindfulMomentTextStyleLarge,
-                              ),
-                              Row(
+                      visible: widget.habit.getType() == HabitType.FIXED,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 10),
+                          GestureDetector(
+                            onTap: () async {
+                              int? newStageCount = await showNumberInputDialog(
+                                  'Enter stage count',
+                                  context,
+                                  widget.habit.stageCount,
+                                  widget.habit.totalCount,
+                                  0);
+                              if (newStageCount != null) {
+                                setState(() {
+                                  widget.habit.stageCount = newStageCount;
+                                });
+                              }
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 15),
+                              child: Column(
                                 children: [
-                                  SizedBox(width: screenWidth * 0.04),
-                                  SvgPicture.asset("assets/edit.svg"),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(children: [
+                                        Text(
+                                          "Completed ",
+                                          style: Fonts.largeTextStyle,
+                                        ),
+                                        Text(
+                                          "${widget.habit.stageCount} times",
+                                          style:
+                                              Fonts.mindfulMomentTextStyleLarge,
+                                        ),
+                                      ]),
+                                      Row(
+                                        children: [
+                                          SizedBox(width: screenWidth * 0.04),
+                                          SvgPicture.asset("assets/edit.svg"),
+                                        ],
+                                      ),
+                                    ],
+                                  )
                                 ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
+                          GestureDetector(
+                            onTap: () async {
+                              int? newTargetTotal = await showNumberInputDialog(
+                                  'Enter target',
+                                  context,
+                                  widget.habit.totalCount,
+                                  maxFixedValue,
+                                  widget.habit.stageCount);
+                              if (newTargetTotal != null) {
+                                setState(() {
+                                  widget.habit.totalCount = newTargetTotal;
+                                });
+                              }
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 2, horizontal: 15),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(children: [
+                                        Text(
+                                          "Target ",
+                                          style: Fonts.largeTextStyle,
+                                        ),
+                                        Text(
+                                          "${widget.habit.totalCount} times",
+                                          style:
+                                              Fonts.mindfulMomentTextStyleLarge,
+                                        ),
+                                      ]),
+                                      Row(
+                                        children: [
+                                          SizedBox(width: screenWidth * 0.04),
+                                          SvgPicture.asset("assets/edit.svg"),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Visibility(
+                      visible: widget.habit.getType() != HabitType.FIXED,
+                      child: Column(
+                        children: [
+                          SizedBox(height: 10),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 2, horizontal: 15),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Stage ${widget.habit.stage}: ",
+                                      style: Fonts.largeTextStyle,
+                                    ),
+                                    Text(
+                                      "${widget.habit.stageCount} out of ${widget.habit.getType().stageCount[widget.habit.stage]}",
+                                      style: Fonts.largeTextStyle,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Total: ",
+                                      style: Fonts.largeTextStyle,
+                                    ),
+                                    Text(
+                                      "${calculateTotalAmountSoFar(widget.habit)} out of ${calculateMaxTotalAmount(widget.habit.getType())}",
+                                      style: Fonts.largeTextStyle,
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                     )
                   ]),
@@ -243,14 +354,23 @@ class _EditHabitState extends State<EditHabit> {
     ]);
   }
 
-  void submit() {
+  void submit() async {
     var category = DevelopmentCategory.values
         .firstWhere((element) => element.id == _currentCategory);
     widget.habit.task.name = newTaskController.text;
     widget.habit.task.category = category;
     widget.habit.task.difficulty = Difficulty.values
         .firstWhere((element) => element.id == _currentDifficulty);
-    Provider.of<HabitState>(context, listen: false).updateHabit(widget.habit);
+
+    if (widget.habit.getType() == HabitType.FIXED &&
+        widget.habit.stageCount == widget.habit.totalCount &&
+        widget.habit.task.status == Status.DOING) {
+      await Provider.of<HabitState>(context, listen: false)
+          .moveHabitAndNotify(widget.habit, Status.DONE);
+    } else {
+      await Provider.of<HabitState>(context, listen: false)
+          .updateHabit(widget.habit);
+    }
     Navigator.pop(context);
   }
 

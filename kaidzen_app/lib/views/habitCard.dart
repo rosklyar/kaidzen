@@ -12,20 +12,11 @@ Widget habitCard(Habit habit) {
   double progressValue = calculateCurrentHabitProgress(habit);
 
   Widget progressBar = LinearProgressIndicator(
+    backgroundColor: Colors.white,
     value: progressValue,
     valueColor: AlwaysStoppedAnimation<Color>(
         habit.task.category.color), // Or any color you prefer
   );
-
-  if (habit.task.status == Status.TODO) {
-    return Card(
-      shadowColor: cardShadowColor,
-      elevation: cardElavation,
-      child: Column(
-        children: [ListViewHabitItem(habit: habit), progressBar],
-      ),
-    );
-  }
 
   return Card(
     shadowColor: cardShadowColor,
@@ -46,7 +37,7 @@ Widget habitCard(Habit habit) {
 
 AssetImage getBackgroundImage(Habit habit) {
   if (habit.type == HabitType.FIXED.id) {
-    return AssetImage("assets/doing1.png");
+    return AssetImage("assets/no_category.png");
   }
   var stagesCountInHabit = habit.getType().stageCount.length;
 

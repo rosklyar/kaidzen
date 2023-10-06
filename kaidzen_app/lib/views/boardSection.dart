@@ -190,65 +190,69 @@ class BoardState extends State<Board> {
       visible: widget.habits.isNotEmpty,
       child: Column(
         children: [
-          ExpansionTile(
-            onExpansionChanged: (value) {
-              Provider.of<LocalPropertiesService>(context, listen: false)
-                  .setBool(PropertyKey.HABITS_EXPANDED, value);
-            },
-            initiallyExpanded:
+          Theme(
+            data: ThemeData(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              iconColor: Colors.black,
+              onExpansionChanged: (value) {
                 Provider.of<LocalPropertiesService>(context, listen: false)
-                        .getBool(PropertyKey.HABITS_EXPANDED) ??
-                    true,
-            title: Row(
-              children: [
-                SvgPicture.asset(
-                  'assets/recurring.svg',
-                  color: Colors.black,
-                  width: 20.0,
-                  height: 20.0,
-                ), // Replace with your desired icon
-                SizedBox(
-                    width: 8.0), // Adds some spacing between the icon and text
-                Expanded(
-                  child: RichText(
-                    text: TextSpan(
-                      style: DefaultTextStyle.of(context).style,
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: 'Recurring goals',
-                            style: Fonts.largeTextStyle,
-                            children: <InlineSpan>[
-                              WidgetSpan(
-                                alignment: PlaceholderAlignment.aboveBaseline,
-                                baseline: TextBaseline.alphabetic,
-                                child: Text('  ${widget.habits.length}',
-                                    style: Fonts.largeBoldTextStyle),
-                              ),
-                            ]),
-                      ],
+                    .setBool(PropertyKey.HABITS_EXPANDED, value);
+              },
+              initiallyExpanded:
+                  Provider.of<LocalPropertiesService>(context, listen: false)
+                          .getBool(PropertyKey.HABITS_EXPANDED) ??
+                      true,
+              title: Row(
+                children: [
+                  SvgPicture.asset(
+                    'assets/recurring.svg',
+                    color: Colors.black,
+                    width: 20.0,
+                    height: 20.0,
+                  ), // Replace with your desired icon
+                  SizedBox(
+                      width: 8.0), // Adds some spacing between the icon and text
+                  Expanded(
+                    child: RichText(
+                      text: TextSpan(
+                        style: DefaultTextStyle.of(context).style,
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: 'Recurring goals',
+                              style: Fonts.largeTextStyle,
+                              children: <InlineSpan>[
+                                WidgetSpan(
+                                  alignment: PlaceholderAlignment.aboveBaseline,
+                                  baseline: TextBaseline.alphabetic,
+                                  child: Text('  ${widget.habits.length}',
+                                      style: Fonts.largeBoldTextStyle),
+                                ),
+                              ]),
+                        ],
+                      ),
                     ),
+                  )
+                ],
+              ),
+              children: <Widget>[
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: List.generate(
+                    widget.habits.length,
+                    (index) {
+                      return Column(
+                          key: Key('$index'),
+                          children: [habitCard(widget.habits[index])]);
+                    },
                   ),
                 )
               ],
             ),
-            children: <Widget>[
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: List.generate(
-                  widget.habits.length,
-                  (index) {
-                    return Column(
-                        key: Key('$index'),
-                        children: [habitCard(widget.habits[index])]);
-                  },
-                ),
-              )
-            ],
           ),
           const Padding(
-            padding: EdgeInsets.fromLTRB(3, 0, 3, 3),
+            padding: EdgeInsets.fromLTRB(3, 20, 3, 20),
             child: Divider(
-              color: Colors.grey, // or any color you want
+              color: Color.fromARGB(255, 190, 189, 189), // or any color you want
               height: 3.0, // control the height of the divider
               thickness: 1.0, // control the thickness of the line
             ),

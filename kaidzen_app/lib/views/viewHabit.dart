@@ -126,13 +126,19 @@ class _ViewHabitState extends State<ViewHabit> {
                       ? MoveHabitIconButton(
                           habit: habit, direction: Direction.FORWARD)
                       : Image.asset("assets/right_inactive.png")),
-              IconButton(
-                icon: SvgPicture.asset("assets/edit.svg"),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return EditHabit(habit);
-                  }));
-                },
+              Visibility(
+                maintainState: true,
+                maintainAnimation: true,
+                maintainSize: true,
+                visible: widget.habit.task.status != Status.DONE,
+                child: IconButton(
+                  icon: SvgPicture.asset("assets/edit.svg"),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return EditHabit(habit);
+                    }));
+                  },
+                ),
               ),
             ],
           ),
