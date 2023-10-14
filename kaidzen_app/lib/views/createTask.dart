@@ -156,7 +156,7 @@ class _CreateTaskState extends State<CreateTask> {
                                   flex: 1),
                               const Expanded(child: SizedBox(), flex: 1)
                             ])),
-                        flex: 4),
+                        flex: 5),
                     Expanded(child: getDiff(), flex: 5),
                     Expanded(
                         child: Column(children: [
@@ -219,8 +219,21 @@ class _CreateTaskState extends State<CreateTask> {
                               ),
                             ),
                           ),
+                          Visibility(
+                            visible: _isHabit &&
+                                _currentHabitType == HabitType.GIVE_IT_A_TRY,
+                            child: GestureDetector(
+                              child: Container(
+                                height: screenWidth * 0.35,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: screenWidth * 0.04,
+                                    horizontal: screenWidth * 0.01),
+                                child: Image.asset("assets/habits_background.png"),
+                              ),
+                            ),
+                          ),
                         ]),
-                        flex: 7)
+                        flex: 10)
                   ]),
                   flex: 9),
               Expanded(

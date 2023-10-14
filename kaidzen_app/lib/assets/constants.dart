@@ -277,7 +277,7 @@ enum Features {
 
 enum HabitType {
   FIXED(0, "Target total", {1: 0}),
-  GIVE_IT_A_TRY(1, "Strong habit", {
+  GIVE_IT_A_TRY(1, "Build habit", {
     1: 3,
     2: 5,
     3: 8,
