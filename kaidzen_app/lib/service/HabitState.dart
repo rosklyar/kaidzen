@@ -95,13 +95,23 @@ class HabitState extends ChangeNotifier {
     notifyListeners();
   }
 
-  trackHabit(Habit habit) async {
+  Future<void> trackHabit(Habit habit) async {
+    // 1. Update the Counter
     var type = habit.getType();
     var stageTotal = type == HabitType.FIXED
         ? habit.totalCount
         : type.stageCount[habit.stage];
     habit.stageCount += 1;
-    if (habit.stageCount == stageTotal) {
+
+    // 2. Notify listeners to start progress bar animation
+    notifyListeners();
+
+    // 3. Wait for the animation to complete
+    await Future.delayed(const Duration(
+        seconds: 1)); // Adjust this based on the length of your animation
+
+    // 4. Update habit's status if necessary
+    if (habit.stageCount >= stageTotal!) {
       if (habit.stage == type.stageCount.length) {
         await moveHabitAndNotify(habit, Status.DONE);
       } else {
@@ -112,6 +122,9 @@ class HabitState extends ChangeNotifier {
     } else {
       await updateHabit(habit);
     }
+
+    // 5. Notify listeners again in case of status change
+    notifyListeners();
 
     await progressState.updateProgress(habit.task);
     updateHabitTimestamps(habit);
