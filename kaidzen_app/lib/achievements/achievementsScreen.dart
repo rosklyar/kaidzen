@@ -168,11 +168,14 @@ class AchievementsScreen extends StatelessWidget {
                                     completedDetails: achievementsState
                                         .getCompletedDetailsWidget(
                                             achievement.id),
+                                    completedDetailsType: achievementsState
+                                        .getCompletedDetailsType(
+                                            achievement.id),
                                   )));
                       if (achievement.status == AchievementStatus.completed) {
                         achievementsState.updateAchievementSnapshot(
                             AchievementSnapshot.updateStatus(achievement,
-                                AchievementStatus.completedAndShown));
+                                AchievementStatus.completedAndNewDetailsShown));
                       }
                     }),
                 flex: 1)

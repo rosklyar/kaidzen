@@ -6,6 +6,7 @@ import 'package:kaidzen_app/achievements/EventsRepository.dart';
 import 'package:kaidzen_app/achievements/achievement.dart';
 import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'package:kaidzen_app/achievements/event.dart';
+import 'package:kaidzen_app/achievements/set/default/CompletedDetailsSwiper.dart';
 import 'package:kaidzen_app/achievements/set/default/NTasksCompletedEachKDaysForMPeriodsAchievement.dart';
 import 'package:kaidzen_app/achievements/set/default/TaskCompletedInSomeSphereAchievement.dart';
 import 'package:kaidzen_app/achievements/set/default/TaskCreatedAchievement.dart';
@@ -23,16 +24,31 @@ class AchievementsState extends ChangeNotifier {
 
   AchievementsState(
       {required this.eventsRepository, required this.achievementsRepository}) {
-    var fiveTasksCreatedAchievement = TaskCreatedAchievement(0, 25,
+    var twentyFiveTasksCreatedAchievement = TaskCreatedAchievement(0, 5,
         eventsRepository: eventsRepository,
-        completedDetails: comingSoonWidget());
+        completedDetails: const CompletedDetailsSwiper(
+            itemCount: 19,
+            subfolder: "0/details/fish",
+            filePrefix: "Fish",
+            color: Color.fromRGBO(195, 184, 239, 1)),
+        completedDetailsType: CompletedDetailsType.ORIGAMI_INSTRUCTION);
 
-    var twentyFiveTasksCreatedAchievement = TaskCreatedAchievement(1, 50,
+    var fiftyTasksCreatedAchievement = TaskCreatedAchievement(1, 6,
         eventsRepository: eventsRepository,
-        completedDetails: comingSoonWidget());
-    var hundredTasksCreatedAchievement = TaskCreatedAchievement(2, 100,
+        completedDetails: const CompletedDetailsSwiper(
+            itemCount: 11,
+            subfolder: "0/details/duck",
+            filePrefix: "Duck",
+            color: Color.fromRGBO(195, 184, 239, 1)),
+        completedDetailsType: CompletedDetailsType.ORIGAMI_INSTRUCTION);
+    var hundredTasksCreatedAchievement = TaskCreatedAchievement(2, 7,
         eventsRepository: eventsRepository,
-        completedDetails: comingSoonWidget());
+        completedDetails: const CompletedDetailsSwiper(
+            itemCount: 20,
+            subfolder: "0/details/seahorse",
+            filePrefix: "Seahorse",
+            color: Color.fromRGBO(195, 184, 239, 1)),
+        completedDetailsType: CompletedDetailsType.ORIGAMI_INSTRUCTION);
     var fiveTasksCompletedInSomeSphereAchievement =
         TaskCompletedInSomeSphereAchievement(3, 5,
             eventsRepository: eventsRepository,
@@ -71,8 +87,8 @@ class AchievementsState extends ChangeNotifier {
             completedDetails: comingSoonWidget());
 
     achievements = {
-      fiveTasksCreatedAchievement.id: fiveTasksCreatedAchievement,
       twentyFiveTasksCreatedAchievement.id: twentyFiveTasksCreatedAchievement,
+      fiftyTasksCreatedAchievement.id: fiftyTasksCreatedAchievement,
       hundredTasksCreatedAchievement.id: hundredTasksCreatedAchievement,
       fiveTasksCompletedInSomeSphereAchievement.id:
           fiveTasksCompletedInSomeSphereAchievement,
@@ -91,10 +107,11 @@ class AchievementsState extends ChangeNotifier {
     };
   }
 
-  Text comingSoonWidget() {
-    return Text("Coming soon...",
-        style: AchievementsStyle.achievementsDescriptionTextStyle,
-        textAlign: TextAlign.center);
+  Widget comingSoonWidget() {
+    return Align(
+        child: Text("Coming soon...",
+            style: AchievementsStyle.achievementsDescriptionTextStyle),
+        alignment: Alignment.center);
   }
 
   loadAll() async {
@@ -160,12 +177,24 @@ class AchievementsState extends ChangeNotifier {
         .length;
   }
 
+  bool notShownWithOrigamiCompleted() {
+    // ignore: iterable_contains_unrelated_type
+    return _snaphots.values.contains((s) =>
+        s.status == AchievementStatus.completedAndShown &&
+        achievements![s.id]!.completedDetailsType ==
+            CompletedDetailsType.ORIGAMI_INSTRUCTION);
+  }
+
   Widget getDetailsWidget(int id) {
     return detailsWidgets[id]!;
   }
 
   Widget getCompletedDetailsWidget(int id) {
     return achievements![id]!.completedDetails;
+  }
+
+  CompletedDetailsType getCompletedDetailsType(int id) {
+    return achievements![id]!.completedDetailsType;
   }
 
   addEvent(Event event) async {

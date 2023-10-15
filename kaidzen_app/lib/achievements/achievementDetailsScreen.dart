@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kaidzen_app/achievements/achievement.dart';
 import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'package:kaidzen_app/achievements/eggWidget.dart';
 import 'package:kaidzen_app/achievements/style.dart';
@@ -11,11 +12,13 @@ class AchievementDetailsScreen extends StatelessWidget {
   final AchievementSnapshot achievementSnapshot;
   final Widget details;
   final Widget completedDetails;
+  final CompletedDetailsType completedDetailsType;
   const AchievementDetailsScreen(
       {Key? key,
       required this.achievementSnapshot,
       required this.details,
-      required this.completedDetails})
+      required this.completedDetails,
+      this.completedDetailsType = CompletedDetailsType.COMING_SOON})
       : super(key: key);
 
   @override
@@ -79,9 +82,16 @@ class AchievementDetailsScreen extends StatelessWidget {
                 Expanded(
                     child: Visibility(
                         visible: !achievementSnapshot.isSecret,
-                        child: Text(achievementSnapshot.description,
-                            style: AchievementsStyle
-                                .achievementsDescriptionTextStyle)),
+                        child: completedDetailsType !=
+                                CompletedDetailsType.ORIGAMI_INSTRUCTION
+                            ? Text(achievementSnapshot.description,
+                                style: AchievementsStyle
+                                    .achievementsDescriptionTextStyle)
+                            : Text(
+                                "You've unlocked an origami!\nAssemble it to proudly display your\nachievement!",
+                                style: AchievementsStyle
+                                    .achievementsDescriptionTextStyle,
+                                textAlign: TextAlign.center)),
                     flex: 1),
                 Expanded(
                     child: !achievementSnapshot.isSecret &&

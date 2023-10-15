@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
+import 'package:kaidzen_app/features/Feature.dart';
 import 'package:kaidzen_app/features/FeaturesState.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/ProgressState.dart';
@@ -135,6 +136,13 @@ class ProfilePanelState extends State<ProfilePanel>
                                                 name: AnalyticsEventType
                                                     .achievements_screen_opened
                                                     .name);
+                                        if (!featuresState.isFeatureDiscovered(
+                                                Features.ORIGAMI.id) &&
+                                            achievementsState
+                                                .notShownWithOrigamiCompleted()) {
+                                          featuresState.discoverFeature(
+                                              Features.ORIGAMI.id);
+                                        }
                                       },
                                       icon: Image.asset(
                                           "assets/achievements_icon.png",
@@ -142,8 +150,12 @@ class ProfilePanelState extends State<ProfilePanel>
                                     ),
                                     Visibility(
                                         visible: achievementsState
-                                                .getCompletedAchievementsCount() >
-                                            0,
+                                                    .getCompletedAchievementsCount() >
+                                                0 ||
+                                            (!featuresState.isFeatureDiscovered(
+                                                    Features.ORIGAMI.id) &&
+                                                achievementsState
+                                                    .notShownWithOrigamiCompleted()),
                                         child: Positioned(
                                           right: parentWidth * 0.01,
                                           top: parentWidth * 0.01,

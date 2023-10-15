@@ -4,7 +4,11 @@ import 'package:kaidzen_app/achievements/EventsRepository.dart';
 abstract class Achievement {
   final EventsRepository eventsRepository;
   final Widget completedDetails;
-  Achievement({required this.eventsRepository, required this.completedDetails});
+  final CompletedDetailsType completedDetailsType;
+  Achievement(
+      {required this.eventsRepository,
+      required this.completedDetails,
+      this.completedDetailsType = CompletedDetailsType.COMING_SOON});
 
   int get id;
   Future<double> get progress;
@@ -14,4 +18,10 @@ abstract class Achievement {
   Widget getCompletedDetails() {
     return completedDetails;
   }
+
+  CompletedDetailsType getCompletedDetailsType() {
+    return completedDetailsType;
+  }
 }
+
+enum CompletedDetailsType { COMING_SOON, ORIGAMI_INSTRUCTION }

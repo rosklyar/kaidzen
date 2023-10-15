@@ -279,7 +279,8 @@ enum AppNotifications {
 }
 
 enum Features {
-  REMINDER(0);
+  REMINDER(0),
+  ORIGAMI(1);
 
   const Features(this.id);
   final int id;

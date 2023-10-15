@@ -45,7 +45,7 @@ dependencies:
   provider: ^6.0.3
   equatable: ^2.0.3
   chip_list: ^2.2.3+7
-  flutter_svg: ^1.1.4
+  flutter_svg: ^2.0.7
   sliding_up_panel: ^2.0.0+1
   cloud_firestore: ^4.5.0
   firebase_analytics: ^10.2.0
@@ -66,6 +66,7 @@ dependencies:
   notification_permissions: ^0.6.1
   time_machine: ^0.9.17
   progress_state_button: ^1.0.4
+  card_swiper : ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -94,6 +95,9 @@ flutter:
     - packages/time_machine/data/cultures/cultures.bin
     - packages/time_machine/data/tzdb/tzdb.bin
     - assets/achievements/sets/0/
+    - assets/achievements/sets/0/details/fish/
+    - assets/achievements/sets/0/details/duck/
+    - assets/achievements/sets/0/details/seahorse/
     - assets/achievements/general/progress/
     - assets/achievements/secret/progress/
     - assets/achievements/secret/
