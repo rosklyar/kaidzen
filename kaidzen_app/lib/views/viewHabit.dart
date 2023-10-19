@@ -80,10 +80,11 @@ class _ViewHabitState extends State<ViewHabit> {
                                   padding: const EdgeInsets.only(top: 4),
                                   child: Icon(Icons.circle_rounded,
                                       color: habit.task.category.color,
-                                      size: 10.0 + habit.task.difficulty.id * 3),
+                                      size:
+                                          10.0 + habit.task.difficulty.id * 3),
                                 ),
                                 Text(
-                                    "${habit.task.difficulty.noun} impact on my ${habit.task.category.id >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == widget.habit.task.category.id).name : 'life sphere'} ",
+                                    "${habit.task.difficulty.noun} impact on my ${habit.task.category.id >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == habit.task.category.id).name : 'life sphere'} ",
                                     textAlign: TextAlign.left,
                                     style: Fonts.graySubtitleMedium)
                               ],
@@ -94,6 +95,7 @@ class _ViewHabitState extends State<ViewHabit> {
               const SizedBox(height: 20)
             ]),
             flex: 7),
+        _buildFancyProgressView(habit),
         Padding(
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: Text("now in " + habit.task.status,
@@ -130,11 +132,12 @@ class _ViewHabitState extends State<ViewHabit> {
                 maintainState: true,
                 maintainAnimation: true,
                 maintainSize: true,
-                visible: widget.habit.task.status != Status.DONE,
+                visible: habit.task.status != Status.DONE,
                 child: IconButton(
                   icon: SvgPicture.asset("assets/edit.svg"),
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
                       return EditHabit(habit);
                     }));
                   },
@@ -144,6 +147,29 @@ class _ViewHabitState extends State<ViewHabit> {
           ),
         ),
       ]),
+    );
+  }
+
+  Widget _buildFancyProgressView(Habit habit) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 10),
+          habit.getType() == HabitType.FIXED
+              ? _buildProgressRow("Completions:", habit.stageCount, habit)
+              : _buildProgressRow("You are on stage:", habit.stage, habit),
+          habit.getType() == HabitType.FIXED
+              ? _buildProgressRow("Target total:", habit.totalCount, habit)
+              : Column(
+                  children: [
+                    _buildProgressRow("Stage completions:", habit.stageCount, habit),
+                    _buildProgressRow("Total completions:", habit.getType().getCurrentTotal(habit.stage, habit.stageCount), habit),
+                  ],
+                ),
+        ],
+      ),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
@@ -27,6 +28,9 @@ class _EditHabitState extends State<EditHabit> {
   late TextEditingController newTaskController;
   int _currentCategory = -1;
   int _currentDifficulty = 0;
+  int _stage = 0;
+  int _stageCount = 0;
+  int _totalCount = 0;
   final GlobalKey<dynamic> _taskTypeWidgetKey = GlobalKey();
   final GlobalKey<dynamic> _taskDifficultyWidgetKey = GlobalKey();
   bool _isSaveButtonActive = true;
@@ -42,6 +46,9 @@ class _EditHabitState extends State<EditHabit> {
     });
     _currentCategory = widget.habit.task.category.id;
     _currentDifficulty = widget.habit.task.difficulty.id;
+    _stage = widget.habit.stage;
+    _stageCount = widget.habit.stageCount;
+    _totalCount = widget.habit.totalCount;
   }
 
   @override
@@ -59,7 +66,9 @@ class _EditHabitState extends State<EditHabit> {
             },
           ),
           title: Text(
-            "Recurring goal",
+            widget.habit.getType() == HabitType.FIXED
+                ? "Target goal"
+                : "Habit goal",
             style: Fonts.screenTytleTextStyle,
           ),
           centerTitle: true,
@@ -137,161 +146,72 @@ class _EditHabitState extends State<EditHabit> {
                     flex: 9),
                 Expanded(
                   child: Column(children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: SizedBox(
-                                child: Text(
-                                    widget.habit.getType() == HabitType.FIXED
-                                        ? "Target total:"
-                                        : "Habit progress:",
-                                    textAlign: TextAlign.left,
-                                    style: Fonts.largeTextStyle))),
-                      ],
-                    ),
                     Visibility(
                       visible: widget.habit.getType() == HabitType.FIXED,
                       child: Column(
                         children: [
-                          SizedBox(height: 10),
                           GestureDetector(
-                            onTap: () async {
-                              int? newStageCount = await showNumberInputDialog(
-                                  'Enter stage count',
-                                  context,
-                                  widget.habit.stageCount,
-                                  widget.habit.totalCount,
-                                  0);
-                              if (newStageCount != null) {
+                            child: _buildEditableCounter(
+                              "Completed:",
+                              _stageCount,
+                              () {
                                 setState(() {
-                                  widget.habit.stageCount = newStageCount;
+                                  if (_stageCount > 0) {
+                                    _stageCount--;
+                                  }
                                 });
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 2, horizontal: 15),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(children: [
-                                        Text(
-                                          "Completed ",
-                                          style: Fonts.largeTextStyle,
-                                        ),
-                                        Text(
-                                          "${widget.habit.stageCount} times",
-                                          style:
-                                              Fonts.mindfulMomentTextStyleLarge,
-                                        ),
-                                      ]),
-                                      Row(
-                                        children: [
-                                          SizedBox(width: screenWidth * 0.04),
-                                          SvgPicture.asset("assets/edit.svg"),
-                                        ],
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
+                              },
+                              () {
+                                setState(() {
+                                  if (_stageCount < _totalCount) {
+                                    _stageCount++;
+                                  }
+                                });
+                              },
                             ),
                           ),
                           GestureDetector(
-                            onTap: () async {
-                              int? newTargetTotal = await showNumberInputDialog(
-                                  'Enter target',
-                                  context,
-                                  widget.habit.totalCount,
-                                  maxFixedValue,
-                                  widget.habit.stageCount);
-                              if (newTargetTotal != null) {
+                            child: _buildEditableCounter(
+                              "Target:",
+                              _totalCount,
+                              () {
                                 setState(() {
-                                  widget.habit.totalCount = newTargetTotal;
+                                  if (_totalCount > 0 &&
+                                      _totalCount > _stageCount) {
+                                    _totalCount--;
+                                  }
                                 });
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 2, horizontal: 15),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(children: [
-                                        Text(
-                                          "Target ",
-                                          style: Fonts.largeTextStyle,
-                                        ),
-                                        Text(
-                                          "${widget.habit.totalCount} times",
-                                          style:
-                                              Fonts.mindfulMomentTextStyleLarge,
-                                        ),
-                                      ]),
-                                      Row(
-                                        children: [
-                                          SizedBox(width: screenWidth * 0.04),
-                                          SvgPicture.asset("assets/edit.svg"),
-                                        ],
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
+                              },
+                              () {
+                                setState(() {
+                                  if (_totalCount < maxFixedValue) {
+                                    _totalCount++;
+                                  }
+                                });
+                              },
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
                     Visibility(
-                      visible: widget.habit.getType() != HabitType.FIXED,
+                      visible:
+                          widget.habit.getType() == HabitType.GIVE_IT_A_TRY,
                       child: Column(
                         children: [
-                          SizedBox(height: 10),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 2, horizontal: 15),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Stage ${widget.habit.stage}: ",
-                                      style: Fonts.largeTextStyle,
-                                    ),
-                                    Text(
-                                      "${widget.habit.stageCount} out of ${widget.habit.getType().stageCount[widget.habit.stage]}",
-                                      style: Fonts.largeTextStyle,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Total: ",
-                                      style: Fonts.largeTextStyle,
-                                    ),
-                                    Text(
-                                      "${calculateTotalAmountSoFar(widget.habit)} out of ${calculateMaxTotalAmount(widget.habit.getType())}",
-                                      style: Fonts.largeTextStyle,
-                                    ),
-                                  ],
-                                )
-                              ],
+                          _buildNonEditableCounter("You are on stage:", _stage),
+                          GestureDetector(
+                            child: _buildEditableCounter(
+                              "Stage completions:",
+                              _stageCount,
+                              () {
+                                setState(decreaseHabitStageCountFunction);
+                              },
+                              () {
+                                setState(increaseHabitStageCountFunction);
+                              },
                             ),
-                          )
+                          ),
                         ],
                       ),
                     )
@@ -329,6 +249,139 @@ class _EditHabitState extends State<EditHabit> {
             onTap: () => Utils.tryToLostFocus(context)));
   }
 
+  void increaseHabitStageCountFunction() {
+    var maxStageCount = widget.habit.getType().stageCount[_stage]!;
+    if (_stageCount < maxStageCount) {
+      _stageCount++;
+    }
+    if (_stageCount == maxStageCount &&
+        _stage < widget.habit.getType().stageCount.length) {
+      _stage++;
+      _stageCount = 0;
+    }
+  }
+
+  void decreaseHabitStageCountFunction() {
+    if (_stageCount > 0) {
+      _stageCount--;
+    } else if (_stageCount == 0) {
+      if (_stage > 1) {
+        _stage--;
+        _stageCount = widget.habit.getType().stageCount[_stage]! - 1;
+      }
+    }
+  }
+
+  Row _nonEditableCounter(int value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: BoxDecoration(
+            color: DevelopmentCategory.values
+                .firstWhere((element) => element.id == _currentCategory)
+                .color
+                .withOpacity(0.5),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Text(
+            value.toString(),
+            style: Fonts.largeBoldTextStyle,
+          ),
+        ),
+        Visibility(
+          maintainAnimation: true,
+          maintainState: true,
+          maintainSize: true,
+          visible: false,
+          child: IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {},
+          ),
+        )
+      ],
+    );
+  }
+
+  Row _buildCounter(
+      int value, VoidCallback onMinusPressed, VoidCallback onPlusPressed) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        IconButton(
+          icon: Icon(Icons.remove),
+          onPressed: onMinusPressed,
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: BoxDecoration(
+            color: DevelopmentCategory.values
+                .firstWhere((element) => element.id == _currentCategory)
+                .color
+                .withOpacity(0.5),
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Text(
+            value.toString(),
+            style: Fonts.largeBoldTextStyle,
+          ),
+        ),
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: onPlusPressed,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNonEditableCounter(String label, int value) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "$label ",
+                    style: Fonts.largeTextStyle,
+                  ),
+                  Spacer(),
+                  _nonEditableCounter(value),
+                ]),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEditableCounter(String label, int value,
+      VoidCallback onMinusPressed, VoidCallback onPlusPressed) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "$label ",
+                    style: Fonts.largeTextStyle,
+                  ),
+                  Spacer(),
+                  _buildCounter(value, onMinusPressed, onPlusPressed),
+                ]),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget getDiff() {
     return Column(children: [
       const SizedBox(height: 10),
@@ -362,9 +415,11 @@ class _EditHabitState extends State<EditHabit> {
     widget.habit.task.difficulty = Difficulty.values
         .firstWhere((element) => element.id == _currentDifficulty);
 
-    if (widget.habit.getType() == HabitType.FIXED &&
-        widget.habit.stageCount == widget.habit.totalCount &&
-        widget.habit.task.status == Status.DOING) {
+    widget.habit.stage = _stage;
+    widget.habit.stageCount = _stageCount;
+    widget.habit.totalCount = _totalCount;
+
+    if (fixedIsDone(widget.habit) || habitIsDone(widget.habit)) {
       await Provider.of<HabitState>(context, listen: false)
           .moveHabitAndNotify(widget.habit, Status.DONE);
     } else {
@@ -372,6 +427,18 @@ class _EditHabitState extends State<EditHabit> {
           .updateHabit(widget.habit);
     }
     Navigator.pop(context);
+  }
+
+  bool fixedIsDone(Habit habit) {
+    return habit.getType() == HabitType.FIXED &&
+        habit.stageCount == habit.totalCount &&
+        habit.task.status == Status.DOING;
+  }
+
+  bool habitIsDone(Habit habit) {
+    return habit.getType() != HabitType.FIXED &&
+        habit.stage == habit.getType().stageCount.length &&
+        habit.stageCount == habit.getType().stageCount[habit.stage];
   }
 
   @override

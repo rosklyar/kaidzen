@@ -174,6 +174,10 @@ class Fonts {
       textStyle: const TextStyle(
           color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500));
 
+  static TextStyle graySubtitle14 = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+          color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w500));
+
   static TextStyle graySubtitleMedium = GoogleFonts.montserrat(
       textStyle: const TextStyle(
           color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w500));
@@ -193,6 +197,12 @@ class Fonts {
   static TextStyle mindfulMomentTextStyleLarge = GoogleFonts.montserrat(
       textStyle: const TextStyle(
     fontSize: 16,
+    color: Colors.deepPurpleAccent,
+  ));
+
+  static TextStyle mindfulMomentTextStyleXLarge = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+    fontSize: 18,
     color: Colors.deepPurpleAccent,
   ));
 }
@@ -276,25 +286,39 @@ enum Features {
 }
 
 enum HabitType {
-  FIXED(0, "Target total", {1: 0}),
-  GIVE_IT_A_TRY(1, "Build habit", {
-    1: 3,
-    2: 5,
-    3: 8,
-  }),
-  SOLID(2, "Solid habit", {
-    1: 3,
-    2: 5,
-    3: 8,
-    4: 13,
-    5: 21,
-  });
+  FIXED(0, "Target total", {1: 0}, "It is all about quantifiable progress...",
+      "It is all about quantifiable progress.\nYou set a repetition target and mark your progress each time you achieve it. A straightforward approach that clearly shows how far you've come and how many remain. Watching your successes build will keep your momentum alive and robust."),
+  GIVE_IT_A_TRY(
+      1,
+      "Build habit",
+      {
+        1: 3,
+        2: 5,
+        3: 8,
+      },
+      "Step-by-step, make progress with the Staged recurring goals!..",
+      "Step-by-step, make progress with the Staged recurring goals!\nIt is all about growing and evolving at your own pace. Imagine each stage as a stepping stone on your journey to building a new habit. No rush, just focus on one stage at a time. And guess what? Every step you complete brings you closer to creating a lasting change.");
 
-  const HabitType(this.id, this.title, this.stageCount);
+  const HabitType(this.id, this.title, this.stageCount, this.aboutTextPreview,
+      this.aboutText);
 
   final int id;
   final String title;
   final Map<int, int> stageCount;
+  final String aboutTextPreview;
+  final String aboutText;
+
+  int getCurrentTotal(int currentStage, int currentStageCount) {
+    int previousTotal = 0;
+    for (int i = 1; i < currentStage; i++) {
+      if (stageCount.containsKey(i)) {
+        previousTotal += stageCount[i]!;
+      } else {
+        throw ArgumentError('Invalid Stage: $i');
+      }
+    }
+    return previousTotal + currentStageCount;
+  }
 
   static HabitType getById(int id) {
     for (HabitType type in HabitType.values) {
@@ -329,7 +353,10 @@ enum HabitStage {
 enum Direction { FORWARD, BACKWARD }
 
 int calculateTotalAmountSoFar(Habit habit) {
-  int sumOfPreviousStages = habit.getType().stageCount.entries
+  int sumOfPreviousStages = habit
+      .getType()
+      .stageCount
+      .entries
       .where((entry) => entry.key < habit.stage)
       .fold(0, (previousValue, entry) => previousValue + entry.value);
 

@@ -43,6 +43,7 @@ class _CreateTaskState extends State<CreateTask> {
   HabitType _currentHabitType = HabitType.FIXED;
   bool _isCreateButtonActive = false;
   bool _isHabit = false;
+  bool _startDoing = false;
   late Future<List<Inspiration>>? _inspirationsFuture;
   final GlobalKey<dynamic> _taskTypeWidgetKey = GlobalKey();
   final GlobalKey<dynamic> _taskDifficultyWidgetKey = GlobalKey();
@@ -104,7 +105,7 @@ class _CreateTaskState extends State<CreateTask> {
                     Expanded(
                         child: Padding(
                             padding: const EdgeInsets.only(
-                                left: 10, right: 10, top: 20),
+                                left: 10, right: 10, top: 10),
                             child: TextField(
                               textCapitalization: TextCapitalization.sentences,
                               maxLength: maxInputCharCount,
@@ -157,7 +158,30 @@ class _CreateTaskState extends State<CreateTask> {
                               const Expanded(child: SizedBox(), flex: 1)
                             ])),
                         flex: 5),
-                    Expanded(child: getDiff(), flex: 5),
+                    Expanded(child: getDiff(), flex: 4),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: SizedBox(
+                                  child: Text("Start doing",
+                                      textAlign: TextAlign.left,
+                                      style: Fonts.largeTextStyle))),
+                          Switch(
+                              activeColor: Colors.white,
+                              activeTrackColor: Colors.deepPurpleAccent,
+                              value: _startDoing,
+                              onChanged: (value) {
+                                setState(() {
+                                  _startDoing = value;
+                                });
+                              })
+                        ],
+                      ),
+                      flex: 1,
+                    ),
                     Expanded(
                         child: Column(children: [
                           Row(
@@ -180,62 +204,83 @@ class _CreateTaskState extends State<CreateTask> {
                                   })
                             ],
                           ),
-                          Visibility(
-                              visible: _isHabit, child: getHabitWidget()),
-                          Visibility(
-                            visible: _isHabit &&
-                                _currentHabitType == HabitType.FIXED,
-                            child: GestureDetector(
-                              onTap: () async {
-                                int? newTargetTotal =
-                                    await showNumberInputDialog('Enter target total',
-                                        context, _targetTotal, maxFixedValue, 1);
-                                if (newTargetTotal != null) {
-                                  setState(() {
-                                    _targetTotal = newTargetTotal;
-                                  });
-                                }
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: screenWidth * 0.04,
-                                    horizontal: screenWidth * 0.04),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "$_targetTotal times",
-                                      style: Fonts.mindfulMomentTextStyleLarge,
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Visibility(
+                                      visible: _isHabit,
+                                      child: getHabitWidget()),
+                                  Visibility(
+                                    visible: _isHabit &&
+                                        _currentHabitType == HabitType.FIXED,
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        int? newTargetTotal =
+                                            await showNumberInputDialog(
+                                                'Enter target total',
+                                                context,
+                                                _targetTotal,
+                                                maxFixedValue,
+                                                1);
+                                        if (newTargetTotal != null) {
+                                          setState(() {
+                                            _targetTotal = newTargetTotal;
+                                          });
+                                        }
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: screenWidth * 0.04,
+                                            horizontal: screenWidth * 0.04),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "$_targetTotal times",
+                                              style: Fonts
+                                                  .mindfulMomentTextStyleLarge,
+                                            ),
+                                            Row(
+                                              children: [
+                                                SizedBox(
+                                                    width: screenWidth * 0.04),
+                                                SvgPicture.asset(
+                                                    "assets/edit.svg"),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                    Row(
-                                      children: [
-                                        SizedBox(width: screenWidth * 0.04),
-                                        SvgPicture.asset("assets/edit.svg"),
-                                      ],
+                                  ),
+                                  Visibility(
+                                    visible: _isHabit &&
+                                        _currentHabitType ==
+                                            HabitType.GIVE_IT_A_TRY,
+                                    child: GestureDetector(
+                                      child: Container(
+                                        height: screenWidth * 0.35,
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: screenWidth * 0.04,
+                                            horizontal: screenWidth * 0.01),
+                                        child: Image.asset(
+                                            "assets/habits_background.png"),
+                                      ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  Visibility(
+                                      visible: _isHabit,
+                                      child: getAboutHabitWidget()),
+                                ],
                               ),
                             ),
-                          ),
-                          Visibility(
-                            visible: _isHabit &&
-                                _currentHabitType == HabitType.GIVE_IT_A_TRY,
-                            child: GestureDetector(
-                              child: Container(
-                                height: screenWidth * 0.35,
-                                padding: EdgeInsets.symmetric(
-                                    vertical: screenWidth * 0.04,
-                                    horizontal: screenWidth * 0.01),
-                                child: Image.asset("assets/habits_background.png"),
-                              ),
-                            ),
-                          ),
+                          )
                         ]),
                         flex: 10)
                   ]),
-                  flex: 9),
+                  flex: 7),
               Expanded(
                   child: Padding(
                       padding: const EdgeInsets.only(
@@ -421,21 +466,12 @@ class _CreateTaskState extends State<CreateTask> {
 
   Widget getHabitWidget() {
     return Column(children: [
-      const SizedBox(height: 10),
       Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: SizedBox(
-              width: double.infinity,
-              child: Text(
-                "Track the progress on your goal with the fixed amount of repetitions",
-                style: Fonts.mediumTextStyle,
-              ))),
-      Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
+          padding: const EdgeInsets.only(left: 10, right: 10),
           child: SizedBox(
               width: double.infinity,
               child: HabitOptionWidget(
-                  initialOption: HabitType.FIXED,
+                  initialOption: _currentHabitType,
                   key: _habitWidgetKey,
                   callback: (value) => setState(() {
                         _currentHabitType = value!;
@@ -443,6 +479,65 @@ class _CreateTaskState extends State<CreateTask> {
                       }))))
     ]);
   }
+
+  Widget getAboutHabitWidget() {
+  return Column(
+    children: [
+      const SizedBox(height: 10),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: SizedBox(
+          width: double.infinity,
+          child: RichText(
+            text: TextSpan(
+              style: Fonts.graySubtitle14,
+              children: [
+                TextSpan(
+                  text: _currentHabitType.aboutTextPreview, // Displaying the preview text
+                ),
+                WidgetSpan(
+                  child: GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: SingleChildScrollView(
+                              child: Text(
+                                _currentHabitType.aboutText, // Displaying the full text in a dialog
+                                style: Fonts.graySubtitle14,
+                              ),
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // Close the dialog
+                                },
+                                child: Text('Close', style: Fonts.mindfulMomentTextStyle,),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      child: Text(
+                        'Read more',
+                        style: Fonts.mindfulMomentTextStyle,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
 
   Widget getDiff() {
     return Column(children: [
@@ -455,8 +550,9 @@ class _CreateTaskState extends State<CreateTask> {
                 "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
                 style: Fonts.largeTextStyle,
               ))),
+      const SizedBox(height: 5),
       Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
+          padding: const EdgeInsets.only(left: 10, right: 10),
           child: SizedBox(
               width: double.infinity,
               child: TaskDifficultyWidget(
@@ -490,17 +586,18 @@ class _CreateTaskState extends State<CreateTask> {
         .firstWhere((element) => element.id == _currentCategory);
     if (_isHabit) {
       var totalCount = _currentHabitType == HabitType.FIXED
-              ? _targetTotal
-              : _currentHabitType.stageCount.values
-                  .fold(0, (previousValue, element) => previousValue + element);
-                  
+          ? _targetTotal
+          : _currentHabitType.stageCount.values
+              .fold(0, (previousValue, element) => previousValue + element);
+
       Provider.of<HabitState>(context, listen: false).addHabit(Habit(
           Task(
               newTaskController.text,
               category,
               Difficulty.values
                   .firstWhere((element) => element.id == _currentDifficulty),
-              parent: widget.parent != null ? widget.parent!.id : null),
+              parent: widget.parent != null ? widget.parent!.id : null,
+              status: _startDoing ? Status.DOING : Status.TODO),
           1,
           0,
           totalCount,
@@ -511,7 +608,8 @@ class _CreateTaskState extends State<CreateTask> {
           category,
           Difficulty.values
               .firstWhere((element) => element.id == _currentDifficulty),
-          parent: widget.parent != null ? widget.parent!.id : null));
+          parent: widget.parent != null ? widget.parent!.id : null,
+          status: _startDoing ? Status.DOING : Status.TODO));
     }
 
     Provider.of<EmotionsState>(context, listen: false).loadAll();
