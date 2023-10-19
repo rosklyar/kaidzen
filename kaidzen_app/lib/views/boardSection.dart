@@ -142,7 +142,7 @@ class BoardState extends State<Board> {
                 const Expanded(child: SizedBox(), flex: 3),
               ],
             ),
-            announcementState.getTopAnnouncement() != null
+            annoncementIsPresentAndRelevant(announcementState)
                 ? Column(
                     children: [
                       Expanded(
@@ -182,6 +182,12 @@ class BoardState extends State<Board> {
         ),
       );
     });
+  }
+
+  bool annoncementIsPresentAndRelevant(AnnouncementsState announcementState) {
+    final topAnnouncement = announcementState.getTopAnnouncement();
+    final todoTasksCount = Provider.of<TasksState>(context, listen: false).getByStatus(Status.TODO).length;
+    return topAnnouncement != null && (topAnnouncement.id != 1 || todoTasksCount > 1);
   }
 
   ReorderableListView reorderableListView() {

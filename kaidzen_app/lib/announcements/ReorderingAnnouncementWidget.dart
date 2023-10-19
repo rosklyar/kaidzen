@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/announcements/AnnouncementWidget.dart';
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:kaidzen_app/service/TasksState.dart';
+import 'package:provider/provider.dart';
 
 import 'AnnouncementsState.dart';
 
@@ -26,7 +28,7 @@ class ReorderingAnnouncementWidget extends AnnouncementWidget {
                 alignment: Alignment.topLeft),
             Padding(
                 child: Text(
-                    "Press and hold the goal tile, then move it up or down",
+                    "Press and hold the non-recurring goal tile, then move it up or down",
                     style: Fonts.mediumTextStyle),
                 padding: const EdgeInsets.fromLTRB(40, 19, 10, 0))
           ]),

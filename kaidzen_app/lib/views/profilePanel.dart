@@ -11,6 +11,7 @@ import 'package:kaidzen_app/settings/SettingsScreen.dart';
 import 'package:kaidzen_app/views/utils.dart';
 import 'package:provider/provider.dart';
 
+import '../service/HabitState.dart';
 import '../service/TasksState.dart';
 import '../tutorial/TutorialState.dart';
 import '../utils/snackbar.dart';
@@ -37,10 +38,10 @@ class ProfilePanelState extends State<ProfilePanel>
   Widget build(BuildContext context) {
     var parentHeight = MediaQuery.of(context).size.height;
     var parentWidth = MediaQuery.of(context).size.width;
-    return Consumer5<ProgressState, AchievementsState, EmotionsState,
-            TutorialState, FeaturesState>(
+    return Consumer6<ProgressState, AchievementsState, EmotionsState,
+            TutorialState, FeaturesState, HabitState>(
         builder: (context, progressState, achievementsState, emotionsState,
-                tutorialState, featuresState, child) =>
+                tutorialState, featuresState, habitState, child) =>
             Stack(children: [
               Row(
                 children: [
