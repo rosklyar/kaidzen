@@ -158,7 +158,7 @@ class _ViewHabitState extends State<ViewHabit> {
         children: [
           SizedBox(height: 10),
           habit.getType() == HabitType.FIXED
-              ? _buildProgressRow("ompletions:", habit.stageCount, habit)
+              ? _buildProgressRow("Completions:", habit.stageCount, habit)
               : _buildProgressRow("You are on stage:", habit.stage, habit),
           habit.getType() == HabitType.FIXED
               ? _buildProgressRow("Target total:", habit.totalCount, habit)
