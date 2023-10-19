@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 
 import '../models/habit.dart';
@@ -36,6 +37,7 @@ class ProgressCalculator {
     var nextLevelCap = _levelToPointsMap[progress.level + 1]!;
     var totalPoints =
         getEarnedHabitPoints(habit) + adjustPoints(progress, nextLevelCap);
+    debugPrint("earned points: ${getEarnedHabitPoints(habit)}");
     if (totalPoints >= nextLevelCap) {
       return Progress(
         progress.level + 1,
@@ -70,12 +72,14 @@ class ProgressCalculator {
   }
 
   static int getEarnedHabitPoints(Habit habit) {
-    if(habit.task.status == Status.DONE) {
+    if (habit.task.status == Status.DONE) {
       return _difficultyPointsMap[habit.task.difficulty]! * 3;
     }
-    if (habit.task.status == Status.DOING && habit.stage == 1 && habit.stageCount == 0) {
+    if (habit.task.status == Status.DOING &&
+        habit.stage == 1 &&
+        habit.stageCount == 0) {
       return 5;
-    } 
+    }
     if (habit.task.status == Status.TODO) {
       return 10;
     }

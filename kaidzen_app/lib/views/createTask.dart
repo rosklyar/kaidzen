@@ -9,6 +9,7 @@ import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/models/inspiration.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/HabitState.dart';
+import 'package:kaidzen_app/utils/dashSeparator.dart';
 import 'package:kaidzen_app/views/utils.dart';
 import 'package:kaidzen_app/views/theamedAlertDIalog.dart';
 import 'package:kaidzen_app/widgets/taskDifficulty.dart';
@@ -409,6 +410,13 @@ class _CreateTaskState extends State<CreateTask> {
         ));
   }
 
+  Expanded separatorWidget() {
+    return const Expanded(child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: DashSeparator(),
+                  ));
+  }
+
   Widget inspirationsWidget(
       BuildContext context, ScrollController scrollController) {
     return FutureBuilder<List<Inspiration>>(
@@ -481,63 +489,68 @@ class _CreateTaskState extends State<CreateTask> {
   }
 
   Widget getAboutHabitWidget() {
-  return Column(
-    children: [
-      const SizedBox(height: 10),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: SizedBox(
-          width: double.infinity,
-          child: RichText(
-            text: TextSpan(
-              style: Fonts.graySubtitle14,
-              children: [
-                TextSpan(
-                  text: _currentHabitType.aboutTextPreview, // Displaying the preview text
-                ),
-                WidgetSpan(
-                  child: GestureDetector(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: SingleChildScrollView(
-                              child: Text(
-                                _currentHabitType.aboutText, // Displaying the full text in a dialog
-                                style: Fonts.graySubtitle14,
+    return Column(
+      children: [
+        const SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: SizedBox(
+            width: double.infinity,
+            child: RichText(
+              text: TextSpan(
+                style: Fonts.graySubtitle14,
+                children: [
+                  TextSpan(
+                    text: _currentHabitType
+                        .aboutTextPreview, // Displaying the preview text
+                  ),
+                  WidgetSpan(
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: SingleChildScrollView(
+                                child: Text(
+                                  _currentHabitType
+                                      .aboutText, // Displaying the full text in a dialog
+                                  style: Fonts.graySubtitle14,
+                                ),
                               ),
-                            ),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(); // Close the dialog
-                                },
-                                child: Text('Close', style: Fonts.mindfulMomentTextStyle,),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                      child: Text(
-                        'Read more',
-                        style: Fonts.mindfulMomentTextStyle,
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pop(); // Close the dialog
+                                  },
+                                  child: Text(
+                                    'Close',
+                                    style: Fonts.mindfulMomentTextStyle,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: Text(
+                          'Read more',
+                          style: Fonts.mindfulMomentTextStyle,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    ],
-  );
-}
-
+      ],
+    );
+  }
 
   Widget getDiff() {
     return Column(children: [
