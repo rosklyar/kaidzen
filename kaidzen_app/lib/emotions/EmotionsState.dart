@@ -71,6 +71,8 @@ class EmotionsState extends ChangeNotifier {
         return 3;
       case EventType.habitCompleted:
         return 3;
+      case EventType.habitTracked:
+        return 3;
       default:
         return 0;
     }
