@@ -118,6 +118,7 @@ class HabitState extends ChangeNotifier {
     var event =
         Event(EventType.habitTracked, DateTime.now(), habit.task.category);
     await achievementsState.addEvent(event);
+    await emotionsState.loadAll();
     notifyListeners();
   }
 
