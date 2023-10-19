@@ -70,7 +70,7 @@ class HabitState extends ChangeNotifier {
     newHabit.task.priority =
         calculateNewPriority(newHabit.task, newHabit.task.status);
     Habit habit = await repository.insert(newHabit);
-    await progressState.updateProgress(habit.task);
+    await progressState.updateHabitProgress(habit);
 
     if (!tutorialState.tutorialCompleted()) {
       tutorialState.updateTutorialState(TutorialStep(
@@ -113,7 +113,7 @@ class HabitState extends ChangeNotifier {
       await updateHabit(habit);
     }
 
-    await progressState.updateProgress(habit.task);
+    await progressState.updateHabitProgress(habit);
     updateHabitTimestamps(habit);
     var event =
         Event(EventType.habitTracked, DateTime.now(), habit.task.category);
@@ -185,7 +185,7 @@ class HabitState extends ChangeNotifier {
     String oldStatus = habit.task.status;
     habit.task.status = newStatus;
     if (habit.task.status != Status.TODO) {
-      await progressState.updateProgress(habit.task);
+      await progressState.updateHabitProgress(habit);
       updateHabitTimestamps(habit);
     }
     if (oldStatus == Status.DONE) {

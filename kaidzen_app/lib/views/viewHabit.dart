@@ -158,7 +158,7 @@ class _ViewHabitState extends State<ViewHabit> {
         children: [
           SizedBox(height: 10),
           habit.getType() == HabitType.FIXED
-              ? _buildProgressRow("Completions:", habit.stageCount, habit)
+              ? _buildProgressRow("ompletions:", habit.stageCount, habit)
               : _buildProgressRow("You are on stage:", habit.stage, habit),
           habit.getType() == HabitType.FIXED
               ? _buildProgressRow("Target total:", habit.totalCount, habit)
@@ -168,6 +168,29 @@ class _ViewHabitState extends State<ViewHabit> {
                     _buildProgressRow("Total completions:", habit.getType().getCurrentTotal(habit.stage, habit.stageCount), habit),
                   ],
                 ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProgressRow(String label, int value, Habit habit) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: Fonts.graySubtitleMedium),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: BoxDecoration(
+              color: habit.task.category.color.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Text(
+              value.toString(),
+              style: Fonts.largeBoldTextStyle,
+            ),
+          ),
         ],
       ),
     );
