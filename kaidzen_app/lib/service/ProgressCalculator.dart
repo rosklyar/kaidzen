@@ -37,7 +37,7 @@ class ProgressCalculator {
     var nextLevelCap = _levelToPointsMap[progress.level + 1]!;
     var totalPoints =
         getEarnedHabitPoints(habit) + adjustPoints(progress, nextLevelCap);
-    debugPrint("earned points: ${getEarnedHabitPoints(habit)}");
+
     if (totalPoints >= nextLevelCap) {
       return Progress(
         progress.level + 1,

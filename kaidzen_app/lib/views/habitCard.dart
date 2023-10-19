@@ -36,7 +36,7 @@ Widget habitCard(Habit habit) {
 }
 
 AssetImage getBackgroundImage(Habit habit) {
-  if (habit.type == HabitType.FIXED.id) {
+  if (habit.type == HabitType.FIXED.id || habit.task.category == DevelopmentCategory.NO_CATEGORY) {
     return AssetImage("assets/no_category.png");
   }
   var stagesCountInHabit = habit.getType().stageCount.length;

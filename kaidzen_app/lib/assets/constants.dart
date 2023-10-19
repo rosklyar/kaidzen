@@ -287,7 +287,7 @@ enum Features {
 
 enum HabitType {
   FIXED(0, "Target total", {1: 0}, "It is all about quantifiable progress...",
-      "It is all about quantifiable progress.\nYou set a repetition target and mark your progress each time you achieve it. A straightforward approach that clearly shows how far you've come and how many remain. Watching your successes build will keep your momentum alive and robust."),
+      "It is all about quantifiable progress. You set a repetition target and mark your progress each time you achieve it. A straightforward approach that clearly shows how far you've come and how many remain. Watching your successes build will keep your momentum alive and robust."),
   GIVE_IT_A_TRY(
       1,
       "Build habit",
@@ -297,7 +297,7 @@ enum HabitType {
         3: 8,
       },
       "Step-by-step, make progress with the Staged recurring goals!..",
-      "Step-by-step, make progress with the Staged recurring goals!\nIt is all about growing and evolving at your own pace. Imagine each stage as a stepping stone on your journey to building a new habit. No rush, just focus on one stage at a time. And guess what? Every step you complete brings you closer to creating a lasting change.");
+      "Step-by-step, make progress with the Staged recurring goals! It is all about growing and evolving at your own pace. Imagine each stage as a stepping stone on your journey to building a new habit. No rush, just focus on one stage at a time. And guess what? Every step you complete brings you closer to creating a lasting change.");
 
   const HabitType(this.id, this.title, this.stageCount, this.aboutTextPreview,
       this.aboutText);

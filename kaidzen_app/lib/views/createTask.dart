@@ -22,6 +22,7 @@ import 'package:provider/provider.dart';
 
 import '../service/TasksState.dart';
 import '../utils/snackbar.dart';
+import '../widgets/expandableText.dart';
 import '../widgets/habitOption.dart';
 import '../widgets/taskType.dart';
 
@@ -273,7 +274,11 @@ class _CreateTaskState extends State<CreateTask> {
                                   ),
                                   Visibility(
                                       visible: _isHabit,
-                                      child: getAboutHabitWidget()),
+                                      child: ExpandableText(
+                                        previewText:
+                                            _currentHabitType.aboutTextPreview,
+                                        fullText: _currentHabitType.aboutText,
+                                      )),
                                 ],
                               ),
                             ),
@@ -411,10 +416,11 @@ class _CreateTaskState extends State<CreateTask> {
   }
 
   Expanded separatorWidget() {
-    return const Expanded(child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: DashSeparator(),
-                  ));
+    return const Expanded(
+        child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: DashSeparator(),
+    ));
   }
 
   Widget inspirationsWidget(

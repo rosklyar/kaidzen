@@ -38,7 +38,7 @@ class ListViewHabitItem extends ListTile {
         children: <Widget>[
           SvgPicture.asset(
             'assets/recurring.svg',
-            color: habit.task.category.color,
+            color: habit.task.category == DevelopmentCategory.NO_CATEGORY ? Colors.black : habit.task.category.color,
             width: 12.0 + habit.task.difficulty.id * 4,
             height: 12.0 + habit.task.difficulty.id * 4,
           ),
