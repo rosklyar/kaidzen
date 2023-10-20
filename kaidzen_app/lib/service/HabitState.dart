@@ -108,7 +108,8 @@ class HabitState extends ChangeNotifier {
 
     // 3. Wait for the animation to complete
     await Future.delayed(const Duration(
-        seconds: 1)); // Adjust this based on the length of your animation
+        milliseconds:
+            700)); // Adjust this based on the length of your animation
 
     // 4. Update habit's status if necessary
     if (habit.stageCount >= stageTotal!) {

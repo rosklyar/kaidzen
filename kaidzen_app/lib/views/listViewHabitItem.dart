@@ -96,7 +96,7 @@ class _TrackHabitIconButtonState extends State<TrackHabitIconButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
-  bool animationInterrupted = false;
+  // bool animationInterrupted = false;
   bool showCheckmark = false;
   // Indicates if the checkmark should be displayed
   bool _isButtonLocked = false;
@@ -107,7 +107,7 @@ class _TrackHabitIconButtonState extends State<TrackHabitIconButton>
 
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 300),
+      duration: Duration(milliseconds: 200),
     );
 
     _scaleAnimation =
@@ -126,67 +126,49 @@ class _TrackHabitIconButtonState extends State<TrackHabitIconButton>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (!_isButtonLocked) {
-          if (_animationController.isAnimating) {
-            animationInterrupted = true;
-            _animationController.stop();
-            Provider.of<HabitState>(context, listen: false)
-                .trackHabit(widget.habit);
-          }
-        }
-      },
-      child: ScaleTransition(
-        scale: _scaleAnimation,
-        child: IconButton(
-          icon: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              showCheckmark
-                  ? Icon(
-                      Icons.check_circle) // Checkmark icon when habit is done
-                  : Icon(Icons.add_circle_outline), // Default icon
-            ],
-          ),
-          onPressed: () async {
-            if (!_isButtonLocked) {
-              _isButtonLocked = true;
-              _animationController.forward();
+    return ScaleTransition(
+      scale: _scaleAnimation,
+      child: IconButton(
+        icon: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            showCheckmark
+                ? Icon(Icons.check_circle) // Checkmark icon when habit is done
+                : Icon(Icons.add_circle_outline), // Default icon
+          ],
+        ),
+        onPressed: () async {
+          if (!_isButtonLocked) {
+            _isButtonLocked = true;
 
-              // Check if it's the last push before moving to "DONE"
-              var type = widget.habit.getType();
-              var stageTotal = type == HabitType.FIXED
-                  ? widget.habit.totalCount
-                  : type.stageCount[widget.habit.stage];
+            _animationController.forward();
 
-              if (widget.habit.stageCount + 1 == stageTotal) {
-                // Note the +1, since we're about to increment it.
+            // Check if it's the last push before moving to "DONE"
+            var type = widget.habit.getType();
+            var stageTotal = type == HabitType.FIXED
+                ? widget.habit.totalCount
+                : type.stageCount[widget.habit.stage];
+
+            if (widget.habit.stageCount + 1 == stageTotal) {
+              if (widget.habit.stage == type.stageCount.length) {
                 if (mounted) {
                   // Ensure widget is still in the tree.
                   setState(() {
                     showCheckmark = true;
                   });
                 }
-                // await Future.delayed(Duration(milliseconds: 10)); // Updated delay
               }
-
-              // Proceed with the existing logic.
-              Future.delayed(Duration(milliseconds: 100), () async {
-                if (!animationInterrupted) {
-                  await Provider.of<HabitState>(context, listen: false)
-                      .trackHabit(widget.habit);
-                }
-              });
-              _animationController.addStatusListener((status) {
-                if (status == AnimationStatus.completed ||
-                    status == AnimationStatus.dismissed) {
-                  _isButtonLocked = false;
-                }
-              });
             }
-          },
-        ),
+
+            // Proceed with the existing logic.
+            Future.delayed(Duration(milliseconds: 300), () async {
+              await Provider.of<HabitState>(context, listen: false)
+                  .trackHabit(widget.habit);
+              _isButtonLocked = false;
+            });
+          }
+          ;
+        },
       ),
     );
   }
