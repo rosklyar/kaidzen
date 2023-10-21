@@ -8,6 +8,8 @@ import 'package:notification_permissions/notification_permissions.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../views/theamedAlertDIalog.dart';
+
 class MindfulMomentsScreen extends StatefulWidget {
   const MindfulMomentsScreen({super.key});
 
@@ -136,17 +138,6 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
         await refreshReminderState();
       }
     }
-  }
-
-  Theme ThemedDialog(BuildContext context, Widget? childWidget) {
-    return Theme(
-        data: ThemeData(
-          colorScheme: const ColorScheme.light(
-            secondary: Colors.deepPurple, // OK button background color
-            onSecondary: Colors.black, // OK button text color
-          ),
-        ),
-        child: childWidget!);
   }
 
   Widget _buildSettingRow(

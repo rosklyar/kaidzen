@@ -101,6 +101,8 @@ class TasksState extends ChangeNotifier {
       "is_created": "true",
       "is_simple": task.subtasks.isEmpty.toString()
     });
+    var event = Event(EventType.taskCreated, DateTime.now(), task.category);
+    await achievementsState.addEvent(event);
     notifyListeners();
   }
 
@@ -158,10 +160,6 @@ class TasksState extends ChangeNotifier {
     await loadAll();
     await updatePropertiesAfterTaskMoved();
     notifyListeners();
-  }
-
-  Widget? getTopCard(String boardName) {
-    return null;
   }
 
   Future<void> updatePropertiesAfterTaskMoved() async {

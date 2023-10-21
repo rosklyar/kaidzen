@@ -34,7 +34,12 @@ enum EventType {
   taskCreated(0),
   taskInProgress(1),
   taskCompleted(2),
-  taskDeleted(3);
+  taskDeleted(3),
+  habitCreated(4),
+  habitInProgress(5),
+  habitTracked(6),
+  habitCompleted(7),
+  habitDeleted(8);
 
   const EventType(this.id);
   final int id;

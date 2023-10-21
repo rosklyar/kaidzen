@@ -11,6 +11,7 @@ import 'package:kaidzen_app/settings/SettingsScreen.dart';
 import 'package:kaidzen_app/views/utils.dart';
 import 'package:provider/provider.dart';
 
+import '../service/HabitState.dart';
 import '../service/TasksState.dart';
 import '../tutorial/TutorialState.dart';
 import '../utils/snackbar.dart';
@@ -37,10 +38,10 @@ class ProfilePanelState extends State<ProfilePanel>
   Widget build(BuildContext context) {
     var parentHeight = MediaQuery.of(context).size.height;
     var parentWidth = MediaQuery.of(context).size.width;
-    return Consumer5<ProgressState, AchievementsState, EmotionsState,
-            TutorialState, FeaturesState>(
+    return Consumer6<ProgressState, AchievementsState, EmotionsState,
+            TutorialState, FeaturesState, HabitState>(
         builder: (context, progressState, achievementsState, emotionsState,
-                tutorialState, featuresState, child) =>
+                tutorialState, featuresState, habitState, child) =>
             Stack(children: [
               Row(
                 children: [
@@ -79,20 +80,33 @@ class ProfilePanelState extends State<ProfilePanel>
                                   )),
                               flex: 4),
                           Expanded(
+                            child: AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 500),
+                              transitionBuilder:
+                                  (Widget child, Animation<double> animation) {
+                                return ScaleTransition(
+                                    scale: animation, child: child);
+                              },
                               child: RichText(
-                                  text: TextSpan(children: [
-                                TextSpan(
-                                    text: "TOTAL LVL  ",
-                                    style: Fonts.smallTextStyle.copyWith(
-                                        fontSize: 9, letterSpacing: 0.02)),
-                                TextSpan(
-                                  text:
-                                      progressState.getTotalLevel().toString(),
-                                  style: Fonts.mediumBoldTextStyle
-                                      .copyWith(fontSize: 18),
-                                )
-                              ])),
-                              flex: 1)
+                                key: ValueKey<int>(progressState
+                                    .getTotalLevel()), // This key is needed for AnimatedSwitcher to know when the child changes
+                                text: TextSpan(children: [
+                                  TextSpan(
+                                      text: "TOTAL LVL  ",
+                                      style: Fonts.smallTextStyle.copyWith(
+                                          fontSize: 9, letterSpacing: 0.02)),
+                                  TextSpan(
+                                    text: progressState
+                                        .getTotalLevel()
+                                        .toString(),
+                                    style: Fonts.mediumBoldTextStyle
+                                        .copyWith(fontSize: 18),
+                                  )
+                                ]),
+                              ),
+                            ),
+                            flex: 1,
+                          )
                         ]),
                       ),
                       flex: 4),
@@ -171,7 +185,9 @@ class ProfilePanelState extends State<ProfilePanel>
                                             height: parentWidth * 0.06),
                                       ),
                                       Visibility(
-                                          visible: !featuresState.isFeatureDiscovered(Features.REMINDER.id),
+                                          visible: !featuresState
+                                              .isFeatureDiscovered(
+                                                  Features.REMINDER.id),
                                           child: Positioned(
                                             right: parentWidth * 0.01,
                                             top: parentWidth * 0.01,

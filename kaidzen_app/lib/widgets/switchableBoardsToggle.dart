@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:kaidzen_app/service/HabitState.dart';
 import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
@@ -38,8 +39,8 @@ class _SwitchableBoardsToggleWidgetState
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.only(bottom: 5),
-          child: Image.asset("assets/collapsing_line.png")),
+            padding: EdgeInsets.only(bottom: 5),
+            child: Image.asset("assets/collapsing_line.png")),
         SizedBox(
             width: double.infinity,
             child: Wrap(
@@ -74,11 +75,14 @@ class _SwitchableBoardsToggleWidgetState
                                 ),
                                 Visibility(
                                   visible: board == ToggleBoard.DOING,
-                                  child: Consumer<TasksState>(
-                                    builder: (context, taskState, child) =>
+                                  child: Consumer2<TasksState, HabitState>(
+                                    builder: (context, taskState, habitState,
+                                            child) =>
                                         Visibility(
-                                      visible: taskState
-                                              .getCountByStatus(board.name) >
+                                      visible: taskState.getCountByStatus(
+                                                  board.name) +
+                                              habitState.getCountByStatus(
+                                                  board.name) >
                                           0,
                                       child: Positioned(
                                           top: 0,
@@ -98,9 +102,11 @@ class _SwitchableBoardsToggleWidgetState
                                                     .withOpacity(0)),
                                             child: Center(
                                               child: Text(
-                                                taskState
-                                                    .getCountByStatus(
-                                                        board.name)
+                                                (taskState.getCountByStatus(
+                                                            board.name) +
+                                                        habitState
+                                                            .getCountByStatus(
+                                                                board.name))
                                                     .toString(),
                                                 style: TextStyle(
                                                   fontSize: 12,

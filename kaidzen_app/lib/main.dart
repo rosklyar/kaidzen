@@ -13,6 +13,9 @@ import 'package:kaidzen_app/features/FeaturesRepository.dart';
 import 'package:kaidzen_app/features/FeaturesState.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/BoardMessageState.dart';
+import 'package:kaidzen_app/service/HabitRepository.dart';
+import 'package:kaidzen_app/service/HabitState.dart';
+import 'package:kaidzen_app/service/LocalPropertiesService.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/tutorial/TutorialRepository.dart';
@@ -43,6 +46,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  LocalPropertiesService localPropertiesService = LocalPropertiesService();
+
   ProgressState progressState = ProgressState(
     repository: ProgressRepository(),
   );
@@ -55,8 +60,9 @@ void main() async {
   EmotionsState emotionsState =
       EmotionsState(eventsRepository, EmotionPointsRepository(), tutorialState);
 
-  AnnouncementsState announcementsState =
-      AnnouncementsState(tutorialState: tutorialState, announcementsRepository: AnnouncementsRepository());
+  AnnouncementsState announcementsState = AnnouncementsState(
+      tutorialState: tutorialState,
+      announcementsRepository: AnnouncementsRepository());
 
   FeaturesState featuresState =
       FeaturesState(featuresRepository: FeaturesRepository());
@@ -68,7 +74,16 @@ void main() async {
       emotionsState: emotionsState,
       tutorialState: tutorialState);
 
+  HabitState habitState = HabitState(
+      repository: HabitRepository(),
+      progressState: progressState,
+      achievementsState: achievementsState,
+      emotionsState: emotionsState,
+      tutorialState: tutorialState);
+
+  await localPropertiesService.loadAll();
   await taskState.loadAll();
+  await habitState.loadAll();
   await achievementsState.loadAll();
   await tutorialState.loadAll();
   await emotionsState.loadAll();
@@ -83,9 +98,15 @@ void main() async {
       .then((value) => runZonedGuarded(
           () => runApp(MultiProvider(providers: [
                 ChangeNotifierProvider(create: (context) {
+                  return localPropertiesService;
+                }),
+                ChangeNotifierProvider(create: (context) {
                   AnalyticsService.initUserProperties(
-                      taskState, emotionsState, tutorialState);
+                      taskState, habitState, emotionsState, tutorialState);
                   return taskState;
+                }),
+                ChangeNotifierProvider(create: (context) {
+                  return habitState;
                 }),
                 ChangeNotifierProvider(create: (context) {
                   progressState.loadAll();
@@ -101,7 +122,8 @@ void main() async {
                   return emotionsState;
                 }),
                 ChangeNotifierProvider(create: (context) {
-                  return BoardMessageState(tutorialState, taskState);
+                  return BoardMessageState(
+                      tutorialState, taskState, habitState);
                 }),
                 ChangeNotifierProvider(create: (context) {
                   return announcementsState;

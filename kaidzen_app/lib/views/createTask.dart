@@ -2,21 +2,28 @@ import 'dart:convert';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/models/inspiration.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
+import 'package:kaidzen_app/service/HabitState.dart';
+import 'package:kaidzen_app/utils/dashSeparator.dart';
 import 'package:kaidzen_app/views/utils.dart';
+import 'package:kaidzen_app/views/theamedAlertDIalog.dart';
+import 'package:kaidzen_app/widgets/taskDifficulty.dart';
 
 import '../achievements/AchievementsState.dart';
 import '../achievements/event.dart';
+import '../models/habit.dart';
 import '../models/task.dart';
 import 'package:provider/provider.dart';
 
 import '../service/TasksState.dart';
 import '../utils/snackbar.dart';
-import '../widgets/taskDifficulty.dart';
+import '../widgets/expandableText.dart';
+import '../widgets/habitOption.dart';
 import '../widgets/taskType.dart';
 
 class CreateTask extends StatefulWidget {
@@ -34,10 +41,15 @@ class _CreateTaskState extends State<CreateTask> {
   late TextEditingController newTaskController;
   int _currentCategory = -1;
   int _currentDifficulty = 0;
+  int _targetTotal = 10;
+  HabitType _currentHabitType = HabitType.FIXED;
   bool _isCreateButtonActive = false;
+  bool _isHabit = false;
+  bool _startDoing = false;
   late Future<List<Inspiration>>? _inspirationsFuture;
   final GlobalKey<dynamic> _taskTypeWidgetKey = GlobalKey();
   final GlobalKey<dynamic> _taskDifficultyWidgetKey = GlobalKey();
+  final GlobalKey<dynamic> _habitWidgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -61,6 +73,7 @@ class _CreateTaskState extends State<CreateTask> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
@@ -94,7 +107,7 @@ class _CreateTaskState extends State<CreateTask> {
                     Expanded(
                         child: Padding(
                             padding: const EdgeInsets.only(
-                                left: 10, right: 10, top: 20),
+                                left: 10, right: 10, top: 10),
                             child: TextField(
                               textCapitalization: TextCapitalization.sentences,
                               maxLength: maxInputCharCount,
@@ -146,10 +159,134 @@ class _CreateTaskState extends State<CreateTask> {
                                   flex: 1),
                               const Expanded(child: SizedBox(), flex: 1)
                             ])),
-                        flex: 4),
-                    Expanded(child: getDiff(), flex: 7),
+                        flex: 5),
+                    Expanded(child: getDiff(), flex: 4),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: SizedBox(
+                                  child: Text("Start doing",
+                                      textAlign: TextAlign.left,
+                                      style: Fonts.largeTextStyle))),
+                          Switch(
+                              activeColor: Colors.white,
+                              activeTrackColor: Colors.deepPurpleAccent,
+                              value: _startDoing,
+                              onChanged: (value) {
+                                setState(() {
+                                  _startDoing = value;
+                                });
+                              })
+                        ],
+                      ),
+                      flex: 1,
+                    ),
+                    Expanded(
+                        child: Column(children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: SizedBox(
+                                      child: Text("Recurring goal",
+                                          textAlign: TextAlign.left,
+                                          style: Fonts.largeTextStyle))),
+                              Switch(
+                                  activeColor: Colors.white,
+                                  activeTrackColor: Colors.deepPurpleAccent,
+                                  value: _isHabit,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _isHabit = value;
+                                    });
+                                  })
+                            ],
+                          ),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Visibility(
+                                      visible: _isHabit,
+                                      child: getHabitWidget()),
+                                  Visibility(
+                                    visible: _isHabit &&
+                                        _currentHabitType == HabitType.FIXED,
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        int? newTargetTotal =
+                                            await showNumberInputDialog(
+                                                'Enter target total',
+                                                context,
+                                                _targetTotal,
+                                                maxFixedValue,
+                                                1);
+                                        if (newTargetTotal != null) {
+                                          setState(() {
+                                            _targetTotal = newTargetTotal;
+                                          });
+                                        }
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: screenWidth * 0.04,
+                                            horizontal: screenWidth * 0.04),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "$_targetTotal times",
+                                              style: Fonts
+                                                  .mindfulMomentTextStyleLarge,
+                                            ),
+                                            Row(
+                                              children: [
+                                                SizedBox(
+                                                    width: screenWidth * 0.04),
+                                                SvgPicture.asset(
+                                                    "assets/edit.svg"),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: _isHabit &&
+                                        _currentHabitType ==
+                                            HabitType.GIVE_IT_A_TRY,
+                                    child: GestureDetector(
+                                      child: Container(
+                                        height: screenWidth * 0.35,
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: screenWidth * 0.04,
+                                            horizontal: screenWidth * 0.01),
+                                        child: Image.asset(
+                                            "assets/habits_background.png"),
+                                      ),
+                                    ),
+                                  ),
+                                  Visibility(
+                                      visible: _isHabit,
+                                      child: ExpandableText(
+                                        previewText:
+                                            _currentHabitType.aboutTextPreview,
+                                        fullText: _currentHabitType.aboutText,
+                                      )),
+                                ],
+                              ),
+                            ),
+                          )
+                        ]),
+                        flex: 10)
                   ]),
-                  flex: 9),
+                  flex: 7),
               Expanded(
                   child: Padding(
                       padding: const EdgeInsets.only(
@@ -278,6 +415,14 @@ class _CreateTaskState extends State<CreateTask> {
         ));
   }
 
+  Expanded separatorWidget() {
+    return const Expanded(
+        child: Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: DashSeparator(),
+    ));
+  }
+
   Widget inspirationsWidget(
       BuildContext context, ScrollController scrollController) {
     return FutureBuilder<List<Inspiration>>(
@@ -333,6 +478,86 @@ class _CreateTaskState extends State<CreateTask> {
         });
   }
 
+  Widget getHabitWidget() {
+    return Column(children: [
+      Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: SizedBox(
+              width: double.infinity,
+              child: HabitOptionWidget(
+                  initialOption: _currentHabitType,
+                  key: _habitWidgetKey,
+                  callback: (value) => setState(() {
+                        _currentHabitType = value!;
+                        Utils.tryToLostFocus(context);
+                      }))))
+    ]);
+  }
+
+  Widget getAboutHabitWidget() {
+    return Column(
+      children: [
+        const SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: SizedBox(
+            width: double.infinity,
+            child: RichText(
+              text: TextSpan(
+                style: Fonts.graySubtitle14,
+                children: [
+                  TextSpan(
+                    text: _currentHabitType
+                        .aboutTextPreview, // Displaying the preview text
+                  ),
+                  WidgetSpan(
+                    child: GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: SingleChildScrollView(
+                                child: Text(
+                                  _currentHabitType
+                                      .aboutText, // Displaying the full text in a dialog
+                                  style: Fonts.graySubtitle14,
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pop(); // Close the dialog
+                                  },
+                                  child: Text(
+                                    'Close',
+                                    style: Fonts.mindfulMomentTextStyle,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        child: Text(
+                          'Read more',
+                          style: Fonts.mindfulMomentTextStyle,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget getDiff() {
     return Column(children: [
       const SizedBox(height: 10),
@@ -344,8 +569,9 @@ class _CreateTaskState extends State<CreateTask> {
                 "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
                 style: Fonts.largeTextStyle,
               ))),
+      const SizedBox(height: 5),
       Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
+          padding: const EdgeInsets.only(left: 10, right: 10),
           child: SizedBox(
               width: double.infinity,
               child: TaskDifficultyWidget(
@@ -358,17 +584,53 @@ class _CreateTaskState extends State<CreateTask> {
     ]);
   }
 
+  Widget getHabitOptionLayout(HabitType habitType, bool selected) {
+    return Container(
+        width: double.infinity,
+        height: double.infinity,
+        color: selected ? selectedToggleColor : unselectedToggleColor,
+        child: Center(
+            child: Padding(
+          padding: const EdgeInsets.only(right: 5),
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(habitType.name,
+                style:
+                    selected ? Fonts.largeTextStyleWhite : Fonts.largeTextStyle)
+          ]),
+        )));
+  }
+
   void submit() {
     var category = DevelopmentCategory.values
         .firstWhere((element) => element.id == _currentCategory);
-    Provider.of<TasksState>(context, listen: false).addTask(Task(
-        newTaskController.text,
-        category,
-        Difficulty.values
-            .firstWhere((element) => element.id == _currentDifficulty),
-        parent: widget.parent != null ? widget.parent!.id : null));
-    var event = Event(EventType.taskCreated, DateTime.now(), category);
-    Provider.of<AchievementsState>(context, listen: false).addEvent(event);
+    if (_isHabit) {
+      var totalCount = _currentHabitType == HabitType.FIXED
+          ? _targetTotal
+          : _currentHabitType.stageCount.values
+              .fold(0, (previousValue, element) => previousValue + element);
+
+      Provider.of<HabitState>(context, listen: false).addHabit(Habit(
+          Task(
+              newTaskController.text,
+              category,
+              Difficulty.values
+                  .firstWhere((element) => element.id == _currentDifficulty),
+              parent: widget.parent != null ? widget.parent!.id : null,
+              status: _startDoing ? Status.DOING : Status.TODO),
+          1,
+          0,
+          totalCount,
+          _currentHabitType.id));
+    } else {
+      Provider.of<TasksState>(context, listen: false).addTask(Task(
+          newTaskController.text,
+          category,
+          Difficulty.values
+              .firstWhere((element) => element.id == _currentDifficulty),
+          parent: widget.parent != null ? widget.parent!.id : null,
+          status: _startDoing ? Status.DOING : Status.TODO));
+    }
+
     Provider.of<EmotionsState>(context, listen: false).loadAll();
     Navigator.pop(context);
     showTutorialTopFlushbar("Goal created", context);

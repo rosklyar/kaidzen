@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 
+import '../models/habit.dart';
 import '../models/progress.dart';
 import '../models/task.dart';
 
@@ -27,10 +29,37 @@ class ProgressCalculator {
     }
   }
 
+  static Progress habitProgress(Progress progress, Habit habit) {
+    if (noProgressHabitFilter(habit)) {
+      return progress;
+    }
+
+    var nextLevelCap = _levelToPointsMap[progress.level + 1]!;
+    var totalPoints =
+        getEarnedHabitPoints(habit) + adjustPoints(progress, nextLevelCap);
+
+    if (totalPoints >= nextLevelCap) {
+      return Progress(
+        progress.level + 1,
+        totalPoints - nextLevelCap,
+      );
+    } else {
+      return Progress(
+        progress.level,
+        totalPoints,
+      );
+    }
+  }
+
   static bool noProgressFilter(Task task) {
     return task.category.id == DevelopmentCategory.NO_CATEGORY.id ||
         (task.status == Status.DONE && task.doneTs != null) ||
         (task.status == Status.DOING && task.inProgressTs != null);
+  }
+
+  static bool noProgressHabitFilter(Habit habit) {
+    return habit.task.category.id == DevelopmentCategory.NO_CATEGORY.id ||
+        (habit.task.status == Status.DONE && habit.task.doneTs != null);
   }
 
   static int getEarnedPoints(Task task) {
@@ -40,6 +69,21 @@ class ProgressCalculator {
       return 10;
     }
     return _difficultyPointsMap[task.difficulty]!;
+  }
+
+  static int getEarnedHabitPoints(Habit habit) {
+    if (habit.task.status == Status.DONE) {
+      return _difficultyPointsMap[habit.task.difficulty]! * 3;
+    }
+    if (habit.task.status == Status.DOING &&
+        habit.stage == 1 &&
+        habit.stageCount == 0) {
+      return 5;
+    }
+    if (habit.task.status == Status.TODO) {
+      return 10;
+    }
+    return _difficultyPointsMap[Difficulty.EASY]!;
   }
 
   static double getLevelFraction(

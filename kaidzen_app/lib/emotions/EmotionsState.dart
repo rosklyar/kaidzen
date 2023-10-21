@@ -61,9 +61,17 @@ class EmotionsState extends ChangeNotifier {
     switch (event.type) {
       case EventType.taskCreated:
         return 2;
+      case EventType.habitCreated:
+        return 2;
       case EventType.taskInProgress:
         return 1;
+      case EventType.habitInProgress:
+        return 1;
       case EventType.taskCompleted:
+        return 3;
+      case EventType.habitCompleted:
+        return 3;
+      case EventType.habitTracked:
         return 3;
       default:
         return 0;

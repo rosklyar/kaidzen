@@ -1,14 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
-import 'package:kaidzen_app/service/TasksState.dart';
-import 'package:kaidzen_app/utils/margin.dart';
-import 'package:kaidzen_app/utils/theme.dart';
 import 'package:kaidzen_app/views/createSubgoal.dart';
 import 'package:kaidzen_app/views/listViewSubTaskItem.dart';
-import 'package:kaidzen_app/views/viewGoal.dart';
-import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
 import '../utils/dashSeparator.dart';

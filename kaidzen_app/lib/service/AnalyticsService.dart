@@ -3,11 +3,12 @@ import 'dart:developer';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
+import 'package:kaidzen_app/service/HabitState.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/tutorial/TutorialState.dart';
 
 class AnalyticsService {
-  static void initUserProperties(TasksState tasksState,
+  static void initUserProperties(TasksState tasksState, HabitState habitState,
       EmotionsState emotionsState, TutorialState tutorialState) async {
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.HEALTH_LEVEL.name.toLowerCase(),
@@ -61,21 +62,34 @@ class AnalyticsService {
             .toString());
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.GOALS_CREATED.name.toLowerCase(),
-        value: tasksState.count().toString());
+        value: habitState.count().toString());
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.CURRENT_GOALS_DO.name.toLowerCase(),
-        value: tasksState.getByStatus(Status.TODO).length.toString());
+        value: habitState.getByStatus(Status.TODO).length.toString());
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.CURRENT_GOALS_DOING.name.toLowerCase(),
-        value: tasksState.getByStatus(Status.DOING).length.toString());
+        value: habitState.getByStatus(Status.DOING).length.toString());
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.CURRENT_GOALS_DONE.name.toLowerCase(),
-        value: tasksState.getByStatus(Status.DONE).length.toString());
+        value: habitState.getByStatus(Status.DONE).length.toString());
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.ACHIEVEMENTS_COMPLETED.name.toLowerCase(),
         value: tasksState.achievementsState
             .getCompletedAchievementsCount()
             .toString());
+
+    await FirebaseAnalytics.instance.setUserProperty(
+        name: AnalyticsUserProperties.HABITS_CREATED.name.toLowerCase(),
+        value: tasksState.count().toString());
+    await FirebaseAnalytics.instance.setUserProperty(
+        name: AnalyticsUserProperties.CURRENT_HABITS_DO.name.toLowerCase(),
+        value: tasksState.getByStatus(Status.TODO).length.toString());
+    await FirebaseAnalytics.instance.setUserProperty(
+        name: AnalyticsUserProperties.CURRENT_HABITS_DOING.name.toLowerCase(),
+        value: tasksState.getByStatus(Status.DOING).length.toString());
+    await FirebaseAnalytics.instance.setUserProperty(
+        name: AnalyticsUserProperties.CURRENT_HABITS_DONE.name.toLowerCase(),
+        value: tasksState.getByStatus(Status.DONE).length.toString());
 
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.EMOTION_POINTS.name.toLowerCase(),
@@ -117,7 +131,8 @@ enum AnalyticsEventType {
   mindful_moments_opened,
   announcement_closed,
   survey_opened,
-  feature_discovered;
+  feature_discovered,
+  habit_action;
 }
 
 enum AnalyticsUserProperties {
@@ -137,7 +152,11 @@ enum AnalyticsUserProperties {
   CURRENT_GOALS_DONE,
   ACHIEVEMENTS_COMPLETED,
   EMOTION_POINTS,
-  TUTORIAL_STEPS_COMPLETED;
+  TUTORIAL_STEPS_COMPLETED,
+  HABITS_CREATED,
+  CURRENT_HABITS_DO,
+  CURRENT_HABITS_DOING,
+  CURRENT_HABITS_DONE;
 }
 
 const Map<DevelopmentCategory, AnalyticsUserProperties> levelPropertiesMap = {
