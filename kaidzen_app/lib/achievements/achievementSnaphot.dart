@@ -83,7 +83,8 @@ class AchievementSnapshot {
 enum AchievementStatus {
   notCompleted(0),
   completed(1),
-  completedAndShown(2);
+  completedAndShown(2),
+  completedAndNewDetailsShown(3);
 
   const AchievementStatus(this.id);
   final int id;

@@ -229,7 +229,11 @@ class KaizenDb {
             $columnHabitTotalCount integer not null,
             $columnHabitType integer not null,
             $columnHabitLastCompleteTs datetime default null)
+      ''',
       '''
+          insert into $tableFeatures values
+            (1, 'Origami', 0);
+        '''
     ];
 
     return await openDatabase(join(await getDatabasesPath(), 'sticky_goals.db'),
