@@ -24,7 +24,7 @@ class AchievementsState extends ChangeNotifier {
 
   AchievementsState(
       {required this.eventsRepository, required this.achievementsRepository}) {
-    var twentyFiveTasksCreatedAchievement = TaskCreatedAchievement(0, 5,
+    var twentyFiveTasksCreatedAchievement = TaskCreatedAchievement(0, 25,
         eventsRepository: eventsRepository,
         completedDetails: const CompletedDetailsSwiper(
             itemCount: 19,
@@ -33,7 +33,7 @@ class AchievementsState extends ChangeNotifier {
             color: Color.fromRGBO(195, 184, 239, 1)),
         completedDetailsType: CompletedDetailsType.ORIGAMI_INSTRUCTION);
 
-    var fiftyTasksCreatedAchievement = TaskCreatedAchievement(1, 6,
+    var fiftyTasksCreatedAchievement = TaskCreatedAchievement(1, 50,
         eventsRepository: eventsRepository,
         completedDetails: const CompletedDetailsSwiper(
             itemCount: 11,
@@ -41,10 +41,10 @@ class AchievementsState extends ChangeNotifier {
             filePrefix: "Duck",
             color: Color.fromRGBO(195, 184, 239, 1)),
         completedDetailsType: CompletedDetailsType.ORIGAMI_INSTRUCTION);
-    var hundredTasksCreatedAchievement = TaskCreatedAchievement(2, 7,
+    var hundredTasksCreatedAchievement = TaskCreatedAchievement(2, 100,
         eventsRepository: eventsRepository,
         completedDetails: const CompletedDetailsSwiper(
-            itemCount: 20,
+            itemCount: 21,
             subfolder: "0/details/seahorse",
             filePrefix: "Seahorse",
             color: Color.fromRGBO(195, 184, 239, 1)),
