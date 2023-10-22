@@ -82,16 +82,18 @@ class AchievementDetailsScreen extends StatelessWidget {
                 Expanded(
                     child: Visibility(
                         visible: !achievementSnapshot.isSecret,
-                        child: completedDetailsType !=
-                                CompletedDetailsType.ORIGAMI_INSTRUCTION
-                            ? Text(achievementSnapshot.description,
-                                style: AchievementsStyle
-                                    .achievementsDescriptionTextStyle)
-                            : Text(
+                        child: achievementSnapshot.status !=
+                                    AchievementStatus.notCompleted &&
+                                completedDetailsType ==
+                                    CompletedDetailsType.ORIGAMI_INSTRUCTION
+                            ? Text(
                                 "You've unlocked an origami!\nAssemble it to proudly display your\nachievement!",
                                 style: AchievementsStyle
                                     .achievementsDescriptionTextStyle,
-                                textAlign: TextAlign.center)),
+                                textAlign: TextAlign.center)
+                            : Text(achievementSnapshot.description,
+                                style: AchievementsStyle
+                                    .achievementsDescriptionTextStyle)),
                     flex: 1),
                 Expanded(
                     child: !achievementSnapshot.isSecret &&
