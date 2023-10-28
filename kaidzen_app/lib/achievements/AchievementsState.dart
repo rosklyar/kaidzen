@@ -30,7 +30,8 @@ class AchievementsState extends ChangeNotifier {
             itemCount: 19,
             subfolder: "0/details/fish",
             filePrefix: "Fish",
-            color: Color.fromRGBO(195, 184, 239, 1)),
+            color: Color.fromRGBO(195, 184, 239, 1),
+            id: 0),
         completedDetailsType: CompletedDetailsType.ORIGAMI_INSTRUCTION);
 
     var fiftyTasksCreatedAchievement = TaskCreatedAchievement(1, 50,
@@ -39,7 +40,8 @@ class AchievementsState extends ChangeNotifier {
             itemCount: 11,
             subfolder: "0/details/duck",
             filePrefix: "Duck",
-            color: Color.fromRGBO(195, 184, 239, 1)),
+            color: Color.fromRGBO(195, 184, 239, 1),
+            id: 1),
         completedDetailsType: CompletedDetailsType.ORIGAMI_INSTRUCTION);
     var hundredTasksCreatedAchievement = TaskCreatedAchievement(2, 100,
         eventsRepository: eventsRepository,
@@ -47,7 +49,8 @@ class AchievementsState extends ChangeNotifier {
             itemCount: 21,
             subfolder: "0/details/seahorse",
             filePrefix: "Seahorse",
-            color: Color.fromRGBO(195, 184, 239, 1)),
+            color: Color.fromRGBO(195, 184, 239, 1),
+            id: 2),
         completedDetailsType: CompletedDetailsType.ORIGAMI_INSTRUCTION);
     var fiveTasksCompletedInSomeSphereAchievement =
         TaskCompletedInSomeSphereAchievement(3, 5,

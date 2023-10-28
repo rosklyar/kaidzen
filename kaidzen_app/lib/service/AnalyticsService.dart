@@ -132,6 +132,7 @@ enum AnalyticsEventType {
   announcement_closed,
   survey_opened,
   feature_discovered,
+  origami_last_item,
   habit_action;
 }
 

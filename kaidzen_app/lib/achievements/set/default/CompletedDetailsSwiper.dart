@@ -1,24 +1,35 @@
+import 'dart:math';
+
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:kaidzen_app/service/AnalyticsService.dart';
 
 class CompletedDetailsSwiper extends StatelessWidget {
   final int itemCount;
   final String subfolder;
   final String filePrefix;
   final Color color;
+  final int id;
 
   const CompletedDetailsSwiper(
       {super.key,
       required this.itemCount,
       required this.subfolder,
       required this.filePrefix,
-      required this.color});
+      required this.color,
+      required this.id});
 
   @override
   Widget build(BuildContext context) {
     return Swiper(
       itemBuilder: (BuildContext context, int index) {
+        if (index == itemCount - 1) {
+          FirebaseAnalytics.instance.logEvent(
+              name: AnalyticsEventType.origami_last_item.name,
+              parameters: {"origami_id": id});
+        }
         return Padding(
             padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * 0.05,
