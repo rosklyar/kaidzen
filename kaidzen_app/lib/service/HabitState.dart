@@ -90,7 +90,7 @@ class HabitState extends ChangeNotifier {
       "is_simple": habit.task.subtasks.isEmpty.toString()
     });
     var event =
-        Event(EventType.taskCreated, DateTime.now(), habit.task.category);
+        Event(EventType.habitCreated, DateTime.now(), habit.task.category);
     await achievementsState.addEvent(event);
     notifyListeners();
   }
