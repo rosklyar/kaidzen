@@ -49,7 +49,7 @@ class CompletedDetailsSwiper extends StatelessWidget {
                       top: MediaQuery.of(context).size.height * 0.01,
                       child: Text(
                           index + 1 == itemCount
-                              ? "You will get this!"
+                              ? "Good job!"
                               : "Step ${index + 1}:",
                           style: GoogleFonts.montserrat(
                               textStyle:
