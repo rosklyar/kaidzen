@@ -107,7 +107,7 @@ class _CreateTaskState extends State<CreateTask> {
                     Expanded(
                         child: Padding(
                             padding: const EdgeInsets.only(
-                                left: 10, right: 10, top: 10),
+                                left: 10, right: 10, top: 5),
                             child: TextField(
                               textCapitalization: TextCapitalization.sentences,
                               maxLength: maxInputCharCount,
