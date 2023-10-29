@@ -12,7 +12,7 @@ Widget habitCard(Habit habit) {
   double progressValue = calculateCurrentHabitProgress(habit);
 
   Widget progressBar = LinearProgressIndicator(
-    backgroundColor: Colors.white,
+    backgroundColor: habit.task.category.color.withOpacity(0.2),
     value: progressValue,
     valueColor: AlwaysStoppedAnimation<Color>(
         habit.task.category.color), // Or any color you prefer
