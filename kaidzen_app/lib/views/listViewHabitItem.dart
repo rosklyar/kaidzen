@@ -83,39 +83,131 @@ class ListTileTrail extends StatelessWidget {
   }
 }
 
-class TrackHabitIconButton extends StatelessWidget {
+class TrackHabitIconButton extends StatefulWidget {
   const TrackHabitIconButton({Key? key, required this.habit}) : super(key: key);
 
   final Habit habit;
 
   @override
-  Widget build(BuildContext context) {
-    return IconButton(
-        icon: const Icon(Icons.add_circle_outline),
-        onPressed: () async {
-          await Provider.of<HabitState>(context, listen: false).trackHabit(habit);
-        });
+  _TrackHabitIconButtonState createState() => _TrackHabitIconButtonState();
+}
+
+class _TrackHabitIconButtonState extends State<TrackHabitIconButton>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _scaleAnimation;
+  // bool animationInterrupted = false;
+  bool showCheckmark = false;
+  // Indicates if the checkmark should be displayed
+  bool _isButtonLocked = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 200),
+    );
+
+    _scaleAnimation =
+        Tween<double>(begin: 1.0, end: 1.3).animate(_animationController)
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              _animationController.reverse();
+
+              if (showCheckmark) {
+                // Once animation is complete and the habit is done, reset the checkmark state.
+                setState(() {});
+              }
+            }
+          });
   }
 
-  Future<void> trackHabit(BuildContext context, Habit habit) async {
-    var type = habit.getType();
-    var stageTotal = type == HabitType.FIXED
-        ? habit.totalCount
-        : type.stageCount[habit.stage];
-    habit.stageCount += 1;
-    if (habit.stageCount == stageTotal) {
-      if (habit.stage == type.stageCount.length) {
-        await Provider.of<HabitState>(context, listen: false)
-            .moveHabitAndNotify(habit, Status.DONE);
-      } else {
-        habit.stage += 1;
-        habit.stageCount = 0;
-        await Provider.of<HabitState>(context, listen: false)
-            .updateHabit(habit);
-      }
+  @override
+  Widget build(BuildContext context) {
+    return ScaleTransition(
+      scale: _scaleAnimation,
+      child: IconButton(
+        icon: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            showCheckmark
+                ? Icon(Icons.check_circle) // Checkmark icon when habit is done
+                : Icon(Icons.add_circle_outline), // Default icon
+          ],
+        ),
+        onPressed: () async {
+          if (!_isButtonLocked) {
+            _isButtonLocked = true;
+
+            _animationController.forward();
+
+            // Check if it's the last push before moving to "DONE"
+            var type = widget.habit.getType();
+            var stageTotal = type == HabitType.FIXED
+                ? widget.habit.totalCount
+                : type.stageCount[widget.habit.stage];
+
+            if (widget.habit.stageCount + 1 == stageTotal) {
+              if (widget.habit.stage == type.stageCount.length) {
+                if (mounted) {
+                  // Ensure widget is still in the tree.
+                  setState(() {
+                    showCheckmark = true;
+                  });
+                }
+              }
+            }
+
+            // Proceed with the existing logic.
+            Future.delayed(Duration(milliseconds: 300), () async {
+              await Provider.of<HabitState>(context, listen: false)
+                  .trackHabit(widget.habit);
+              _isButtonLocked = false;
+            });
+          }
+          ;
+        },
+      ),
+    );
+  }
+
+  @override
+  void didUpdateWidget(TrackHabitIconButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.habit != oldWidget.habit) {
+      showCheckmark = false;
+      // Reset when the widget is updated with a new habit
+    }
+  }
+
+  @override
+  void dispose() {
+    if (_animationController.isAnimating) {
+      _animationController.stop();
+    }
+    _animationController.dispose();
+    super.dispose();
+  }
+}
+
+Future<void> trackHabit(BuildContext context, Habit habit) async {
+  var type = habit.getType();
+  var stageTotal =
+      type == HabitType.FIXED ? habit.totalCount : type.stageCount[habit.stage];
+  habit.stageCount += 1;
+  if (habit.stageCount == stageTotal) {
+    if (habit.stage == type.stageCount.length) {
+      await Provider.of<HabitState>(context, listen: false)
+          .moveHabitAndNotify(habit, Status.DONE);
     } else {
+      habit.stage += 1;
+      habit.stageCount = 0;
       await Provider.of<HabitState>(context, listen: false).updateHabit(habit);
     }
+  } else {
+    await Provider.of<HabitState>(context, listen: false).updateHabit(habit);
   }
 }
 
