@@ -124,11 +124,12 @@ class HabitState extends ChangeNotifier {
       await updateHabit(habit);
     }
 
-    await progressState.updateProgress(habit.task);
+    await progressState.updateHabitProgress(habit);
     updateHabitTimestamps(habit);
     var event =
         Event(EventType.habitTracked, DateTime.now(), habit.task.category);
     await achievementsState.addEvent(event);
+    await emotionsState.loadAll();
     notifyListeners();
   }
 
