@@ -107,7 +107,7 @@ class _CreateTaskState extends State<CreateTask> {
                     Expanded(
                         child: Padding(
                             padding: const EdgeInsets.only(
-                                left: 10, right: 10, top: 10),
+                                left: 10, right: 10, top: 5),
                             child: TextField(
                               textCapitalization: TextCapitalization.sentences,
                               maxLength: maxInputCharCount,
@@ -134,7 +134,7 @@ class _CreateTaskState extends State<CreateTask> {
                                   hintStyle: Fonts.inputHintTextStyle),
                               controller: newTaskController,
                             )),
-                        flex: 3),
+                        flex: 4),
                     Expanded(
                         child: Padding(
                             padding: const EdgeInsets.only(left: 10),
@@ -263,10 +263,10 @@ class _CreateTaskState extends State<CreateTask> {
                                             HabitType.GIVE_IT_A_TRY,
                                     child: GestureDetector(
                                       child: Container(
-                                        height: screenWidth * 0.35,
+                                        height: screenWidth * 0.32,
                                         padding: EdgeInsets.symmetric(
                                             vertical: screenWidth * 0.04,
-                                            horizontal: screenWidth * 0.01),
+                                            horizontal: screenWidth * 0.005),
                                         child: Image.asset(
                                             "assets/habits_background.png"),
                                       ),
@@ -284,13 +284,13 @@ class _CreateTaskState extends State<CreateTask> {
                             ),
                           )
                         ]),
-                        flex: 10)
+                        flex: 11)
                   ]),
-                  flex: 7),
+                  flex: 8),
               Expanded(
                   child: Padding(
                       padding: const EdgeInsets.only(
-                          left: 10, right: 10, bottom: 10),
+                          left: 10, right: 10, bottom: 5),
                       child: SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
@@ -494,73 +494,9 @@ class _CreateTaskState extends State<CreateTask> {
     ]);
   }
 
-  Widget getAboutHabitWidget() {
-    return Column(
-      children: [
-        const SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: SizedBox(
-            width: double.infinity,
-            child: RichText(
-              text: TextSpan(
-                style: Fonts.graySubtitle14,
-                children: [
-                  TextSpan(
-                    text: _currentHabitType
-                        .aboutTextPreview, // Displaying the preview text
-                  ),
-                  WidgetSpan(
-                    child: GestureDetector(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              content: SingleChildScrollView(
-                                child: Text(
-                                  _currentHabitType
-                                      .aboutText, // Displaying the full text in a dialog
-                                  style: Fonts.graySubtitle14,
-                                ),
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pop(); // Close the dialog
-                                  },
-                                  child: Text(
-                                    'Close',
-                                    style: Fonts.mindfulMomentTextStyle,
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                        child: Text(
-                          'Read more',
-                          style: Fonts.mindfulMomentTextStyle,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget getDiff() {
     return Column(children: [
-      const SizedBox(height: 10),
+      const SizedBox(height: 5),
       Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: SizedBox(

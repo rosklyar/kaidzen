@@ -29,7 +29,7 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
             builder: (context, constraints) => ToggleButtons(
                 constraints: BoxConstraints.expand(
                     width: constraints.maxWidth / 3 - 5,
-                    height: MediaQuery.of(context).size.height * 0.05),
+                    height: MediaQuery.of(context).size.height * 0.045),
                 borderRadius: BorderRadius.circular(5),
                 children: [
                   getDiffOptionLayout(Difficulty.EASY, _currentDifficulty == 0),
