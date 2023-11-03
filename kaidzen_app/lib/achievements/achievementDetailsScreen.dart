@@ -103,7 +103,7 @@ class AchievementDetailsScreen extends StatelessWidget {
                         : completedDetails,
                     flex: 6)
               ]),
-              flex: 6),
+              flex: 7),
         ]));
   }
 }
