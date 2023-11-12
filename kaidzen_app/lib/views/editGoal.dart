@@ -83,7 +83,7 @@ class _EditGoalState extends State<EditGoal> {
                               child: TextField(
                                 textCapitalization: TextCapitalization.sentences,
                                 maxLength: maxInputCharCount,
-                                autofocus: true,
+                                autofocus: false,
                                 decoration: InputDecoration(
                                     suffixIcon: IconButton(
                                         onPressed: () {
