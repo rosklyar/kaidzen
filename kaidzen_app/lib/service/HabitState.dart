@@ -10,6 +10,7 @@ import 'package:kaidzen_app/service/TaskRepository.dart';
 import 'package:kaidzen_app/settings/ReviewUtils.dart';
 import 'package:kaidzen_app/tutorial/TutorialState.dart';
 import 'package:kaidzen_app/tutorial/tutorialProgress.dart';
+import 'package:vibration/vibration.dart';
 
 import '../achievements/event.dart';
 import '../models/habit.dart';
@@ -107,9 +108,18 @@ class HabitState extends ChangeNotifier {
     notifyListeners();
 
     // 3. Wait for the animation to complete
-    await Future.delayed(const Duration(
+    var habitFinished =
+        habit.stageCount == stageTotal && habit.stage == type.stageCount.length;
+    var animationDuration = habitFinished ? 400 : 250;
+    if (habitFinished) {
+      var hasVibrator = await Vibration.hasVibrator();
+      if (hasVibrator != null && hasVibrator) {
+        Vibration.vibrate(duration: 100); // Short vibration
+      }
+    }
+    await Future.delayed(Duration(
         milliseconds:
-            250)); // Adjust this based on the length of your animation
+            animationDuration)); // Adjust this based on the length of your animation
 
     // 4. Update habit's status if necessary
     if (habit.stageCount == stageTotal) {

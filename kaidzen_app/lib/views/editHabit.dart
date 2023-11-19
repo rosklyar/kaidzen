@@ -94,7 +94,7 @@ class _EditHabitState extends State<EditHabit> {
                                 textCapitalization:
                                     TextCapitalization.sentences,
                                 maxLength: maxInputCharCount,
-                                autofocus: true,
+                                autofocus: false,
                                 decoration: InputDecoration(
                                     suffixIcon: IconButton(
                                         onPressed: () {
