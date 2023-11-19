@@ -5,6 +5,7 @@ import 'package:kaidzen_app/achievements/achievement.dart';
 import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'package:kaidzen_app/achievements/eggWidget.dart';
 import 'package:kaidzen_app/achievements/style.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../assets/constants.dart';
 
@@ -86,11 +87,19 @@ class AchievementDetailsScreen extends StatelessWidget {
                                     AchievementStatus.notCompleted &&
                                 completedDetailsType ==
                                     CompletedDetailsType.ORIGAMI_INSTRUCTION
-                            ? Text(
-                                "You've unlocked an origami!\nAssemble it to proudly display your\nachievement!",
-                                style: AchievementsStyle
-                                    .achievementsDescriptionTextStyle,
-                                textAlign: TextAlign.center)
+                            ? Column(children: [
+                                Text(achievementSnapshot.description,
+                                    style: AchievementsStyle
+                                        .achievementsDescriptionTextStyle),
+                                const SizedBox(height: 7),
+                                Text("You've unlocked an origami!",
+                                    style: GoogleFonts.montserrat(
+                                        textStyle: const TextStyle(
+                                            fontSize: 16,
+                                            color: Color.fromRGBO(
+                                                195, 184, 239, 1))),
+                                    textAlign: TextAlign.center)
+                              ])
                             : Text(achievementSnapshot.description,
                                 style: AchievementsStyle
                                     .achievementsDescriptionTextStyle)),
