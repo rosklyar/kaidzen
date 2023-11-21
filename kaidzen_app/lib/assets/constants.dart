@@ -59,7 +59,7 @@ const List<DevelopmentCategory> activeCategories = [
 
 enum Difficulty {
   EASY(0, "A little", "Little"),
-  MEDIUM(1, "Average", "Average"),
+  MEDIUM(1, "A lot", "Significant"),
   HARD(2, "Hugely", "Huge");
 
   const Difficulty(this.id, this.name, this.noun);

@@ -11,11 +11,17 @@ import 'listViewComplexTaskItem.dart';
 Widget habitCard(Habit habit) {
   double progressValue = calculateCurrentHabitProgress(habit);
 
-  Widget progressBar = LinearProgressIndicator(
-    backgroundColor: habit.task.category.color.withOpacity(0.2),
-    value: progressValue,
-    valueColor: AlwaysStoppedAnimation<Color>(
-        habit.task.category.color), // Or any color you prefer
+  Widget progressBar = ClipRRect(
+    borderRadius: BorderRadius.only(
+      bottomLeft: Radius.circular(20), // Adjust the radius as needed
+      bottomRight: Radius.circular(20),
+    ),
+    child: LinearProgressIndicator(
+      backgroundColor: habit.task.category.color.withOpacity(0.2),
+      value: progressValue,
+      valueColor: AlwaysStoppedAnimation<Color>(
+          habit.task.category.color), // Or any color you prefer
+    ),
   );
 
   return Card(

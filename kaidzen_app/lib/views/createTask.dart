@@ -156,7 +156,7 @@ class _CreateTaskState extends State<CreateTask> {
                                             _currentCategory = value!;
                                             Utils.tryToLostFocus(context);
                                           })),
-                                  flex: 1),
+                                  flex: 2),
                               const Expanded(child: SizedBox(), flex: 1)
                             ])),
                         flex: 5),
