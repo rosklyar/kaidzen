@@ -249,7 +249,7 @@ class SettingsScreen extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Version 1.0",
+                                      "Version 2.0",
                                       style: Fonts.mediumTextStyle.copyWith(
                                           color: const Color.fromRGBO(
                                               114, 118, 121, 1.0)),

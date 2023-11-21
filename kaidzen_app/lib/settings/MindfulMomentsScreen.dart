@@ -209,7 +209,7 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                   children: [
                     SizedBox(height: screenWidth * 0.025),
                     Text(
-                      '\nSet aside regular time for self-reflection and mindfulness to achieve greater results.',
+                      '\n\nSet aside regular time for self-reflection and mindfulness to achieve greater results.',
                       style: Fonts.largeTextStyle,
                     ),
                     SizedBox(height: screenWidth * 0.05),
