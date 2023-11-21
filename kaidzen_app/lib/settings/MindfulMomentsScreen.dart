@@ -198,7 +198,7 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              flex: 4,
+              flex: 5,
               child: Container(
                 padding: EdgeInsets.symmetric(
                   horizontal: screenWidth * 0.08,
