@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kaidzen_app/achievements/AchievementsRepository.dart';
@@ -16,6 +18,7 @@ import 'package:kaidzen_app/service/BoardMessageState.dart';
 import 'package:kaidzen_app/service/HabitRepository.dart';
 import 'package:kaidzen_app/service/HabitState.dart';
 import 'package:kaidzen_app/service/LocalPropertiesService.dart';
+import 'package:kaidzen_app/service/SubscriptionService.dart';
 import 'package:kaidzen_app/service/TaskRepository.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/tutorial/TutorialRepository.dart';
@@ -47,16 +50,26 @@ void main() async {
   );
 
   LocalPropertiesService localPropertiesService = LocalPropertiesService();
+  await localPropertiesService.loadAll();
 
+  TutorialState tutorialState = TutorialState(TutorialRepository());
   ProgressState progressState = ProgressState(
     repository: ProgressRepository(),
   );
   var eventsRepository = EventsRepository();
+  GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  var subscriptionService = SubscriptionService(
+      navigatorKey: navigatorKey,
+      localPropertiesService: localPropertiesService,
+      eventsRepositry: eventsRepository,
+      tutorialState: tutorialState);
+  subscriptionService.load();
+
   AchievementsState achievementsState = AchievementsState(
       eventsRepository: eventsRepository,
-      achievementsRepository: AchievementsRepository());
+      achievementsRepository: AchievementsRepository(),
+      subscriptionService: subscriptionService);
 
-  TutorialState tutorialState = TutorialState(TutorialRepository());
   EmotionsState emotionsState =
       EmotionsState(eventsRepository, EmotionPointsRepository(), tutorialState);
 
@@ -81,7 +94,6 @@ void main() async {
       emotionsState: emotionsState,
       tutorialState: tutorialState);
 
-  await localPropertiesService.loadAll();
   await taskState.loadAll();
   await habitState.loadAll();
   await achievementsState.loadAll();
@@ -131,7 +143,7 @@ void main() async {
                 ChangeNotifierProvider(create: (context) {
                   return featuresState;
                 }),
-              ], child: const MyApp())),
+              ], child: MyApp(navigatorKey: navigatorKey))),
           CrashReporting.reportCrash));
   Instabug.init(
       token: defaultTargetPlatform == TargetPlatform.iOS
@@ -141,11 +153,13 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  GlobalKey<NavigatorState> navigatorKey;
+  MyApp({Key? key, required this.navigatorKey}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       navigatorObservers: [InstabugNavigatorObserver()],
       theme: ThemeData(
         primarySwatch: Colors.grey,

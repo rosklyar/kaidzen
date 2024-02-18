@@ -136,6 +136,20 @@ class Fonts {
     color: Colors.white,
   ));
 
+  static TextStyle xLargeTextStyleWhite = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
+  ));
+
+  static TextStyle hugeTextStyleWhite = GoogleFonts.montserrat(
+      textStyle: const TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 30,
+    color: Colors.white,
+  ));
+
   static TextStyle largeTextStyle20 = GoogleFonts.montserrat(
       textStyle: const TextStyle(
     fontSize: 20,
@@ -151,6 +165,9 @@ class Fonts {
 
   static TextStyle mediumWhiteTextStyle = GoogleFonts.montserrat(
       textStyle: const TextStyle(fontSize: 12, color: Colors.white));
+
+  static TextStyle largeWhiteTextStyle = GoogleFonts.montserrat(
+      textStyle: const TextStyle(fontSize: 14, color: Colors.white));
 
   static TextStyle xLargeTextStyle = GoogleFonts.montserrat(
       textStyle: const TextStyle(

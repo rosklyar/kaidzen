@@ -25,6 +25,15 @@ class EventsRepository {
     return maps.map((map) => Event.fromMap(map)).toList();
   }
 
+Future<Event?> getEarliestEvent() async {
+    if (db == null) {
+      await open();
+    }
+    final List<Map<String, dynamic>> maps = await db!.rawQuery(
+        'SELECT * FROM $tableEvents ORDER BY $columnEventTs ASC LIMIT 1');
+    return maps.isEmpty ? null : Event.fromMap(maps.first);
+  }
+
   Future<Event?> getLatestEventByType(EventType eventType) async {
     if (db == null) {
       await open();

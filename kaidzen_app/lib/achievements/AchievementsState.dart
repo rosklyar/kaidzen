@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/AchievementsRepository.dart';
 
 import 'package:kaidzen_app/achievements/EventsRepository.dart';
@@ -13,17 +14,21 @@ import 'package:kaidzen_app/achievements/set/default/TaskCreatedAchievement.dart
 import 'package:kaidzen_app/achievements/set/default/TasksCompletedInAllSpheresAchievement.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 
+import '../service/SubscriptionService.dart';
 import 'style.dart';
 
 class AchievementsState extends ChangeNotifier {
   AchievementsRepository achievementsRepository;
   EventsRepository eventsRepository;
+  SubscriptionService subscriptionService;
   Map<int, Achievement>? achievements;
   Map<int, AchievementSnapshot> _snaphots = {};
   Map<int, Widget> detailsWidgets = {};
 
   AchievementsState(
-      {required this.eventsRepository, required this.achievementsRepository}) {
+      {required this.eventsRepository,
+      required this.achievementsRepository,
+      required this.subscriptionService}) {
     var twentyFiveTasksCreatedAchievement = TaskCreatedAchievement(0, 25,
         eventsRepository: eventsRepository,
         completedDetails: const CompletedDetailsSwiper(
@@ -202,6 +207,14 @@ class AchievementsState extends ChangeNotifier {
 
   addEvent(Event event) async {
     await eventsRepository.addEvent(event).then((value) => loadAll());
+
+    await loadAll();
+    if (subscriptionService.canShowSubscribePage) {
+      await subscriptionService.markSubscribePageAsShown();
+      Future.delayed(Duration(milliseconds: 2000), () {
+        subscriptionService.showSubsctiptionPage();
+      });
+    }
   }
 
   void updateAchievementSnapshot(

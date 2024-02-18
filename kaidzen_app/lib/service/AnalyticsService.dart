@@ -133,7 +133,12 @@ enum AnalyticsEventType {
   survey_opened,
   feature_discovered,
   origami_last_item,
-  habit_action;
+  habit_action,
+  subscription_painted_door_page_shown,
+  subscription_painted_door_accepted_option_year,
+  subscription_painted_door_accepted_option_month,
+  subscription_painted_door_declined,
+  subscription_painted_door_great;
 }
 
 enum AnalyticsUserProperties {

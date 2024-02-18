@@ -16,12 +16,15 @@ class LocalPropertiesService extends ChangeNotifier {
   bool? getBool(PropertyKey key) => _properties[key] as bool?;
   int? getInt(PropertyKey key) => _properties[key] as int?;
   double? getDouble(PropertyKey key) => _properties[key] as double?;
-  List<String>? getStringList(PropertyKey key) => _properties[key] as List<String>?;
+  List<String>? getStringList(PropertyKey key) =>
+      _properties[key] as List<String>?;
 
-  Future<void> setString(PropertyKey key, String value) => _setProperty(key, value);
+  Future<void> setString(PropertyKey key, String value) =>
+      _setProperty(key, value);
   Future<void> setBool(PropertyKey key, bool value) => _setProperty(key, value);
   Future<void> setInt(PropertyKey key, int value) => _setProperty(key, value);
-  Future<void> setDouble(PropertyKey key, double value) => _setProperty(key, value);
+  Future<void> setDouble(PropertyKey key, double value) =>
+      _setProperty(key, value);
   Future<void> setStringList(PropertyKey key, List<String> value) =>
       _setProperty(key, value);
 
@@ -44,7 +47,9 @@ class LocalPropertiesService extends ChangeNotifier {
 }
 
 enum PropertyKey {
-  HABITS_EXPANDED('habitsExpanded', true);
+  HABITS_EXPANDED('habitsExpanded', true),
+  SUBSCRIBE_PAGE_SHOWN('subscribePageShown', false),
+  SUBSCRIBE_PAGE_SHOW_DATE('subscribePageShownDate', Null);
 
   const PropertyKey(this.name, this.defaultValue);
 
