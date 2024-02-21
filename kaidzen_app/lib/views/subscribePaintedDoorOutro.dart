@@ -73,11 +73,12 @@ class _SubscriptionPageOutroState extends State<SubscriptionPageOutro> {
                   child:
                       Container()), // This will push the button to the bottom
               ElevatedButton(
-                child: Text('Great!'),
+                child: Text('Great!', style: Fonts.xLargeWhiteTextStyle),
                 onPressed: () {
                   FirebaseAnalytics.instance.logEvent(
                       name: AnalyticsEventType
                           .subscription_painted_door_great.name);
+                  Navigator.of(context).pop();
                 },
                 style: ElevatedButton.styleFrom(
                   primary:

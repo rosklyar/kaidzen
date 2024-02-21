@@ -65,7 +65,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
               ),
               Expanded(child: Container()), // This will push the button to the bottom
               ElevatedButton(
-                child: Text('Start 1-month free trial'),
+                child: Text('Start 1-month free trial', style: Fonts.xLargeWhiteTextStyle),
                 onPressed: () {
                   if (isYearlyPlan) {
                     FirebaseAnalytics.instance.logEvent(name: AnalyticsEventType.subscription_painted_door_accepted_option_year.name);
