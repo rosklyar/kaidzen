@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/views/createSubgoal.dart';
 import 'package:kaidzen_app/views/listViewSubTaskItem.dart';
+import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
 import '../utils/dashSeparator.dart';
 import 'ListViewTaskItem.dart';
+import '../assets/light_dark_theme.dart';
 
 class ListViewComplexTaskItem extends StatelessWidget {
   ListViewComplexTaskItem({
@@ -17,9 +19,13 @@ class ListViewComplexTaskItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
     return ExpansionTile(
       tilePadding: EdgeInsets.only(right: 30),
       title: ListViewTaskItem(task: task),
+      collapsedIconColor: dark_light_modes.statusIcon(isDarkTheme),
+      iconColor: dark_light_modes.statusIcon(isDarkTheme),
       children: <Widget>[
         Column(
           children: buildExpandableContent(context, task),
@@ -30,6 +36,9 @@ class ListViewComplexTaskItem extends StatelessWidget {
 }
 
 List<Widget> buildExpandableContent(BuildContext context, Task task) {
+  final themeProvider = Provider.of<DarkThemeProvider>(context);
+  bool isDarkTheme = themeProvider.darkTheme;
+
   List<Widget> columnContent = [];
 
   columnContent.add(const DashSeparator());
@@ -52,22 +61,19 @@ List<Widget> buildExpandableContent(BuildContext context, Task task) {
       child: ListTile(
         horizontalTitleGap: 1,
         leading: IconButton(
-          icon: Image.asset("assets/plus_in_circle.png"),
-          color: Theme.of(context).errorColor,
+          icon: Icon(Icons.add_circle_outline),
+          // Image.asset("assets/plus_in_circle.png"),
+          color: dark_light_modes.statusIcon(isDarkTheme),
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CreateSubGoal(task)));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CreateSubGoal(task)));
           },
         ),
         title: const Text('Add subgoal',
             style: TextStyle(decoration: TextDecoration.underline)),
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => CreateSubGoal(task)));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => CreateSubGoal(task)));
         },
       ),
     ));

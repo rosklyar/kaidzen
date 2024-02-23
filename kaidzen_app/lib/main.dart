@@ -26,6 +26,7 @@ import 'package:kaidzen_app/views/switchableBoard.dart';
 import 'package:provider/provider.dart';
 import 'package:time_machine/time_machine.dart';
 
+import 'assets/light_dark_theme.dart';
 import 'service/ProgressRepository.dart';
 import 'service/ProgressState.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -45,6 +46,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Setup Dark Theme Preference and Provider
+  DarkThemeProvider themeProvider = DarkThemeProvider();
+  await themeProvider.loadThemePreference();
 
   LocalPropertiesService localPropertiesService = LocalPropertiesService();
 
@@ -131,6 +136,9 @@ void main() async {
                 ChangeNotifierProvider(create: (context) {
                   return featuresState;
                 }),
+                ChangeNotifierProvider(create: (context) {
+                  return themeProvider;
+                }),
               ], child: const MyApp())),
           CrashReporting.reportCrash));
   Instabug.init(
@@ -145,11 +153,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+
     return MaterialApp(
       navigatorObservers: [InstabugNavigatorObserver()],
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
+      darkTheme: ThemeData.dark(),
+      themeMode: themeProvider.darkTheme ? ThemeMode.dark : ThemeMode.light,
       home: const HomeScreen(),
     );
   }
@@ -166,14 +178,31 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<SwitchableBoardState> _switchableBoardKey = GlobalKey();
   final GlobalKey<ProfilePanelState> _profilePanelKey = GlobalKey();
 
+  DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentAppTheme();
+  }
+
+  void getCurrentAppTheme() async {
+    themeChangeProvider.darkTheme =
+        await themeChangeProvider.darkThemePreference.getTheme();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Access the current theme provider to get the theme mode
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
+
     SystemChrome.setApplicationSwitcherDescription(
         ApplicationSwitcherDescription(
             label: "Sticky Goals", primaryColor: moreScreenBackColor.value));
     return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.dark
-            .copyWith(statusBarColor: Colors.white.withOpacity(0)),
+        value: SystemUiOverlayStyle.dark.copyWith(
+            statusBarColor: dark_light_modes.statusBarColor(isDarkTheme)),
         child: Scaffold(
           body: Stack(children: [
             Column(children: [
@@ -200,7 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   MaterialPageRoute(builder: (context) => const CreateTask()));
             },
             tooltip: 'Add goal',
-            child: const Icon(
+            child: Icon(
               Icons.add,
               color: Colors.white,
             ),

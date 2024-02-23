@@ -3,6 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/announcements/AnnouncementsState.dart';
+import 'package:kaidzen_app/assets/light_dark_theme.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/BoardMessageState.dart';
 import 'package:kaidzen_app/service/HabitState.dart';
@@ -186,8 +187,11 @@ class BoardState extends State<Board> {
 
   bool annoncementIsPresentAndRelevant(AnnouncementsState announcementState) {
     final topAnnouncement = announcementState.getTopAnnouncement();
-    final todoTasksCount = Provider.of<TasksState>(context, listen: false).getByStatus(Status.TODO).length;
-    return topAnnouncement != null && (topAnnouncement.id != 1 || todoTasksCount > 1);
+    final todoTasksCount = Provider.of<TasksState>(context, listen: false)
+        .getByStatus(Status.TODO)
+        .length;
+    return topAnnouncement != null &&
+        (topAnnouncement.id != 1 || todoTasksCount > 1);
   }
 
   ReorderableListView reorderableListView() {
@@ -196,69 +200,81 @@ class BoardState extends State<Board> {
       visible: widget.habits.isNotEmpty,
       child: Column(
         children: [
-          Theme(
-            data: ThemeData(dividerColor: Colors.transparent),
-            child: ExpansionTile(
-              iconColor: Colors.black,
-              onExpansionChanged: (value) {
-                Provider.of<LocalPropertiesService>(context, listen: false)
-                    .setBool(PropertyKey.HABITS_EXPANDED, value);
-              },
-              initiallyExpanded:
+          Consumer<DarkThemeProvider>(builder: (context, themeProvider, child) {
+            bool isDarkTheme = themeProvider.darkTheme;
+            // Now use isDarkTheme to set iconColor and other theme-dependent properties
+            return Theme(
+              data: ThemeData(
+                  dividerColor: Colors.transparent,
+                  unselectedWidgetColor:
+                      dark_light_modes.statusIcon(isDarkTheme)),
+              child: ExpansionTile(
+                iconColor: dark_light_modes.statusIcon(isDarkTheme),
+                onExpansionChanged: (value) {
                   Provider.of<LocalPropertiesService>(context, listen: false)
-                          .getBool(PropertyKey.HABITS_EXPANDED) ??
-                      true,
-              title: Row(
-                children: [
-                  SvgPicture.asset(
-                    'assets/recurring.svg',
-                    color: Colors.black,
-                    width: 20.0,
-                    height: 20.0,
-                  ), // Replace with your desired icon
-                  SizedBox(
-                      width: 8.0), // Adds some spacing between the icon and text
-                  Expanded(
-                    child: RichText(
-                      text: TextSpan(
-                        style: DefaultTextStyle.of(context).style,
-                        children: <TextSpan>[
-                          TextSpan(
-                              text: 'Recurring goals',
-                              style: Fonts.largeTextStyle,
-                              children: <InlineSpan>[
-                                WidgetSpan(
-                                  alignment: PlaceholderAlignment.aboveBaseline,
-                                  baseline: TextBaseline.alphabetic,
-                                  child: Text('  ${widget.habits.length}',
-                                      style: Fonts.largeBoldTextStyle),
-                                ),
-                              ]),
-                        ],
+                      .setBool(PropertyKey.HABITS_EXPANDED, value);
+                },
+                initiallyExpanded:
+                    Provider.of<LocalPropertiesService>(context, listen: false)
+                            .getBool(PropertyKey.HABITS_EXPANDED) ??
+                        true,
+                title: Row(
+                  children: [
+                    SvgPicture.asset(
+                      'assets/recurring.svg',
+                      color: dark_light_modes.statusIcon(isDarkTheme),
+                      width: 20.0,
+                      height: 20.0,
+                    ), // Replace with your desired icon
+                    SizedBox(
+                        width:
+                            8.0), // Adds some spacing between the icon and text
+                    Expanded(
+                      child: RichText(
+                        text: TextSpan(
+                          style: DefaultTextStyle.of(context).style,
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'Recurring goals',
+                                style: Fonts_mode.largeTextStyle(isDarkTheme,
+                                    fontSize: 16),
+                                children: <InlineSpan>[
+                                  WidgetSpan(
+                                    alignment:
+                                        PlaceholderAlignment.aboveBaseline,
+                                    baseline: TextBaseline.alphabetic,
+                                    child: Text('  ${widget.habits.length}',
+                                        style: Fonts_mode.largeBoldTextStyle(
+                                            isDarkTheme)),
+                                  ),
+                                ]),
+                          ],
+                        ),
                       ),
+                    )
+                  ],
+                ),
+                children: <Widget>[
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: List.generate(
+                      widget.habits.length,
+                      (index) {
+                        return Column(key: Key('$index'), children: [
+                          habitCard(widget.habits[index], context)
+                        ]);
+                      },
                     ),
                   )
                 ],
               ),
-              children: <Widget>[
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: List.generate(
-                    widget.habits.length,
-                    (index) {
-                      return Column(
-                          key: Key('$index'),
-                          children: [habitCard(widget.habits[index])]);
-                    },
-                  ),
-                )
-              ],
-            ),
-          ),
+            );
+          }),
           const Padding(
             padding: EdgeInsets.fromLTRB(3, 20, 3, 20),
             child: Divider(
-              color: Color.fromARGB(255, 190, 189, 189), // or any color you want
+              color:
+                  Color.fromARGB(255, 190, 189, 189), // or any color you want
               height: 3.0, // control the height of the divider
               thickness: 1.0, // control the thickness of the line
             ),
@@ -272,7 +288,8 @@ class BoardState extends State<Board> {
       widget.tasks.length,
       (index) {
         return Column(
-            key: Key('$index'), children: [taskCard(widget.tasks[index])]);
+            key: Key('$index'),
+            children: [taskCard(widget.tasks[index], context)]);
       },
     );
     all.addAll(tasks);

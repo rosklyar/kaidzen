@@ -89,8 +89,8 @@ class SwitchableBoardState extends State<SwitchableBoard> {
                 borderRadius: const BorderRadius.all(Radius.circular(30)),
                 child: BackdropFilter(
                   filter: ImageFilter.blur(
-                    sigmaX: 20.0,
-                    sigmaY: 20.0,
+                    sigmaX: 50.0,
+                    sigmaY: 50.0,
                   ),
                   child: Column(
                     children: [

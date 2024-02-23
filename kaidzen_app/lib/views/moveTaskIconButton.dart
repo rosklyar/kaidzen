@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kaidzen_app/assets/light_dark_theme.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:provider/provider.dart';
@@ -18,14 +19,37 @@ class MoveTaskIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
+
     return IconButton(
-        icon: direction == Direction.FORWARD
-            ? Image.asset("assets/right_active.png")
-            : Image.asset("assets/left_active.png"),
-        color: Theme.of(context).errorColor,
-        onPressed: () async {
-          await moveTask(context, task);
-        });
+      // Use a smaller icon size if needed
+      iconSize:
+          24, // Adjust this value to make the clickable area smaller or larger
+      onPressed: () async {
+        await moveTask(context, task);
+      },
+      icon: Container(
+        width: 32, // Set the width of the square
+        height: 32, // Set the height of the square
+        padding: EdgeInsets.all(
+            2), // Adjust padding to make the icon smaller within the square
+        decoration: BoxDecoration(
+          color: dark_light_modes.cardMoveButtonColor(
+              isDarkTheme), // Background color of the square
+          shape: BoxShape.rectangle, // Makes the container a square
+          borderRadius:
+              BorderRadius.circular(4), // Rounded corners of the square
+        ),
+        child: Icon(
+          direction == Direction.FORWARD
+              ? Icons.arrow_forward_rounded
+              : Icons.arrow_back_rounded,
+          size: 24, // Adjust the icon size inside the square
+          color: dark_light_modes.statusIcon(isDarkTheme), // Icon color
+        ),
+      ),
+    );
   }
 
   Future<void> moveTask(BuildContext context, Task task) async {

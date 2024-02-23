@@ -8,6 +8,7 @@ import 'package:kaidzen_app/views/viewHabit.dart';
 import 'package:progress_state_button/iconed_button.dart';
 import 'package:progress_state_button/progress_button.dart';
 import 'package:provider/provider.dart';
+import '../assets/light_dark_theme.dart';
 
 import '../assets/constants.dart';
 import '../models/habit.dart';
@@ -26,6 +27,9 @@ class ListViewHabitItem extends ListTile {
   Widget build(BuildContext context) {
     var listText = HabitStage.getById(habit.stage).title;
 
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
+
     var habitType = habit.getType();
     listText += habitType == HabitType.FIXED
         ? ' • ${habit.stageCount} out of ${habit.totalCount}'
@@ -38,7 +42,9 @@ class ListViewHabitItem extends ListTile {
         children: <Widget>[
           SvgPicture.asset(
             'assets/recurring.svg',
-            color: habit.task.category == DevelopmentCategory.NO_CATEGORY ? Colors.black : habit.task.category.color,
+            color: habit.task.category == DevelopmentCategory.NO_CATEGORY
+                ? dark_light_modes.statusIcon(isDarkTheme)
+                : habit.task.category.color,
             width: 12.0 + habit.task.difficulty.id * 4,
             height: 12.0 + habit.task.difficulty.id * 4,
           ),
@@ -46,7 +52,7 @@ class ListViewHabitItem extends ListTile {
       ),
       title: Text(
         habit.task.shortenedName(75),
-        style: Fonts.largeBoldTextStyle,
+        style: Fonts_mode.largeBoldTextStyle(isDarkTheme),
       ),
       horizontalTitleGap: -10,
       subtitle: Text(
@@ -126,9 +132,13 @@ class _TrackHabitIconButtonState extends State<TrackHabitIconButton>
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
+
     return ScaleTransition(
       scale: _scaleAnimation,
       child: IconButton(
+        color: dark_light_modes.statusIcon(isDarkTheme),
         icon: Stack(
           clipBehavior: Clip.none,
           children: [
@@ -223,14 +233,37 @@ class MoveHabitIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
+
     return IconButton(
-        icon: direction == Direction.FORWARD
-            ? Image.asset("assets/right_active.png")
-            : Image.asset("assets/left_active.png"),
-        color: Theme.of(context).errorColor,
-        onPressed: () async {
-          await moveHabit(context, habit);
-        });
+      // Use a smaller icon size if needed
+      iconSize:
+          24, // Adjust this value to make the clickable area smaller or larger
+      onPressed: () async {
+        await moveHabit(context, habit);
+      },
+      icon: Container(
+        width: 32, // Set the width of the square
+        height: 32, // Set the height of the square
+        padding: EdgeInsets.all(
+            2), // Adjust padding to make the icon smaller within the square
+        decoration: BoxDecoration(
+          color: dark_light_modes.cardMoveButtonColor(
+              isDarkTheme), // Background color of the square
+          shape: BoxShape.rectangle, // Makes the container a square
+          borderRadius:
+              BorderRadius.circular(4), // Rounded corners of the square
+        ),
+        child: Icon(
+          direction == Direction.FORWARD
+              ? Icons.arrow_forward_rounded
+              : Icons.arrow_back_rounded,
+          size: 24, // Adjust the icon size inside the square
+          color: dark_light_modes.statusIcon(isDarkTheme), // Icon color
+        ),
+      ),
+    );
   }
 
   Future<void> moveHabit(BuildContext context, Habit habit) async {

@@ -12,6 +12,7 @@ import 'package:kaidzen_app/settings/SettingsScreen.dart';
 import 'package:kaidzen_app/views/utils.dart';
 import 'package:provider/provider.dart';
 
+import '../assets/light_dark_theme.dart';
 import '../service/HabitState.dart';
 import '../service/TasksState.dart';
 import '../tutorial/TutorialState.dart';
@@ -37,6 +38,9 @@ class ProfilePanelState extends State<ProfilePanel>
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
+
     var parentHeight = MediaQuery.of(context).size.height;
     var parentWidth = MediaQuery.of(context).size.width;
     return Consumer6<ProgressState, AchievementsState, EmotionsState,
@@ -94,14 +98,22 @@ class ProfilePanelState extends State<ProfilePanel>
                                 text: TextSpan(children: [
                                   TextSpan(
                                       text: "TOTAL LVL  ",
-                                      style: Fonts.smallTextStyle.copyWith(
-                                          fontSize: 9, letterSpacing: 0.02)),
+                                      style: Fonts_mode.smallTextStyle(
+                                          isDarkTheme,
+                                          fontSize: 9,
+                                          letterSpacing: 0.02)
+                                      // .copyWith(
+                                      //     fontSize: 9, letterSpacing: 0.02)
+                                      ),
                                   TextSpan(
                                     text: progressState
                                         .getTotalLevel()
                                         .toString(),
-                                    style: Fonts.mediumBoldTextStyle
-                                        .copyWith(fontSize: 18),
+                                    style: Fonts_mode.mediumBoldTextStyle(
+                                      isDarkTheme,
+                                      fontSize: 18,
+                                    ),
+                                    // .copyWith(fontSize: 18),
                                   )
                                 ]),
                               ),
@@ -121,6 +133,74 @@ class ProfilePanelState extends State<ProfilePanel>
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
+/////
+                                  Stack(children: [
+                                    IconButton(
+                                      padding: EdgeInsets.only(
+                                          right: parentWidth * 0.01),
+                                      onPressed: () async {
+                                        // Access the DarkThemeProvider using Provider
+                                        final themeProvider =
+                                            Provider.of<DarkThemeProvider>(
+                                                context,
+                                                listen: false);
+
+                                        // Toggle the dark theme value
+                                        themeProvider.darkTheme =
+                                            !themeProvider.darkTheme;
+                                        // Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             const AchievementsScreen()));
+                                        // await FirebaseAnalytics.instance
+                                        //     .logEvent(
+                                        //         name: AnalyticsEventType
+                                        //             .achievements_screen_opened
+                                        //             .name);
+                                        // if (!featuresState.isFeatureDiscovered(
+                                        //         Features.ORIGAMI.id) &&
+                                        //     achievementsState
+                                        //         .notShownWithOrigamiCompleted()) {
+                                        //   featuresState.discoverFeature(
+                                        //       Features.ORIGAMI.id);
+                                        // }
+                                      },
+                                      icon: Image.asset(
+                                          "assets/achievements_icon.png",
+                                          height: parentWidth * 0.06),
+                                    ),
+                                    // Visibility(
+                                    //     visible: achievementsState
+                                    //                 .getCompletedAchievementsCount() >
+                                    //             0 ||
+                                    //         (!featuresState.isFeatureDiscovered(
+                                    //                 Features.ORIGAMI.id) &&
+                                    //             achievementsState
+                                    //                 .notShownWithOrigamiCompleted()),
+                                    //     child: Positioned(
+                                    //       right: parentWidth * 0.01,
+                                    //       top: parentWidth * 0.01,
+                                    //       child: Container(
+                                    //         width: parentWidth * 0.03,
+                                    //         height: parentWidth * 0.02,
+                                    //         decoration: const BoxDecoration(
+                                    //             shape: BoxShape.circle,
+                                    //             color: Colors.red),
+                                    //         child: const Center(
+                                    //           child: Text(
+                                    //             '',
+                                    //             style: TextStyle(
+                                    //               fontSize: 12,
+                                    //               color: Colors.black,
+                                    //             ),
+                                    //           ),
+                                    //         ),
+                                    //       ),
+                                    //     )),
+                                  ]),
+
+////
                                   Stack(children: [
                                     IconButton(
                                       padding: EdgeInsets.only(
@@ -145,8 +225,11 @@ class ProfilePanelState extends State<ProfilePanel>
                                         }
                                       },
                                       icon: Image.asset(
-                                          "assets/achievements_icon.png",
-                                          height: parentWidth * 0.06),
+                                        "assets/achievements_icon.png",
+                                        height: parentWidth * 0.06,
+                                        color: dark_light_modes
+                                            .statusIcon(isDarkTheme),
+                                      ),
                                     ),
                                     Visibility(
                                         visible: achievementsState
@@ -193,8 +276,11 @@ class ProfilePanelState extends State<ProfilePanel>
                                                       .name);
                                         },
                                         icon: Image.asset(
-                                            "assets/burger_icon.png",
-                                            height: parentWidth * 0.06),
+                                          "assets/burger_icon.png",
+                                          height: parentWidth * 0.06,
+                                          color: dark_light_modes
+                                              .statusIcon(isDarkTheme),
+                                        ),
                                       ),
                                       Visibility(
                                           visible: !featuresState
@@ -444,6 +530,9 @@ class _ProgressIndicatorState extends State<ProgressIndicator>
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
+
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 1),
         child: Column(children: [
@@ -455,18 +544,27 @@ class _ProgressIndicatorState extends State<ProgressIndicator>
                     Padding(
                         child: Text(
                           " ${widget.title}",
-                          style: Fonts.mediumTextStyle,
+                          style: Fonts_mode.smallTextStyle(
+                            isDarkTheme,
+                            fontSize: 12,
+                          ),
                           textAlign: TextAlign.left,
                         ),
                         padding: EdgeInsets.zero),
                     Row(children: [
                       Text(
                         "LVL   ",
-                        style: Fonts.smallTextStyleLvl,
+                        style: Fonts_mode.smallTextStyleLvl(
+                          isDarkTheme,
+                          fontSize: 8,
+                        ),
                       ),
                       Text(
                         "${widget.level}",
-                        style: Fonts.mediumTextStyle,
+                        style: Fonts_mode.mediumTextStyle(
+                          isDarkTheme,
+                          fontSize: 12,
+                        ),
                       ),
                     ]),
                   ])),

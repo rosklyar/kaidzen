@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/utils/theme.dart';
 import 'package:kaidzen_app/views/viewGoal.dart';
+import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
+import '../assets/light_dark_theme.dart';
 import 'MoveTaskIconButton.dart';
 
 class ListViewSubTaskItem extends ListTile {
@@ -16,10 +18,13 @@ class ListViewSubTaskItem extends ListTile {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
+
     return ListTile(
       title: Text(
         task.shortenedName(75),
-        style: Fonts.largeBoldTextStyle,
+        style: Fonts_mode.largeBoldTextStyle(isDarkTheme),
       ),
       horizontalTitleGap: -10,
       trailing: ListTileTrail(task: task),

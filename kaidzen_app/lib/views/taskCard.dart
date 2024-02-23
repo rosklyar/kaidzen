@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/views/listViewHabitItem.dart';
+import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
 import '../models/habit.dart';
 import '../models/task.dart';
 import 'ListViewTaskItem.dart';
 import 'listViewComplexTaskItem.dart';
+import '../assets/light_dark_theme.dart';
 
-Widget taskCard(Task task) {
+Widget taskCard(Task task, BuildContext context) {
+  final themeProvider = Provider.of<DarkThemeProvider>(context);
+  bool isDarkTheme = themeProvider.darkTheme;
+
   if (task.status == Status.TODO) {
     return Card(
-        shadowColor: cardShadowColor,
+        shadowColor: dark_light_modes.cardShadowColor(isDarkTheme),
         elevation: cardElavation,
         child: listItem(task));
   }
@@ -22,7 +27,7 @@ Widget taskCard(Task task) {
           ".png");
 
   return Card(
-      shadowColor: cardShadowColor,
+      shadowColor: dark_light_modes.cardShadowColor(isDarkTheme),
       elevation: cardElavation,
       child: Container(
         decoration: BoxDecoration(
