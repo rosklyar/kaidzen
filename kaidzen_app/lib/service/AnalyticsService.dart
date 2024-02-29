@@ -7,58 +7,60 @@ import 'package:kaidzen_app/service/HabitState.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/tutorial/TutorialState.dart';
 
+import '../assets/light_dark_theme.dart';
+
 class AnalyticsService {
   static void initUserProperties(TasksState tasksState, HabitState habitState,
       EmotionsState emotionsState, TutorialState tutorialState) async {
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.HEALTH_LEVEL.name.toLowerCase(),
         value: tasksState.progressState
-            .getLevel(DevelopmentCategory.HEALTH)
+            .getLevel(DevelopmentCategoryDark.HEALTH)
             .toString());
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.HEALTH_POINTS.name.toLowerCase(),
         value: tasksState.progressState
-            .getPoints(DevelopmentCategory.HEALTH)
+            .getPoints(DevelopmentCategoryDark.HEALTH)
             .toString());
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.WEALTH_LEVEL.name.toLowerCase(),
         value: tasksState.progressState
-            .getLevel(DevelopmentCategory.WEALTH)
+            .getLevel(DevelopmentCategoryDark.WEALTH)
             .toString());
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.WEALTH_POINTS.name.toLowerCase(),
         value: tasksState.progressState
-            .getPoints(DevelopmentCategory.WEALTH)
+            .getPoints(DevelopmentCategoryDark.WEALTH)
             .toString());
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.MIND_LEVEL.name.toLowerCase(),
         value: tasksState.progressState
-            .getLevel(DevelopmentCategory.MIND)
+            .getLevel(DevelopmentCategoryDark.MIND)
             .toString());
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.MIND_POINTS.name.toLowerCase(),
         value: tasksState.progressState
-            .getPoints(DevelopmentCategory.MIND)
+            .getPoints(DevelopmentCategoryDark.MIND)
             .toString());
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.RELATIONS_LEVEL.name.toLowerCase(),
         value: tasksState.progressState
-            .getLevel(DevelopmentCategory.RELATIONS)
+            .getLevel(DevelopmentCategoryDark.RELATIONS)
             .toString());
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.RELATIONS_POINTS.name.toLowerCase(),
         value: tasksState.progressState
-            .getPoints(DevelopmentCategory.RELATIONS)
+            .getPoints(DevelopmentCategoryDark.RELATIONS)
             .toString());
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.ENERGY_LEVEL.name.toLowerCase(),
         value: tasksState.progressState
-            .getLevel(DevelopmentCategory.ENERGY)
+            .getLevel(DevelopmentCategoryDark.ENERGY)
             .toString());
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.ENERGY_POINTS.name.toLowerCase(),
         value: tasksState.progressState
-            .getPoints(DevelopmentCategory.ENERGY)
+            .getPoints(DevelopmentCategoryDark.ENERGY)
             .toString());
     await FirebaseAnalytics.instance.setUserProperty(
         name: AnalyticsUserProperties.GOALS_CREATED.name.toLowerCase(),
@@ -160,18 +162,20 @@ enum AnalyticsUserProperties {
   CURRENT_HABITS_DONE;
 }
 
-const Map<DevelopmentCategory, AnalyticsUserProperties> levelPropertiesMap = {
-  DevelopmentCategory.ENERGY: AnalyticsUserProperties.ENERGY_LEVEL,
-  DevelopmentCategory.HEALTH: AnalyticsUserProperties.HEALTH_LEVEL,
-  DevelopmentCategory.MIND: AnalyticsUserProperties.MIND_LEVEL,
-  DevelopmentCategory.WEALTH: AnalyticsUserProperties.WEALTH_LEVEL,
-  DevelopmentCategory.RELATIONS: AnalyticsUserProperties.RELATIONS_LEVEL
+const Map<DevelopmentCategoryDark, AnalyticsUserProperties> levelPropertiesMap =
+    {
+  DevelopmentCategoryDark.ENERGY: AnalyticsUserProperties.ENERGY_LEVEL,
+  DevelopmentCategoryDark.HEALTH: AnalyticsUserProperties.HEALTH_LEVEL,
+  DevelopmentCategoryDark.MIND: AnalyticsUserProperties.MIND_LEVEL,
+  DevelopmentCategoryDark.WEALTH: AnalyticsUserProperties.WEALTH_LEVEL,
+  DevelopmentCategoryDark.RELATIONS: AnalyticsUserProperties.RELATIONS_LEVEL
 };
 
-const Map<DevelopmentCategory, AnalyticsUserProperties> pointsPropertiesMap = {
-  DevelopmentCategory.ENERGY: AnalyticsUserProperties.ENERGY_POINTS,
-  DevelopmentCategory.HEALTH: AnalyticsUserProperties.HEALTH_POINTS,
-  DevelopmentCategory.MIND: AnalyticsUserProperties.MIND_POINTS,
-  DevelopmentCategory.WEALTH: AnalyticsUserProperties.WEALTH_POINTS,
-  DevelopmentCategory.RELATIONS: AnalyticsUserProperties.RELATIONS_POINTS
+const Map<DevelopmentCategoryDark, AnalyticsUserProperties>
+    pointsPropertiesMap = {
+  DevelopmentCategoryDark.ENERGY: AnalyticsUserProperties.ENERGY_POINTS,
+  DevelopmentCategoryDark.HEALTH: AnalyticsUserProperties.HEALTH_POINTS,
+  DevelopmentCategoryDark.MIND: AnalyticsUserProperties.MIND_POINTS,
+  DevelopmentCategoryDark.WEALTH: AnalyticsUserProperties.WEALTH_POINTS,
+  DevelopmentCategoryDark.RELATIONS: AnalyticsUserProperties.RELATIONS_POINTS
 };

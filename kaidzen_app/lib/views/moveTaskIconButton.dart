@@ -38,8 +38,8 @@ class MoveTaskIconButton extends StatelessWidget {
           color: dark_light_modes.cardMoveButtonColor(
               isDarkTheme), // Background color of the square
           shape: BoxShape.rectangle, // Makes the container a square
-          borderRadius:
-              BorderRadius.circular(4), // Rounded corners of the square
+          borderRadius: BorderRadius.circular(4),
+          // Rounded corners of the square
         ),
         child: Icon(
           direction == Direction.FORWARD
@@ -68,6 +68,7 @@ class MoveTaskIconButton extends StatelessWidget {
       await Provider.of<TasksState>(context, listen: false)
           .moveTaskAndNotify(task, newStatus);
       showTutorialTopFlushbar('Moved to $newStatus', context);
+      showDarkThemeFlushbar(newStatus, context, task);
     }
   }
 

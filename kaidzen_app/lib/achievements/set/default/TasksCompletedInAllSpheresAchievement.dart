@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/achievements/event.dart';
-import 'package:kaidzen_app/assets/constants.dart';
+import 'package:kaidzen_app/assets/light_dark_theme.dart';
 
 import '../../achievement.dart';
 import '../../style.dart';

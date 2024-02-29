@@ -75,12 +75,27 @@ class dark_light_modes {
 
   static Color cardMoveButtonColor(bool isDarkTheme) {
     // Assuming isDarkTheme determines the theme mode
-    return isDarkTheme ? Colors.grey[900]! : Colors.grey[100]!;
+    return isDarkTheme ? Colors.grey[900]! : Colors.grey[300]!;
   }
 
   static Color unselectedToggleColor(bool isDarkTheme) {
     // Assuming isDarkTheme determines the theme mode
     return isDarkTheme ? Colors.grey[700]! : Color.fromRGBO(231, 233, 234, 1);
+  }
+
+  static Color ScreenBackColor(bool isDarkTheme) {
+    // Assuming isDarkTheme determines the theme mode
+    return isDarkTheme ? Colors.grey[800]! : Color.fromRGBO(245, 243, 243, 1.0);
+  }
+
+  static Color mindfulMomentsSelection(bool isDarkTheme) {
+    // Assuming isDarkTheme determines the theme mode
+    return isDarkTheme ? Colors.grey[900]! : Colors.deepPurple.shade100;
+  }
+
+  static Color mindfulMomentsSelectionPicker(bool isDarkTheme) {
+    // Assuming isDarkTheme determines the theme mode
+    return isDarkTheme ? Colors.grey[100]! : Colors.deepPurple.shade500;
   }
 
   static dark_light(bool isDarkTheme, BuildContext context) {
@@ -165,7 +180,22 @@ class Fonts_mode {
   }
 
   static TextStyle largeTextStyle(bool isDarkTheme,
-      {double fontSize = 12,
+      {double fontSize = 16,
+      // FontWeight fontWeight = FontWeight.w500,
+      Color? color}) {
+    // bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    // Adjust default color based on theme if not specified
+    color = color ?? (isDarkTheme ? Colors.white : Colors.black);
+
+    return GoogleFonts.montserrat(
+      fontSize: fontSize,
+      // fontWeight: fontWeight,
+      color: color,
+    );
+  }
+
+  static TextStyle largeTextStyle20(bool isDarkTheme,
+      {double fontSize = 20,
       // FontWeight fontWeight = FontWeight.w500,
       Color? color}) {
     // bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
@@ -253,25 +283,97 @@ class Fonts_mode {
       color: color,
     );
   }
+
+  static TextStyle mindfulMomentTextStyleLarge(bool isDarkTheme,
+      {double fontSize = 16,
+      FontWeight fontWeight = FontWeight.bold,
+      Color? color}) {
+    // bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    // Adjust default color based on theme if not specified
+    color = color ?? (isDarkTheme ? Colors.grey[100] : Colors.deepPurpleAccent);
+
+    return GoogleFonts.montserrat(
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      color: color,
+    );
+  }
+
+  static TextStyle mindfulMomentTextStyle(bool isDarkTheme,
+      {double fontSize = 14,
+      // FontWeight fontWeight = FontWeight.bold,
+      Color? color}) {
+    // bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    // Adjust default color based on theme if not specified
+    color = color ?? (isDarkTheme ? Colors.grey[100] : Colors.deepPurpleAccent);
+
+    return GoogleFonts.montserrat(
+      fontSize: fontSize,
+      // fontWeight: fontWeight,
+      color: color,
+    );
+  }
+
+  static TextStyle graySubtitle(bool isDarkTheme,
+      {double fontSize = 12,
+      FontWeight fontWeight = FontWeight.w500,
+      Color? color}) {
+    // bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    // Adjust default color based on theme if not specified
+    color = color ?? (isDarkTheme ? Colors.grey[100] : Colors.grey);
+
+    return GoogleFonts.montserrat(
+      fontSize: fontSize,
+      // fontWeight: fontWeight,
+      color: color,
+    );
+  }
+
+  static TextStyle graySubtitleMedium(bool isDarkTheme,
+      {double fontSize = 16,
+      FontWeight fontWeight = FontWeight.w500,
+      Color? color}) {
+    // bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    // Adjust default color based on theme if not specified
+    color = color ?? (isDarkTheme ? Colors.grey[100] : Colors.grey);
+
+    return GoogleFonts.montserrat(
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      color: color,
+    );
+  }
+
+  static TextStyle graySubtitle14(bool isDarkTheme,
+      {double fontSize = 14,
+      FontWeight fontWeight = FontWeight.w500,
+      Color? color}) {
+    // bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    // Adjust default color based on theme if not specified
+    color = color ?? (isDarkTheme ? Colors.grey[100] : Colors.grey);
+
+    return GoogleFonts.montserrat(
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      color: color,
+    );
+  }
+  //   static TextStyle graySubtitle14 = GoogleFonts.montserrat(
+//       textStyle: const TextStyle(
+//           color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w500));
 }
 
-//   static TextStyle largeTextStyleWhite = GoogleFonts.montserrat(
-//       textStyle: const TextStyle(
-//     fontSize: 16,
-//     color: Colors.white,
-//   ));
-
 enum DevelopmentCategoryDark {
-  MIND(0, "Mind", "mind", Color.fromRGBO(69, 131, 151, 1.0), "assets/Mind",
-      0xFFEBF8FA, 0xFF458397),
-  HEALTH(1, "Health", "health", Color.fromRGBO(166, 187, 31, 1.0),
-      "assets/Health", 0xFFF1FABC, 0xFFA6BB1F),
-  ENERGY(2, "Energy", "energy", Color.fromRGBO(242, 202, 0, 1.0),
-      "assets/Energy", 0xFFFCF5CB, 0xFFD8B501),
-  RELATIONS(3, "Relations", "relations", Color.fromRGBO(234, 125, 98, 1.0),
-      "assets/Relations", 0xFFFFEBE6, 0xFFEA7D62),
-  WEALTH(4, "Wealth", "wealth", Color.fromRGBO(138, 94, 176, 1.0),
-      "assets/Wealth", 0xFFF4E8FE, 0xFF8A5EB0),
+  MIND(0, "Mind", "mind", Color.fromRGBO(124, 168, 183, 1.0), "assets/Mind",
+      0xFFEBF8FA, 0xFF096A77),
+  HEALTH(1, "Health", "health", Color.fromRGBO(192, 216, 39, 1),
+      "assets/Health", 0xFFF1FABC, 0xFF175109),
+  ENERGY(2, "Energy", "energy", Color.fromRGBO(240, 213, 76, 1),
+      "assets/Energy", 0xFFFCF5CB, 0xFF935900),
+  RELATIONS(3, "Relations", "relations", Color.fromRGBO(234, 125, 98, 1),
+      "assets/Relations", 0xFFFFEBE6, 0xFF550828),
+  WEALTH(4, "Wealth", "wealth", Color.fromRGBO(143, 103, 177, 1),
+      "assets/Wealth", 0xFFF4E8FE, 0xFF2B0A61),
   NO_CATEGORY(-1, "No category", "life", Colors.white, "", 0xFFFFFFFF,
       0xFF424242); // Example dark color
 
@@ -297,6 +399,14 @@ enum DevelopmentCategoryDark {
   }
 }
 
+const List<DevelopmentCategoryDark> activeCategories = [
+  DevelopmentCategoryDark.MIND,
+  DevelopmentCategoryDark.HEALTH,
+  DevelopmentCategoryDark.ENERGY,
+  DevelopmentCategoryDark.RELATIONS,
+  DevelopmentCategoryDark.WEALTH
+];
+
 Color darkenColor(Color color, [double amount = .1]) {
   assert(amount >= 0 && amount <= 1, 'Amount should be between 0 and 1');
 
@@ -306,17 +416,7 @@ Color darkenColor(Color color, [double amount = .1]) {
 
   return hslDarker.toColor();
 }
-  //     Color? color}) {
-  //   // bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
-  //   // Adjust default color based on theme if not specified
-  //   color = color ?? (isDarkTheme ? Colors.white : Colors.black);
 
-  //   return GoogleFonts.montserrat(
-  //     fontSize: fontSize,
-  //     fontWeight: fontWeight,
-  //     color: color,
-  //   );
-  // }
 
 
 
@@ -344,13 +444,6 @@ Color darkenColor(Color color, [double amount = .1]) {
 //     color: Colors.black,
 //   ));
 
-
-
-//   static TextStyle largeTextStyle20 = GoogleFonts.montserrat(
-//       textStyle: const TextStyle(
-//     fontSize: 20,
-//     color: Colors.black,
-//   ));
 
 //   static TextStyle screenTytleTextStyle = GoogleFonts.montserrat(
 //       textStyle: const TextStyle(
@@ -386,9 +479,7 @@ Color darkenColor(Color color, [double amount = .1]) {
 //       textStyle: const TextStyle(
 //           color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w500));
 
-//   static TextStyle graySubtitleMedium = GoogleFonts.montserrat(
-//       textStyle: const TextStyle(
-//           color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w500));
+
 
 //   static TextStyle flushbarText = GoogleFonts.montserrat(
 //       textStyle: const TextStyle(
@@ -402,11 +493,7 @@ Color darkenColor(Color color, [double amount = .1]) {
 //     color: Colors.deepPurpleAccent,
 //   ));
 
-//   static TextStyle mindfulMomentTextStyleLarge = GoogleFonts.montserrat(
-//       textStyle: const TextStyle(
-//     fontSize: 16,
-//     color: Colors.deepPurpleAccent,
-//   ));
+
 
 //   static TextStyle mindfulMomentTextStyleXLarge = GoogleFonts.montserrat(
 //       textStyle: const TextStyle(

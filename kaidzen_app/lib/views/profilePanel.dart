@@ -275,12 +275,15 @@ class ProfilePanelState extends State<ProfilePanel>
                                                       .settings_screen_opened
                                                       .name);
                                         },
-                                        icon: Image.asset(
-                                          "assets/burger_icon.png",
-                                          height: parentWidth * 0.06,
-                                          color: dark_light_modes
-                                              .statusIcon(isDarkTheme),
+                                        icon: Icon(
+                                          Icons.menu_rounded,
                                         ),
+                                        // Image.asset(
+                                        //   "assets/burger_icon.png",
+                                        // height: parentWidth * 0.06,
+                                        color: dark_light_modes
+                                            .statusIcon(isDarkTheme),
+                                        // ),
                                       ),
                                       Visibility(
                                           visible: !featuresState
@@ -326,44 +329,45 @@ class ProfilePanelState extends State<ProfilePanel>
                                               child: ProgressIndicator(
                                                   percent: progressState
                                                       .getLevelProgressFraction(
-                                                          DevelopmentCategory
+                                                          DevelopmentCategoryDark
                                                               .MIND),
                                                   level: progressState.getLevel(
-                                                      DevelopmentCategory.MIND),
-                                                  title: DevelopmentCategory
+                                                      DevelopmentCategoryDark
+                                                          .MIND),
+                                                  title: DevelopmentCategoryDark
                                                       .MIND.name,
                                                   progressColor:
-                                                      DevelopmentCategory
+                                                      DevelopmentCategoryDark
                                                           .MIND.color),
                                               flex: 1),
                                           Expanded(
                                               child: ProgressIndicator(
                                                   percent: progressState
                                                       .getLevelProgressFraction(
-                                                          DevelopmentCategory
+                                                          DevelopmentCategoryDark
                                                               .HEALTH),
                                                   level: progressState.getLevel(
-                                                      DevelopmentCategory
+                                                      DevelopmentCategoryDark
                                                           .HEALTH),
-                                                  title: DevelopmentCategory
+                                                  title: DevelopmentCategoryDark
                                                       .HEALTH.name,
                                                   progressColor:
-                                                      DevelopmentCategory
+                                                      DevelopmentCategoryDark
                                                           .HEALTH.color),
                                               flex: 1),
                                           Expanded(
                                               child: ProgressIndicator(
                                                   percent: progressState
                                                       .getLevelProgressFraction(
-                                                          DevelopmentCategory
+                                                          DevelopmentCategoryDark
                                                               .ENERGY),
                                                   level: progressState.getLevel(
-                                                      DevelopmentCategory
+                                                      DevelopmentCategoryDark
                                                           .ENERGY),
-                                                  title: DevelopmentCategory
+                                                  title: DevelopmentCategoryDark
                                                       .ENERGY.name,
                                                   progressColor:
-                                                      DevelopmentCategory
+                                                      DevelopmentCategoryDark
                                                           .ENERGY.color),
                                               flex: 1),
                                         ],
@@ -376,30 +380,30 @@ class ProfilePanelState extends State<ProfilePanel>
                                               child: ProgressIndicator(
                                                   percent: progressState
                                                       .getLevelProgressFraction(
-                                                          DevelopmentCategory
+                                                          DevelopmentCategoryDark
                                                               .WEALTH),
                                                   level: progressState.getLevel(
-                                                      DevelopmentCategory
+                                                      DevelopmentCategoryDark
                                                           .WEALTH),
-                                                  title: DevelopmentCategory
+                                                  title: DevelopmentCategoryDark
                                                       .WEALTH.name,
                                                   progressColor:
-                                                      DevelopmentCategory
+                                                      DevelopmentCategoryDark
                                                           .WEALTH.color),
                                               flex: 1),
                                           Expanded(
                                               child: ProgressIndicator(
                                                   percent: progressState
                                                       .getLevelProgressFraction(
-                                                          DevelopmentCategory
+                                                          DevelopmentCategoryDark
                                                               .RELATIONS),
                                                   level: progressState.getLevel(
-                                                      DevelopmentCategory
+                                                      DevelopmentCategoryDark
                                                           .RELATIONS),
-                                                  title: DevelopmentCategory
+                                                  title: DevelopmentCategoryDark
                                                       .RELATIONS.name,
                                                   progressColor:
-                                                      DevelopmentCategory
+                                                      DevelopmentCategoryDark
                                                           .RELATIONS.color),
                                               flex: 1),
                                           const Expanded(

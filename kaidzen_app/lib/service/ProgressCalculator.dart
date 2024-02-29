@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 
+import '../assets/light_dark_theme.dart';
 import '../models/habit.dart';
 import '../models/progress.dart';
 import '../models/task.dart';
@@ -52,13 +53,13 @@ class ProgressCalculator {
   }
 
   static bool noProgressFilter(Task task) {
-    return task.category.id == DevelopmentCategory.NO_CATEGORY.id ||
+    return task.category.id == DevelopmentCategoryDark.NO_CATEGORY.id ||
         (task.status == Status.DONE && task.doneTs != null) ||
         (task.status == Status.DOING && task.inProgressTs != null);
   }
 
   static bool noProgressHabitFilter(Habit habit) {
-    return habit.task.category.id == DevelopmentCategory.NO_CATEGORY.id ||
+    return habit.task.category.id == DevelopmentCategoryDark.NO_CATEGORY.id ||
         (habit.task.status == Status.DONE && habit.task.doneTs != null);
   }
 
@@ -87,7 +88,7 @@ class ProgressCalculator {
   }
 
   static double getLevelFraction(
-      DevelopmentCategory category, Progress progress) {
+      DevelopmentCategoryDark category, Progress progress) {
     var cap = _levelToPointsMap[progress.level + 1]!;
     return adjustPoints(progress, cap) / cap;
   }

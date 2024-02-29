@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:kaidzen_app/assets/constants.dart';
+import 'package:kaidzen_app/assets/light_dark_theme.dart';
 import 'package:kaidzen_app/features/FeaturesState.dart';
 import 'package:kaidzen_app/service/NotificationService.dart';
 import 'package:notification_permissions/notification_permissions.dart';
@@ -18,7 +19,7 @@ class MindfulMomentsScreen extends StatefulWidget {
 }
 
 class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
-  late String _backgroundImage = 'assets/settings/reminder/off.png';
+  late String _backgroundImage = 'assets/settings/reminder/off_dark.png';
   bool _isReminderOn = false;
   final DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
@@ -63,8 +64,8 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
       setState(() {
         _isReminderOn = reminderEnabled && permissionGranted;
         _backgroundImage = _isReminderOn
-            ? 'assets/settings/reminder/on.png'
-            : 'assets/settings/reminder/off.png';
+            ? 'assets/settings/reminder/on_dark.png'
+            : 'assets/settings/reminder/off_dark.png';
       });
     }
 
@@ -98,11 +99,41 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
   }
 
   void _showTimePickerDialog() async {
-    final time = await showTimePicker(
-        context: context,
-        initialTime: _selectedTime,
-        initialEntryMode: TimePickerEntryMode.input,
-        builder: (context, childWidget) => ThemedDialog(context, childWidget));
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
+    bool isDarkTheme = themeProvider.darkTheme;
+    final TimeOfDay? time = await showTimePicker(
+      context: context,
+      initialTime: _selectedTime,
+      initialEntryMode: TimePickerEntryMode.input,
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            colorScheme: ColorScheme.dark(
+              primary: dark_light_modes.mindfulMomentsSelectionPicker(
+                  isDarkTheme), // header background color
+              // onPrimary: Colors.white, // header text color
+              surface: dark_light_modes.ScreenBackColor(
+                  isDarkTheme), // dial background color
+              onSurface: dark_light_modes.statusIcon(isDarkTheme),
+
+              // dial text color
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                // Text color for the buttons
+                primary: (isDarkTheme ? Colors.grey[100] : Colors.deepPurple),
+                // Background color can be set here, though typically not used for text buttons
+                backgroundColor: dark_light_modes.ScreenBackColor(isDarkTheme),
+              ),
+            ),
+            dialogBackgroundColor: dark_light_modes.ScreenBackColor(
+                isDarkTheme), // Background color
+          ),
+          child: child!,
+        );
+      },
+    );
     if (time != null) {
       setState(() => _selectedTime = time);
       await _savePreferences();
@@ -142,6 +173,10 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
 
   Widget _buildSettingRow(
       double screenWidth, String label, Widget value, VoidCallback onTap) {
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
+    bool isDarkTheme = themeProvider.darkTheme;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -152,13 +187,14 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
           children: [
             Text(
               label,
-              style: Fonts.largeTextStyle,
+              style: Fonts_mode.largeTextStyle(isDarkTheme),
             ),
             Row(
               children: [
                 value,
                 SizedBox(width: screenWidth * 0.04),
-                SvgPicture.asset("assets/edit.svg"),
+                Icon(Icons.edit,
+                    color: dark_light_modes.statusIcon(isDarkTheme)),
               ],
             ),
           ],
@@ -170,22 +206,33 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
+    bool isDarkTheme = themeProvider.darkTheme;
 
     return Scaffold(
         extendBodyBehindAppBar: true,
+        backgroundColor: dark_light_modes.ScreenBackColor(isDarkTheme),
         appBar: AppBar(
           leading: IconButton(
-            icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: dark_light_modes.statusIcon(isDarkTheme),
+            ),
             onPressed: () {
               Navigator.pop(context);
             },
           ),
           elevation: 0.0,
-          title: Text('Mindful moments', style: Fonts.screenTytleTextStyle),
+          title: Text('Mindful moments',
+              style: Fonts_mode.screenTytleTextStyle(isDarkTheme)),
           centerTitle: true,
           actions: [
             IconButton(
-              icon: SvgPicture.asset("assets/settings/close_black_icon.svg"),
+              icon: Icon(
+                Icons.close,
+                color: dark_light_modes.statusIcon(isDarkTheme),
+              ),
               onPressed: () {
                 int count = 0;
                 Navigator.of(context).popUntil((_) => count++ >= 2);
@@ -210,12 +257,12 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                     SizedBox(height: screenWidth * 0.025),
                     Text(
                       '\n\nSet aside regular time for self-reflection and mindfulness to achieve greater results.',
-                      style: Fonts.largeTextStyle,
+                      style: Fonts_mode.largeTextStyle(isDarkTheme),
                     ),
                     SizedBox(height: screenWidth * 0.05),
                     Text(
                       'Use this time for planning your life, establishing meaningful goals, and focusing on the ones that matter the most.',
-                      style: Fonts.largeTextStyle,
+                      style: Fonts_mode.largeTextStyle(isDarkTheme),
                     ),
                   ],
                 ),
@@ -247,7 +294,8 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                           'Remind me',
                           Text(
                             _selectedRepeatType.name,
-                            style: Fonts.mindfulMomentTextStyle,
+                            style:
+                                Fonts_mode.mindfulMomentTextStyle(isDarkTheme),
                           ),
                           _showRepeatTypePickerDialog,
                         ),
@@ -261,7 +309,8 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                                 "on ",
                                 Text(
                                   _selectedWeekDay.name,
-                                  style: Fonts.mindfulMomentTextStyle,
+                                  style: Fonts_mode.mindfulMomentTextStyle(
+                                      isDarkTheme),
                                 ),
                                 _showWeekDayPickerDialog,
                               ),
@@ -274,7 +323,8 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                           'at ',
                           Text(
                             _selectedTime.format(context),
-                            style: Fonts.mindfulMomentTextStyle,
+                            style:
+                                Fonts_mode.mindfulMomentTextStyle(isDarkTheme),
                           ),
                           _showTimePickerDialog,
                         ),
@@ -289,7 +339,7 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                               children: [
                                 Text(
                                   'Reminder is ${_isReminderOn ? 'on' : 'off'}',
-                                  style: Fonts.largeTextStyle,
+                                  style: Fonts_mode.largeTextStyle(isDarkTheme),
                                 ),
                                 Switch(
                                     activeColor: Colors.white,
@@ -331,6 +381,10 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
         await NotificationService.getPermissionStatus();
     bool initial = permissionStatus == PermissionStatus.unknown;
 
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
+    bool isDarkTheme = themeProvider.darkTheme;
+
     if (!value || value && await NotificationService.permissionGranted()) {
       await updateReminderToggle(value);
     } else {
@@ -355,7 +409,8 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                               initial
                                   ? "Allow notifications to activate reminder"
                                   : 'Notifications should be enabled in settings',
-                              style: Fonts.screenTytleTextStyle)),
+                              style: Fonts_mode.screenTytleTextStyle(
+                                  isDarkTheme))),
                       flex: 6),
                   Expanded(
                       child: Padding(
@@ -365,17 +420,18 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                               initial
                                   ? "Next, you'll see a system message asking to allow notifications. We'll take it from there."
                                   : "Next, you'll need to turn on the 'Allow Notifications' option in your phone settings. ",
-                              style: Fonts.largeTextStyle)),
+                              style: Fonts_mode.largeTextStyle(isDarkTheme))),
                       flex: 5),
                   const Expanded(child: SizedBox(), flex: 1),
                   const Expanded(child: SizedBox(), flex: 1),
                   Expanded(
                       child: GestureDetector(
                           child: Text('Cancel',
-                              style: Fonts.largeTextStyle.copyWith(
-                                  decoration: TextDecoration.underline,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black)),
+                              style: Fonts_mode.largeTextStyle(isDarkTheme)
+                                  .copyWith(
+                                decoration: TextDecoration.underline,
+                                fontWeight: FontWeight.w600,
+                              )),
                           onTap: () async {
                             Navigator.pop(context);
                           }),
@@ -404,8 +460,9 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                               },
                               child: Text(
                                   initial ? 'Continue' : 'Open settings',
-                                  style: Fonts.largeTextStyle20
-                                      .copyWith(color: Colors.white)),
+                                  style:
+                                      Fonts_mode.largeTextStyle20(isDarkTheme)
+                                          .copyWith(color: Colors.white)),
                             )),
                       ),
                       flex: 4),
@@ -422,8 +479,8 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
     setState(() {
       _isReminderOn = value;
       _backgroundImage = value
-          ? 'assets/settings/reminder/on.png'
-          : 'assets/settings/reminder/off.png';
+          ? 'assets/settings/reminder/on_dark.png'
+          : 'assets/settings/reminder/off_dark.png';
       refreshReminderState();
     });
     await _savePreferences();
@@ -451,11 +508,15 @@ class _WeekDayPickerDialogState extends State<WeekDayPickerDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
+    bool isDarkTheme = themeProvider.darkTheme;
     return AlertDialog(
+      backgroundColor: dark_light_modes.ScreenBackColor(isDarkTheme),
       title: Text(
         'Day of the week',
         textAlign: TextAlign.center,
-        style: Fonts.screenTytleTextStyle,
+        style: Fonts_mode.screenTytleTextStyle(isDarkTheme),
       ),
       content: SingleChildScrollView(
         child: Column(
@@ -465,11 +526,11 @@ class _WeekDayPickerDialogState extends State<WeekDayPickerDialog> {
               (index) => ListTile(
                     title: Text(weekDays[index].name,
                         style: _selectedDay.isoId == index + 1
-                            ? Fonts.largeBoldTextStyle
-                            : Fonts.medium14TextStyle),
+                            ? Fonts_mode.largeBoldTextStyle(isDarkTheme)
+                            : Fonts_mode.medium14TextStyle(isDarkTheme)),
                     tileColor: _selectedDay.isoId == index + 1
-                        ? AppColors.mindfulMomentsSelection
-                        : Colors.white,
+                        ? dark_light_modes.mindfulMomentsSelection(isDarkTheme)
+                        : dark_light_modes.unselectedToggleColor(isDarkTheme),
                     onTap: () {
                       setState(() {
                         _selectedDay = weekDays[index];
@@ -480,16 +541,19 @@ class _WeekDayPickerDialogState extends State<WeekDayPickerDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('CANCEL'),
-        ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text('CANCEL',
+                style: Fonts_mode.mindfulMomentTextStyleLarge(isDarkTheme,
+                    fontWeight: FontWeight.w500, fontSize: 16))),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(_selectedDay);
           },
-          child: const Text('OK'),
+          child: Text('OK',
+              style: Fonts_mode.mindfulMomentTextStyleLarge(isDarkTheme,
+                  fontWeight: FontWeight.w500, fontSize: 16)),
         ),
       ],
     );
@@ -517,9 +581,14 @@ class _RepeatTypePickerDialogState extends State<RepeatTypePickerDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
+    bool isDarkTheme = themeProvider.darkTheme;
     return AlertDialog(
+      backgroundColor: dark_light_modes.ScreenBackColor(isDarkTheme),
       title: Text('Repeat type',
-          textAlign: TextAlign.center, style: Fonts.screenTytleTextStyle),
+          textAlign: TextAlign.center,
+          style: Fonts_mode.screenTytleTextStyle(isDarkTheme)),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -527,11 +596,11 @@ class _RepeatTypePickerDialogState extends State<RepeatTypePickerDialog> {
             ListTile(
               title: Text(RepeatType.DAILY.name,
                   style: _selectedRepeatType == RepeatType.DAILY
-                      ? Fonts.largeBoldTextStyle
-                      : Fonts.medium14TextStyle),
+                      ? Fonts_mode.largeBoldTextStyle(isDarkTheme)
+                      : Fonts_mode.medium14TextStyle(isDarkTheme)),
               tileColor: _selectedRepeatType == RepeatType.DAILY
-                  ? AppColors.mindfulMomentsSelection
-                  : Colors.white,
+                  ? dark_light_modes.mindfulMomentsSelection(isDarkTheme)
+                  : dark_light_modes.unselectedToggleColor(isDarkTheme),
               onTap: () {
                 setState(() {
                   _selectedRepeatType = RepeatType.DAILY;
@@ -541,11 +610,11 @@ class _RepeatTypePickerDialogState extends State<RepeatTypePickerDialog> {
             ListTile(
               title: Text(RepeatType.WEEKLY.name,
                   style: _selectedRepeatType == RepeatType.WEEKLY
-                      ? Fonts.largeBoldTextStyle
-                      : Fonts.medium14TextStyle),
+                      ? Fonts_mode.largeBoldTextStyle(isDarkTheme)
+                      : Fonts_mode.medium14TextStyle(isDarkTheme)),
               tileColor: _selectedRepeatType == RepeatType.WEEKLY
-                  ? AppColors.mindfulMomentsSelection
-                  : Colors.white,
+                  ? dark_light_modes.mindfulMomentsSelection(isDarkTheme)
+                  : dark_light_modes.unselectedToggleColor(isDarkTheme),
               onTap: () {
                 setState(() {
                   _selectedRepeatType = RepeatType.WEEKLY;
@@ -560,13 +629,17 @@ class _RepeatTypePickerDialogState extends State<RepeatTypePickerDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('CANCEL'),
+          child: Text('CANCEL',
+              style: Fonts_mode.mindfulMomentTextStyleLarge(isDarkTheme,
+                  fontWeight: FontWeight.w500, fontSize: 16)),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(_selectedRepeatType);
           },
-          child: const Text('OK'),
+          child: Text('OK',
+              style: Fonts_mode.mindfulMomentTextStyleLarge(isDarkTheme,
+                  fontWeight: FontWeight.w500, fontSize: 16)),
         ),
       ],
     );

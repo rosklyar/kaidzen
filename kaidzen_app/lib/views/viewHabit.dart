@@ -5,6 +5,7 @@ import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/views/editGoal.dart';
 import 'package:kaidzen_app/views/editHabit.dart';
 import 'package:kaidzen_app/views/listViewHabitItem.dart';
+import '../assets/light_dark_theme.dart';
 import '../models/habit.dart';
 import 'package:provider/provider.dart';
 import 'MoveTaskIconButton.dart';
@@ -35,14 +36,22 @@ class _ViewHabitState extends State<ViewHabit> {
   }
 
   Scaffold buildViewHabit(BuildContext context, Habit habit) {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
+
     return Scaffold(
-      backgroundColor: Color(habit.task.category.backgroundColor),
+      backgroundColor: isDarkTheme
+          ? Color(habit.task.category.darkBackgroundColor)
+          : Color(habit.task.category.backgroundColor),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0.0,
         centerTitle: true,
         leading: IconButton(
-          icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+            color: dark_light_modes.statusIcon(isDarkTheme),
+          ),
           onPressed: () async {
             Navigator.of(context).pop();
           },
@@ -66,7 +75,8 @@ class _ViewHabitState extends State<ViewHabit> {
                             child: Text(
                               habit.task.name,
                               textAlign: TextAlign.left,
-                              style: Fonts.screenTytleTextStyle,
+                              style:
+                                  Fonts_mode.screenTytleTextStyle(isDarkTheme),
                             ))),
                     Padding(
                         padding: const EdgeInsets.symmetric(
@@ -84,9 +94,10 @@ class _ViewHabitState extends State<ViewHabit> {
                                           10.0 + habit.task.difficulty.id * 3),
                                 ),
                                 Text(
-                                    "${habit.task.difficulty.noun} impact on my ${habit.task.category.id >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == habit.task.category.id).name : 'life sphere'} ",
+                                    "${habit.task.difficulty.noun} impact on my ${habit.task.category.id >= 0 ? DevelopmentCategoryDark.values.firstWhere((element) => element.id == habit.task.category.id).name : 'life sphere'} ",
                                     textAlign: TextAlign.left,
-                                    style: Fonts.graySubtitleMedium)
+                                    style: Fonts_mode.graySubtitleMedium(
+                                        isDarkTheme))
                               ],
                             ))),
                   ]),
@@ -99,7 +110,7 @@ class _ViewHabitState extends State<ViewHabit> {
         Padding(
             padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: Text("now in " + habit.task.status,
-                style: const TextStyle(color: Colors.grey),
+                style: Fonts_mode.graySubtitle14(isDarkTheme),
                 textAlign: TextAlign.center)),
         Padding(
           padding: const EdgeInsets.fromLTRB(10, 10, 10, 40),
@@ -107,13 +118,16 @@ class _ViewHabitState extends State<ViewHabit> {
             alignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               IconButton(
-                icon: Image.asset("assets/delete.png"),
-                color: Theme.of(context).errorColor,
+                icon: const Icon(
+                  Icons.delete_forever_sharp,
+                  size: 24,
+                ),
+                color: dark_light_modes.statusIcon(isDarkTheme),
                 onPressed: () async {
                   setState(() {
                     deleteOverlayVisible = true;
                   });
-                  await deletePopup(context, habit);
+                  await deletePopup(context, habit, isDarkTheme);
                 },
               ),
               Padding(
@@ -134,7 +148,10 @@ class _ViewHabitState extends State<ViewHabit> {
                 maintainSize: true,
                 visible: habit.task.status != Status.DONE,
                 child: IconButton(
-                  icon: SvgPicture.asset("assets/edit.svg"),
+                  icon: Icon(
+                    Icons.edit,
+                    color: dark_light_modes.statusIcon(isDarkTheme),
+                  ),
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
@@ -164,8 +181,14 @@ class _ViewHabitState extends State<ViewHabit> {
               ? _buildProgressRow("Target total:", habit.totalCount, habit)
               : Column(
                   children: [
-                    _buildProgressRow("Stage completions:", habit.stageCount, habit),
-                    _buildProgressRow("Total completions:", habit.getType().getCurrentTotal(habit.stage, habit.stageCount), habit),
+                    _buildProgressRow(
+                        "Stage completions:", habit.stageCount, habit),
+                    _buildProgressRow(
+                        "Total completions:",
+                        habit
+                            .getType()
+                            .getCurrentTotal(habit.stage, habit.stageCount),
+                        habit),
                   ],
                 ),
         ],
@@ -174,12 +197,14 @@ class _ViewHabitState extends State<ViewHabit> {
   }
 
   Widget _buildProgressRow(String label, int value, Habit habit) {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: Fonts.graySubtitleMedium),
+          Text(label, style: Fonts_mode.graySubtitleMedium(isDarkTheme)),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
@@ -188,7 +213,7 @@ class _ViewHabitState extends State<ViewHabit> {
             ),
             child: Text(
               value.toString(),
-              style: Fonts.largeBoldTextStyle,
+              style: Fonts_mode.largeBoldTextStyle(isDarkTheme),
             ),
           ),
         ],
@@ -196,7 +221,8 @@ class _ViewHabitState extends State<ViewHabit> {
     );
   }
 
-  Future<void> deletePopup(BuildContext context, Habit habit) async {
+  Future<void> deletePopup(
+      BuildContext context, Habit habit, bool isDarkTheme) async {
     showModalBottomSheet<void>(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -214,16 +240,18 @@ class _ViewHabitState extends State<ViewHabit> {
                     child: Padding(
                         padding: const EdgeInsets.all(15),
                         child: Text('Are you sure?',
-                            style: Fonts.screenTytleTextStyle)),
+                            style:
+                                Fonts_mode.screenTytleTextStyle(isDarkTheme))),
                     flex: 5),
                 const Expanded(child: SizedBox(), flex: 1),
                 Expanded(
                     child: GestureDetector(
                         child: Text('Delete',
-                            style: Fonts.largeTextStyle.copyWith(
-                                decoration: TextDecoration.underline,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xFFE50000))),
+                            style: Fonts_mode.largeTextStyle(isDarkTheme)
+                                .copyWith(
+                                    decoration: TextDecoration.underline,
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xFFE50000))),
                         onTap: () async {
                           Navigator.pop(context);
                           await Provider.of<HabitState>(context, listen: false)
@@ -243,7 +271,7 @@ class _ViewHabitState extends State<ViewHabit> {
                               Navigator.pop(context);
                             },
                             child: Text('Cancel',
-                                style: Fonts.largeTextStyle20
+                                style: Fonts_mode.largeTextStyle20(isDarkTheme)
                                     .copyWith(color: Colors.white)),
                           )),
                     ),

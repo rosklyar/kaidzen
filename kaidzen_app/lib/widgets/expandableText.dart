@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kaidzen_app/assets/light_dark_theme.dart';
+import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
 
@@ -23,6 +25,8 @@ class _ExpandableTextState extends State<ExpandableText> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
     return Column(
       children: [
         const SizedBox(height: 10),
@@ -44,7 +48,7 @@ class _ExpandableTextState extends State<ExpandableText> {
                         padding: const EdgeInsets.symmetric(horizontal: 4.0),
                         child: Text(
                           _isExpanded ? 'Show less' : 'Show more',
-                          style: Fonts.mindfulMomentTextStyle,
+                          style: Fonts_mode.mindfulMomentTextStyle(isDarkTheme),
                         ),
                       ),
                     ),

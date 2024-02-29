@@ -52,7 +52,7 @@ AssetImage getBackgroundImage(Habit habit, context) {
   bool isDarkTheme = themeProvider.darkTheme;
 
   if (habit.type == HabitType.FIXED.id ||
-      habit.task.category == DevelopmentCategory.NO_CATEGORY) {
+      habit.task.category == DevelopmentCategoryDark.NO_CATEGORY) {
     return isDarkTheme
         ? AssetImage("assets/no_category_dark_default.png")
         : AssetImage("assets/no_category.png");

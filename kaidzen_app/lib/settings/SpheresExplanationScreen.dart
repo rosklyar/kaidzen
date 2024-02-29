@@ -5,6 +5,8 @@ import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/settings/Story.dart';
 import 'package:story_view/story_view.dart';
 
+import '../assets/light_dark_theme.dart';
+
 class SpheresExplanationScreen extends StatelessWidget {
   final StoryController controller = StoryController();
 
@@ -16,7 +18,10 @@ class SpheresExplanationScreen extends StatelessWidget {
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           leading: IconButton(
-            icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: dark_light_modes.statusIcon(false),
+            ),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -25,7 +30,10 @@ class SpheresExplanationScreen extends StatelessWidget {
           centerTitle: true,
           actions: [
             IconButton(
-              icon: SvgPicture.asset("assets/settings/close_black_icon.svg"),
+              icon: Icon(
+                Icons.close,
+                color: dark_light_modes.statusIcon(false),
+              ),
               onPressed: () {
                 int count = 0;
                 Navigator.of(context).popUntil((_) => count++ >= 2);
@@ -56,7 +64,7 @@ class SpheresExplanationScreen extends StatelessWidget {
               StoryItem(
                   Story(
                       backgroundColor:
-                          Color(DevelopmentCategory.MIND.backgroundColor),
+                          Color(DevelopmentCategoryDark.MIND.backgroundColor),
                       backgroundImage: Image.asset(
                           "assets/settings/spheres/2.png",
                           width: MediaQuery.of(context).size.width),
@@ -75,7 +83,7 @@ class SpheresExplanationScreen extends StatelessWidget {
               StoryItem(
                   Story(
                       backgroundColor:
-                          Color(DevelopmentCategory.HEALTH.backgroundColor),
+                          Color(DevelopmentCategoryDark.HEALTH.backgroundColor),
                       backgroundImage: Image.asset(
                           "assets/settings/spheres/3.png",
                           width: MediaQuery.of(context).size.width),
@@ -94,7 +102,7 @@ class SpheresExplanationScreen extends StatelessWidget {
               StoryItem(
                   Story(
                       backgroundColor:
-                          Color(DevelopmentCategory.ENERGY.backgroundColor),
+                          Color(DevelopmentCategoryDark.ENERGY.backgroundColor),
                       backgroundImage: Image.asset(
                           "assets/settings/spheres/4.png",
                           width: MediaQuery.of(context).size.width),
@@ -112,8 +120,8 @@ class SpheresExplanationScreen extends StatelessWidget {
                   duration: const Duration(seconds: 20)),
               StoryItem(
                   Story(
-                      backgroundColor:
-                          Color(DevelopmentCategory.RELATIONS.backgroundColor),
+                      backgroundColor: Color(
+                          DevelopmentCategoryDark.RELATIONS.backgroundColor),
                       backgroundImage: Image.asset(
                           "assets/settings/spheres/5.png",
                           width: MediaQuery.of(context).size.width),
@@ -132,7 +140,7 @@ class SpheresExplanationScreen extends StatelessWidget {
               StoryItem(
                   Story(
                       backgroundColor:
-                          Color(DevelopmentCategory.WEALTH.backgroundColor),
+                          Color(DevelopmentCategoryDark.WEALTH.backgroundColor),
                       backgroundImage: Image.asset(
                           "assets/settings/spheres/6.png",
                           width: MediaQuery.of(context).size.width),

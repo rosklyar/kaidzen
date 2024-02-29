@@ -11,6 +11,7 @@ import 'package:kaidzen_app/widgets/taskDifficulty.dart';
 
 import 'package:provider/provider.dart';
 
+import '../assets/light_dark_theme.dart';
 import '../service/AnalyticsService.dart';
 
 class EditHabit extends StatefulWidget {
@@ -53,12 +54,15 @@ class _EditHabitState extends State<EditHabit> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
     final double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
           leading: IconButton(
-            icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+            icon: Icon(Icons.arrow_back_ios_new,
+                color: dark_light_modes.statusIcon(isDarkTheme)),
             onPressed: () async {
               await FirebaseAnalytics.instance.logEvent(
                   name: AnalyticsEventType.create_goal_screen_back_button.name);
@@ -72,7 +76,7 @@ class _EditHabitState extends State<EditHabit> {
             style: Fonts.screenTytleTextStyle,
           ),
           centerTitle: true,
-          backgroundColor: Color(DevelopmentCategory.values
+          backgroundColor: Color(DevelopmentCategoryDark.values
               .firstWhere((element) => element.id == _currentCategory)
               .backgroundColor),
         ),
@@ -80,7 +84,7 @@ class _EditHabitState extends State<EditHabit> {
         body: GestureDetector(
             child: Container(
               padding: const EdgeInsets.only(bottom: 8),
-              color: Color(DevelopmentCategory.values
+              color: Color(DevelopmentCategoryDark.values
                   .firstWhere((element) => element.id == _currentCategory)
                   .backgroundColor),
               child: Column(children: [
@@ -279,7 +283,7 @@ class _EditHabitState extends State<EditHabit> {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           decoration: BoxDecoration(
-            color: DevelopmentCategory.values
+            color: DevelopmentCategoryDark.values
                 .firstWhere((element) => element.id == _currentCategory)
                 .color
                 .withOpacity(0.5),
@@ -316,7 +320,7 @@ class _EditHabitState extends State<EditHabit> {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           decoration: BoxDecoration(
-            color: DevelopmentCategory.values
+            color: DevelopmentCategoryDark.values
                 .firstWhere((element) => element.id == _currentCategory)
                 .color
                 .withOpacity(0.5),
@@ -390,7 +394,7 @@ class _EditHabitState extends State<EditHabit> {
           child: SizedBox(
               width: double.infinity,
               child: Text(
-                "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
+                "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategoryDark.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
                 style: Fonts.largeTextStyle,
               ))),
       Padding(
@@ -409,7 +413,7 @@ class _EditHabitState extends State<EditHabit> {
   }
 
   void submit() async {
-    var category = DevelopmentCategory.values
+    var category = DevelopmentCategoryDark.values
         .firstWhere((element) => element.id == _currentCategory);
     widget.habit.task.name = newTaskController.text;
     widget.habit.task.category = category;

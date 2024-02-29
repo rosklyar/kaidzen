@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import '../assets/constants.dart';
 
+import '../assets/light_dark_theme.dart';
 import '../models/task.dart';
 import 'KaizenState.dart';
 
@@ -24,7 +25,7 @@ Map<String, Object?> toMap(Task task) {
 Task fromMap(Map<String, Object?> map) {
   return Task(
       map[columnTaskTitle] as String,
-      DevelopmentCategory.values.firstWhere(
+      DevelopmentCategoryDark.values.firstWhere(
           (element) => element.id == (map[columnTaskCategory] as int)),
       Difficulty.values.firstWhere(
           (element) => element.id == (map[columnTaskDifficulty] as int)),

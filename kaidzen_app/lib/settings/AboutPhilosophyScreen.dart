@@ -3,7 +3,10 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/settings/Story.dart';
+import 'package:provider/provider.dart';
 import 'package:story_view/story_view.dart';
+
+import '../assets/light_dark_theme.dart';
 
 class AboutPhilosophyScreen extends StatelessWidget {
   final StoryController controller = StoryController();
@@ -12,11 +15,17 @@ class AboutPhilosophyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
+
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           leading: IconButton(
-            icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: dark_light_modes.statusIcon(false),
+            ),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -25,7 +34,10 @@ class AboutPhilosophyScreen extends StatelessWidget {
           centerTitle: true,
           actions: [
             IconButton(
-              icon: SvgPicture.asset("assets/settings/close_black_icon.svg"),
+              icon: Icon(
+                Icons.close,
+                color: dark_light_modes.statusIcon(false),
+              ),
               onPressed: () {
                 int count = 0;
                 Navigator.of(context).popUntil((_) => count++ >= 2);
@@ -134,7 +146,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                               baseline: TextBaseline.alphabetic,
                               alignment: PlaceholderAlignment.baseline,
                               child: Icon(Icons.circle_rounded,
-                                  color: DevelopmentCategory.WEALTH.color,
+                                  color: DevelopmentCategoryDark.WEALTH.color,
                                   size: 10.0)),
                           TextSpan(
                               text: "  Wealth\n", style: Fonts.largeTextStyle),
@@ -142,7 +154,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                               baseline: TextBaseline.alphabetic,
                               alignment: PlaceholderAlignment.baseline,
                               child: Icon(Icons.circle_rounded,
-                                  color: DevelopmentCategory.ENERGY.color,
+                                  color: DevelopmentCategoryDark.ENERGY.color,
                                   size: 10.0)),
                           TextSpan(
                               text: "  Energy\n", style: Fonts.largeTextStyle),
@@ -150,7 +162,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                               baseline: TextBaseline.alphabetic,
                               alignment: PlaceholderAlignment.baseline,
                               child: Icon(Icons.circle_rounded,
-                                  color: DevelopmentCategory.HEALTH.color,
+                                  color: DevelopmentCategoryDark.HEALTH.color,
                                   size: 10.0)),
                           TextSpan(
                               text: "  Health\n", style: Fonts.largeTextStyle),
@@ -158,7 +170,7 @@ class AboutPhilosophyScreen extends StatelessWidget {
                               baseline: TextBaseline.alphabetic,
                               alignment: PlaceholderAlignment.baseline,
                               child: Icon(Icons.circle_rounded,
-                                  color: DevelopmentCategory.MIND.color,
+                                  color: DevelopmentCategoryDark.MIND.color,
                                   size: 10.0)),
                           TextSpan(
                               text: "  Mind\n", style: Fonts.largeTextStyle),
@@ -166,7 +178,8 @@ class AboutPhilosophyScreen extends StatelessWidget {
                               baseline: TextBaseline.alphabetic,
                               alignment: PlaceholderAlignment.baseline,
                               child: Icon(Icons.circle_rounded,
-                                  color: DevelopmentCategory.RELATIONS.color,
+                                  color:
+                                      DevelopmentCategoryDark.RELATIONS.color,
                                   size: 10.0)),
                           TextSpan(
                               text: "  Relations\n",

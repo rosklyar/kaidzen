@@ -6,6 +6,7 @@ import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/views/utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../assets/light_dark_theme.dart';
 import '../models/task.dart';
 import 'package:provider/provider.dart';
 
@@ -31,12 +32,17 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
     var parentWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
         leading: IconButton(
-          icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+            color: dark_light_modes.statusIcon(isDarkTheme),
+          ),
           onPressed: () {
             if (widget.popTarget == null) {
               Navigator.of(context).popUntil((route) => route.isFirst);
@@ -48,16 +54,20 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
         ),
         title: Text(
           "Subgoal",
-          style: Fonts.screenTytleTextStyle,
+          style: Fonts_mode.screenTytleTextStyle(isDarkTheme),
         ),
         centerTitle: true,
-        backgroundColor: Color(widget.parent.category.backgroundColor),
+        backgroundColor: isDarkTheme
+            ? Color(widget.parent.category.darkBackgroundColor)
+            : Color(widget.parent.category.backgroundColor),
       ),
       resizeToAvoidBottomInset: false,
       body: GestureDetector(
           child: Container(
               padding: const EdgeInsets.only(bottom: 8),
-              color: Color(widget.parent.category.backgroundColor),
+              color: isDarkTheme
+                  ? Color(widget.parent.category.darkBackgroundColor)
+                  : Color(widget.parent.category.backgroundColor),
               child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Column(children: [
@@ -68,14 +78,17 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                               Padding(
                                   padding: const EdgeInsets.only(bottom: 16),
                                   child: TextField(
-                                    textCapitalization: TextCapitalization.sentences,
+                                    textCapitalization:
+                                        TextCapitalization.sentences,
                                     maxLength: maxInputCharCount,
                                     autofocus: true,
                                     decoration: InputDecoration(
                                         border: const OutlineInputBorder(),
                                         hintText: 'Subgoal title',
                                         labelText: 'Subgoal title',
-                                        hintStyle: Fonts.inputHintTextStyle),
+                                        hintStyle:
+                                            Fonts_mode.inputHintTextStyle(
+                                                isDarkTheme)),
                                     controller: newTaskController,
                                   )),
                               Row(
@@ -91,7 +104,8 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                       padding: EdgeInsets.fromLTRB(
                                           parentWidth * 0.01, 5, 5, 5),
                                       child: Text(
-                                          style: Fonts.graySubtitleMedium,
+                                          style: Fonts_mode.graySubtitleMedium(
+                                              isDarkTheme),
                                           widget.parent.name),
                                     ),
                                   )
@@ -105,9 +119,11 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                             Expanded(
                                 child: GestureDetector(
                                     child: Text('Create and start another one',
-                                        style: Fonts.largeTextStyle.copyWith(
-                                            decoration:
-                                                TextDecoration.underline)),
+                                        style: Fonts_mode.largeTextStyle(
+                                                isDarkTheme)
+                                            .copyWith(
+                                                decoration:
+                                                    TextDecoration.underline)),
                                     onTap: () {
                                       submit();
                                       Navigator.push(
@@ -129,7 +145,19 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                       style: ElevatedButton.styleFrom(
                                           primary: _isCreateButtonActive
                                               ? activeButtonColor
-                                              : unselectedToggleColor),
+                                              : isDarkTheme
+                                                  ? Color.lerp(
+                                                      widget.parent.category
+                                                          .getBackgroundColor(
+                                                              isDarkTheme),
+                                                      Colors.white,
+                                                      0.2)!
+                                                  : Color.lerp(
+                                                      widget.parent.category
+                                                          .getBackgroundColor(
+                                                              isDarkTheme),
+                                                      Colors.grey,
+                                                      0.1)!),
                                       onPressed: () {
                                         if (_isCreateButtonActive) {
                                           submit();
@@ -147,9 +175,11 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                       },
                                       child: Text('Create',
                                           style: _isCreateButtonActive
-                                              ? Fonts.largeTextStyle20
+                                              ? Fonts_mode.largeTextStyle20(
+                                                      isDarkTheme)
                                                   .copyWith(color: Colors.white)
-                                              : Fonts.largeTextStyle20),
+                                              : Fonts_mode.largeTextStyle20(
+                                                  isDarkTheme)),
                                     )),
                                 flex: 4),
                           ],

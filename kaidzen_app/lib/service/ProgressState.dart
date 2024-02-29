@@ -6,12 +6,13 @@ import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/ProgressCalculator.dart';
 import 'package:kaidzen_app/service/ProgressRepository.dart';
 
+import '../assets/light_dark_theme.dart';
 import '../models/habit.dart';
 import 'AnalyticsService.dart';
 
 class ProgressState extends ChangeNotifier {
   final ProgressRepository repository;
-  Map<DevelopmentCategory, Progress> _progress;
+  Map<DevelopmentCategoryDark, Progress> _progress;
 
   ProgressState({
     required this.repository,
@@ -25,6 +26,10 @@ class ProgressState extends ChangeNotifier {
   updateProgress(Task task) async {
     var currentProgress = _progress[task.category]!;
     var updatedProgress = ProgressCalculator.progress(currentProgress, task);
+    // print(updatedProgress);
+
+    //point shere updated - current
+
     await handleProgressChanged(updatedProgress, currentProgress, task);
     notifyListeners();
   }
@@ -37,7 +42,8 @@ class ProgressState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> handleProgressChanged(Progress updatedProgress, Progress currentProgress, Task task) async {
+  Future<void> handleProgressChanged(
+      Progress updatedProgress, Progress currentProgress, Task task) async {
     if (updatedProgress != currentProgress) {
       await FirebaseAnalytics.instance.setUserProperty(
           name: levelPropertiesMap[task.category]!.name.toLowerCase(),
@@ -45,7 +51,7 @@ class ProgressState extends ChangeNotifier {
       await FirebaseAnalytics.instance.setUserProperty(
           name: pointsPropertiesMap[task.category]!.name.toLowerCase(),
           value: updatedProgress.points.toString());
-    
+
       if (updatedProgress.level > currentProgress.level) {
         //We do this 3 step update to be able to correctly display progress animation
         var progressToMax = Progress(currentProgress.level,
@@ -53,15 +59,15 @@ class ProgressState extends ChangeNotifier {
         await repository.updateProgress(task.category, progressToMax);
         _progress[task.category] = progressToMax;
         await notifyWithDelay();
-    
+
         var progressToZero = Progress(updatedProgress.level, 0);
         await repository.updateProgress(task.category, progressToZero);
         _progress[task.category] = progressToZero;
         await notifyWithDelay();
-    
+
         await repository.updateProgress(task.category, updatedProgress);
         _progress[task.category] = updatedProgress;
-    
+
         await FirebaseAnalytics.instance.logEvent(
             name: AnalyticsEventType.level_up.name,
             parameters: {
@@ -85,15 +91,15 @@ class ProgressState extends ChangeNotifier {
         .fold(0, (int acc, entry) => acc + entry.value.level);
   }
 
-  int getLevel(DevelopmentCategory category) {
+  int getLevel(DevelopmentCategoryDark category) {
     return _progress[category]?.level ?? 0;
   }
 
-  int getPoints(DevelopmentCategory category) {
+  int getPoints(DevelopmentCategoryDark category) {
     return _progress[category]?.points ?? 0;
   }
 
-  double getLevelProgressFraction(DevelopmentCategory category) {
+  double getLevelProgressFraction(DevelopmentCategoryDark category) {
     return _progress[category] != null
         ? ProgressCalculator.getLevelFraction(category, _progress[category]!)
         : 0.0;

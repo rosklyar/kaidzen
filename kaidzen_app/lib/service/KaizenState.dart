@@ -5,6 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 
 import '../announcements/AnnouncementsRepository.dart';
+import '../assets/light_dark_theme.dart';
 import '../features/FeaturesRepository.dart';
 
 const String tableProgress = 'progress';
@@ -88,12 +89,12 @@ class KaizenDb {
           ''',
       '''
             insert into $tableProgress values
-                (${DevelopmentCategory.NO_CATEGORY.id}, 0, 0),
-                (${DevelopmentCategory.MIND.id}, 0, 0),
-                (${DevelopmentCategory.HEALTH.id}, 0, 0),
-                (${DevelopmentCategory.ENERGY.id}, 0, 0),
-                (${DevelopmentCategory.RELATIONS.id}, 0, 0),
-                (${DevelopmentCategory.WEALTH.id}, 0, 0);
+                (${DevelopmentCategoryDark.NO_CATEGORY.id}, 0, 0),
+                (${DevelopmentCategoryDark.MIND.id}, 0, 0),
+                (${DevelopmentCategoryDark.HEALTH.id}, 0, 0),
+                (${DevelopmentCategoryDark.ENERGY.id}, 0, 0),
+                (${DevelopmentCategoryDark.RELATIONS.id}, 0, 0),
+                (${DevelopmentCategoryDark.WEALTH.id}, 0, 0);
           ''',
       '''
           create table $tableTask (

@@ -59,13 +59,13 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
   Widget getDiffOptionLayout(Difficulty difficulty, bool selected) {
     final themeProvider = Provider.of<DarkThemeProvider>(context);
     bool isDarkTheme = themeProvider.darkTheme;
-    Color iconColor = selected
-        ? DevelopmentCategoryDark.values
-            .firstWhere((element) => element.id == widget.categoryColor)
-            .getBackgroundColor(isDarkTheme)
-        : DevelopmentCategoryDark.values
-            .firstWhere((element) => element.id == widget.categoryColor)
-            .getBackgroundColor(isDarkTheme);
+    // Color iconColor = selected
+    //     ? DevelopmentCategoryDark.values
+    //         .firstWhere((element) => element.id == widget.categoryColor)
+    //         .getBackgroundColor(isDarkTheme)
+    //     : DevelopmentCategoryDark.values
+    //         .firstWhere((element) => element.id == widget.categoryColor)
+    //         .getBackgroundColor(isDarkTheme);
 
     Color categoryColorSelectedDark = DevelopmentCategoryDark.values
         .firstWhere((element) => element.id == widget.categoryColor)
@@ -98,8 +98,7 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
           padding: const EdgeInsets.only(right: 5),
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Icon(Icons.circle_rounded,
-                color: categoryColorSelectedDark,
-                size: 8.0 + difficulty.id * 4),
+                color: categoryColorSelected, size: 8.0 + difficulty.id * 4),
             const SizedBox(width: 5),
             Text(difficulty.name,
                 style: selected

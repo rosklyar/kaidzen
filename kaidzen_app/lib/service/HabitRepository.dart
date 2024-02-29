@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import '../assets/constants.dart';
 
+import '../assets/light_dark_theme.dart';
 import '../models/habit.dart';
 import '../models/task.dart';
 import 'KaizenState.dart';
@@ -29,31 +30,30 @@ Map<String, Object?> toMap(Habit habit) {
 
 Habit fromMap(Map<String, Object?> map) {
   return Habit(
-    Task(
-        map[columnHabitTitle] as String,
-        DevelopmentCategory.values.firstWhere(
-            (element) => element.id == (map[columnHabitCategory] as int)),
-        Difficulty.values.firstWhere(
-            (element) => element.id == (map[columnHabitDifficulty] as int)),
-        id: map[columnHabitId] as int,
-        status: map[columnHabitStatus] as String,
-        priority: map[columnHabitPriority] as int,
-        parent: map[columnHabitParentId] as int?,
-        doneTs: map[columnHabitDoneTs] != null
-            ? DateTime.parse(map[columnHabitDoneTs] as String)
-            : null,
-        inProgressTs: map[columnHabitInProgressTs] != null
-            ? DateTime.parse(map[columnHabitInProgressTs] as String)
-            : null),
-    map[columnHabitStage] as int,
-    map[columnHabitStageCount] as int,
-    map[columnHabitTotalCount] as int,
-    map[columnHabitType] as int,
-    id: map[columnHabitId] as int,
-    lastCompleteTs: map[columnHabitLastCompleteTs] != null
-        ? DateTime.parse(map[columnHabitLastCompleteTs] as String)
-        : null
-  );
+      Task(
+          map[columnHabitTitle] as String,
+          DevelopmentCategoryDark.values.firstWhere(
+              (element) => element.id == (map[columnHabitCategory] as int)),
+          Difficulty.values.firstWhere(
+              (element) => element.id == (map[columnHabitDifficulty] as int)),
+          id: map[columnHabitId] as int,
+          status: map[columnHabitStatus] as String,
+          priority: map[columnHabitPriority] as int,
+          parent: map[columnHabitParentId] as int?,
+          doneTs: map[columnHabitDoneTs] != null
+              ? DateTime.parse(map[columnHabitDoneTs] as String)
+              : null,
+          inProgressTs: map[columnHabitInProgressTs] != null
+              ? DateTime.parse(map[columnHabitInProgressTs] as String)
+              : null),
+      map[columnHabitStage] as int,
+      map[columnHabitStageCount] as int,
+      map[columnHabitTotalCount] as int,
+      map[columnHabitType] as int,
+      id: map[columnHabitId] as int,
+      lastCompleteTs: map[columnHabitLastCompleteTs] != null
+          ? DateTime.parse(map[columnHabitLastCompleteTs] as String)
+          : null);
 }
 
 class HabitRepository {

@@ -7,6 +7,8 @@ import 'package:time_machine/time_machine.dart';
 import 'package:timezone/data/latest_all.dart';
 import 'package:timezone/timezone.dart';
 
+import '../assets/light_dark_theme.dart';
+
 class NotificationService {
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -47,8 +49,14 @@ class NotificationService {
     return await NotificationPermissions.getNotificationPermissionStatus();
   }
 
-  static Future<void> scheduleNotification(int id, String title, String body,
-      DateTime startDate, TimeOfDay timeOfDay, WeekDay weekDay, RepeatType repeatType) async {
+  static Future<void> scheduleNotification(
+      int id,
+      String title,
+      String body,
+      DateTime startDate,
+      TimeOfDay timeOfDay,
+      WeekDay weekDay,
+      RepeatType repeatType) async {
     if (!initialized) {
       await initState();
     }
@@ -68,7 +76,7 @@ class NotificationService {
         importance: Importance.max,
         priority: Priority.high,
         ticker: 'ticker',
-        color: DevelopmentCategory.RELATIONS.color);
+        color: DevelopmentCategoryDark.RELATIONS.color);
     var iOSPlatformChannelSpecifics = const DarwinNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
@@ -98,8 +106,8 @@ class NotificationService {
     await flutterLocalNotificationsPlugin.cancel(id);
   }
 
-  static TZDateTime nextInstanceOfReminder(
-      DateTime startDate, TimeOfDay timeOfDay, WeekDay weekDay, RepeatType repeatType) {
+  static TZDateTime nextInstanceOfReminder(DateTime startDate,
+      TimeOfDay timeOfDay, WeekDay weekDay, RepeatType repeatType) {
     final TZDateTime now = TZDateTime.now(local);
 
     TZDateTime scheduledDate = TZDateTime(local, startDate.year,

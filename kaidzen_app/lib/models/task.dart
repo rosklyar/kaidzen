@@ -2,11 +2,12 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 import '../assets/constants.dart';
+import '../assets/light_dark_theme.dart';
 
 class Task extends Equatable {
   int? id;
   String name;
-  DevelopmentCategory category;
+  DevelopmentCategoryDark category;
   String status;
   int priority;
   List<Task> subtasks = List.empty(growable: true);

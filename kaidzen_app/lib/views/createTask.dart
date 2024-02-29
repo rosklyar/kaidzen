@@ -131,8 +131,8 @@ class _CreateTaskState extends State<CreateTask> {
                                       icon: Visibility(
                                           visible:
                                               newTaskController.text.isNotEmpty,
-                                          child: SvgPicture.asset(
-                                              "assets/close-grey.svg"))),
+                                          child:
+                                              const Icon(Icons.highlight_off))),
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5),
                                       borderSide: const BorderSide(
@@ -188,7 +188,19 @@ class _CreateTaskState extends State<CreateTask> {
                                           fontSize: 16)))),
                           Switch(
                               activeColor: Colors.white,
-                              activeTrackColor: Colors.deepPurpleAccent,
+                              activeTrackColor: isDarkTheme
+                                  ? darkenColor(
+                                      DevelopmentCategoryDark.values
+                                          .firstWhere((element) =>
+                                              element.id == _currentCategory)
+                                          .getBackgroundColor(isDarkTheme),
+                                      0.2)
+                                  : darkenColor(
+                                      DevelopmentCategoryDark.values
+                                          .firstWhere((element) =>
+                                              element.id == _currentCategory)
+                                          .color,
+                                      0.1),
                               value: _startDoing,
                               onChanged: (value) {
                                 setState(() {
@@ -209,10 +221,26 @@ class _CreateTaskState extends State<CreateTask> {
                                   child: SizedBox(
                                       child: Text("Recurring goal",
                                           textAlign: TextAlign.left,
-                                          style: Fonts.largeTextStyle))),
+                                          style: Fonts_mode.largeTextStyle(
+                                              isDarkTheme,
+                                              fontSize: 16)))),
                               Switch(
                                   activeColor: Colors.white,
-                                  activeTrackColor: Colors.deepPurpleAccent,
+                                  activeTrackColor: isDarkTheme
+                                      ? darkenColor(
+                                          DevelopmentCategoryDark.values
+                                              .firstWhere((element) =>
+                                                  element.id ==
+                                                  _currentCategory)
+                                              .getBackgroundColor(isDarkTheme),
+                                          0.2)
+                                      : darkenColor(
+                                          DevelopmentCategoryDark.values
+                                              .firstWhere((element) =>
+                                                  element.id ==
+                                                  _currentCategory)
+                                              .color,
+                                          0.1),
                                   value: _isHabit,
                                   onChanged: (value) {
                                     setState(() {
@@ -256,15 +284,15 @@ class _CreateTaskState extends State<CreateTask> {
                                           children: [
                                             Text(
                                               "$_targetTotal times",
-                                              style: Fonts
-                                                  .mindfulMomentTextStyleLarge,
+                                              style: Fonts_mode
+                                                  .mindfulMomentTextStyleLarge(
+                                                      isDarkTheme),
                                             ),
                                             Row(
                                               children: [
                                                 SizedBox(
                                                     width: screenWidth * 0.04),
-                                                SvgPicture.asset(
-                                                    "assets/edit.svg"),
+                                                const Icon(Icons.edit),
                                               ],
                                             ),
                                           ],
@@ -282,8 +310,11 @@ class _CreateTaskState extends State<CreateTask> {
                                         padding: EdgeInsets.symmetric(
                                             vertical: screenWidth * 0.04,
                                             horizontal: screenWidth * 0.005),
-                                        child: Image.asset(
-                                            "assets/habits_background.png"),
+                                        child: isDarkTheme
+                                            ? Image.asset(
+                                                "assets/habits_background_dark.png")
+                                            : Image.asset(
+                                                "assets/habits_background.png"),
                                       ),
                                     ),
                                   ),
@@ -419,9 +450,12 @@ class _CreateTaskState extends State<CreateTask> {
                                 : null,
                             child: Text('Create',
                                 style: _isCreateButtonActive
-                                    ? Fonts.largeTextStyle20
-                                        .copyWith(color: Colors.white)
-                                    : Fonts.largeTextStyle20),
+                                    ? Fonts_mode.largeTextStyle(
+                                        isDarkTheme,
+                                        fontSize: 20,
+                                      ).copyWith(color: Colors.white)
+                                    : Fonts_mode.largeTextStyle(isDarkTheme,
+                                        fontSize: 20)),
                             style: ElevatedButton.styleFrom(
                                 primary: _isCreateButtonActive
                                     ? activeButtonColor
@@ -506,12 +540,14 @@ class _CreateTaskState extends State<CreateTask> {
           child: SizedBox(
               width: double.infinity,
               child: HabitOptionWidget(
-                  initialOption: _currentHabitType,
-                  key: _habitWidgetKey,
-                  callback: (value) => setState(() {
-                        _currentHabitType = value!;
-                        Utils.tryToLostFocus(context);
-                      }))))
+                initialOption: _currentHabitType,
+                key: _habitWidgetKey,
+                callback: (value) => setState(() {
+                  _currentHabitType = value!;
+                  Utils.tryToLostFocus(context);
+                }),
+                categoryColor: _currentCategory,
+              )))
     ]);
   }
 
@@ -561,7 +597,7 @@ class _CreateTaskState extends State<CreateTask> {
   }
 
   void submit() {
-    var category = DevelopmentCategory.values
+    var category = DevelopmentCategoryDark.values
         .firstWhere((element) => element.id == _currentCategory);
     if (_isHabit) {
       var totalCount = _currentHabitType == HabitType.FIXED

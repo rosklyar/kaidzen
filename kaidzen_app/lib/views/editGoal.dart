@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../service/AnalyticsService.dart';
 import '../service/TasksState.dart';
+import '../assets/light_dark_theme.dart';
 
 class EditGoal extends StatefulWidget {
   final Task task;
@@ -46,11 +47,18 @@ class _EditGoalState extends State<EditGoal> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
+
     return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
           leading: IconButton(
-            icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: dark_light_modes.statusIcon(isDarkTheme),
+            ),
+            // SvgPicture.asset("assets/shevron-left-black.svg"),
             onPressed: () async {
               await FirebaseAnalytics.instance.logEvent(
                   name: AnalyticsEventType.create_goal_screen_back_button.name);
@@ -62,7 +70,7 @@ class _EditGoalState extends State<EditGoal> {
             style: Fonts.screenTytleTextStyle,
           ),
           centerTitle: true,
-          backgroundColor: Color(DevelopmentCategory.values
+          backgroundColor: Color(DevelopmentCategoryDark.values
               .firstWhere((element) => element.id == _currentCategory)
               .backgroundColor),
         ),
@@ -70,7 +78,7 @@ class _EditGoalState extends State<EditGoal> {
         body: GestureDetector(
             child: Container(
               padding: const EdgeInsets.only(bottom: 8),
-              color: Color(DevelopmentCategory.values
+              color: Color(DevelopmentCategoryDark.values
                   .firstWhere((element) => element.id == _currentCategory)
                   .backgroundColor),
               child: Column(children: [
@@ -173,7 +181,7 @@ class _EditGoalState extends State<EditGoal> {
           child: SizedBox(
               width: double.infinity,
               child: Text(
-                "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
+                "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategoryDark.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
                 style: Fonts.largeTextStyle,
               ))),
       Padding(
@@ -192,7 +200,7 @@ class _EditGoalState extends State<EditGoal> {
   }
 
   void submit() {
-    var category = DevelopmentCategory.values
+    var category = DevelopmentCategoryDark.values
         .firstWhere((element) => element.id == _currentCategory);
     widget.task.name = newTaskController.text;
     widget.task.category = category;

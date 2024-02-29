@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:instabug_flutter/instabug_flutter.dart';
 
 import '../assets/constants.dart';
+import '../assets/light_dark_theme.dart';
 import '../service/AnalyticsService.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -20,16 +21,18 @@ class SettingsScreen extends StatelessWidget {
 
   Future<void> share() async {
     await FlutterShare.share(
-        title: 'Sticky Goals',
-        text: 'Sticky Goals',
+        title: 'Buddy, here\'s your Sticky',
+        text: 'Buddy, here\'s your Sticky',
         linkUrl: "https://stickygoals.app.link",
-        chooserTitle: 'Share \'Sticky Goals\'');
+        chooserTitle: 'Share \'Sticky\'');
   }
 
   @override
   Widget build(BuildContext context) {
     var parentHeight = MediaQuery.of(context).size.height;
     var parentWidth = MediaQuery.of(context).size.width;
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
 
     return Consumer3<ProgressState, TutorialState, FeaturesState>(
         builder: (context, progress, tutorial, featuresState, child) =>
@@ -37,21 +40,26 @@ class SettingsScreen extends StatelessWidget {
                 appBar: AppBar(
                   elevation: 0.0,
                   automaticallyImplyLeading: false,
-                  title: Text('More', style: Fonts.screenTytleTextStyle),
+                  title: Text('More',
+                      style: Fonts_mode.screenTytleTextStyle(isDarkTheme)),
                   centerTitle: true,
                   actions: [
                     IconButton(
-                      icon: SvgPicture.asset(
-                          "assets/settings/close_black_icon.svg"),
+                      icon: Icon(
+                        Icons.close,
+                        color: dark_light_modes.statusIcon(isDarkTheme),
+                      ),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                     )
                   ],
-                  backgroundColor: moreScreenBackColor,
+                  backgroundColor:
+                      dark_light_modes.ScreenBackColor(isDarkTheme),
+                  // moreScreenBackColor,
                 ),
                 body: Container(
-                  color: moreScreenBackColor,
+                  color: dark_light_modes.ScreenBackColor(isDarkTheme),
                   child: Column(
                     children: [
                       Expanded(
@@ -98,13 +106,15 @@ class SettingsScreen extends StatelessWidget {
                                                 MainAxisAlignment.start,
                                             children: [
                                               Icon(Icons.circle,
-                                                  color: DevelopmentCategory
+                                                  color: DevelopmentCategoryDark
                                                       .MIND.color,
                                                   size: 8),
                                               Row(children: [
                                                 Text(
                                                   " Mindful moments",
-                                                  style: Fonts.largeTextStyle20,
+                                                  style: Fonts_mode
+                                                      .largeTextStyle20(
+                                                          isDarkTheme),
                                                   textAlign: TextAlign.left,
                                                 )
                                               ])
@@ -119,17 +129,24 @@ class SettingsScreen extends StatelessWidget {
                                                           Features.REMINDER.id),
                                                   child: SvgPicture.asset(
                                                       "assets/new.svg")),
-                                              SvgPicture.asset(
-                                                  "assets/shevron-right-black.svg")
+                                              Icon(Icons.arrow_forward_ios,
+                                                  color: dark_light_modes
+                                                      .statusIcon(isDarkTheme),
+                                                  size: 18),
                                             ]),
                                       ]),
                                   const SizedBox(height: 5),
                                   Row(children: [
                                     const SizedBox(width: 13),
                                     Text("Plan your goals on scheduled basis",
-                                        style: Fonts.mediumTextStyle.copyWith(
-                                            color: const Color.fromRGBO(
-                                                114, 118, 121, 1.0)))
+                                        style: isDarkTheme
+                                            ? Fonts_mode.mediumTextStyle(
+                                                isDarkTheme)
+                                            : Fonts_mode.mediumTextStyle(
+                                                    isDarkTheme)
+                                                .copyWith(
+                                                    color: const Color.fromRGBO(
+                                                        114, 118, 121, 1.0)))
                                   ])
                                 ]),
                                 onTap: () async {
@@ -152,21 +169,30 @@ class SettingsScreen extends StatelessWidget {
                                               Row(children: [
                                                 Text(
                                                   " Send feedback",
-                                                  style: Fonts.largeTextStyle20,
+                                                  style: Fonts_mode
+                                                      .largeTextStyle20(
+                                                          isDarkTheme),
                                                   textAlign: TextAlign.left,
                                                 )
                                               ])
                                             ]),
-                                        SvgPicture.asset(
-                                            "assets/shevron-right-black.svg")
+                                        Icon(Icons.arrow_forward_ios,
+                                            color: dark_light_modes
+                                                .statusIcon(isDarkTheme),
+                                            size: 18),
                                       ]),
                                   const SizedBox(height: 5),
                                   Row(children: [
                                     const SizedBox(width: 13),
                                     Text("Share ideas or tell about bugs",
-                                        style: Fonts.mediumTextStyle.copyWith(
-                                            color: const Color.fromRGBO(
-                                                114, 118, 121, 1.0)))
+                                        style: isDarkTheme
+                                            ? Fonts_mode.mediumTextStyle(
+                                                isDarkTheme)
+                                            : Fonts_mode.mediumTextStyle(
+                                                    isDarkTheme)
+                                                .copyWith(
+                                                    color: const Color.fromRGBO(
+                                                        114, 118, 121, 1.0)))
                                   ])
                                 ]),
                                 onTap: () async {
@@ -182,7 +208,8 @@ class SettingsScreen extends StatelessWidget {
                                           size: 8),
                                       Text(
                                         " Share app",
-                                        style: Fonts.largeTextStyle20,
+                                        style: Fonts_mode.largeTextStyle20(
+                                            isDarkTheme),
                                         textAlign: TextAlign.left,
                                       )
                                     ]),
@@ -207,12 +234,16 @@ class SettingsScreen extends StatelessWidget {
                                           Row(children: [
                                             Text(
                                               "Terms of use",
-                                              style: Fonts.largeTextStyle20,
+                                              style:
+                                                  Fonts_mode.largeTextStyle20(
+                                                      isDarkTheme),
                                               textAlign: TextAlign.left,
                                             )
                                           ]),
-                                          SvgPicture.asset(
-                                              "assets/shevron-right-black.svg")
+                                          Icon(Icons.arrow_forward_ios,
+                                              color: dark_light_modes
+                                                  .statusIcon(isDarkTheme),
+                                              size: 18),
                                         ]),
                                     onTap: () async {
                                       await _goToTermsOfUse(context);
@@ -225,12 +256,16 @@ class SettingsScreen extends StatelessWidget {
                                           Row(children: [
                                             Text(
                                               "Privacy policy",
-                                              style: Fonts.largeTextStyle20,
+                                              style:
+                                                  Fonts_mode.largeTextStyle20(
+                                                      isDarkTheme),
                                               textAlign: TextAlign.left,
                                             )
                                           ]),
-                                          SvgPicture.asset(
-                                              "assets/shevron-right-black.svg")
+                                          Icon(Icons.arrow_forward_ios,
+                                              color: dark_light_modes
+                                                  .statusIcon(isDarkTheme),
+                                              size: 18),
                                         ]),
                                     onTap: () async {
                                       await _goToPrivacyPolicy(context);

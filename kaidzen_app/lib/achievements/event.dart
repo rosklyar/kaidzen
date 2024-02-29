@@ -1,10 +1,12 @@
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/service/KaizenState.dart';
 
+import '../assets/light_dark_theme.dart';
+
 class Event {
   final int? id;
   final EventType type;
-  final DevelopmentCategory category;
+  final DevelopmentCategoryDark category;
   final DateTime timestamp;
 
   Event(this.type, this.timestamp, this.category, {this.id});
@@ -14,7 +16,7 @@ class Event {
       EventType.values
           .firstWhere((element) => element.id == map[columnEventType]),
       DateTime.parse(map[columnEventTs]),
-      DevelopmentCategory.values
+      DevelopmentCategoryDark.values
           .firstWhere((element) => element.id == map[columnEventTaskCategory]),
       id: map[columnEventtId],
     );
