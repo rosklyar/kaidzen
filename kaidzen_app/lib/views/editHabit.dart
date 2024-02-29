@@ -398,6 +398,7 @@ class _EditHabitState extends State<EditHabit> {
           child: SizedBox(
               width: double.infinity,
               child: TaskDifficultyWidget(
+                  categoryColor: _currentCategory,
                   key: _taskDifficultyWidgetKey,
                   callback: (value) => setState(() {
                         _currentDifficulty = value!;

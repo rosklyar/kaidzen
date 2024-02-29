@@ -81,7 +81,8 @@ class _EditGoalState extends State<EditGoal> {
                               padding: const EdgeInsets.only(
                                   left: 10, right: 10, top: 20),
                               child: TextField(
-                                textCapitalization: TextCapitalization.sentences,
+                                textCapitalization:
+                                    TextCapitalization.sentences,
                                 maxLength: maxInputCharCount,
                                 autofocus: false,
                                 decoration: InputDecoration(
@@ -180,6 +181,7 @@ class _EditGoalState extends State<EditGoal> {
           child: SizedBox(
               width: double.infinity,
               child: TaskDifficultyWidget(
+                  categoryColor: _currentCategory,
                   key: _taskDifficultyWidgetKey,
                   callback: (value) => setState(() {
                         _currentDifficulty = value!;

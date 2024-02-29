@@ -16,6 +16,7 @@ import 'package:kaidzen_app/widgets/taskDifficulty.dart';
 
 import '../achievements/AchievementsState.dart';
 import '../achievements/event.dart';
+import '../assets/light_dark_theme.dart';
 import '../models/habit.dart';
 import '../models/task.dart';
 import 'package:provider/provider.dart';
@@ -74,11 +75,17 @@ class _CreateTaskState extends State<CreateTask> {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
     return Scaffold(
         appBar: AppBar(
           elevation: 0.0,
           leading: IconButton(
-            icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: dark_light_modes.statusIcon(isDarkTheme),
+            ),
+            // SvgPicture.asset("assets/shevron-left-black.svg"),
             onPressed: () async {
               await FirebaseAnalytics.instance.logEvent(
                   name: AnalyticsEventType.create_goal_screen_back_button.name);
@@ -87,20 +94,20 @@ class _CreateTaskState extends State<CreateTask> {
           ),
           title: Text(
             "Goal",
-            style: Fonts.screenTytleTextStyle,
+            style: Fonts_mode.screenTytleTextStyle(isDarkTheme),
           ),
           centerTitle: true,
-          backgroundColor: Color(DevelopmentCategory.values
+          backgroundColor: DevelopmentCategoryDark.values
               .firstWhere((element) => element.id == _currentCategory)
-              .backgroundColor),
+              .getBackgroundColor(isDarkTheme),
         ),
         resizeToAvoidBottomInset: false,
         body: GestureDetector(
           child: Container(
             padding: const EdgeInsets.only(bottom: 8),
-            color: Color(DevelopmentCategory.values
+            color: DevelopmentCategoryDark.values
                 .firstWhere((element) => element.id == _currentCategory)
-                .backgroundColor),
+                .getBackgroundColor(isDarkTheme),
             child: Column(children: [
               Expanded(
                   child: Column(children: [
@@ -116,10 +123,10 @@ class _CreateTaskState extends State<CreateTask> {
                                   suffixIcon: IconButton(
                                       onPressed: () {
                                         newTaskController.clear();
-                                        _taskTypeWidgetKey
-                                            .currentState!._value = -1;
-                                        _taskDifficultyWidgetKey.currentState
-                                            ._currentDifficulty = 0;
+                                        // _taskTypeWidgetKey
+                                        //     .currentState!._value = -1;
+                                        // _taskDifficultyWidgetKey.currentState
+                                        //     ._currentDifficulty = 0;
                                       },
                                       icon: Visibility(
                                           visible:
@@ -131,7 +138,8 @@ class _CreateTaskState extends State<CreateTask> {
                                       borderSide: const BorderSide(
                                           color: inputInactiveBorderColor)),
                                   hintText: 'Goal title',
-                                  hintStyle: Fonts.inputHintTextStyle),
+                                  hintStyle: Fonts_mode.inputHintTextStyle(
+                                      isDarkTheme)),
                               controller: newTaskController,
                             )),
                         flex: 4),
@@ -142,7 +150,9 @@ class _CreateTaskState extends State<CreateTask> {
                                 width: double.infinity,
                                 child: Text("Life sphere to be affected",
                                     textAlign: TextAlign.left,
-                                    style: Fonts.largeTextStyle))),
+                                    style: Fonts_mode.largeTextStyle(
+                                        isDarkTheme,
+                                        fontSize: 14)))),
                         flex: 1),
                     Expanded(
                         child: Padding(
@@ -157,7 +167,10 @@ class _CreateTaskState extends State<CreateTask> {
                                             Utils.tryToLostFocus(context);
                                           })),
                                   flex: 2),
-                              const Expanded(child: SizedBox(), flex: 1)
+                              const Expanded(
+                                child: SizedBox(),
+                                flex: 1,
+                              )
                             ])),
                         flex: 5),
                     Expanded(child: getDiff(), flex: 4),
@@ -170,7 +183,9 @@ class _CreateTaskState extends State<CreateTask> {
                               child: SizedBox(
                                   child: Text("Start doing",
                                       textAlign: TextAlign.left,
-                                      style: Fonts.largeTextStyle))),
+                                      style: Fonts_mode.largeTextStyle(
+                                          isDarkTheme,
+                                          fontSize: 16)))),
                           Switch(
                               activeColor: Colors.white,
                               activeTrackColor: Colors.deepPurpleAccent,
@@ -289,8 +304,8 @@ class _CreateTaskState extends State<CreateTask> {
                   flex: 8),
               Expanded(
                   child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 10, right: 10, bottom: 5),
+                      padding:
+                          const EdgeInsets.only(left: 10, right: 10, bottom: 5),
                       child: SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
@@ -321,8 +336,9 @@ class _CreateTaskState extends State<CreateTask> {
                                                                   top: 15),
                                                           child: Text(
                                                               'Choose the life sphere to\nreinforce your motivation',
-                                                              style: Fonts
-                                                                  .screenTytleTextStyle)),
+                                                              style: Fonts_mode
+                                                                  .screenTytleTextStyle(
+                                                                      isDarkTheme))),
                                                       flex: 4),
                                                   const Expanded(
                                                       child: SizedBox(),
@@ -330,8 +346,10 @@ class _CreateTaskState extends State<CreateTask> {
                                                   Expanded(
                                                       child: Text(
                                                           "Sometimes we set goals we don’t need.\nChoosing the sphere helps to\nunderstand why this goal is important\n— will it improve your mind, health,\nrelationships, make you more wealthy,\nor fulfill with energy.\n\n\nAnd adds you some extra points.",
-                                                          style: Fonts
-                                                              .largeTextStyle),
+                                                          style: Fonts_mode
+                                                              .largeTextStyle(
+                                                                  fontSize: 16,
+                                                                  isDarkTheme)),
                                                       flex: 10),
                                                   const Expanded(
                                                       child: SizedBox(),
@@ -340,8 +358,11 @@ class _CreateTaskState extends State<CreateTask> {
                                                       child: GestureDetector(
                                                           child: Text(
                                                               'Create without sphere',
-                                                              style: Fonts
-                                                                  .largeTextStyle
+                                                              style: Fonts_mode
+                                                                      .largeTextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          isDarkTheme)
                                                                   .copyWith(
                                                                       decoration:
                                                                           TextDecoration
@@ -495,6 +516,8 @@ class _CreateTaskState extends State<CreateTask> {
   }
 
   Widget getDiff() {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
     return Column(children: [
       const SizedBox(height: 5),
       Padding(
@@ -502,8 +525,8 @@ class _CreateTaskState extends State<CreateTask> {
           child: SizedBox(
               width: double.infinity,
               child: Text(
-                "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategory.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
-                style: Fonts.largeTextStyle,
+                "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategoryDark.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
+                style: Fonts_mode.largeTextStyle(isDarkTheme, fontSize: 14),
               ))),
       const SizedBox(height: 5),
       Padding(
@@ -512,6 +535,7 @@ class _CreateTaskState extends State<CreateTask> {
               width: double.infinity,
               child: TaskDifficultyWidget(
                   initialDifficulty: 0,
+                  categoryColor: _currentCategory,
                   key: _taskDifficultyWidgetKey,
                   callback: (value) => setState(() {
                         _currentDifficulty = value!;

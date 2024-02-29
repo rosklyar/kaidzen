@@ -20,11 +20,19 @@ Widget taskCard(Task task, BuildContext context) {
         child: listItem(task));
   }
   var background = task.status == Status.DOING
-      ? AssetImage(
-          "assets/doing" + ((task.id! + 1) % 2 + 1).toString() + ".png")
-      : AssetImage(task.category.backgroundLink +
-          ((task.id! + 1) % 2 + 1).toString() +
-          ".png");
+      ? isDarkTheme
+          ? AssetImage("assets/cards/dark/doing" +
+              ((task.id! + 1) % 2 + 1).toString() +
+              "_dark.png")
+          : AssetImage(
+              "assets/doing" + ((task.id! + 1) % 2 + 1).toString() + ".png")
+      : isDarkTheme
+          ? AssetImage("assets/cards/dark/done" +
+              ((task.id! + 1) % 2 + 1).toString() +
+              "_dark.png")
+          : AssetImage(task.category.backgroundLink +
+              ((task.id! + 1) % 2 + 1).toString() +
+              ".png");
 
   return Card(
       shadowColor: dark_light_modes.cardShadowColor(isDarkTheme),

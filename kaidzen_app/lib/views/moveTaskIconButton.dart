@@ -84,6 +84,8 @@ class MoveTaskIconButton extends StatelessWidget {
         ),
       ),
       builder: (BuildContext context) {
+        final themeProvider = Provider.of<DarkThemeProvider>(context);
+        bool isDarkTheme = themeProvider.darkTheme;
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.4,
           child: Center(
@@ -99,7 +101,7 @@ class MoveTaskIconButton extends StatelessWidget {
                             "You have completed the last subgoal and '" +
                                 parentTask.shortenedName(50) +
                                 "' is about to be moved to 'Done'",
-                            style: Fonts.largeBoldTextStyle),
+                            style: Fonts_mode.largeBoldTextStyle(isDarkTheme)),
                       ),
                     ),
                     flex: 5),
@@ -108,8 +110,9 @@ class MoveTaskIconButton extends StatelessWidget {
                   child: Expanded(
                       child: GestureDetector(
                           child: Text('I want to keep it in \'Do\'',
-                              style: Fonts.largeTextStyle.copyWith(
-                                  decoration: TextDecoration.underline)),
+                              style: Fonts_mode.largeBoldTextStyle(isDarkTheme)
+                                  .copyWith(
+                                      decoration: TextDecoration.underline)),
                           onTap: () {
                             Provider.of<TasksState>(context, listen: false)
                                 .moveSubtaskOnlyAndNotify(task, newStatus);

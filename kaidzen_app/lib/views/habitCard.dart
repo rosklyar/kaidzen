@@ -67,7 +67,8 @@ AssetImage getBackgroundImage(Habit habit, context) {
           : AssetImage(
               "assets/cards/habit_stage_done_cat_${habit.task.category.id}.png")
       : isDarkTheme
-          ? AssetImage("assets/no_category_dark_default.png")
+          ? AssetImage(
+              "assets/cards/dark/habit_stage_${habit.stage}_cat_${habit.task.category.id}_dark.png")
           : AssetImage(
               "assets/cards/habit_stage_${habit.stage}_cat_${habit.task.category.id}.png");
 }

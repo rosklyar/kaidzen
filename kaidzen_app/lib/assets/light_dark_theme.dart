@@ -78,6 +78,11 @@ class dark_light_modes {
     return isDarkTheme ? Colors.grey[900]! : Colors.grey[100]!;
   }
 
+  static Color unselectedToggleColor(bool isDarkTheme) {
+    // Assuming isDarkTheme determines the theme mode
+    return isDarkTheme ? Colors.grey[700]! : Color.fromRGBO(231, 233, 234, 1);
+  }
+
   static dark_light(bool isDarkTheme, BuildContext context) {
     Color selectedToggleColor = isDarkTheme
         ? const Color.fromRGBO(86, 92, 95, 1)
@@ -161,7 +166,7 @@ class Fonts_mode {
 
   static TextStyle largeTextStyle(bool isDarkTheme,
       {double fontSize = 12,
-      FontWeight fontWeight = FontWeight.w500,
+      // FontWeight fontWeight = FontWeight.w500,
       Color? color}) {
     // bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
     // Adjust default color based on theme if not specified
@@ -169,7 +174,7 @@ class Fonts_mode {
 
     return GoogleFonts.montserrat(
       fontSize: fontSize,
-      fontWeight: fontWeight,
+      // fontWeight: fontWeight,
       color: color,
     );
   }
@@ -204,9 +209,103 @@ class Fonts_mode {
     );
   }
 
-  //  static TextStyle largeBoldTextStyle(bool isDarkTheme,
-  //     {double fontSize = 16,
-  //     FontWeight fontWeight = FontWeight.w500,
+  static TextStyle screenTytleTextStyle(bool isDarkTheme,
+      {double fontSize = 24,
+      FontWeight fontWeight = FontWeight.bold,
+      Color? color}) {
+    // bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    // Adjust default color based on theme if not specified
+    color = color ?? (isDarkTheme ? Colors.white : Colors.black);
+
+    return GoogleFonts.montserrat(
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      color: color,
+    );
+  }
+
+  static TextStyle inputHintTextStyle(bool isDarkTheme,
+      {double fontSize = 16,
+      // FontWeight fontWeight = FontWeight.bold,
+      Color? color}) {
+    // bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    // Adjust default color based on theme if not specified
+    color = color ?? (isDarkTheme ? Colors.grey[300] : Colors.grey[500]!);
+
+    return GoogleFonts.montserrat(
+      fontSize: fontSize,
+      // fontWeight: fontWeight,
+      color: color,
+    );
+  }
+
+  static TextStyle largeTextStyleWhite(bool isDarkTheme,
+      {double fontSize = 16,
+      FontWeight fontWeight = FontWeight.bold,
+      Color? color}) {
+    // bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    // Adjust default color based on theme if not specified
+    color = color ?? (isDarkTheme ? Colors.grey[100] : Colors.grey[100]!);
+
+    return GoogleFonts.montserrat(
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      color: color,
+    );
+  }
+}
+
+//   static TextStyle largeTextStyleWhite = GoogleFonts.montserrat(
+//       textStyle: const TextStyle(
+//     fontSize: 16,
+//     color: Colors.white,
+//   ));
+
+enum DevelopmentCategoryDark {
+  MIND(0, "Mind", "mind", Color.fromRGBO(69, 131, 151, 1.0), "assets/Mind",
+      0xFFEBF8FA, 0xFF458397),
+  HEALTH(1, "Health", "health", Color.fromRGBO(166, 187, 31, 1.0),
+      "assets/Health", 0xFFF1FABC, 0xFFA6BB1F),
+  ENERGY(2, "Energy", "energy", Color.fromRGBO(242, 202, 0, 1.0),
+      "assets/Energy", 0xFFFCF5CB, 0xFFD8B501),
+  RELATIONS(3, "Relations", "relations", Color.fromRGBO(234, 125, 98, 1.0),
+      "assets/Relations", 0xFFFFEBE6, 0xFFEA7D62),
+  WEALTH(4, "Wealth", "wealth", Color.fromRGBO(138, 94, 176, 1.0),
+      "assets/Wealth", 0xFFF4E8FE, 0xFF8A5EB0),
+  NO_CATEGORY(-1, "No category", "life", Colors.white, "", 0xFFFFFFFF,
+      0xFF424242); // Example dark color
+
+  const DevelopmentCategoryDark(
+      this.id,
+      this.name,
+      this.nameLowercase,
+      this.color,
+      this.backgroundLink,
+      this.backgroundColor,
+      this.darkBackgroundColor);
+  final int id;
+  final String name;
+  final String nameLowercase;
+  final Color color;
+  final String backgroundLink;
+  final int backgroundColor;
+  final int darkBackgroundColor; // Add this line
+
+  // Function to get the correct color based on the theme
+  Color getBackgroundColor(bool isDarkTheme) {
+    return isDarkTheme ? Color(darkBackgroundColor) : Color(backgroundColor);
+  }
+}
+
+Color darkenColor(Color color, [double amount = .1]) {
+  assert(amount >= 0 && amount <= 1, 'Amount should be between 0 and 1');
+
+  final hslColor = HSLColor.fromColor(color);
+  final hslDarker =
+      hslColor.withLightness((hslColor.lightness - amount).clamp(0.0, 1.0));
+
+  return hslDarker.toColor();
+}
   //     Color? color}) {
   //   // bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
   //   // Adjust default color based on theme if not specified
@@ -218,7 +317,7 @@ class Fonts_mode {
   //     color: color,
   //   );
   // }
-}
+
 
 
 ////
@@ -245,11 +344,7 @@ class Fonts_mode {
 //     color: Colors.black,
 //   ));
 
-//   static TextStyle largeTextStyleWhite = GoogleFonts.montserrat(
-//       textStyle: const TextStyle(
-//     fontSize: 16,
-//     color: Colors.white,
-//   ));
+
 
 //   static TextStyle largeTextStyle20 = GoogleFonts.montserrat(
 //       textStyle: const TextStyle(
@@ -281,9 +376,7 @@ class Fonts_mode {
 //     color: Colors.white,
 //   ));
 
-//   static TextStyle inputHintTextStyle = GoogleFonts.montserrat(
-//       textStyle:
-//           const TextStyle(fontSize: 16, color: dark_light_modes.dark_light(isDarkTheme).inputInactiveBorderColor));
+
 
 //   static TextStyle graySubtitle = GoogleFonts.montserrat(
 //       textStyle: const TextStyle(
