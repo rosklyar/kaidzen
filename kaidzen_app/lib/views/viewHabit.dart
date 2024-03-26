@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/service/HabitState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
@@ -153,6 +154,7 @@ class _ViewHabitState extends State<ViewHabit> {
                     color: dark_light_modes.statusIcon(isDarkTheme),
                   ),
                   onPressed: () {
+                    isDarkTheme ? HapticFeedback.selectionClick() : null;
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return EditHabit(habit);

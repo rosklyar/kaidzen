@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
@@ -74,7 +75,7 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
                         .firstWhere((element) => element.id == _value)
                         .getBackgroundColor(isDarkTheme),
                     Colors.white,
-                    0.4)!
+                    0.55)!
                 : Color.lerp(
                     DevelopmentCategoryDark.values
                         .firstWhere((element) => element.id == _value)
@@ -112,6 +113,7 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
           )),
       selected: isSelected,
       onSelected: (bool selected) {
+        isDarkTheme ? HapticFeedback.selectionClick() : null;
         setState(() {
           _value = selected ? cat.index : -1;
         });

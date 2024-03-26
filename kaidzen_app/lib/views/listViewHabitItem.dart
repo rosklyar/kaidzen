@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/service/HabitState.dart';
 import 'package:kaidzen_app/views/viewGoal.dart';
@@ -150,7 +151,7 @@ class _TrackHabitIconButtonState extends State<TrackHabitIconButton>
         onPressed: () async {
           if (!_isButtonLocked) {
             _isButtonLocked = true;
-
+            isDarkTheme ? HapticFeedback.mediumImpact() : null;
             _animationController.forward();
 
             // Check if it's the last push before moving to "DONE"
@@ -203,12 +204,16 @@ class _TrackHabitIconButtonState extends State<TrackHabitIconButton>
 }
 
 Future<void> trackHabit(BuildContext context, Habit habit) async {
+  final themeProvider = Provider.of<DarkThemeProvider>(context);
+  bool isDarkTheme = themeProvider.darkTheme;
+
   var type = habit.getType();
   var stageTotal =
       type == HabitType.FIXED ? habit.totalCount : type.stageCount[habit.stage];
   habit.stageCount += 1;
   if (habit.stageCount == stageTotal) {
     if (habit.stage == type.stageCount.length) {
+      isDarkTheme ? HapticFeedback.heavyImpact() : null;
       await Provider.of<HabitState>(context, listen: false)
           .moveHabitAndNotify(habit, Status.DONE);
     } else {

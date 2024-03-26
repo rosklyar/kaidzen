@@ -87,6 +87,7 @@ class _CreateTaskState extends State<CreateTask> {
             ),
             // SvgPicture.asset("assets/shevron-left-black.svg"),
             onPressed: () async {
+              isDarkTheme ? HapticFeedback.lightImpact() : null;
               await FirebaseAnalytics.instance.logEvent(
                   name: AnalyticsEventType.create_goal_screen_back_button.name);
               Navigator.of(context).pop();
@@ -204,6 +205,9 @@ class _CreateTaskState extends State<CreateTask> {
                               value: _startDoing,
                               onChanged: (value) {
                                 setState(() {
+                                  isDarkTheme
+                                      ? HapticFeedback.selectionClick()
+                                      : null;
                                   _startDoing = value;
                                 });
                               })
@@ -244,6 +248,9 @@ class _CreateTaskState extends State<CreateTask> {
                                   value: _isHabit,
                                   onChanged: (value) {
                                     setState(() {
+                                      isDarkTheme
+                                          ? HapticFeedback.selectionClick()
+                                          : null;
                                       _isHabit = value;
                                     });
                                   })
@@ -441,6 +448,9 @@ class _CreateTaskState extends State<CreateTask> {
                                       );
                                     } else {
                                       submit();
+                                      isDarkTheme
+                                          ? HapticFeedback.mediumImpact()
+                                          : null;
                                     }
                                     await FirebaseAnalytics.instance.logEvent(
                                         name: AnalyticsEventType
@@ -534,6 +544,9 @@ class _CreateTaskState extends State<CreateTask> {
   }
 
   Widget getHabitWidget() {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
+
     return Column(children: [
       Padding(
           padding: const EdgeInsets.only(left: 10, right: 10),
@@ -543,6 +556,7 @@ class _CreateTaskState extends State<CreateTask> {
                 initialOption: _currentHabitType,
                 key: _habitWidgetKey,
                 callback: (value) => setState(() {
+                  isDarkTheme ? HapticFeedback.selectionClick() : null;
                   _currentHabitType = value!;
                   Utils.tryToLostFocus(context);
                 }),

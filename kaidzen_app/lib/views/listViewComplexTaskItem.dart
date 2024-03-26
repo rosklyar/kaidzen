@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/views/createSubgoal.dart';
 import 'package:kaidzen_app/views/listViewSubTaskItem.dart';
@@ -72,6 +73,7 @@ List<Widget> buildExpandableContent(BuildContext context, Task task) {
         title: const Text('Add subgoal',
             style: TextStyle(decoration: TextDecoration.underline)),
         onTap: () {
+          isDarkTheme ? HapticFeedback.mediumImpact() : null;
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => CreateSubGoal(task)));
         },

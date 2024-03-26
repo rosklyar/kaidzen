@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kaidzen_app/assets/light_dark_theme.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
@@ -27,6 +28,7 @@ class MoveTaskIconButton extends StatelessWidget {
       iconSize:
           24, // Adjust this value to make the clickable area smaller or larger
       onPressed: () async {
+        // isDarkTheme ? HapticFeedback.lightImpact() : null;
         await moveTask(context, task);
       },
       icon: Container(
@@ -53,6 +55,8 @@ class MoveTaskIconButton extends StatelessWidget {
   }
 
   Future<void> moveTask(BuildContext context, Task task) async {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
     var newStatus = direction == Direction.FORWARD
         ? task.status == Status.DOING
             ? Status.DONE
@@ -69,6 +73,13 @@ class MoveTaskIconButton extends StatelessWidget {
           .moveTaskAndNotify(task, newStatus, context);
       showTutorialTopFlushbar('Moved to $newStatus', context);
       // showDarkThemeFlushbar(newStatus, context, task);
+      newStatus == 'DONE'
+          ? isDarkTheme
+              ? HapticFeedback.heavyImpact()
+              : null
+          : isDarkTheme
+              ? HapticFeedback.mediumImpact()
+              : null;
     }
   }
 

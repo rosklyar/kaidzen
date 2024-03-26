@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/views/utils.dart';
@@ -200,6 +201,11 @@ class _EditGoalState extends State<EditGoal> {
   }
 
   void submit() {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
+
+    isDarkTheme ? HapticFeedback.selectionClick() : null;
+
     var category = DevelopmentCategoryDark.values
         .firstWhere((element) => element.id == _currentCategory);
     widget.task.name = newTaskController.text;

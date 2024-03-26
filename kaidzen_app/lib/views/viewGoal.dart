@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/views/createSubgoal.dart';
 import 'package:kaidzen_app/assets/constants.dart';
@@ -177,6 +178,7 @@ class _ViewGoalState extends State<ViewGoal> {
                           style:
                               TextStyle(decoration: TextDecoration.underline)),
                       onTap: () {
+                        isDarkTheme ? HapticFeedback.mediumImpact() : null;
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -230,6 +232,7 @@ class _ViewGoalState extends State<ViewGoal> {
                 ),
                 color: dark_light_modes.statusIcon(isDarkTheme),
                 onPressed: () {
+                  isDarkTheme ? HapticFeedback.selectionClick() : null;
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return task.parent == null
                         ? EditGoal(task)
@@ -281,6 +284,7 @@ class _ViewGoalState extends State<ViewGoal> {
                                     fontWeight: FontWeight.w600,
                                     color: const Color(0xFFE50000))),
                         onTap: () async {
+                          isDarkTheme ? HapticFeedback.heavyImpact() : null;
                           Navigator.pop(context);
                           await Provider.of<TasksState>(context, listen: false)
                               .deleteTask(task);

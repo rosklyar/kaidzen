@@ -1,9 +1,11 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/views/utils.dart';
 
+import '../assets/light_dark_theme.dart';
 import '../models/task.dart';
 import 'package:provider/provider.dart';
 
@@ -119,6 +121,10 @@ class _EditSubGoalState extends State<EditSubGoal> {
   }
 
   void submit() {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
+
+    isDarkTheme ? HapticFeedback.selectionClick() : null;
     widget.task.name = newTaskController.text;
     Provider.of<TasksState>(context, listen: false).updateTask(widget.task);
     Navigator.pop(context);

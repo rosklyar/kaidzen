@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
@@ -31,6 +32,9 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
+
     return SizedBox(
         child: LayoutBuilder(
             builder: (context, constraints) => ToggleButtons(
@@ -48,6 +52,7 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
                     .map((e) => e == _currentDifficulty)
                     .toList(),
                 onPressed: (newIndex) {
+                  isDarkTheme ? HapticFeedback.selectionClick() : null;
                   setState(() {
                     _currentDifficulty = newIndex;
                   });
@@ -90,7 +95,7 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
                 : darkenColor(categoryColorSelected, 0.1)
             : widget.categoryColor >= 0
                 ? isDarkTheme
-                    ? Color.lerp(categoryColorSelectedDark, Colors.white, 0.4)!
+                    ? Color.lerp(categoryColorSelectedDark, Colors.white, 0.55)!
                     : Color.lerp(categoryColorSelectedDark, Colors.grey, 0.1)!
                 : dark_light_modes.unselectedToggleColor(isDarkTheme),
         child: Center(

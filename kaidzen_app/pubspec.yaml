@@ -68,6 +68,7 @@ dependencies:
   progress_state_button: ^1.0.4
   card_swiper : ^3.0.0
   vibration: ^1.8.3
+  confetti: ^0.7.0
 
 dev_dependencies:
   flutter_test:

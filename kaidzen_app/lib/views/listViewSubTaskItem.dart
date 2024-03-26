@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/utils/theme.dart';
 import 'package:kaidzen_app/views/viewGoal.dart';
@@ -74,6 +75,8 @@ class DoneIconButton extends StatelessWidget {
     return IconButton(
         icon: const Icon(Icons.done),
         color: dark_light_modes.statusIcon(isDarkTheme),
-        onPressed: () {});
+        onPressed: () {
+          isDarkTheme ? HapticFeedback.heavyImpact() : null;
+        });
   }
 }

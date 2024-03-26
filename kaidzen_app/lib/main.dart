@@ -36,6 +36,8 @@ import 'package:instabug_flutter/instabug_flutter.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 
+import 'views/Quiz/light_dark_question.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -162,7 +164,9 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: ThemeData.dark(),
       themeMode: themeProvider.darkTheme ? ThemeMode.dark : ThemeMode.light,
-      home: const HomeScreen(),
+      home: ThemeSelectionPage(),
+
+      // home: const HomeScreen(),
     );
   }
 }
@@ -227,6 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   name: AnalyticsEventType.create_goal_button_pressed.name);
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const CreateTask()));
+              isDarkTheme ? HapticFeedback.mediumImpact() : null;
             },
             tooltip: 'Add goal',
             child: Icon(

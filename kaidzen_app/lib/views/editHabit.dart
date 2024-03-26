@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/models/habit.dart';
@@ -413,6 +414,11 @@ class _EditHabitState extends State<EditHabit> {
   }
 
   void submit() async {
+    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    bool isDarkTheme = themeProvider.darkTheme;
+
+    isDarkTheme ? HapticFeedback.selectionClick() : null;
+
     var category = DevelopmentCategoryDark.values
         .firstWhere((element) => element.id == _currentCategory);
     widget.habit.task.name = newTaskController.text;

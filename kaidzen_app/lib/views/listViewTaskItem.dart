@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/views/viewGoal.dart';
 import 'package:provider/provider.dart';
@@ -42,6 +43,7 @@ class ListViewTaskItem extends ListTile {
       ),
       trailing: ListTileTrail(task: task),
       onTap: () {
+        isDarkTheme ? HapticFeedback.selectionClick() : null;
         Navigator.push(
             context,
             MaterialPageRoute(
