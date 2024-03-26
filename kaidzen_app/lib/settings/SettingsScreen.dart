@@ -15,6 +15,7 @@ import 'package:instabug_flutter/instabug_flutter.dart';
 import '../assets/constants.dart';
 import '../assets/light_dark_theme.dart';
 import '../service/AnalyticsService.dart';
+import '../views/Quiz/light_dark_question.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -215,6 +216,26 @@ class SettingsScreen extends StatelessWidget {
                                     ]),
                                 onTap: () async {
                                   await _shareApp();
+                                }),
+                            ListTile(
+                                title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      const Icon(Icons.circle,
+                                          color: Color.fromRGBO(11, 11, 11, 1),
+                                          size: 8),
+                                      Text(
+                                        " Choose experience",
+                                        style: Fonts_mode.largeTextStyle20(
+                                            isDarkTheme),
+                                        textAlign: TextAlign.left,
+                                      )
+                                    ]),
+                                onTap: () async {
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (_) => ThemeSelectionPage()),
+                                  );
                                 })
                           ]).toList()),
                           flex: 12),

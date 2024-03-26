@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math' as math;
 
+import '../../assets/light_dark_theme.dart';
 import '../../main.dart';
 
 class ThemeSelectionPage extends StatelessWidget {
@@ -14,6 +16,8 @@ class ThemeSelectionPage extends StatelessWidget {
     final symbolRadius = symbolSize / 2;
     final dotRadius =
         symbolRadius / 4; // Small dot radius (1/4th of the symbol's radius)
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: Color(0xFFF5F5DC), // Background color
@@ -51,6 +55,7 @@ class ThemeSelectionPage extends StatelessWidget {
                     onLongPress: () {
                       HapticFeedback.heavyImpact();
                       setThemeMode(false, context);
+                      themeProvider.darkTheme = false;
                     },
                     child: FloatingActionButton(
                       heroTag: "light_mode_btn",
@@ -67,7 +72,7 @@ class ThemeSelectionPage extends StatelessWidget {
                     child: GestureDetector(
                       onLongPress: () {
                         HapticFeedback.heavyImpact();
-
+                        themeProvider.darkTheme = true;
                         setThemeMode(true, context);
                       },
                       child: FloatingActionButton(
@@ -89,49 +94,20 @@ class ThemeSelectionPage extends StatelessWidget {
   }
 
   void setThemeMode(bool isDarkMode, BuildContext context) async {
-    // final preferences = await SharedPreferences.getInstance();
-    // await preferences.setBool('themeMode', isDarkMode);
-    // Navigate to the home screen or the main part of your app
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setBool('themeMode', isDarkMode);
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(
+        'hasChosenTheme', 1); // Indicate that the user has chosen a theme
+
+    // Navigate to the ModeConfirmationScreen
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (_) => HomeScreen(), // Replace with your actual HomeScreen
-      ),
+          builder: (_) => ModeConfirmationScreen(isDarkMode: isDarkMode)),
     );
   }
 }
-
-// Include the HomeScreen, YinYangPainter, and any other classes or methods here...
-
-// class YinYangWidget extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: 300,
-//       height: 300,
-//       child: CustomPaint(painter: YinYangPainter(), size: Size(100, 100)),
-//     );
-//   }
-// }
-
-// void _drawWavyLine(Path path, Offset center, double radius, Size size) {
-//   // Starting point is at the left side, center of the yin-yang
-//   path.moveTo(center.dx, center.dy - radius);
-
-//   // Draw the top wave curve
-//   path.quadraticBezierTo(
-//     center.dx + size.width / 8, center.dy - radius / 2, // control point
-//     center.dx, center.dy, // end point
-//   );
-
-//   // Draw the bottom wave curve, which curves in the opposite direction
-//   path.quadraticBezierTo(
-//     center.dx - size.width / 8, center.dy + radius / 2, // control point
-//     center.dx, center.dy + radius, // end point
-//   );
-
-//   // Connect back to the start point
-//   path.lineTo(center.dx, center.dy - radius);
-// }
 
 class YinYangPainter extends CustomPainter {
   @override
@@ -199,16 +175,55 @@ class YinYangPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-// class YinYangWidget extends StatelessWidget {
+class ModeConfirmationScreen extends StatefulWidget {
+  final bool isDarkMode;
+
+  ModeConfirmationScreen({required this.isDarkMode});
+
+  @override
+  _ModeConfirmationScreenState createState() => _ModeConfirmationScreenState();
+}
+
+class _ModeConfirmationScreenState extends State<ModeConfirmationScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 2), () {
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => HomeScreen()),
+        );
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: widget.isDarkMode ? Colors.black : Colors.white,
+      body: Center(
+        child: Text(
+          widget.isDarkMode ? 'Dark Experience' : 'Light Experience',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: widget.isDarkMode ? Colors.white : Colors.black,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+}
+
+// Ensure HomeScreen is defined in your application.
+// class HomeScreen extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
-//     return Center(
-//       child: CustomPaint(
-//         painter: YinYangPainter(),
-//         size: Size(200, 200), // You can adjust the size as needed
-//       ),
+//     // Your HomeScreen layout
+//     return Scaffold(
+//       // Define your HomeScreen layout here
 //     );
 //   }
 // }
-
 

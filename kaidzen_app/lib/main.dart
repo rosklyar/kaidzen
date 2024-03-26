@@ -24,6 +24,7 @@ import 'package:kaidzen_app/views/createTask.dart';
 import 'package:kaidzen_app/views/profilePanel.dart';
 import 'package:kaidzen_app/views/switchableBoard.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_machine/time_machine.dart';
 
 import 'assets/light_dark_theme.dart';
@@ -52,6 +53,13 @@ void main() async {
   // Setup Dark Theme Preference and Provider
   DarkThemeProvider themeProvider = DarkThemeProvider();
   await themeProvider.loadThemePreference();
+
+  // Load SharedPreferences
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  // await prefs.setInt(
+  //     'hasChosenTheme', 0); // Indicate that the user has chosen a theme
+
+  final bool hasChosenTheme = prefs.getInt('hasChosenTheme') == 1;
 
   LocalPropertiesService localPropertiesService = LocalPropertiesService();
 
@@ -103,45 +111,47 @@ void main() async {
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runZonedGuarded(
-          () => runApp(MultiProvider(providers: [
-                ChangeNotifierProvider(create: (context) {
-                  return localPropertiesService;
-                }),
-                ChangeNotifierProvider(create: (context) {
-                  AnalyticsService.initUserProperties(
-                      taskState, habitState, emotionsState, tutorialState);
-                  return taskState;
-                }),
-                ChangeNotifierProvider(create: (context) {
-                  return habitState;
-                }),
-                ChangeNotifierProvider(create: (context) {
-                  progressState.loadAll();
-                  return progressState;
-                }),
-                ChangeNotifierProvider(create: (context) {
-                  return achievementsState;
-                }),
-                ChangeNotifierProvider(create: (context) {
-                  return tutorialState;
-                }),
-                ChangeNotifierProvider(create: (context) {
-                  return emotionsState;
-                }),
-                ChangeNotifierProvider(create: (context) {
-                  return BoardMessageState(
-                      tutorialState, taskState, habitState);
-                }),
-                ChangeNotifierProvider(create: (context) {
-                  return announcementsState;
-                }),
-                ChangeNotifierProvider(create: (context) {
-                  return featuresState;
-                }),
-                ChangeNotifierProvider(create: (context) {
-                  return themeProvider;
-                }),
-              ], child: const MyApp())),
+          () => runApp(
+                MultiProvider(providers: [
+                  ChangeNotifierProvider(create: (context) {
+                    return localPropertiesService;
+                  }),
+                  ChangeNotifierProvider(create: (context) {
+                    AnalyticsService.initUserProperties(
+                        taskState, habitState, emotionsState, tutorialState);
+                    return taskState;
+                  }),
+                  ChangeNotifierProvider(create: (context) {
+                    return habitState;
+                  }),
+                  ChangeNotifierProvider(create: (context) {
+                    progressState.loadAll();
+                    return progressState;
+                  }),
+                  ChangeNotifierProvider(create: (context) {
+                    return achievementsState;
+                  }),
+                  ChangeNotifierProvider(create: (context) {
+                    return tutorialState;
+                  }),
+                  ChangeNotifierProvider(create: (context) {
+                    return emotionsState;
+                  }),
+                  ChangeNotifierProvider(create: (context) {
+                    return BoardMessageState(
+                        tutorialState, taskState, habitState);
+                  }),
+                  ChangeNotifierProvider(create: (context) {
+                    return announcementsState;
+                  }),
+                  ChangeNotifierProvider(create: (context) {
+                    return featuresState;
+                  }),
+                  ChangeNotifierProvider(create: (context) {
+                    return themeProvider;
+                  }),
+                ], child: MyApp(hasChosenTheme: hasChosenTheme)),
+              ),
           CrashReporting.reportCrash));
   Instabug.init(
       token: defaultTargetPlatform == TargetPlatform.iOS
@@ -151,7 +161,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final bool hasChosenTheme;
+  const MyApp({Key? key, required this.hasChosenTheme}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +175,7 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: ThemeData.dark(),
       themeMode: themeProvider.darkTheme ? ThemeMode.dark : ThemeMode.light,
-      home: ThemeSelectionPage(),
+      home: hasChosenTheme ? HomeScreen() : ThemeSelectionPage(),
 
       // home: const HomeScreen(),
     );
