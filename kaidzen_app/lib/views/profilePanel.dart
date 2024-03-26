@@ -135,41 +135,41 @@ class ProfilePanelState extends State<ProfilePanel>
                                 children: [
 /////
                                   Stack(children: [
-                                    IconButton(
-                                      padding: EdgeInsets.only(
-                                          right: parentWidth * 0.01),
-                                      onPressed: () async {
-                                        // Access the DarkThemeProvider using Provider
-                                        final themeProvider =
-                                            Provider.of<DarkThemeProvider>(
-                                                context,
-                                                listen: false);
+                                    // IconButton(
+                                    //   padding: EdgeInsets.only(
+                                    //       right: parentWidth * 0.01),
+                                    //   onPressed: () async {
+                                    //     // Access the DarkThemeProvider using Provider
+                                    //     final themeProvider =
+                                    //         Provider.of<DarkThemeProvider>(
+                                    //             context,
+                                    //             listen: false);
 
-                                        // Toggle the dark theme value
-                                        themeProvider.darkTheme =
-                                            !themeProvider.darkTheme;
-                                        // Navigator.push(
-                                        //     context,
-                                        //     MaterialPageRoute(
-                                        //         builder: (context) =>
-                                        //             const AchievementsScreen()));
-                                        // await FirebaseAnalytics.instance
-                                        //     .logEvent(
-                                        //         name: AnalyticsEventType
-                                        //             .achievements_screen_opened
-                                        //             .name);
-                                        // if (!featuresState.isFeatureDiscovered(
-                                        //         Features.ORIGAMI.id) &&
-                                        //     achievementsState
-                                        //         .notShownWithOrigamiCompleted()) {
-                                        //   featuresState.discoverFeature(
-                                        //       Features.ORIGAMI.id);
-                                        // }
-                                      },
-                                      icon: Image.asset(
-                                          "assets/achievements_icon.png",
-                                          height: parentWidth * 0.06),
-                                    ),
+                                    //     // Toggle the dark theme value
+                                    //     themeProvider.darkTheme =
+                                    //         !themeProvider.darkTheme;
+                                    //     // Navigator.push(
+                                    //     //     context,
+                                    //     //     MaterialPageRoute(
+                                    //     //         builder: (context) =>
+                                    //     //             const AchievementsScreen()));
+                                    //     // await FirebaseAnalytics.instance
+                                    //     //     .logEvent(
+                                    //     //         name: AnalyticsEventType
+                                    //     //             .achievements_screen_opened
+                                    //     //             .name);
+                                    //     // if (!featuresState.isFeatureDiscovered(
+                                    //     //         Features.ORIGAMI.id) &&
+                                    //     //     achievementsState
+                                    //     //         .notShownWithOrigamiCompleted()) {
+                                    //     //   featuresState.discoverFeature(
+                                    //     //       Features.ORIGAMI.id);
+                                    //     // }
+                                    //   },
+                                    //   icon: Image.asset(
+                                    //       "assets/achievements_icon.png",
+                                    //       height: parentWidth * 0.06),
+                                    // ),
                                     // Visibility(
                                     //     visible: achievementsState
                                     //                 .getCompletedAchievementsCount() >

@@ -56,8 +56,8 @@ void main() async {
 
   // Load SharedPreferences
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  // await prefs.setInt(
-  //     'hasChosenTheme', 0); // Indicate that the user has chosen a theme
+  await prefs.setInt(
+      'hasChosenTheme', 0); // Indicate that the user has chosen a theme
 
   final bool hasChosenTheme = prefs.getInt('hasChosenTheme') == 1;
 
