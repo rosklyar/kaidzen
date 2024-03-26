@@ -26,6 +26,7 @@ const List<ToggleBoard> toggleBoards = [
   ToggleBoard.DONE,
 ];
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 // enum DevelopmentCategory_changed_to_DevelopmentCategoryDark {
 //   MIND(0, "Mind", "mind", Color.fromRGBO(69, 131, 151, 1.0), "assets/Mind",
 //       0xFFEBF8FA),

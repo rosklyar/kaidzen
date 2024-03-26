@@ -618,13 +618,15 @@ class _CreateTaskState extends State<CreateTask> {
           totalCount,
           _currentHabitType.id));
     } else {
-      Provider.of<TasksState>(context, listen: false).addTask(Task(
-          newTaskController.text,
-          category,
-          Difficulty.values
-              .firstWhere((element) => element.id == _currentDifficulty),
-          parent: widget.parent != null ? widget.parent!.id : null,
-          status: _startDoing ? Status.DOING : Status.TODO));
+      Provider.of<TasksState>(context, listen: false).addTask(
+          Task(
+              newTaskController.text,
+              category,
+              Difficulty.values
+                  .firstWhere((element) => element.id == _currentDifficulty),
+              parent: widget.parent != null ? widget.parent!.id : null,
+              status: _startDoing ? Status.DOING : Status.TODO),
+          context);
     }
 
     Provider.of<EmotionsState>(context, listen: false).loadAll();

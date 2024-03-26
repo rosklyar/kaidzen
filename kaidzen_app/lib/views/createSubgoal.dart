@@ -191,9 +191,10 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
   }
 
   void submit() {
-    Provider.of<TasksState>(context, listen: false).addTask(Task(
-        newTaskController.text, widget.parent.category, Difficulty.EASY,
-        parent: widget.parent.id));
+    Provider.of<TasksState>(context, listen: false).addTask(
+        Task(newTaskController.text, widget.parent.category, Difficulty.EASY,
+            parent: widget.parent.id),
+        context);
 
     var event =
         Event(EventType.taskCreated, DateTime.now(), widget.parent.category);

@@ -74,7 +74,7 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
                         .firstWhere((element) => element.id == _value)
                         .getBackgroundColor(isDarkTheme),
                     Colors.white,
-                    0.2)!
+                    0.4)!
                 : Color.lerp(
                     DevelopmentCategoryDark.values
                         .firstWhere((element) => element.id == _value)

@@ -34,7 +34,8 @@ showTutorialTopFlushbar(String text, BuildContext context) {
 
 Flushbar? currentFlushbar;
 
-void showDarkThemeFlushbar(String title, BuildContext context, task) {
+void showDarkThemeFlushbar(
+    String title, BuildContext context, task, String points) {
   final themeProvider = Provider.of<DarkThemeProvider>(context, listen: false);
   bool isDarkTheme = themeProvider.darkTheme;
 
@@ -42,13 +43,14 @@ void showDarkThemeFlushbar(String title, BuildContext context, task) {
   currentFlushbar?.dismiss();
   currentFlushbar = null;
 
-  String message_buff =
-      '+20 points to your ' + task.category.name + ' and cookies for Buddy';
+  // String message_buff = '+ $points points to your ' +
+  //     task.category.name +
+  //     ' and cookies for Buddy';
 
   if (isDarkTheme) {
     currentFlushbar = Flushbar(
       title: 'Moved to ' + title,
-      message: message_buff,
+      // message: message_buff,
       duration: Duration(seconds: 2),
       flushbarPosition: FlushbarPosition.TOP,
       backgroundColor: task.category.getBackgroundColor(isDarkTheme),
@@ -78,7 +80,7 @@ void showDarkThemeFlushbar(String title, BuildContext context, task) {
         text: TextSpan(
           children: <TextSpan>[
             TextSpan(
-                text: '+20 points ',
+                text: '+ $points points ',
                 style: Fonts_mode.largeBoldTextStyle(isDarkTheme,
                     fontSize: 14, fontWeight: FontWeight.bold)),
             TextSpan(

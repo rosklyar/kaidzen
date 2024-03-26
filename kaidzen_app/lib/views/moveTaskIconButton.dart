@@ -66,9 +66,9 @@ class MoveTaskIconButton extends StatelessWidget {
       await showModalRegardingParent(context, tasksState, task, newStatus);
     } else {
       await Provider.of<TasksState>(context, listen: false)
-          .moveTaskAndNotify(task, newStatus);
+          .moveTaskAndNotify(task, newStatus, context);
       showTutorialTopFlushbar('Moved to $newStatus', context);
-      showDarkThemeFlushbar(newStatus, context, task);
+      // showDarkThemeFlushbar(newStatus, context, task);
     }
   }
 
@@ -116,7 +116,8 @@ class MoveTaskIconButton extends StatelessWidget {
                                       decoration: TextDecoration.underline)),
                           onTap: () {
                             Provider.of<TasksState>(context, listen: false)
-                                .moveSubtaskOnlyAndNotify(task, newStatus);
+                                .moveSubtaskOnlyAndNotify(
+                                    task, newStatus, context);
                             Navigator.pop(context);
                           }),
                       flex: 2),
@@ -135,7 +136,8 @@ class MoveTaskIconButton extends StatelessWidget {
                               onPressed: () async {
                                 await Provider.of<TasksState>(context,
                                         listen: false)
-                                    .moveTaskAndNotify(task, newStatus);
+                                    .moveTaskAndNotify(
+                                        task, newStatus, context);
                                 Navigator.pop(context);
                                 showTutorialTopFlushbar(
                                     'Moved to $newStatus', context);

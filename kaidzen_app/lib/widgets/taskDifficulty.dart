@@ -90,7 +90,7 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
                 : darkenColor(categoryColorSelected, 0.1)
             : widget.categoryColor >= 0
                 ? isDarkTheme
-                    ? Color.lerp(categoryColorSelectedDark, Colors.white, 0.2)!
+                    ? Color.lerp(categoryColorSelectedDark, Colors.white, 0.4)!
                     : Color.lerp(categoryColorSelectedDark, Colors.grey, 0.1)!
                 : dark_light_modes.unselectedToggleColor(isDarkTheme),
         child: Center(

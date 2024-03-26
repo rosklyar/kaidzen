@@ -8,6 +8,7 @@ import 'package:kaidzen_app/service/ProgressRepository.dart';
 
 import '../assets/light_dark_theme.dart';
 import '../models/habit.dart';
+import '../utils/snackbar.dart';
 import 'AnalyticsService.dart';
 
 class ProgressState extends ChangeNotifier {
@@ -23,11 +24,17 @@ class ProgressState extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateProgress(Task task) async {
+  updateProgress(Task task, String newStatus, context) async {
     var currentProgress = _progress[task.category]!;
     var updatedProgress = ProgressCalculator.progress(currentProgress, task);
-    // print(updatedProgress);
 
+    var temp_name = pointsPropertiesMap[task.category]!.name.toLowerCase();
+    var temp_points =
+        (updatedProgress.points - currentProgress.points).abs().toString();
+    print(
+        "$updatedProgress and  $currentProgress and $temp_name and $temp_points");
+
+    showDarkThemeFlushbar(task.status, context, task, temp_points);
     //point shere updated - current
 
     await handleProgressChanged(updatedProgress, currentProgress, task);

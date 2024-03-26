@@ -33,7 +33,7 @@ class SwitchableBoardState extends State<SwitchableBoard> {
   var isOpen = false;
   final pc = PanelController();
   void addItem(Task newTask) {
-    Provider.of<TasksState>(context, listen: false).addTask(newTask);
+    Provider.of<TasksState>(context, listen: false).addTask(newTask, context);
   }
 
   @override
