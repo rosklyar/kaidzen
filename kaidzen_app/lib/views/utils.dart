@@ -45,7 +45,8 @@ Future<int?> showNumberInputDialog(String title, BuildContext context,
   return showDialog<int>(
     context: context,
     builder: (context) {
-      final themeProvider = Provider.of<DarkThemeProvider>(context);
+      final themeProvider =
+          Provider.of<DarkThemeProvider>(context, listen: false);
       bool isDarkTheme = themeProvider.darkTheme;
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {

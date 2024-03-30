@@ -17,16 +17,16 @@ class ProgressCalculator {
     var nextLevelCap = _levelToPointsMap[progress.level + 1]!;
     var totalPoints =
         getEarnedPoints(task) + adjustPoints(progress, nextLevelCap);
+    // var taskPoints = getEarnedPoints(task);
+
+    // print(getEarnedPoints(task));
+    var taskPoints = getEarnedPoints(task);
+
     if (totalPoints >= nextLevelCap) {
       return Progress(
-        progress.level + 1,
-        totalPoints - nextLevelCap,
-      );
+          progress.level + 1, totalPoints - nextLevelCap, taskPoints);
     } else {
-      return Progress(
-        progress.level,
-        totalPoints,
-      );
+      return Progress(progress.level, totalPoints, taskPoints);
     }
   }
 
@@ -39,16 +39,13 @@ class ProgressCalculator {
     var totalPoints =
         getEarnedHabitPoints(habit) + adjustPoints(progress, nextLevelCap);
 
+    var habitPoints = getEarnedHabitPoints(habit);
+
     if (totalPoints >= nextLevelCap) {
       return Progress(
-        progress.level + 1,
-        totalPoints - nextLevelCap,
-      );
+          progress.level + 1, totalPoints - nextLevelCap, habitPoints);
     } else {
-      return Progress(
-        progress.level,
-        totalPoints,
-      );
+      return Progress(progress.level, totalPoints, habitPoints);
     }
   }
 

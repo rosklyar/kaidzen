@@ -21,7 +21,8 @@ class ProgressRepository {
       return MapEntry(
           DevelopmentCategoryDark.values
               .firstWhere((category) => category.id == map[columnProgressId]),
-          Progress(map[columnProgressLevel] as int, map[columnPoints] as int));
+          Progress(map[columnProgressLevel] as int, map[columnPoints] as int,
+              map[columnPoints] as int));
     }));
   }
 

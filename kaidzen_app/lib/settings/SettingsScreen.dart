@@ -32,7 +32,8 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var parentHeight = MediaQuery.of(context).size.height;
     var parentWidth = MediaQuery.of(context).size.width;
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     return Consumer3<ProgressState, TutorialState, FeaturesState>(

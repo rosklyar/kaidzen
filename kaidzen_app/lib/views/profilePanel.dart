@@ -1,5 +1,6 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
@@ -38,7 +39,8 @@ class ProfilePanelState extends State<ProfilePanel>
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     var parentHeight = MediaQuery.of(context).size.height;
@@ -206,6 +208,9 @@ class ProfilePanelState extends State<ProfilePanel>
                                       padding: EdgeInsets.only(
                                           right: parentWidth * 0.01),
                                       onPressed: () async {
+                                        isDarkTheme
+                                            ? HapticFeedback.selectionClick()
+                                            : null;
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -264,6 +269,9 @@ class ProfilePanelState extends State<ProfilePanel>
                                     children: <Widget>[
                                       IconButton(
                                         onPressed: () async {
+                                          isDarkTheme
+                                              ? HapticFeedback.selectionClick()
+                                              : null;
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -534,7 +542,8 @@ class _ProgressIndicatorState extends State<ProgressIndicator>
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     return Padding(

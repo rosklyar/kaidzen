@@ -12,7 +12,8 @@ class DoneIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
     return IconButton(
         icon: Icon(Icons.done, color: dark_light_modes.statusIcon(isDarkTheme)),

@@ -28,7 +28,8 @@ class ListViewHabitItem extends ListTile {
   Widget build(BuildContext context) {
     var listText = HabitStage.getById(habit.stage).title;
 
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     var habitType = habit.getType();
@@ -133,7 +134,8 @@ class _TrackHabitIconButtonState extends State<TrackHabitIconButton>
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     return ScaleTransition(
@@ -174,7 +176,7 @@ class _TrackHabitIconButtonState extends State<TrackHabitIconButton>
             // Proceed with the existing logic.
             Future.delayed(Duration(milliseconds: 300), () async {
               await Provider.of<HabitState>(context, listen: false)
-                  .trackHabit(widget.habit);
+                  .trackHabit(widget.habit, context);
               _isButtonLocked = false;
             });
           }
@@ -204,7 +206,7 @@ class _TrackHabitIconButtonState extends State<TrackHabitIconButton>
 }
 
 Future<void> trackHabit(BuildContext context, Habit habit) async {
-  final themeProvider = Provider.of<DarkThemeProvider>(context);
+  final themeProvider = Provider.of<DarkThemeProvider>(context, listen: false);
   bool isDarkTheme = themeProvider.darkTheme;
 
   var type = habit.getType();
@@ -215,7 +217,7 @@ Future<void> trackHabit(BuildContext context, Habit habit) async {
     if (habit.stage == type.stageCount.length) {
       isDarkTheme ? HapticFeedback.heavyImpact() : null;
       await Provider.of<HabitState>(context, listen: false)
-          .moveHabitAndNotify(habit, Status.DONE);
+          .moveHabitAndNotify(habit, Status.DONE, context);
     } else {
       habit.stage += 1;
       habit.stageCount = 0;
@@ -238,7 +240,8 @@ class MoveHabitIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     return IconButton(
@@ -281,7 +284,7 @@ class MoveHabitIconButton extends StatelessWidget {
             : Status.DOING;
 
     await Provider.of<HabitState>(context, listen: false)
-        .moveHabitAndNotify(habit, newStatus);
+        .moveHabitAndNotify(habit, newStatus, context);
     showTutorialTopFlushbar('Moved to $newStatus', context);
   }
 

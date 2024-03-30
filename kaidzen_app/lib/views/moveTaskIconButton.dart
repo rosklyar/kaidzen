@@ -4,8 +4,10 @@ import 'package:kaidzen_app/assets/light_dark_theme.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:provider/provider.dart';
+import 'package:vibration/vibration.dart';
 
 import '../assets/constants.dart';
+import '../main.dart';
 import '../utils/snackbar.dart';
 
 class MoveTaskIconButton extends StatelessWidget {
@@ -20,7 +22,8 @@ class MoveTaskIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     return IconButton(
@@ -55,7 +58,8 @@ class MoveTaskIconButton extends StatelessWidget {
   }
 
   Future<void> moveTask(BuildContext context, Task task) async {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
     var newStatus = direction == Direction.FORWARD
         ? task.status == Status.DOING
@@ -66,16 +70,17 @@ class MoveTaskIconButton extends StatelessWidget {
             : Status.DOING;
 
     var tasksState = Provider.of<TasksState>(context, listen: false);
+
     if (lastSubtaskIsDone(newStatus, task, tasksState)) {
       await showModalRegardingParent(context, tasksState, task, newStatus);
     } else {
       await Provider.of<TasksState>(context, listen: false)
-          .moveTaskAndNotify(task, newStatus, context);
+          .moveTaskAndNotify(task, newStatus, context, false);
       showTutorialTopFlushbar('Moved to $newStatus', context);
       // showDarkThemeFlushbar(newStatus, context, task);
       newStatus == 'DONE'
           ? isDarkTheme
-              ? HapticFeedback.heavyImpact()
+              ? Vibration.vibrate(duration: 100)
               : null
           : isDarkTheme
               ? HapticFeedback.mediumImpact()
@@ -88,6 +93,7 @@ class MoveTaskIconButton extends StatelessWidget {
     var parentHeight = MediaQuery.of(context).size.height;
     var parentWidth = MediaQuery.of(context).size.width;
     var parentTask = tasksState.getById(task.parent!)!;
+
     showModalBottomSheet<void>(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -96,7 +102,8 @@ class MoveTaskIconButton extends StatelessWidget {
         ),
       ),
       builder: (BuildContext context) {
-        final themeProvider = Provider.of<DarkThemeProvider>(context);
+        final themeProvider =
+            Provider.of<DarkThemeProvider>(context, listen: false);
         bool isDarkTheme = themeProvider.darkTheme;
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.4,
@@ -128,8 +135,12 @@ class MoveTaskIconButton extends StatelessWidget {
                           onTap: () {
                             Provider.of<TasksState>(context, listen: false)
                                 .moveSubtaskOnlyAndNotify(
-                                    task, newStatus, context);
-                            Navigator.pop(context);
+                                    task, newStatus, context, true);
+
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (_) => HomeScreen()));
+                            // Navigator.pop(context);
                           }),
                       flex: 2),
                 ),
@@ -145,13 +156,14 @@ class MoveTaskIconButton extends StatelessWidget {
                                   style: Fonts.largeTextStyle20
                                       .copyWith(color: Colors.white)),
                               onPressed: () async {
-                                await Provider.of<TasksState>(context,
-                                        listen: false)
+                                Provider.of<TasksState>(context, listen: false)
                                     .moveTaskAndNotify(
-                                        task, newStatus, context);
-                                Navigator.pop(context);
-                                showTutorialTopFlushbar(
+                                        task, newStatus, context, true);
+
+                                await showTutorialTopFlushbar(
                                     'Moved to $newStatus', context);
+
+                                Navigator.of(context).pop();
                               },
                               style: ElevatedButton.styleFrom(
                                   primary: activeButtonColor),

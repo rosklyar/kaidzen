@@ -37,7 +37,8 @@ class _ViewHabitState extends State<ViewHabit> {
   }
 
   Scaffold buildViewHabit(BuildContext context, Habit habit) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     return Scaffold(
@@ -199,7 +200,8 @@ class _ViewHabitState extends State<ViewHabit> {
   }
 
   Widget _buildProgressRow(String label, int value, Habit habit) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),

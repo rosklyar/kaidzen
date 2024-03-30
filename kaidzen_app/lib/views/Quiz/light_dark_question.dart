@@ -94,8 +94,11 @@ class ThemeSelectionPage extends StatelessWidget {
   }
 
   void setThemeMode(bool isDarkMode, BuildContext context) async {
-    final preferences = await SharedPreferences.getInstance();
-    await preferences.setBool('themeMode', isDarkMode);
+    // final preferences = await SharedPreferences.getInstance();
+    // await preferences.setBool('themeMode', isDarkMode);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
+    themeProvider.darkTheme = isDarkMode;
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt(

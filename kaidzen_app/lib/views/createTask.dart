@@ -13,6 +13,7 @@ import 'package:kaidzen_app/utils/dashSeparator.dart';
 import 'package:kaidzen_app/views/utils.dart';
 import 'package:kaidzen_app/views/theamedAlertDIalog.dart';
 import 'package:kaidzen_app/widgets/taskDifficulty.dart';
+import 'package:vibration/vibration.dart';
 
 import '../achievements/AchievementsState.dart';
 import '../achievements/event.dart';
@@ -75,7 +76,8 @@ class _CreateTaskState extends State<CreateTask> {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
     return Scaffold(
         appBar: AppBar(
@@ -124,6 +126,9 @@ class _CreateTaskState extends State<CreateTask> {
                                   suffixIcon: IconButton(
                                       onPressed: () {
                                         newTaskController.clear();
+                                        isDarkTheme
+                                            ? HapticFeedback.selectionClick()
+                                            : null;
                                         // _taskTypeWidgetKey
                                         //     .currentState!._value = -1;
                                         // _taskDifficultyWidgetKey.currentState
@@ -268,6 +273,9 @@ class _CreateTaskState extends State<CreateTask> {
                                         _currentHabitType == HabitType.FIXED,
                                     child: GestureDetector(
                                       onTap: () async {
+                                        isDarkTheme
+                                            ? HapticFeedback.selectionClick()
+                                            : null;
                                         int? newTargetTotal =
                                             await showNumberInputDialog(
                                                 'Enter target total',
@@ -406,6 +414,10 @@ class _CreateTaskState extends State<CreateTask> {
                                                                           TextDecoration
                                                                               .underline)),
                                                           onTap: () {
+                                                            isDarkTheme
+                                                                ? HapticFeedback
+                                                                    .lightImpact()
+                                                                : null;
                                                             Navigator.pop(
                                                                 context);
                                                             submit();
@@ -475,6 +487,7 @@ class _CreateTaskState extends State<CreateTask> {
             ]),
           ),
           onTap: () {
+            isDarkTheme ? Vibration.vibrate(duration: 100) : null;
             Utils.tryToLostFocus(context);
           },
         ));
@@ -544,7 +557,8 @@ class _CreateTaskState extends State<CreateTask> {
   }
 
   Widget getHabitWidget() {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     return Column(children: [
@@ -566,7 +580,8 @@ class _CreateTaskState extends State<CreateTask> {
   }
 
   Widget getDiff() {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
     return Column(children: [
       const SizedBox(height: 5),
@@ -619,18 +634,20 @@ class _CreateTaskState extends State<CreateTask> {
           : _currentHabitType.stageCount.values
               .fold(0, (previousValue, element) => previousValue + element);
 
-      Provider.of<HabitState>(context, listen: false).addHabit(Habit(
-          Task(
-              newTaskController.text,
-              category,
-              Difficulty.values
-                  .firstWhere((element) => element.id == _currentDifficulty),
-              parent: widget.parent != null ? widget.parent!.id : null,
-              status: _startDoing ? Status.DOING : Status.TODO),
-          1,
-          0,
-          totalCount,
-          _currentHabitType.id));
+      Provider.of<HabitState>(context, listen: false).addHabit(
+          Habit(
+              Task(
+                  newTaskController.text,
+                  category,
+                  Difficulty.values.firstWhere(
+                      (element) => element.id == _currentDifficulty),
+                  parent: widget.parent != null ? widget.parent!.id : null,
+                  status: _startDoing ? Status.DOING : Status.TODO),
+              1,
+              0,
+              totalCount,
+              _currentHabitType.id),
+          context);
     } else {
       Provider.of<TasksState>(context, listen: false).addTask(
           Task(

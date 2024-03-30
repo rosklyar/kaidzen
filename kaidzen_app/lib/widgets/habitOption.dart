@@ -61,7 +61,8 @@ class _HabitOptionWidgetState extends State<HabitOptionWidget> {
   }
 
   Widget getDiffOptionLayout(HabitType habitType, bool selected) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     Color categoryColorSelectedDark = DevelopmentCategoryDark.values
@@ -87,7 +88,7 @@ class _HabitOptionWidgetState extends State<HabitOptionWidget> {
                 : darkenColor(categoryColorSelected, 0.1)
             : widget.categoryColor >= 0
                 ? isDarkTheme
-                    ? Color.lerp(categoryColorSelectedDark, Colors.white, 0.2)!
+                    ? Color.lerp(categoryColorSelectedDark, Colors.white, 0.55)!
                     : Color.lerp(categoryColorSelectedDark, Colors.grey, 0.1)!
                 : dark_light_modes.unselectedToggleColor(isDarkTheme),
         child: Center(

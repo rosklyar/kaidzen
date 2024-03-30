@@ -19,7 +19,8 @@ class ListViewSubTaskItem extends ListTile {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     return ListTile(
@@ -70,7 +71,8 @@ class DoneIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
     return IconButton(
         icon: const Icon(Icons.done),

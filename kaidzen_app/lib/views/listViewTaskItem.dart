@@ -20,7 +20,8 @@ class ListViewTaskItem extends ListTile {
   @override
   Widget build(BuildContext context) {
     // Access the current theme provider to get the theme mode
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     return ListTile(

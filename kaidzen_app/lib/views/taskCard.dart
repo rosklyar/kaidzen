@@ -10,7 +10,7 @@ import 'listViewComplexTaskItem.dart';
 import '../assets/light_dark_theme.dart';
 
 Widget taskCard(Task task, BuildContext context) {
-  final themeProvider = Provider.of<DarkThemeProvider>(context);
+  final themeProvider = Provider.of<DarkThemeProvider>(context, listen: false);
   bool isDarkTheme = themeProvider.darkTheme;
 
   if (task.status == Status.TODO) {

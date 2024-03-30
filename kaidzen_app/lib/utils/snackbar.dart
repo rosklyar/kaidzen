@@ -1,10 +1,12 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/tutorial/TutorialState.dart';
 import 'package:provider/provider.dart';
 
 import '../assets/light_dark_theme.dart';
+import '../main.dart';
 
 showTopFlushbar(String text, BuildContext context, int durationInMs) {
   final flushBar = Flushbar(
@@ -32,10 +34,33 @@ showTutorialTopFlushbar(String text, BuildContext context) {
   }
 }
 
+// void showDarkThemeToast(
+//     String title, BuildContext context, task, String points, bool flagMoved) {
+//   final themeProvider = Provider.of<DarkThemeProvider>(context, listen: false);
+//   bool isDarkTheme = themeProvider.darkTheme;
+
+//   String message = flagMoved
+//       ? 'Moved to $title:\n +$points to your ${task.category.name} and cookies for Buddy'
+//       : '+$points to your ${task.category.name} and cookies for Buddy';
+
+//   Fluttertoast.showToast(
+//       msg: message,
+//       toastLength: Toast.LENGTH_SHORT,
+//       gravity: ToastGravity.TOP,
+//       timeInSecForIosWeb: 2,
+//       backgroundColor: task.category
+//           .getBackgroundColor(isDarkTheme), // Adjust colors based on theme
+//       textColor: isDarkTheme
+//           ? Colors.white
+//           : Colors.black, // Adjust text color based on theme
+//       fontSize: 16.0);
+// }
+
 Flushbar? currentFlushbar;
 
 void showDarkThemeFlushbar(
-    String title, BuildContext context, task, String points) {
+    String title, BuildContext context, task, String points, bool flagMoved,
+    {VoidCallback? onDismiss}) {
   final themeProvider = Provider.of<DarkThemeProvider>(context, listen: false);
   bool isDarkTheme = themeProvider.darkTheme;
 
@@ -43,58 +68,46 @@ void showDarkThemeFlushbar(
   currentFlushbar?.dismiss();
   currentFlushbar = null;
 
-  // String message_buff = '+ $points points to your ' +
-  //     task.category.name +
-  //     ' and cookies for Buddy';
-
   if (isDarkTheme) {
     currentFlushbar = Flushbar(
-      title: 'Moved to ' + title,
-      // message: message_buff,
       duration: Duration(seconds: 2),
       flushbarPosition: FlushbarPosition.TOP,
-      backgroundColor: task.category.getBackgroundColor(isDarkTheme),
-      margin:
-          EdgeInsets.symmetric(horizontal: 10, vertical: 5), // Smaller margin
-      padding:
-          EdgeInsets.symmetric(horizontal: 8, vertical: 8), // Smaller padding
-      borderRadius: BorderRadius.circular(
-          8), // Adjusted border radius for a less pronounced curve
-      // borderColor: Colors.white,
+      backgroundColor: Color.lerp(
+          task.category.getBackgroundColor(isDarkTheme), Colors.white, 0.1)!,
+
+// Color.lerp(categoryColorSelectedDark, Colors.white, 0.55)!
+
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      borderRadius: BorderRadius.circular(8),
       borderWidth: 1,
-      // boxShadows: [
-      //   BoxShadow(
-      //     color: Colors.black.withOpacity(0.5),
-      //     offset: Offset(0, 2),
-      //     blurRadius: 3,
-      //   ),
-      // ],
-      titleText: Text(
-        'Moved to ' + title,
-        textAlign: TextAlign.left,
-        style: Fonts_mode.largeBoldTextStyle(isDarkTheme,
-            fontSize: 12), // Smaller font size
-      ),
+      titleText: flagMoved
+          ? Text('Moved to $title',
+              textAlign: TextAlign.left,
+              style: Fonts_mode.largeBoldTextStyle(isDarkTheme,
+                  fontSize: 14, fontWeight: FontWeight.bold))
+          : null,
       messageText: RichText(
         textAlign: TextAlign.left,
         text: TextSpan(
-          children: <TextSpan>[
+          children: [
             TextSpan(
-                text: '+ $points points ',
+                text: '+$points points ',
                 style: Fonts_mode.largeBoldTextStyle(isDarkTheme,
                     fontSize: 14, fontWeight: FontWeight.bold)),
             TextSpan(
-              text: 'to your ' + task.category.name + ' and cookies for Buddy',
+              text: 'to your ${task.category.name} and cookies for Buddy',
               style: Fonts_mode.largeBoldTextStyle(isDarkTheme, fontSize: 12),
-              // Assuming Fonts_mode.largeBoldTextStyle returns a TextStyle, adjust fontSize if needed.
             ),
           ],
         ),
       ),
       onStatusChanged: (status) {
-        // When Flushbar is dismissed, clear the reference
         if (status == FlushbarStatus.DISMISSED) {
           currentFlushbar = null;
+          if (onDismiss != null) {
+            onDismiss(); // Call the completion callback
+          }
         }
       },
     )..show(context);

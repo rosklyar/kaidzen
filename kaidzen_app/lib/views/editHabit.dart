@@ -11,6 +11,7 @@ import 'package:kaidzen_app/widgets/taskType.dart';
 import 'package:kaidzen_app/widgets/taskDifficulty.dart';
 
 import 'package:provider/provider.dart';
+import 'package:vibration/vibration.dart';
 
 import '../assets/light_dark_theme.dart';
 import '../service/AnalyticsService.dart';
@@ -55,7 +56,8 @@ class _EditHabitState extends State<EditHabit> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
     final double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -65,6 +67,7 @@ class _EditHabitState extends State<EditHabit> {
             icon: Icon(Icons.arrow_back_ios_new,
                 color: dark_light_modes.statusIcon(isDarkTheme)),
             onPressed: () async {
+              isDarkTheme ? HapticFeedback.selectionClick() : null;
               await FirebaseAnalytics.instance.logEvent(
                   name: AnalyticsEventType.create_goal_screen_back_button.name);
               Navigator.of(context).pop();
@@ -77,17 +80,17 @@ class _EditHabitState extends State<EditHabit> {
             style: Fonts.screenTytleTextStyle,
           ),
           centerTitle: true,
-          backgroundColor: Color(DevelopmentCategoryDark.values
+          backgroundColor: DevelopmentCategoryDark.values
               .firstWhere((element) => element.id == _currentCategory)
-              .backgroundColor),
+              .getBackgroundColor(isDarkTheme),
         ),
         resizeToAvoidBottomInset: false,
         body: GestureDetector(
             child: Container(
               padding: const EdgeInsets.only(bottom: 8),
-              color: Color(DevelopmentCategoryDark.values
+              color: DevelopmentCategoryDark.values
                   .firstWhere((element) => element.id == _currentCategory)
-                  .backgroundColor),
+                  .getBackgroundColor(isDarkTheme),
               child: Column(children: [
                 Expanded(
                     child: Column(children: [
@@ -103,6 +106,9 @@ class _EditHabitState extends State<EditHabit> {
                                 decoration: InputDecoration(
                                     suffixIcon: IconButton(
                                         onPressed: () {
+                                          isDarkTheme
+                                              ? HapticFeedback.selectionClick()
+                                              : null;
                                           newTaskController.clear();
                                           _taskTypeWidgetKey
                                               .currentState!._value = -1;
@@ -141,6 +147,10 @@ class _EditHabitState extends State<EditHabit> {
                                         callback: (value) => setState(() {
                                               _currentCategory = value!;
                                               Utils.tryToLostFocus(context);
+                                              isDarkTheme
+                                                  ? HapticFeedback
+                                                      .selectionClick()
+                                                  : null;
                                             })),
                                     flex: 1),
                                 const Expanded(child: SizedBox(), flex: 1)
@@ -160,6 +170,9 @@ class _EditHabitState extends State<EditHabit> {
                               "Completed:",
                               _stageCount,
                               () {
+                                isDarkTheme
+                                    ? HapticFeedback.selectionClick()
+                                    : null;
                                 setState(() {
                                   if (_stageCount > 0) {
                                     _stageCount--;
@@ -167,6 +180,9 @@ class _EditHabitState extends State<EditHabit> {
                                 });
                               },
                               () {
+                                isDarkTheme
+                                    ? HapticFeedback.selectionClick()
+                                    : null;
                                 setState(() {
                                   if (_stageCount < _totalCount) {
                                     _stageCount++;
@@ -180,6 +196,9 @@ class _EditHabitState extends State<EditHabit> {
                               "Target:",
                               _totalCount,
                               () {
+                                isDarkTheme
+                                    ? HapticFeedback.selectionClick()
+                                    : null;
                                 setState(() {
                                   if (_totalCount > 0 &&
                                       _totalCount > _stageCount) {
@@ -188,6 +207,9 @@ class _EditHabitState extends State<EditHabit> {
                                 });
                               },
                               () {
+                                isDarkTheme
+                                    ? HapticFeedback.selectionClick()
+                                    : null;
                                 setState(() {
                                   if (_totalCount < maxFixedValue) {
                                     _totalCount++;
@@ -210,9 +232,15 @@ class _EditHabitState extends State<EditHabit> {
                               "Stage completions:",
                               _stageCount,
                               () {
+                                isDarkTheme
+                                    ? HapticFeedback.selectionClick()
+                                    : null;
                                 setState(decreaseHabitStageCountFunction);
                               },
                               () {
+                                isDarkTheme
+                                    ? HapticFeedback.selectionClick()
+                                    : null;
                                 setState(increaseHabitStageCountFunction);
                               },
                             ),
@@ -251,7 +279,10 @@ class _EditHabitState extends State<EditHabit> {
                     flex: 1),
               ]),
             ),
-            onTap: () => Utils.tryToLostFocus(context)));
+            onTap: () => () {
+                  isDarkTheme ? Vibration.vibrate(duration: 100) : null;
+                  Utils.tryToLostFocus(context);
+                }));
   }
 
   void increaseHabitStageCountFunction() {
@@ -414,7 +445,8 @@ class _EditHabitState extends State<EditHabit> {
   }
 
   void submit() async {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     isDarkTheme ? HapticFeedback.selectionClick() : null;
@@ -432,7 +464,7 @@ class _EditHabitState extends State<EditHabit> {
 
     if (fixedIsDone(widget.habit) || habitIsDone(widget.habit)) {
       await Provider.of<HabitState>(context, listen: false)
-          .moveHabitAndNotify(widget.habit, Status.DONE);
+          .moveHabitAndNotify(widget.habit, Status.DONE, context);
     } else {
       await Provider.of<HabitState>(context, listen: false)
           .updateHabit(widget.habit);

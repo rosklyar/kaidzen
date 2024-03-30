@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/achievements/event.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/views/utils.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vibration/vibration.dart';
 
 import '../assets/light_dark_theme.dart';
 import '../models/task.dart';
@@ -32,7 +34,8 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
     var parentWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -44,6 +47,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
             color: dark_light_modes.statusIcon(isDarkTheme),
           ),
           onPressed: () {
+            isDarkTheme ? HapticFeedback.lightImpact() : null;
             if (widget.popTarget == null) {
               Navigator.of(context).popUntil((route) => route.isFirst);
             } else {
@@ -125,6 +129,10 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                                 decoration:
                                                     TextDecoration.underline)),
                                     onTap: () {
+                                      isDarkTheme
+                                          ? Vibration.vibrate(duration: 100)
+                                          : null;
+
                                       submit();
                                       Navigator.push(
                                           context,
@@ -160,6 +168,9 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                                       0.1)!),
                                       onPressed: () {
                                         if (_isCreateButtonActive) {
+                                          isDarkTheme
+                                              ? Vibration.vibrate(duration: 100)
+                                              : null;
                                           submit();
                                           if (widget.popTarget == null) {
                                             Navigator.of(context).popUntil(
@@ -186,7 +197,10 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                         ),
                         flex: 3)
                   ]))),
-          onTap: () => Utils.tryToLostFocus(context)),
+          onTap: () => () {
+                isDarkTheme ? Vibration.vibrate(duration: 100) : null;
+                Utils.tryToLostFocus(context);
+              }),
     );
   }
 

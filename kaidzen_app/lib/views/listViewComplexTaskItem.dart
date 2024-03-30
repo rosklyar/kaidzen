@@ -20,7 +20,7 @@ class ListViewComplexTaskItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider = Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
     return ExpansionTile(
       tilePadding: EdgeInsets.only(right: 30),
@@ -37,7 +37,7 @@ class ListViewComplexTaskItem extends StatelessWidget {
 }
 
 List<Widget> buildExpandableContent(BuildContext context, Task task) {
-  final themeProvider = Provider.of<DarkThemeProvider>(context);
+  final themeProvider = Provider.of<DarkThemeProvider>(context, listen: false);
   bool isDarkTheme = themeProvider.darkTheme;
 
   List<Widget> columnContent = [];

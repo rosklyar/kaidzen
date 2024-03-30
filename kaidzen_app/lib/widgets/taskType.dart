@@ -57,7 +57,8 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
   }
 
   ChoiceChip categoryChoice(DevelopmentCategoryDark cat) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
     bool isSelected = _value == cat.index;
 

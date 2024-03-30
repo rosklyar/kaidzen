@@ -32,7 +32,8 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     return SizedBox(
@@ -62,7 +63,8 @@ class _TaskDifficultyWidgetState extends State<TaskDifficultyWidget> {
   }
 
   Widget getDiffOptionLayout(Difficulty difficulty, bool selected) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
     // Color iconColor = selected
     //     ? DevelopmentCategoryDark.values

@@ -1,4 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/models/progress.dart';
@@ -7,6 +8,7 @@ import 'package:kaidzen_app/service/ProgressCalculator.dart';
 import 'package:kaidzen_app/service/ProgressRepository.dart';
 
 import '../assets/light_dark_theme.dart';
+import '../main.dart';
 import '../models/habit.dart';
 import '../utils/snackbar.dart';
 import 'AnalyticsService.dart';
@@ -24,29 +26,40 @@ class ProgressState extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateProgress(Task task, String newStatus, context) async {
+  updateProgress(
+      Task task, String newStatus, context, bool parentTaskFlag) async {
     var currentProgress = _progress[task.category]!;
     var updatedProgress = ProgressCalculator.progress(currentProgress, task);
 
-    var temp_name = pointsPropertiesMap[task.category]!.name.toLowerCase();
-    var temp_points =
-        (updatedProgress.points - currentProgress.points).abs().toString();
-    print(
-        "$updatedProgress and  $currentProgress and $temp_name and $temp_points");
+    // var temp_name = pointsPropertiesMap[task.category]!.name.toLowerCase();
+    var temp_points = (updatedProgress.totalPoints).abs().toString();
+    // print("$updatedProgress and  $currentProgress  and $temp_points");
+    // Assume you need to wait for a previous operation to complete or for a UI state to stabilize
+    // Future.delayed(Duration(milliseconds: 500), () {
+    // Now show the Flushbar
 
-    showDarkThemeFlushbar(task.status, context, task, temp_points);
-    //point shere updated - current
+    parentTaskFlag
+        ? null
+        : showDarkThemeFlushbar(task.status, context, task, temp_points, true);
+    // });
 
     await handleProgressChanged(updatedProgress, currentProgress, task);
     notifyListeners();
   }
 
-  updateHabitProgress(Habit habit) async {
+  updateHabitProgress(Habit habit, context, bool movedFlag) async {
     var currentProgress = _progress[habit.task.category]!;
     var updatedProgress =
         ProgressCalculator.habitProgress(currentProgress, habit);
+
+    var temp_points = (updatedProgress.totalPoints).abs().toString();
     await handleProgressChanged(updatedProgress, currentProgress, habit.task);
+
+    //point shere updated - current
     notifyListeners();
+
+    showDarkThemeFlushbar(
+        habit.task.status, context, habit.task, temp_points, movedFlag);
   }
 
   Future<void> handleProgressChanged(
@@ -61,13 +74,15 @@ class ProgressState extends ChangeNotifier {
 
       if (updatedProgress.level > currentProgress.level) {
         //We do this 3 step update to be able to correctly display progress animation
-        var progressToMax = Progress(currentProgress.level,
+        var progressToMax = Progress(
+            currentProgress.level,
+            ProgressCalculator.getMaxLevelPoints(currentProgress.level + 1),
             ProgressCalculator.getMaxLevelPoints(currentProgress.level + 1));
         await repository.updateProgress(task.category, progressToMax);
         _progress[task.category] = progressToMax;
         await notifyWithDelay();
 
-        var progressToZero = Progress(updatedProgress.level, 0);
+        var progressToZero = Progress(updatedProgress.level, 0, 0);
         await repository.updateProgress(task.category, progressToZero);
         _progress[task.category] = progressToZero;
         await notifyWithDelay();

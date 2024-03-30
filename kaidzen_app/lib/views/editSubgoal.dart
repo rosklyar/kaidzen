@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/views/utils.dart';
+import 'package:vibration/vibration.dart';
 
 import '../assets/light_dark_theme.dart';
 import '../models/task.dart';
@@ -28,8 +29,12 @@ class EditSubGoal extends StatefulWidget {
 class _EditSubGoalState extends State<EditSubGoal> {
   late TextEditingController newTaskController;
   bool _isSaveButtonActive = true;
+
   @override
   Widget build(BuildContext context) {
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
+    bool isDarkTheme = themeProvider.darkTheme;
     var parentWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
@@ -37,6 +42,7 @@ class _EditSubGoalState extends State<EditSubGoal> {
           leading: IconButton(
             icon: SvgPicture.asset("assets/shevron-left-black.svg"),
             onPressed: () {
+              isDarkTheme ? HapticFeedback.selectionClick() : null;
               Navigator.of(context).pop();
             },
           ),
@@ -117,11 +123,15 @@ class _EditSubGoalState extends State<EditSubGoal> {
                         flex: 2)
                   ]),
                 )),
-            onTap: () => Utils.tryToLostFocus(context)));
+            onTap: () => () {
+                  isDarkTheme ? Vibration.vibrate(duration: 100) : null;
+                  Utils.tryToLostFocus(context);
+                }));
   }
 
   void submit() {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     isDarkTheme ? HapticFeedback.selectionClick() : null;

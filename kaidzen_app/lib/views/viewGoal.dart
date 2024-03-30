@@ -43,7 +43,8 @@ class _ViewGoalState extends State<ViewGoal> {
 
   Scaffold buildViewTask(BuildContext context, Task task) {
     var parentWidth = MediaQuery.of(context).size.width;
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
     return Scaffold(
       backgroundColor: Color(isDarkTheme
@@ -323,7 +324,7 @@ class _ViewGoalState extends State<ViewGoal> {
 
 List<Widget> buildExpandableContent(BuildContext context, Task task) {
   List<Widget> columnContent = [];
-  final themeProvider = Provider.of<DarkThemeProvider>(context);
+  final themeProvider = Provider.of<DarkThemeProvider>(context, listen: false);
   bool isDarkTheme = themeProvider.darkTheme;
 
   var divider = Container(

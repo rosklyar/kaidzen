@@ -6,6 +6,7 @@ import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/views/utils.dart';
 import 'package:kaidzen_app/widgets/taskType.dart';
 import 'package:kaidzen_app/widgets/taskDifficulty.dart';
+import 'package:vibration/vibration.dart';
 
 import '../models/task.dart';
 import 'package:provider/provider.dart';
@@ -48,7 +49,8 @@ class _EditGoalState extends State<EditGoal> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     return Scaffold(
@@ -61,6 +63,7 @@ class _EditGoalState extends State<EditGoal> {
             ),
             // SvgPicture.asset("assets/shevron-left-black.svg"),
             onPressed: () async {
+              isDarkTheme ? HapticFeedback.selectionClick() : null;
               await FirebaseAnalytics.instance.logEvent(
                   name: AnalyticsEventType.create_goal_screen_back_button.name);
               Navigator.of(context).pop();
@@ -71,17 +74,17 @@ class _EditGoalState extends State<EditGoal> {
             style: Fonts.screenTytleTextStyle,
           ),
           centerTitle: true,
-          backgroundColor: Color(DevelopmentCategoryDark.values
+          backgroundColor: DevelopmentCategoryDark.values
               .firstWhere((element) => element.id == _currentCategory)
-              .backgroundColor),
+              .getBackgroundColor(isDarkTheme),
         ),
         resizeToAvoidBottomInset: false,
         body: GestureDetector(
             child: Container(
               padding: const EdgeInsets.only(bottom: 8),
-              color: Color(DevelopmentCategoryDark.values
+              color: DevelopmentCategoryDark.values
                   .firstWhere((element) => element.id == _currentCategory)
-                  .backgroundColor),
+                  .getBackgroundColor(isDarkTheme),
               child: Column(children: [
                 Expanded(
                     child: Column(children: [
@@ -171,7 +174,10 @@ class _EditGoalState extends State<EditGoal> {
                     flex: 1)
               ]),
             ),
-            onTap: () => Utils.tryToLostFocus(context)));
+            onTap: () {
+              Utils.tryToLostFocus(context);
+              isDarkTheme ? Vibration.vibrate(duration: 100) : null;
+            }));
   }
 
   Widget getDiff() {
@@ -201,7 +207,8 @@ class _EditGoalState extends State<EditGoal> {
   }
 
   void submit() {
-    final themeProvider = Provider.of<DarkThemeProvider>(context);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
 
     isDarkTheme ? HapticFeedback.selectionClick() : null;

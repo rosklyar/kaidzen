@@ -54,6 +54,8 @@ void main() async {
   DarkThemeProvider themeProvider = DarkThemeProvider();
   await themeProvider.loadThemePreference();
 
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   // Load SharedPreferences
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setInt(
@@ -170,6 +172,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       navigatorObservers: [InstabugNavigatorObserver()],
+      navigatorKey: navigatorKey,
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
@@ -242,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   name: AnalyticsEventType.create_goal_button_pressed.name);
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const CreateTask()));
-              isDarkTheme ? HapticFeedback.mediumImpact() : null;
+              isDarkTheme ? HapticFeedback.heavyImpact() : null;
             },
             tooltip: 'Add goal',
             child: Icon(

@@ -67,11 +67,11 @@ class HabitState extends ChangeNotifier {
     return _habits.values.map((value) => value.length).sum;
   }
 
-  addHabit(Habit newHabit) async {
+  addHabit(Habit newHabit, context) async {
     newHabit.task.priority =
         calculateNewPriority(newHabit.task, newHabit.task.status);
     Habit habit = await repository.insert(newHabit);
-    await progressState.updateHabitProgress(habit);
+    await progressState.updateHabitProgress(habit, context, true);
 
     if (!tutorialState.tutorialCompleted()) {
       tutorialState.updateTutorialState(TutorialStep(
@@ -96,13 +96,14 @@ class HabitState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> trackHabit(Habit habit) async {
+  Future<void> trackHabit(Habit habit, context) async {
     // 1. Update the Counter
     var type = habit.getType();
     var stageTotal = type == HabitType.FIXED
         ? habit.totalCount
         : type.stageCount[habit.stage];
     habit.stageCount += 1;
+    var flagMoved = false;
 
     // 2. Notify listeners to start progress bar animation
     notifyListeners();
@@ -124,7 +125,8 @@ class HabitState extends ChangeNotifier {
     // 4. Update habit's status if necessary
     if (habit.stageCount == stageTotal) {
       if (habit.stage == type.stageCount.length) {
-        await moveHabitAndNotify(habit, Status.DONE);
+        flagMoved = true;
+        await moveHabitAndNotify(habit, Status.DONE, context);
       } else {
         habit.stage += 1;
         habit.stageCount = 0;
@@ -134,7 +136,7 @@ class HabitState extends ChangeNotifier {
       await updateHabit(habit);
     }
 
-    await progressState.updateHabitProgress(habit);
+    await progressState.updateHabitProgress(habit, context, flagMoved);
     updateHabitTimestamps(habit);
     var event =
         Event(EventType.habitTracked, DateTime.now(), habit.task.category);
@@ -182,8 +184,9 @@ class HabitState extends ChangeNotifier {
         : _habits[newStatus]![tasksCount - 1].task.priority + 1;
   }
 
-  Future<void> moveHabitAndNotify(Habit habit, String newStatus) async {
-    await moveHabit(habit, newStatus);
+  Future<void> moveHabitAndNotify(
+      Habit habit, String newStatus, context) async {
+    await moveHabit(habit, newStatus, context);
     await loadAll();
     await updatePropertiesAfterHabitMoved();
     notifyListeners();
@@ -201,13 +204,13 @@ class HabitState extends ChangeNotifier {
         value: getByStatus(Status.DONE).length.toString());
   }
 
-  Future<void> moveHabit(Habit habit, String newStatus) async {
+  Future<void> moveHabit(Habit habit, String newStatus, context) async {
     habit.task.priority = calculateNewPriority(habit.task, newStatus);
 
     String oldStatus = habit.task.status;
     habit.task.status = newStatus;
     if (habit.task.status != Status.TODO) {
-      await progressState.updateHabitProgress(habit);
+      await progressState.updateHabitProgress(habit, context, true);
       updateHabitTimestamps(habit);
     }
     if (oldStatus == Status.DONE) {

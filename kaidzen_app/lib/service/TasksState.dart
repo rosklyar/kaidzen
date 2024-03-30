@@ -81,7 +81,7 @@ class TasksState extends ChangeNotifier {
   addTask(Task newTask, context) async {
     newTask.priority = calculateNewPriority(newTask, newTask.status);
     Task task = await repository.insert(newTask);
-    await progressState.updateProgress(task, newTask.status, context);
+    await progressState.updateProgress(task, newTask.status, context, false);
 
     if (!tutorialState.tutorialCompleted()) {
       tutorialState.updateTutorialState(TutorialStep(
@@ -139,15 +139,16 @@ class TasksState extends ChangeNotifier {
     notifyListeners();
   }
 
-  moveTaskAndNotify(Task task, String newStatus, context) async {
-    await moveTask(task, newStatus, context);
+  moveTaskAndNotify(
+      Task task, String newStatus, context, bool parentTaskFlag) async {
+    await moveTask(task, newStatus, context, parentTaskFlag);
     if (task.parent != null) {
       Task parentTask = getById(task.parent!)!;
       if (parentTask.subtasks.where((st) => st.status != Status.DONE).isEmpty) {
-        await moveTask(parentTask, Status.DONE, context);
+        await moveTask(parentTask, Status.DONE, context, parentTaskFlag);
       }
       if (parentTask.status == Status.DONE && task.status != Status.DONE) {
-        await moveTask(parentTask, Status.TODO, context);
+        await moveTask(parentTask, Status.TODO, context, parentTaskFlag);
       }
     }
     await loadAll();
@@ -155,8 +156,9 @@ class TasksState extends ChangeNotifier {
     notifyListeners();
   }
 
-  moveSubtaskOnlyAndNotify(Task task, String newStatus, context) async {
-    await moveTask(task, newStatus, context);
+  moveSubtaskOnlyAndNotify(
+      Task task, String newStatus, context, bool parentTaskFlag) async {
+    await moveTask(task, newStatus, context, true);
     await loadAll();
     await updatePropertiesAfterTaskMoved();
     notifyListeners();
@@ -174,13 +176,15 @@ class TasksState extends ChangeNotifier {
         value: getByStatus(Status.DONE).length.toString());
   }
 
-  Future<void> moveTask(Task task, String newStatus, context) async {
+  Future<void> moveTask(
+      Task task, String newStatus, context, bool parentTaskFlag) async {
     task.priority = calculateNewPriority(task, newStatus);
 
     String oldStatus = task.status;
     task.status = newStatus;
     if (task.status != Status.TODO) {
-      await progressState.updateProgress(task, newStatus, context);
+      await progressState.updateProgress(
+          task, newStatus, context, parentTaskFlag);
       updateTaskTimestamps(task);
     }
 

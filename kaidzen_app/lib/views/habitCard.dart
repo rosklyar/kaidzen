@@ -13,7 +13,7 @@ import 'listViewComplexTaskItem.dart';
 Widget habitCard(Habit habit, BuildContext context) {
   double progressValue = calculateCurrentHabitProgress(habit);
 
-  final themeProvider = Provider.of<DarkThemeProvider>(context);
+  final themeProvider = Provider.of<DarkThemeProvider>(context, listen: false);
   bool isDarkTheme = themeProvider.darkTheme;
 
   Widget progressBar = ClipRRect(
@@ -48,7 +48,7 @@ Widget habitCard(Habit habit, BuildContext context) {
 }
 
 AssetImage getBackgroundImage(Habit habit, context) {
-  final themeProvider = Provider.of<DarkThemeProvider>(context);
+  final themeProvider = Provider.of<DarkThemeProvider>(context, listen: false);
   bool isDarkTheme = themeProvider.darkTheme;
 
   if (habit.type == HabitType.FIXED.id ||
