@@ -3,49 +3,29 @@ import 'package:flutter/services.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:async';
 import 'dart:math' as math;
-import 'package:vibration/vibration.dart';
 
 import '../../assets/light_dark_theme.dart';
 import '../../main.dart';
-import 'elevated_button.dart';
 
 class ThemeSelectionPage extends StatelessWidget {
-  void handleLongPress(
-      BuildContext context, bool isDarkMode, Function setElevation) async {
-    setElevation(true); // Raise the button by increasing elevation
-    if (await Vibration.hasVibrator() ?? false) {
-      Vibration.vibrate(
-          pattern: [500, 1000],
-          repeat: 3); // Vibrate for ~4 seconds with pauses
-    }
-
-    Future.delayed(Duration(seconds: 4), () {
-      setThemeMode(isDarkMode, context);
-      setElevation(false); // Reset elevation after action is complete
-    });
-  }
-
-  void setThemeMode(bool isDarkMode, BuildContext context) async {
-    final themeProvider =
-        Provider.of<DarkThemeProvider>(context, listen: false);
-    themeProvider.darkTheme = isDarkMode;
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('hasChosenTheme', 1);
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-          builder: (_) => ModeConfirmationScreen(isDarkMode: isDarkMode)),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    // Determine the size of the canvas for the Yin-Yang symbol
+    final screenWidth = MediaQuery.of(context).size.width;
+    final symbolSize = screenWidth - 100; // Adjust the size as needed
+    final symbolRadius = symbolSize / 2;
+    final dotRadius =
+        symbolRadius / 4; // Small dot radius (1/4th of the symbol's radius)
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
+
     return Scaffold(
-      backgroundColor: moreScreenBackColor,
+      backgroundColor: moreScreenBackColor, // Background color
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment:
+            CrossAxisAlignment.stretch, // Stretch to the width of the screen
         children: [
           SizedBox(height: 88),
           Padding(
@@ -60,34 +40,64 @@ class ThemeSelectionPage extends StatelessWidget {
               ),
             ),
           ),
+          // SizedBox(height: 32), // Space between text and symbol
           Expanded(
             child: Stack(
               alignment: Alignment.center,
               children: [
+                // CustomPaint(
+                //   painter: YinYangPainter(),
+                //   size: Size(symbolSize, symbolSize),
+                // ),
+                // Light Mode Button on the white dot
                 Positioned(
-                  bottom: MediaQuery.of(context).size.height /
-                      2, // Position for light mode button
-                  child: ElevatedIconButton(
-                    iconData: Icons.wb_sunny,
-                    color: Colors.white,
-                    iconColor: Colors.black,
-                    isDarkMode: false,
-                    onLongPressCompleted: (isDarkMode) =>
-                        setThemeMode(isDarkMode, context),
+                  top: symbolRadius * 3 - dotRadius * 2,
+                  child: GestureDetector(
+                    onLongPress: () {
+                      HapticFeedback.heavyImpact();
+                      setThemeMode(false, context);
+                      themeProvider.darkTheme = false;
+                    },
+                    child: Container(
+                      width: 111, // Set your desired width
+                      height: 111, // Set your desired height
+                      child: FloatingActionButton(
+                        heroTag: "light_mode_btn",
+                        backgroundColor: Colors.white,
+                        onPressed: () {
+                          HapticFeedback.lightImpact();
+                        },
+                        child: Icon(Icons.wb_sunny,
+                            size: 36,
+                            color: Colors.black), // Adjust icon size as needed
+                      ),
+                    ),
                   ),
                 ),
                 Positioned(
-                  bottom: MediaQuery.of(context).size.height / 2 -
-                      200, // Position for dark mode button
-                  child: ElevatedIconButton(
-                    iconData: Icons.nightlight_round,
-                    color: Colors.black,
-                    iconColor: Colors.white,
-                    isDarkMode: true,
-                    onLongPressCompleted: (isDarkMode) =>
-                        setThemeMode(isDarkMode, context),
-                  ),
-                ),
+                    bottom: symbolRadius * 3 - dotRadius * 2,
+                    child: GestureDetector(
+                      onLongPress: () {
+                        HapticFeedback.heavyImpact();
+                        themeProvider.darkTheme = true;
+                        setThemeMode(true, context);
+                      },
+                      child: Container(
+                        width: 111, // Set your desired width
+                        height: 111, // Set your desired height
+                        child: FloatingActionButton(
+                          heroTag: "dark_mode_btn",
+                          backgroundColor: Colors.black,
+                          onPressed: () {
+                            HapticFeedback.lightImpact();
+                          },
+                          child: Icon(Icons.nightlight_round,
+                              size: 36,
+                              color:
+                                  Colors.white), // Adjust icon size as needed
+                        ),
+                      ),
+                    ))
               ],
             ),
           ),
@@ -96,48 +106,23 @@ class ThemeSelectionPage extends StatelessWidget {
     );
   }
 
-  // Widget buildButton(BuildContext context, bool isDarkMode) {
-  //   // Using a StatefulBuilder to manage elevation state locally
-  //   return StatefulBuilder(
-  //     builder: (BuildContext context, StateSetter setState) {
-  //       double elevation = 10; // Default elevation
+  void setThemeMode(bool isDarkMode, BuildContext context) async {
+    // final preferences = await SharedPreferences.getInstance();
+    // await preferences.setBool('themeMode', isDarkMode);
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
+    themeProvider.darkTheme = isDarkMode;
 
-  //       return Positioned(
-  //         bottom: isDarkMode
-  //             ? MediaQuery.of(context).size.height / 2 - 200
-  //             : MediaQuery.of(context).size.height / 2,
-  //         child: GestureDetector(
-  //           onLongPress: () =>
-  //               handleLongPress(context, isDarkMode, (bool isPressed) {
-  //             setState(() =>
-  //                 elevation = isPressed ? 10 : 0); // Adjust elevation on press
-  //           }),
-  //           onLongPressUp: () {
-  //             Vibration.cancel(); // Stop vibration when released
-  //             setState(() => elevation = 0); // Reset elevation
-  //           },
-  //           child: Material(
-  //             elevation: elevation,
-  //             color: isDarkMode
-  //                 ? Colors.black
-  //                 : Colors.white, // Button color based on theme
-  //             shape: CircleBorder(),
-  //             child: Container(
-  //               width: 111,
-  //               height: 111,
-  //               alignment: Alignment.center,
-  //               child: Icon(
-  //                 isDarkMode ? Icons.nightlight_round : Icons.wb_sunny,
-  //                 size: 36,
-  //                 color: isDarkMode ? Colors.white : Colors.black,
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(
+        'hasChosenTheme', 1); // Indicate that the user has chosen a theme
+
+    // Navigate to the ModeConfirmationScreen
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+          builder: (_) => ModeConfirmationScreen(isDarkMode: isDarkMode)),
+    );
+  }
 }
 
 class YinYangPainter extends CustomPainter {
