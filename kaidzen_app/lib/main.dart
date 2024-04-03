@@ -38,6 +38,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 
 import 'views/Quiz/light_dark_question.dart';
+import 'views/Quiz/welcomeFromTeam.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -178,7 +179,8 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: ThemeData.dark(),
       themeMode: themeProvider.darkTheme ? ThemeMode.dark : ThemeMode.light,
-      home: hasChosenTheme ? HomeScreen() : ThemeSelectionPage(),
+      home: hasChosenTheme ? HomeScreen() : WelcomeScreen(),
+      // ThemeSelectionPage(),
 
       // home: const HomeScreen(),
     );

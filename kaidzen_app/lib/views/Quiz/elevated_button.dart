@@ -38,7 +38,7 @@ class _ElevatedIconButtonState extends State<ElevatedIconButton>
       vsync: this,
     );
 
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 11)
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 9)
         .animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
