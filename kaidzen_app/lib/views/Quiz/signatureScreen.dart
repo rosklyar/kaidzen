@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 
+import 'light_dark_question.dart';
+
 class SignatureScreen extends StatefulWidget {
   @override
   _SignatureScreenState createState() => _SignatureScreenState();
@@ -89,12 +91,12 @@ class _SignatureScreenState extends State<SignatureScreen> {
   }
 }
 
-class ThemeSelectionPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Next Screen")),
-      body: Center(child: Text("This is the next screen after signing.")),
-    );
-  }
-}
+// class ThemeSelectionPage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: Text("Next Screen")),
+//       body: Center(child: Text("This is the next screen after signing.")),
+//     );
+//   }
+// }

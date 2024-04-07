@@ -65,6 +65,47 @@ class ThemeSelectionPage extends StatelessWidget {
               alignment: Alignment.center,
               children: [
                 Positioned(
+                  bottom: 20, // Adjusted position
+                  // right:
+                  //     0, // Add some right padding to ensure it's not sticking to the edge
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment
+                        .start, // Aligns the text to the start
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Dark experience same as light, plus:",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        "- Dark background",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        "- Haptic responses",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        "- Visual gamification",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                      // Add your ElevatedIconButton here
+                    ],
+                  ),
+                ),
+                Positioned(
                   bottom: MediaQuery.of(context).size.height /
                       2, // Position for light mode button
                   child: ElevatedIconButton(
