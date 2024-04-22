@@ -71,7 +71,7 @@ class _EditGoalState extends State<EditGoal> {
           ),
           title: Text(
             "Goal",
-            style: Fonts.screenTytleTextStyle,
+            style: Fonts_mode.screenTytleTextStyle(isDarkTheme),
           ),
           centerTitle: true,
           backgroundColor: DevelopmentCategoryDark.values
@@ -113,7 +113,8 @@ class _EditGoalState extends State<EditGoal> {
                                         borderRadius: BorderRadius.circular(5),
                                         borderSide: const BorderSide(
                                             color: inputInactiveBorderColor)),
-                                    hintStyle: Fonts.inputHintTextStyle),
+                                    hintStyle: Fonts_mode.inputHintTextStyle(
+                                        isDarkTheme)),
                                 controller: newTaskController,
                               )),
                           flex: 3),
@@ -124,7 +125,8 @@ class _EditGoalState extends State<EditGoal> {
                                   width: double.infinity,
                                   child: Text("Life sphere to be affected",
                                       textAlign: TextAlign.left,
-                                      style: Fonts.largeTextStyle))),
+                                      style: Fonts_mode.largeTextStyle(
+                                          isDarkTheme)))),
                           flex: 1),
                       Expanded(
                           child: Padding(
@@ -181,6 +183,9 @@ class _EditGoalState extends State<EditGoal> {
   }
 
   Widget getDiff() {
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
+    bool isDarkTheme = themeProvider.darkTheme;
     return Column(children: [
       const SizedBox(height: 10),
       Padding(
@@ -189,7 +194,7 @@ class _EditGoalState extends State<EditGoal> {
               width: double.infinity,
               child: Text(
                 "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategoryDark.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
-                style: Fonts.largeTextStyle,
+                style: Fonts_mode.largeTextStyle(isDarkTheme),
               ))),
       Padding(
           padding: const EdgeInsets.only(left: 10, right: 10, top: 15),

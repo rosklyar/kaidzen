@@ -179,6 +179,21 @@ class Fonts_mode {
     );
   }
 
+  static TextStyle medium14TextStyleWelcome(bool isDarkTheme,
+      {double fontSize = 12,
+      FontWeight fontWeight = FontWeight.w500,
+      Color? color}) {
+    // bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
+    // Adjust default color based on theme if not specified
+    color = color ?? (isDarkTheme ? Colors.white70 : Colors.black);
+
+    return GoogleFonts.montserrat(
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      color: color,
+    );
+  }
+
   static TextStyle largeTextStyle(bool isDarkTheme,
       {double fontSize = 16,
       // FontWeight fontWeight = FontWeight.w500,

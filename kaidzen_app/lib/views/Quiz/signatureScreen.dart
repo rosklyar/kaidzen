@@ -20,7 +20,7 @@ class _SignatureScreenState extends State<SignatureScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('Personal Promise', style: TextStyle(color: Colors.black)),
+        title: Text('', style: TextStyle(color: Colors.black)),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
