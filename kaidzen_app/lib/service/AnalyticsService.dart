@@ -135,7 +135,10 @@ enum AnalyticsEventType {
   survey_opened,
   feature_discovered,
   origami_last_item,
-  habit_action;
+  habit_action,
+  welcome_from_team_screen,
+  signature_screen,
+  light_dark_screen;
 }
 
 enum AnalyticsUserProperties {

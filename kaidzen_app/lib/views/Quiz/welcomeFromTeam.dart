@@ -1,7 +1,10 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kaidzen_app/assets/light_dark_theme.dart';
 import 'package:kaidzen_app/views/Quiz/signatureScreen.dart';
+
+import '../../service/AnalyticsService.dart';
 
 void main() => runApp(MyApp());
 
@@ -107,9 +110,11 @@ class WelcomeScreen extends StatelessWidget {
                   left: 16,
                   right: 16), // Adjusted padding
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   // Handle the button action
                   HapticFeedback.heavyImpact();
+                  await FirebaseAnalytics.instance.logEvent(
+                      name: AnalyticsEventType.welcome_from_team_screen.name);
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (_) => SignatureScreen()),
                   );

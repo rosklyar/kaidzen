@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 
+import '../../service/AnalyticsService.dart';
 import 'light_dark_question.dart';
 
 class SignatureScreen extends StatefulWidget {
@@ -49,7 +51,9 @@ class _SignatureScreenState extends State<SignatureScreen> {
                       if (await Vibration.hasVibrator() ?? false) {
                         Vibration.vibrate(pattern: [500, 1000]);
                       }
-
+                      await FirebaseAnalytics.instance.logEvent(
+                        name: AnalyticsEventType.signature_screen.name,
+                      );
                       // Navigate after holding down for 2 seconds
                       Navigator.push(
                           context,

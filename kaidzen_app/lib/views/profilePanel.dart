@@ -297,6 +297,10 @@ class ProfilePanelState extends State<ProfilePanel>
                                           visible: !featuresState
                                               .isFeatureDiscovered(
                                                   Features.REMINDER.id),
+                                          //         ||
+                                          // !featuresState
+                                          //     .isFeatureDiscovered(
+                                          //         Features.CHOOSE.id),
                                           child: Positioned(
                                             right: parentWidth * 0.01,
                                             top: parentWidth * 0.01,

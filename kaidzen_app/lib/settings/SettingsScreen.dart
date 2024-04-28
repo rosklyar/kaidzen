@@ -219,19 +219,44 @@ class SettingsScreen extends StatelessWidget {
                                   await _shareApp();
                                 }),
                             ListTile(
-                                title: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      const Icon(Icons.circle,
-                                          color: Color.fromRGBO(11, 11, 11, 1),
-                                          size: 8),
-                                      Text(
-                                        " Choose experience",
-                                        style: Fonts_mode.largeTextStyle20(
-                                            isDarkTheme),
-                                        textAlign: TextAlign.left,
-                                      )
-                                    ]),
+                                title: Column(children: [
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              const Icon(Icons.circle,
+                                                  color: Color.fromRGBO(
+                                                      11, 11, 11, 1),
+                                                  size: 8),
+                                              Text(
+                                                " Choose experience",
+                                                style:
+                                                    Fonts_mode.largeTextStyle20(
+                                                        isDarkTheme),
+                                                textAlign: TextAlign.left,
+                                              )
+                                            ]),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Visibility(
+                                                  visible: !featuresState
+                                                      .isFeatureDiscovered(
+                                                          Features.CHOOSE.id),
+                                                  child: SvgPicture.asset(
+                                                      "assets/new.svg")),
+                                              Icon(Icons.arrow_forward_ios,
+                                                  color: dark_light_modes
+                                                      .statusIcon(isDarkTheme),
+                                                  size: 18),
+                                            ]),
+                                      ])
+                                ]),
                                 onTap: () async {
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(

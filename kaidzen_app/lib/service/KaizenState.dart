@@ -175,7 +175,8 @@ class KaizenDb {
         ''',
       '''
           insert into $tableFeatures values
-            (0, 'Reminder', 1);
+            (0, 'Reminder', 1),
+            (2, 'Choose experience', 1);
         '''
     ];
 
