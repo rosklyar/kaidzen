@@ -57,7 +57,7 @@ class ThemeSelectionPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 32.0),
             child: Text(
-              'Choose Experience\n',
+              'Choose Experience\n and Hold It',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 24,
@@ -136,14 +136,14 @@ class ThemeSelectionPage extends StatelessWidget {
                   ),
                 ),
                 // Positioned "Hold it" text with line and arrow for the top circle
-                Positioned(
-                  bottom: MediaQuery.of(context).size.height / 2 +
-                      110, // Adjust this value as needed
-                  right:
-                      50, // Adjust this value as needed to align with the right edge of the top circle
-                  child:
-                      HoldItWidget(), // Custom widget for "Hold it" text with line and arrow
-                ),
+                // Positioned(
+                //   bottom: MediaQuery.of(context).size.height / 2 +
+                //       110, // Adjust this value as needed
+                //   right:
+                //       50, // Adjust this value as needed to align with the right edge of the top circle
+                //   child:
+                //       HoldItWidget(), // Custom widget for "Hold it" text with line and arrow
+                // ),
                 // Big "OR" text between the circles
                 Positioned(
                   bottom: MediaQuery.of(context).size.height / 2 -
@@ -158,15 +158,15 @@ class ThemeSelectionPage extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                // Positioned "Hold it" text with line and arrow for the bottom circle
-                Positioned(
-                  bottom: MediaQuery.of(context).size.height / 2 -
-                      330, // Adjust this value as needed
-                  left:
-                      50, // Adjust this value as needed to align with the right edge of the bottom circle
-                  child:
-                      HoldItWidgetLow(), // Reuse the same custom widget for consistency
-                ),
+                // // Positioned "Hold it" text with line and arrow for the bottom circle
+                // Positioned(
+                //   bottom: MediaQuery.of(context).size.height / 2 -
+                //       330, // Adjust this value as needed
+                //   left:
+                //       50, // Adjust this value as needed to align with the right edge of the bottom circle
+                //   child:
+                //       HoldItWidgetLow(), // Reuse the same custom widget for consistency
+                // ),
               ],
             ),
           ),
