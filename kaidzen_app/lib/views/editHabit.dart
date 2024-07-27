@@ -77,7 +77,7 @@ class _EditHabitState extends State<EditHabit> {
             widget.habit.getType() == HabitType.FIXED
                 ? "Target goal"
                 : "Habit goal",
-            style: Fonts.screenTytleTextStyle,
+            style: Fonts_mode.screenTytleTextStyle(isDarkTheme),
           ),
           centerTitle: true,
           backgroundColor: DevelopmentCategoryDark.values
@@ -122,7 +122,8 @@ class _EditHabitState extends State<EditHabit> {
                                         borderRadius: BorderRadius.circular(5),
                                         borderSide: const BorderSide(
                                             color: inputInactiveBorderColor)),
-                                    hintStyle: Fonts.inputHintTextStyle),
+                                    hintStyle: Fonts_mode.inputHintTextStyle(
+                                        isDarkTheme)),
                                 controller: newTaskController,
                               )),
                           flex: 3),
@@ -133,7 +134,8 @@ class _EditHabitState extends State<EditHabit> {
                                   width: double.infinity,
                                   child: Text("Life sphere to be affected",
                                       textAlign: TextAlign.left,
-                                      style: Fonts.largeTextStyle))),
+                                      style: Fonts_mode.largeTextStyle(
+                                          isDarkTheme)))),
                           flex: 1),
                       Expanded(
                           child: Padding(
@@ -309,6 +311,9 @@ class _EditHabitState extends State<EditHabit> {
   }
 
   Row _nonEditableCounter(int value) {
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
+    bool isDarkTheme = themeProvider.darkTheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -323,7 +328,7 @@ class _EditHabitState extends State<EditHabit> {
           ),
           child: Text(
             value.toString(),
-            style: Fonts.largeBoldTextStyle,
+            style: Fonts_mode.largeBoldTextStyle(isDarkTheme),
           ),
         ),
         Visibility(
@@ -342,6 +347,9 @@ class _EditHabitState extends State<EditHabit> {
 
   Row _buildCounter(
       int value, VoidCallback onMinusPressed, VoidCallback onPlusPressed) {
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
+    bool isDarkTheme = themeProvider.darkTheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -360,7 +368,7 @@ class _EditHabitState extends State<EditHabit> {
           ),
           child: Text(
             value.toString(),
-            style: Fonts.largeBoldTextStyle,
+            style: Fonts_mode.largeBoldTextStyle(isDarkTheme),
           ),
         ),
         IconButton(
@@ -372,6 +380,9 @@ class _EditHabitState extends State<EditHabit> {
   }
 
   Widget _buildNonEditableCounter(String label, int value) {
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
+    bool isDarkTheme = themeProvider.darkTheme;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
       child: Row(
@@ -383,7 +394,7 @@ class _EditHabitState extends State<EditHabit> {
                 children: [
                   Text(
                     "$label ",
-                    style: Fonts.largeTextStyle,
+                    style: Fonts_mode.largeTextStyle(isDarkTheme),
                   ),
                   Spacer(),
                   _nonEditableCounter(value),
@@ -396,6 +407,9 @@ class _EditHabitState extends State<EditHabit> {
 
   Widget _buildEditableCounter(String label, int value,
       VoidCallback onMinusPressed, VoidCallback onPlusPressed) {
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
+    bool isDarkTheme = themeProvider.darkTheme;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
       child: Row(
@@ -407,7 +421,7 @@ class _EditHabitState extends State<EditHabit> {
                 children: [
                   Text(
                     "$label ",
-                    style: Fonts.largeTextStyle,
+                    style: Fonts_mode.largeTextStyle(isDarkTheme),
                   ),
                   Spacer(),
                   _buildCounter(value, onMinusPressed, onPlusPressed),
@@ -419,6 +433,9 @@ class _EditHabitState extends State<EditHabit> {
   }
 
   Widget getDiff() {
+    final themeProvider =
+        Provider.of<DarkThemeProvider>(context, listen: false);
+    bool isDarkTheme = themeProvider.darkTheme;
     return Column(children: [
       const SizedBox(height: 10),
       Padding(
@@ -427,7 +444,7 @@ class _EditHabitState extends State<EditHabit> {
               width: double.infinity,
               child: Text(
                 "Achieving this will improve my ${_currentCategory >= 0 ? DevelopmentCategoryDark.values.firstWhere((element) => element.id == _currentCategory).name : 'life sphere'}...",
-                style: Fonts.largeTextStyle,
+                style: Fonts_mode.largeTextStyle(isDarkTheme),
               ))),
       Padding(
           padding: const EdgeInsets.only(left: 10, right: 10, top: 15),

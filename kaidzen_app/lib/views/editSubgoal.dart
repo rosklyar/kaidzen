@@ -40,7 +40,10 @@ class _EditSubGoalState extends State<EditSubGoal> {
         appBar: AppBar(
           elevation: 0.0,
           leading: IconButton(
-            icon: SvgPicture.asset("assets/shevron-left-black.svg"),
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: dark_light_modes.statusIcon(isDarkTheme),
+            ),
             onPressed: () {
               isDarkTheme ? HapticFeedback.selectionClick() : null;
               Navigator.of(context).pop();
@@ -48,16 +51,17 @@ class _EditSubGoalState extends State<EditSubGoal> {
           ),
           title: Text(
             "Edit subgoal",
-            style: Fonts.screenTytleTextStyle,
+            style: Fonts_mode.screenTytleTextStyle(isDarkTheme),
           ),
           centerTitle: true,
-          backgroundColor: Color(widget.parent.category.backgroundColor),
+          backgroundColor:
+              (widget.parent.category.getBackgroundColor(isDarkTheme)),
         ),
         resizeToAvoidBottomInset: false,
         body: GestureDetector(
             child: Container(
                 padding: const EdgeInsets.only(bottom: 8),
-                color: Color(widget.parent.category.backgroundColor),
+                color: (widget.parent.category.getBackgroundColor(isDarkTheme)),
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Column(children: [
@@ -74,7 +78,9 @@ class _EditSubGoalState extends State<EditSubGoal> {
                                         border: const OutlineInputBorder(),
                                         hintText: 'Subgoal title',
                                         labelText: 'Subgoal title',
-                                        hintStyle: Fonts.inputHintTextStyle),
+                                        hintStyle:
+                                            Fonts_mode.inputHintTextStyle(
+                                                isDarkTheme)),
                                     controller: newTaskController,
                                   )),
                               Row(
@@ -90,7 +96,8 @@ class _EditSubGoalState extends State<EditSubGoal> {
                                       padding: EdgeInsets.fromLTRB(
                                           parentWidth * 0.01, 5, 5, 5),
                                       child: Text(
-                                          style: Fonts.graySubtitle,
+                                          style: Fonts_mode.graySubtitle(
+                                              isDarkTheme),
                                           widget.parent.name),
                                     ),
                                   )
