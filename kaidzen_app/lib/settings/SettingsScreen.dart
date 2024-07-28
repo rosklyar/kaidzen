@@ -240,21 +240,21 @@ class SettingsScreen extends StatelessWidget {
                                                 textAlign: TextAlign.left,
                                               )
                                             ]),
-                                        Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Visibility(
-                                                  visible: !featuresState
-                                                      .isFeatureDiscovered(
-                                                          Features.CHOOSE.id),
-                                                  child: SvgPicture.asset(
-                                                      "assets/new.svg")),
-                                              Icon(Icons.arrow_forward_ios,
-                                                  color: dark_light_modes
-                                                      .statusIcon(isDarkTheme),
-                                                  size: 18),
-                                            ]),
+                                        // Row(
+                                        //     mainAxisAlignment:
+                                        //         MainAxisAlignment.end,
+                                        //     children: [
+                                        //       Visibility(
+                                        //           visible: !featuresState
+                                        //               .isFeatureDiscovered(
+                                        //                   Features.CHOOSE.id),
+                                        //           child: SvgPicture.asset(
+                                        //               "assets/new.svg")),
+                                        //       Icon(Icons.arrow_forward_ios,
+                                        //           color: dark_light_modes
+                                        //               .statusIcon(isDarkTheme),
+                                        //           size: 18),
+                                        //     ]),
                                       ])
                                 ]),
                                 onTap: () async {

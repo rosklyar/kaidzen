@@ -39,6 +39,7 @@ class ThemeSelectionPage extends StatelessWidget {
     themeProvider.darkTheme = isDarkMode;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt('hasChosenTheme', 1);
+    Vibration.vibrate(duration: 500);
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
           builder: (_) => ModeConfirmationScreen(isDarkMode: isDarkMode)),
