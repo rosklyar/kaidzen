@@ -10,7 +10,7 @@ class BoardMessageState extends ChangeNotifier {
   final TasksState tasksState;
   final HabitState habitState;
 
-  Map<ToggleBoard, String> _boardMessages = {
+  final Map<ToggleBoard, String> _boardMessages = {
     ToggleBoard.TODO: "Create meaningful goals to\ndevelop your life spheres",
     ToggleBoard.DOING: "Keep here the goals \nyou want to concentrate on",
     ToggleBoard.DONE: "Experience fulfillment and satisfaction\nas you visualize your accomplishments",
@@ -28,7 +28,6 @@ class BoardMessageState extends ChangeNotifier {
         !tutorialState.tutorialCompleted() && board == ToggleBoard.TODO
             ? "You will hatch the egg\nby creating meaningful goals"
             : _boardMessages[board] ?? "";
-;
     return tasksState.getCountByStatus(board.name) > 0 || habitState.getCountByStatus(board.name) > 0 ? "" : message;
   }
 }

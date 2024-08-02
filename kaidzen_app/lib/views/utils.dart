@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../assets/light_dark_theme.dart';
-import 'package:kaidzen_app/views/theamedAlertDIalog.dart';
 
 import '../emotions/EmotionsState.dart';
 import '../tutorial/TutorialState.dart';
@@ -104,7 +103,7 @@ Future<int?> showNumberInputDialog(String title, BuildContext context,
                     errorBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                           color: Theme.of(context)
-                              .errorColor), // Use errorColor for error border
+                              .colorScheme.error), // Use errorColor for error border
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
@@ -117,7 +116,7 @@ Future<int?> showNumberInputDialog(String title, BuildContext context,
                         : null, // display errorText if there's an error
                     errorStyle: TextStyle(
                         color: Theme.of(context)
-                            .errorColor), // Use errorColor for error text
+                            .colorScheme.error), // Use errorColor for error text
                   ),
                 ),
               ],

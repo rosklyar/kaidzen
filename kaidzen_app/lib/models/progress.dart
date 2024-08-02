@@ -5,7 +5,7 @@ class Progress extends Equatable {
   final int level;
   final int totalPoints;
 
-  Progress(this.level, this.points, this.totalPoints);
+  const Progress(this.level, this.points, this.totalPoints);
 
   @override
   List<Object?> get props => [level, points, totalPoints];

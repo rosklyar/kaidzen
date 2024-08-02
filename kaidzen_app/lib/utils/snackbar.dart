@@ -1,12 +1,10 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/tutorial/TutorialState.dart';
 import 'package:provider/provider.dart';
 
 import '../assets/light_dark_theme.dart';
-import '../main.dart';
 
 showTopFlushbar(String text, BuildContext context, int durationInMs) {
   final flushBar = Flushbar(
@@ -70,15 +68,15 @@ void showDarkThemeFlushbar(
 
   if (isDarkTheme) {
     currentFlushbar = Flushbar(
-      duration: Duration(seconds: 2),
+      duration: const Duration(seconds: 2),
       flushbarPosition: FlushbarPosition.TOP,
       backgroundColor: Color.lerp(
           task.category.getBackgroundColor(isDarkTheme), Colors.white, 0.1)!,
 
 // Color.lerp(categoryColorSelectedDark, Colors.white, 0.55)!
 
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       borderRadius: BorderRadius.circular(8),
       borderWidth: 1,
       titleText: flagMoved

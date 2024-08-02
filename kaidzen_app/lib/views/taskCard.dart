@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kaidzen_app/views/listViewHabitItem.dart';
 import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
-import '../models/habit.dart';
 import '../models/task.dart';
 import 'ListViewTaskItem.dart';
 import 'listViewComplexTaskItem.dart';

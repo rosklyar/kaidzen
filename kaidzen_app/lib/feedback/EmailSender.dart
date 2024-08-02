@@ -232,7 +232,7 @@ class _EmailSenderState extends State<EmailSender> {
                                         .copyWith(color: Colors.white)
                                     : Fonts.largeTextStyle20),
                             style: ElevatedButton.styleFrom(
-                                primary: _isSendButtonActive
+                                backgroundColor: _isSendButtonActive
                                     ? activeButtonColor
                                     : unselectedToggleColor),
                           ))),
@@ -246,7 +246,8 @@ class _EmailSenderState extends State<EmailSender> {
 
   void _openImagePicker() async {
     final picker = ImagePicker();
-    PickedFile? pick = await picker.getImage(source: ImageSource.gallery);
+    PickedFile? pick =
+        (await picker.pickImage(source: ImageSource.gallery)) as PickedFile?;
     if (pick != null) {
       setState(() {
         attachments.add(pick.path);

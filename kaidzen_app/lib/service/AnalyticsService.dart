@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:kaidzen_app/assets/constants.dart';

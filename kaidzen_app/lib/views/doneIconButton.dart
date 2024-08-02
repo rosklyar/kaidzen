@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../assets/light_dark_theme.dart';
 
-import '../utils/theme.dart';
 
 class DoneIconButton extends StatelessWidget {
   const DoneIconButton({
@@ -17,7 +15,7 @@ class DoneIconButton extends StatelessWidget {
     bool isDarkTheme = themeProvider.darkTheme;
     return IconButton(
         icon: Icon(Icons.done, color: dark_light_modes.statusIcon(isDarkTheme)),
-        color: Theme.of(context).errorColor,
+        color: Theme.of(context).colorScheme.error,
         onPressed: () {});
   }
 }

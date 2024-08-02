@@ -6,18 +6,22 @@ import 'package:kaidzen_app/views/Quiz/signatureScreen.dart';
 
 import '../../service/AnalyticsService.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: WelcomeScreen(),
     );
   }
 }
 
 class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +34,7 @@ class WelcomeScreen extends StatelessWidget {
             // Adjusted flex values to allocate more space for the container
             Expanded(
               flex:
-                  2, // Increases the flex factor of the container, making it larger
+                  3, // Increases the flex factor of the container, making it larger
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors
@@ -42,14 +46,16 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(12), // Rounded corners
                 ),
-                margin: EdgeInsets.all(16.0), // Margin around the container
-                padding: EdgeInsets.all(16.0), // Padding inside the container
+                margin:
+                    const EdgeInsets.all(16.0), // Margin around the container
+                padding:
+                    const EdgeInsets.all(16.0), // Padding inside the container
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment
                       .center, // Center the children vertically
                   children: [
                     // First row of portraits aligned to the end
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         PortraitWidget(assetName: 'assets/001.png'),
@@ -57,7 +63,8 @@ class WelcomeScreen extends StatelessWidget {
                         PortraitWidget(assetName: 'assets/005.png'),
                       ],
                     ),
-                    SizedBox(height: 16), // Provides spacing between the rows
+                    const SizedBox(
+                        height: 16), // Provides spacing between the rows
                     // Second row of portraits aligned to the end with text at the start
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -65,8 +72,8 @@ class WelcomeScreen extends StatelessWidget {
                         Text('Welcome\nfrom\nthe team',
                             style: Fonts_mode.largeTextStyleWhite(true,
                                 fontSize: 22)),
-                        PortraitWidget(assetName: 'assets/003.png'),
-                        PortraitWidget(assetName: 'assets/002.png'),
+                        const PortraitWidget(assetName: 'assets/003.png'),
+                        const PortraitWidget(assetName: 'assets/002.png'),
                       ],
                     ),
                   ],
@@ -76,7 +83,7 @@ class WelcomeScreen extends StatelessWidget {
             Expanded(
               flex: 3,
               child: Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -85,7 +92,7 @@ class WelcomeScreen extends StatelessWidget {
                       style: Fonts_mode.largeTextStyleWhite(true,
                           fontSize: 30), // Style it as a heading
                     ),
-                    SizedBox(
+                    const SizedBox(
                         height:
                             16), // Space between "Hello Friend" and the rest of the text
                     Expanded(
@@ -104,7 +111,7 @@ class WelcomeScreen extends StatelessWidget {
             ),
 
             Padding(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                   top: 8.0,
                   bottom: 32.0,
                   left: 16,
@@ -116,14 +123,16 @@ class WelcomeScreen extends StatelessWidget {
                   await FirebaseAnalytics.instance.logEvent(
                       name: AnalyticsEventType.welcome_from_team_screen.name);
                   Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (_) => SignatureScreen()),
+                    MaterialPageRoute(builder: (_) => const SignatureScreen()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.grey[
-                      700], // Use any color from the MaterialColor palette or a custom color
-                  onPrimary: Colors.white,
-                  padding: EdgeInsets.symmetric(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                  ),
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.grey[700],
+                  padding: const EdgeInsets.symmetric(
                       horizontal: 20, vertical: 10), // Custom padding
                 ),
                 child: Row(
@@ -132,12 +141,12 @@ class WelcomeScreen extends StatelessWidget {
                     Container(
                       width: 14, // Adjust the size to your preference
                       height: 14, // Adjust the size to your preference
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white, // White color for the circle
                         shape: BoxShape.circle,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                         width: 16), // Space between the circle and the text
                     // Column for the two rows of text
                     Expanded(
@@ -182,7 +191,7 @@ class WelcomeScreen extends StatelessWidget {
 class PortraitWidget extends StatelessWidget {
   final String assetName;
 
-  PortraitWidget({required this.assetName});
+  const PortraitWidget({super.key, required this.assetName});
 
   @override
   Widget build(BuildContext context) {

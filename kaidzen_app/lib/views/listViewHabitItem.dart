@@ -4,17 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/service/HabitState.dart';
-import 'package:kaidzen_app/views/viewGoal.dart';
 import 'package:kaidzen_app/views/viewHabit.dart';
-import 'package:progress_state_button/iconed_button.dart';
-import 'package:progress_state_button/progress_button.dart';
 import 'package:provider/provider.dart';
 import '../assets/light_dark_theme.dart';
 
 import '../assets/constants.dart';
 import '../models/habit.dart';
 import '../utils/snackbar.dart';
-import 'doneIconButton.dart';
 
 class ListViewHabitItem extends ListTile {
   const ListViewHabitItem({
@@ -115,7 +111,7 @@ class _TrackHabitIconButtonState extends State<TrackHabitIconButton>
 
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
     );
 
     _scaleAnimation =
@@ -146,8 +142,8 @@ class _TrackHabitIconButtonState extends State<TrackHabitIconButton>
           clipBehavior: Clip.none,
           children: [
             showCheckmark
-                ? Icon(Icons.check_circle) // Checkmark icon when habit is done
-                : Icon(Icons.add_circle_outline), // Default icon
+                ? const Icon(Icons.check_circle) // Checkmark icon when habit is done
+                : const Icon(Icons.add_circle_outline), // Default icon
           ],
         ),
         onPressed: () async {
@@ -174,13 +170,12 @@ class _TrackHabitIconButtonState extends State<TrackHabitIconButton>
             }
 
             // Proceed with the existing logic.
-            Future.delayed(Duration(milliseconds: 300), () async {
+            Future.delayed(const Duration(milliseconds: 300), () async {
               await Provider.of<HabitState>(context, listen: false)
                   .trackHabit(widget.habit, context);
               _isButtonLocked = false;
             });
           }
-          ;
         },
       ),
     );
@@ -254,7 +249,7 @@ class MoveHabitIconButton extends StatelessWidget {
       icon: Container(
         width: 32, // Set the width of the square
         height: 32, // Set the height of the square
-        padding: EdgeInsets.all(
+        padding: const EdgeInsets.all(
             2), // Adjust padding to make the icon smaller within the square
         decoration: BoxDecoration(
           color: dark_light_modes.cardMoveButtonColor(

@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 
 import '../assets/constants.dart';
 import '../assets/light_dark_theme.dart';

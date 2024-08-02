@@ -37,7 +37,6 @@ import 'package:instabug_flutter/instabug_flutter.dart';
 import 'dart:async';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 
-import 'views/Quiz/light_dark_question.dart';
 import 'views/Quiz/welcomeFromTeam.dart';
 
 void main() async {
@@ -179,7 +178,7 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: ThemeData.dark(),
       themeMode: themeProvider.darkTheme ? ThemeMode.dark : ThemeMode.light,
-      home: hasChosenTheme ? HomeScreen() : WelcomeScreen(),
+      home: hasChosenTheme ? const HomeScreen() : const WelcomeScreen(),
       // ThemeSelectionPage(),
 
       // home: const HomeScreen(),
@@ -198,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<SwitchableBoardState> _switchableBoardKey = GlobalKey();
   final GlobalKey<ProfilePanelState> _profilePanelKey = GlobalKey();
 
-  DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
+  DarkThemeProvider themeChangeProvider = DarkThemeProvider();
 
   @override
   void initState() {
@@ -250,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
               isDarkTheme ? HapticFeedback.heavyImpact() : null;
             },
             tooltip: 'Add goal',
-            child: Icon(
+            child: const Icon(
               Icons.add,
               color: Colors.white,
             ),

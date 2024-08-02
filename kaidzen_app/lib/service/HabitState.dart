@@ -6,8 +6,6 @@ import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/models/task.dart';
 import "package:collection/collection.dart";
 import 'package:kaidzen_app/service/AnalyticsService.dart';
-import 'package:kaidzen_app/service/TaskRepository.dart';
-import 'package:kaidzen_app/settings/ReviewUtils.dart';
 import 'package:kaidzen_app/tutorial/TutorialState.dart';
 import 'package:kaidzen_app/tutorial/tutorialProgress.dart';
 import 'package:vibration/vibration.dart';

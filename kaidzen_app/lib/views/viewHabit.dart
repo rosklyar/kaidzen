@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/service/HabitState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
-import 'package:kaidzen_app/views/editGoal.dart';
 import 'package:kaidzen_app/views/editHabit.dart';
 import 'package:kaidzen_app/views/listViewHabitItem.dart';
 import '../assets/light_dark_theme.dart';
 import '../models/habit.dart';
 import 'package:provider/provider.dart';
-import 'MoveTaskIconButton.dart';
 
 class ViewHabit extends StatefulWidget {
   final Habit habit;
@@ -172,11 +169,11 @@ class _ViewHabitState extends State<ViewHabit> {
 
   Widget _buildFancyProgressView(Habit habit) {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           habit.getType() == HabitType.FIXED
               ? _buildProgressRow("Completions:", habit.stageCount, habit)
               : _buildProgressRow("You are on stage:", habit.stage, habit),
@@ -210,7 +207,7 @@ class _ViewHabitState extends State<ViewHabit> {
         children: [
           Text(label, style: Fonts_mode.graySubtitleMedium(isDarkTheme)),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
               color: habit.task.category.color.withOpacity(0.5),
               borderRadius: BorderRadius.circular(5),
@@ -270,7 +267,7 @@ class _ViewHabitState extends State<ViewHabit> {
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                primary: activeButtonColor),
+                                backgroundColor: activeButtonColor),
                             onPressed: () {
                               Navigator.pop(context);
                             },

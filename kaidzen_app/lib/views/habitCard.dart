@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/views/listViewHabitItem.dart';
 import 'package:provider/provider.dart';
 
 import '../assets/constants.dart';
 import '../assets/light_dark_theme.dart';
 import '../models/habit.dart';
-import '../models/task.dart';
-import 'ListViewTaskItem.dart';
-import 'listViewComplexTaskItem.dart';
 
 Widget habitCard(Habit habit, BuildContext context) {
   double progressValue = calculateCurrentHabitProgress(habit);
@@ -17,7 +13,7 @@ Widget habitCard(Habit habit, BuildContext context) {
   bool isDarkTheme = themeProvider.darkTheme;
 
   Widget progressBar = ClipRRect(
-    borderRadius: BorderRadius.only(
+    borderRadius: const BorderRadius.only(
       bottomLeft: Radius.circular(20), // Adjust the radius as needed
       bottomRight: Radius.circular(20),
     ),
@@ -54,8 +50,8 @@ AssetImage getBackgroundImage(Habit habit, context) {
   if (habit.type == HabitType.FIXED.id ||
       habit.task.category == DevelopmentCategoryDark.NO_CATEGORY) {
     return isDarkTheme
-        ? AssetImage("assets/no_category_dark_default.png")
-        : AssetImage("assets/no_category.png");
+        ? const AssetImage("assets/no_category_dark_default.png")
+        : const AssetImage("assets/no_category.png");
   }
   var stagesCountInHabit = habit.getType().stageCount.length;
 

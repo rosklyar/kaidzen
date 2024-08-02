@@ -8,7 +8,7 @@ class ExpandableText extends StatefulWidget {
   final String previewText;
   final String fullText;
 
-  ExpandableText({required this.previewText, required this.fullText});
+  const ExpandableText({super.key, required this.previewText, required this.fullText});
 
   @override
   _ExpandableTextState createState() => _ExpandableTextState();

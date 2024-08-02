@@ -12,7 +12,6 @@ import 'package:kaidzen_app/service/TasksState.dart';
 import 'package:kaidzen_app/tutorial/TutorialState.dart';
 import 'package:kaidzen_app/views/taskCard.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../assets/constants.dart';
 import '../models/habit.dart';
 import '../service/AnalyticsService.dart';
@@ -196,7 +195,7 @@ class BoardState extends State<Board> {
 
   ReorderableListView reorderableListView() {
     var habits = Visibility(
-      key: Key('habits'),
+      key: const Key('habits'),
       visible: widget.habits.isNotEmpty,
       child: Column(
         children: [
@@ -226,7 +225,7 @@ class BoardState extends State<Board> {
                       width: 20.0,
                       height: 20.0,
                     ), // Replace with your desired icon
-                    SizedBox(
+                    const SizedBox(
                         width:
                             8.0), // Adds some spacing between the icon and text
                     Expanded(

@@ -9,6 +9,8 @@ import '../../assets/light_dark_theme.dart';
 import '../../main.dart';
 
 class ThemeSelectionPage extends StatelessWidget {
+  const ThemeSelectionPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Determine the size of the canvas for the Yin-Yang symbol
@@ -27,8 +29,8 @@ class ThemeSelectionPage extends StatelessWidget {
         crossAxisAlignment:
             CrossAxisAlignment.stretch, // Stretch to the width of the screen
         children: [
-          SizedBox(height: 88),
-          Padding(
+          const SizedBox(height: 88),
+          const Padding(
             padding: EdgeInsets.only(top: 32.0),
             child: Text(
               'Choose Experience \n and Hold It\n',
@@ -58,7 +60,7 @@ class ThemeSelectionPage extends StatelessWidget {
                       setThemeMode(false, context);
                       themeProvider.darkTheme = false;
                     },
-                    child: Container(
+                    child: SizedBox(
                       width: 111, // Set your desired width
                       height: 111, // Set your desired height
                       child: FloatingActionButton(
@@ -67,7 +69,7 @@ class ThemeSelectionPage extends StatelessWidget {
                         onPressed: () {
                           HapticFeedback.lightImpact();
                         },
-                        child: Icon(Icons.wb_sunny,
+                        child: const Icon(Icons.wb_sunny,
                             size: 36,
                             color: Colors.black), // Adjust icon size as needed
                       ),
@@ -82,7 +84,7 @@ class ThemeSelectionPage extends StatelessWidget {
                         themeProvider.darkTheme = true;
                         setThemeMode(true, context);
                       },
-                      child: Container(
+                      child: SizedBox(
                         width: 111, // Set your desired width
                         height: 111, // Set your desired height
                         child: FloatingActionButton(
@@ -91,7 +93,7 @@ class ThemeSelectionPage extends StatelessWidget {
                           onPressed: () {
                             HapticFeedback.lightImpact();
                           },
-                          child: Icon(Icons.nightlight_round,
+                          child: const Icon(Icons.nightlight_round,
                               size: 36,
                               color:
                                   Colors.white), // Adjust icon size as needed
@@ -194,7 +196,7 @@ class YinYangPainter extends CustomPainter {
 class ModeConfirmationScreen extends StatefulWidget {
   final bool isDarkMode;
 
-  ModeConfirmationScreen({required this.isDarkMode});
+  const ModeConfirmationScreen({super.key, required this.isDarkMode});
 
   @override
   _ModeConfirmationScreenState createState() => _ModeConfirmationScreenState();
@@ -204,10 +206,10 @@ class _ModeConfirmationScreenState extends State<ModeConfirmationScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => HomeScreen()),
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
         );
       }
     });

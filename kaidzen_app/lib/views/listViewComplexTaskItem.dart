@@ -11,7 +11,7 @@ import 'ListViewTaskItem.dart';
 import '../assets/light_dark_theme.dart';
 
 class ListViewComplexTaskItem extends StatelessWidget {
-  ListViewComplexTaskItem({
+  const ListViewComplexTaskItem({
     Key? key,
     required this.task,
   }) : super(key: key);
@@ -23,7 +23,7 @@ class ListViewComplexTaskItem extends StatelessWidget {
     final themeProvider = Provider.of<DarkThemeProvider>(context, listen: false);
     bool isDarkTheme = themeProvider.darkTheme;
     return ExpansionTile(
-      tilePadding: EdgeInsets.only(right: 30),
+      tilePadding: const EdgeInsets.only(right: 30),
       title: ListViewTaskItem(task: task),
       collapsedIconColor: dark_light_modes.statusIcon(isDarkTheme),
       iconColor: dark_light_modes.statusIcon(isDarkTheme),
@@ -62,7 +62,7 @@ List<Widget> buildExpandableContent(BuildContext context, Task task) {
       child: ListTile(
         horizontalTitleGap: 1,
         leading: IconButton(
-          icon: Icon(Icons.add_circle_outline),
+          icon: const Icon(Icons.add_circle_outline),
           // Image.asset("assets/plus_in_circle.png"),
           color: dark_light_modes.statusIcon(isDarkTheme),
           onPressed: () {

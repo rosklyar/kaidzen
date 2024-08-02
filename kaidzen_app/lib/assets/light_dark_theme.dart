@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:ui';
-import 'package:flutter/material.dart';
 
 class DarkThemePreference {
   static const THEME_STATUS = "THEMESTATUS";
@@ -80,12 +78,12 @@ class dark_light_modes {
 
   static Color unselectedToggleColor(bool isDarkTheme) {
     // Assuming isDarkTheme determines the theme mode
-    return isDarkTheme ? Colors.grey[700]! : Color.fromRGBO(231, 233, 234, 1);
+    return isDarkTheme ? Colors.grey[700]! : const Color.fromRGBO(231, 233, 234, 1);
   }
 
   static Color ScreenBackColor(bool isDarkTheme) {
     // Assuming isDarkTheme determines the theme mode
-    return isDarkTheme ? Colors.grey[800]! : Color.fromRGBO(245, 243, 243, 1.0);
+    return isDarkTheme ? Colors.grey[800]! : const Color.fromRGBO(245, 243, 243, 1.0);
   }
 
   static Color mindfulMomentsSelection(bool isDarkTheme) {
@@ -144,7 +142,7 @@ class Fonts_mode {
     // bool isDarkTheme = Theme.of(context).brightness == Brightness.dark;
     // Adjust default color based on theme if not specified
     color =
-        color ?? (isDarkTheme ? Colors.white : Color.fromRGBO(72, 76, 79, 1));
+        color ?? (isDarkTheme ? Colors.white : const Color.fromRGBO(72, 76, 79, 1));
 
     return GoogleFonts.montserrat(
       fontSize: fontSize,

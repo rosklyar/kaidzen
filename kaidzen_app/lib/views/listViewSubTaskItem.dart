@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kaidzen_app/models/task.dart';
-import 'package:kaidzen_app/utils/theme.dart';
 import 'package:kaidzen_app/views/viewGoal.dart';
 import 'package:provider/provider.dart';
 

@@ -1,4 +1,3 @@
-import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/service/KaizenState.dart';
 
 import '../assets/light_dark_theme.dart';

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/settings/Story.dart';

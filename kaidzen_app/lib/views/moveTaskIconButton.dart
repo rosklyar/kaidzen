@@ -37,7 +37,7 @@ class MoveTaskIconButton extends StatelessWidget {
       icon: Container(
         width: 32, // Set the width of the square
         height: 32, // Set the height of the square
-        padding: EdgeInsets.all(
+        padding: const EdgeInsets.all(
             2), // Adjust padding to make the icon smaller within the square
         decoration: BoxDecoration(
           color: dark_light_modes.cardMoveButtonColor(
@@ -139,7 +139,7 @@ class MoveTaskIconButton extends StatelessWidget {
 
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                    builder: (_) => HomeScreen()));
+                                    builder: (_) => const HomeScreen()));
                             // Navigator.pop(context);
                           }),
                       flex: 2),
@@ -166,7 +166,7 @@ class MoveTaskIconButton extends StatelessWidget {
                                 Navigator.of(context).pop();
                               },
                               style: ElevatedButton.styleFrom(
-                                  primary: activeButtonColor),
+                                  backgroundColor: activeButtonColor),
                             ))),
                     flex: 3),
               ],

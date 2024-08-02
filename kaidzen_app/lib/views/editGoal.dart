@@ -169,7 +169,7 @@ class _EditGoalState extends State<EditGoal> {
                                           .copyWith(color: Colors.white)
                                       : Fonts.largeTextStyle20),
                               style: ElevatedButton.styleFrom(
-                                  primary: _isSaveButtonActive
+                                  backgroundColor: _isSaveButtonActive
                                       ? activeButtonColor
                                       : unselectedToggleColor),
                             ))),

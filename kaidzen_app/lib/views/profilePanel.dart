@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:kaidzen_app/achievements/AchievementsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
-import 'package:kaidzen_app/features/Feature.dart';
 import 'package:kaidzen_app/features/FeaturesState.dart';
 import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/ProgressState.dart';
@@ -136,7 +135,7 @@ class ProfilePanelState extends State<ProfilePanel>
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
 /////
-                                  Stack(children: [
+                                  const Stack(children: [
                                     // IconButton(
                                     //   padding: EdgeInsets.only(
                                     //       right: parentWidth * 0.01),
@@ -283,7 +282,7 @@ class ProfilePanelState extends State<ProfilePanel>
                                                       .settings_screen_opened
                                                       .name);
                                         },
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.menu_rounded,
                                         ),
                                         // Image.asset(

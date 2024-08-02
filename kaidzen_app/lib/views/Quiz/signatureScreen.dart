@@ -7,6 +7,8 @@ import '../../service/AnalyticsService.dart';
 import 'light_dark_question.dart';
 
 class SignatureScreen extends StatefulWidget {
+  const SignatureScreen({super.key});
+
   @override
   _SignatureScreenState createState() => _SignatureScreenState();
 }
@@ -22,7 +24,7 @@ class _SignatureScreenState extends State<SignatureScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('', style: TextStyle(color: Colors.black)),
+        title: const Text('', style: TextStyle(color: Colors.black)),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
@@ -47,7 +49,7 @@ class _SignatureScreenState extends State<SignatureScreen> {
               children: [
                 GestureDetector(
                   onTapDown: (TapDownDetails details) async {
-                    _timer = Timer(Duration(seconds: 2), () async {
+                    _timer = Timer(const Duration(seconds: 2), () async {
                       if (await Vibration.hasVibrator() ?? false) {
                         Vibration.vibrate(pattern: [500, 1000]);
                       }
@@ -58,7 +60,7 @@ class _SignatureScreenState extends State<SignatureScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ThemeSelectionPage()));
+                              builder: (context) => const ThemeSelectionPage()));
                     });
 
                     Vibration.vibrate(duration: 500);
@@ -67,17 +69,17 @@ class _SignatureScreenState extends State<SignatureScreen> {
                     scale: 2, // Scale up the FAB by 2 times
                     child: FloatingActionButton(
                       backgroundColor: Colors.black,
-                      child: Icon(Icons.fingerprint,
+                      child: const Icon(Icons.fingerprint,
                           size: 40, color: Colors.white),
                       onPressed: () {}, // For visual feedback
                     ),
                   ),
                 ),
-                SizedBox(height: 33), // Space between the button and the text
+                const SizedBox(height: 33), // Space between the button and the text
                 Text(
                   "Tap and hold\n the fingerprint to commit",
                   textAlign: TextAlign.right,
-                  style: textTheme.bodyText2?.copyWith(
+                  style: textTheme.bodyMedium?.copyWith(
                       color: Colors.black, fontWeight: FontWeight.normal),
                 ),
               ],

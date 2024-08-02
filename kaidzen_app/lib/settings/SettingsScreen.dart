@@ -260,7 +260,7 @@ class SettingsScreen extends StatelessWidget {
                                 onTap: () async {
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
-                                        builder: (_) => ThemeSelectionPage()),
+                                        builder: (_) => const ThemeSelectionPage()),
                                   );
                                 })
                           ]).toList()),
@@ -400,6 +400,6 @@ class SettingsScreen extends StatelessWidget {
     await FirebaseAnalytics.instance
         .logEvent(name: AnalyticsEventType.mindful_moments_opened.name);
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => MindfulMomentsScreen()));
+        MaterialPageRoute(builder: (context) => const MindfulMomentsScreen()));
   }
 }

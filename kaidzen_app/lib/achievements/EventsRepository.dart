@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:kaidzen_app/achievements/achievementSnaphot.dart';
 import 'package:kaidzen_app/service/KaizenState.dart';

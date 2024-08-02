@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:kaidzen_app/views/createSubgoal.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/views/editSubgoal.dart';
@@ -129,7 +128,7 @@ class _ViewGoalState extends State<ViewGoal> {
                             color: task.category.color,
                             size: 10.0 + task.difficulty.id * 3,
                           ),
-                          SizedBox(
+                          const SizedBox(
                               width:
                                   10), // Add some space between icon and text
                           Expanded(
@@ -299,7 +298,7 @@ class _ViewGoalState extends State<ViewGoal> {
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                primary: activeButtonColor),
+                                backgroundColor: activeButtonColor),
                             onPressed: () {
                               Navigator.pop(context);
                             },

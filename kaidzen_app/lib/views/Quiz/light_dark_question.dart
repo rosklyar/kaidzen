@@ -1,6 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,6 +13,8 @@ import '../../service/AnalyticsService.dart';
 import 'elevated_button.dart';
 
 class ThemeSelectionPage extends StatelessWidget {
+  const ThemeSelectionPage({super.key});
+
   void handleLongPress(
       BuildContext context, bool isDarkMode, Function setElevation) async {
     setElevation(true); // Raise the button by increasing elevation
@@ -23,7 +24,7 @@ class ThemeSelectionPage extends StatelessWidget {
           repeat: 3); // Vibrate for ~4 seconds with pauses
     }
 
-    Future.delayed(Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 4), () {
       setThemeMode(isDarkMode, context);
       setElevation(false); // Reset elevation after action is complete
     });
@@ -54,8 +55,8 @@ class ThemeSelectionPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(height: 88),
-          Padding(
+          const SizedBox(height: 88),
+          const Padding(
             padding: EdgeInsets.only(top: 32.0),
             child: Text(
               'Choose Experience\n and Hold It',
@@ -149,7 +150,7 @@ class ThemeSelectionPage extends StatelessWidget {
                 Positioned(
                   bottom: MediaQuery.of(context).size.height / 2 -
                       65, // Adjust this value to position the "OR" text correctly
-                  child: Text(
+                  child: const Text(
                     'OR',
                     style: TextStyle(
                       fontSize: 32,
@@ -289,7 +290,7 @@ class ThemeSelectionPage extends StatelessWidget {
 class ModeConfirmationScreen extends StatefulWidget {
   final bool isDarkMode;
 
-  ModeConfirmationScreen({required this.isDarkMode});
+  const ModeConfirmationScreen({super.key, required this.isDarkMode});
 
   @override
   _ModeConfirmationScreenState createState() => _ModeConfirmationScreenState();
@@ -299,10 +300,10 @@ class _ModeConfirmationScreenState extends State<ModeConfirmationScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => HomeScreen()),
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
         );
       }
     });
@@ -331,20 +332,20 @@ class _ModeConfirmationScreenState extends State<ModeConfirmationScreen> {
 class HoldItWidget extends StatelessWidget {
   final double curveDepth;
 
-  HoldItWidget(
-      {this.curveDepth = 50.0}); // Allows external control of the curve depth
+  const HoldItWidget(
+      {super.key, this.curveDepth = 50.0}); // Allows external control of the curve depth
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
+        const Text(
           'Hold it',
           style: TextStyle(color: Colors.black, fontSize: 22),
         ),
-        SizedBox(height: 8),
-        Container(
+        const SizedBox(height: 8),
+        SizedBox(
           width:
               120, // Ensure this width covers the entire area from text to the target
           height: 100,
@@ -360,15 +361,15 @@ class HoldItWidget extends StatelessWidget {
 class HoldItWidgetLow extends StatelessWidget {
   final double curveDepth;
 
-  HoldItWidgetLow(
-      {this.curveDepth = 50.0}); // Allows external control of the curve depth
+  const HoldItWidgetLow(
+      {super.key, this.curveDepth = 50.0}); // Allows external control of the curve depth
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
+        SizedBox(
           width:
               120, // Ensure this width covers the entire area from text to the target
           height: 100,
@@ -377,11 +378,11 @@ class HoldItWidgetLow extends StatelessWidget {
                 QuarterCircleLinePainterLow(curveControlHeight: curveDepth),
           ),
         ),
-        Text(
+        const Text(
           'Hold it',
           style: TextStyle(color: Colors.black, fontSize: 22),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
       ],
     );
   }

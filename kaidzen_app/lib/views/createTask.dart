@@ -11,12 +11,9 @@ import 'package:kaidzen_app/service/AnalyticsService.dart';
 import 'package:kaidzen_app/service/HabitState.dart';
 import 'package:kaidzen_app/utils/dashSeparator.dart';
 import 'package:kaidzen_app/views/utils.dart';
-import 'package:kaidzen_app/views/theamedAlertDIalog.dart';
 import 'package:kaidzen_app/widgets/taskDifficulty.dart';
 import 'package:vibration/vibration.dart';
 
-import '../achievements/AchievementsState.dart';
-import '../achievements/event.dart';
 import '../assets/light_dark_theme.dart';
 import '../models/habit.dart';
 import '../models/task.dart';
@@ -448,8 +445,7 @@ class _CreateTaskState extends State<CreateTask> {
                                                                         context),
                                                                 style: ElevatedButton
                                                                     .styleFrom(
-                                                                        primary:
-                                                                            activeButtonColor),
+                                                                        backgroundColor: activeButtonColor),
                                                               ))),
                                                       flex: 3),
                                                 ],
@@ -479,7 +475,7 @@ class _CreateTaskState extends State<CreateTask> {
                                     : Fonts_mode.largeTextStyle(isDarkTheme,
                                         fontSize: 20)),
                             style: ElevatedButton.styleFrom(
-                                primary: _isCreateButtonActive
+                                backgroundColor: _isCreateButtonActive
                                     ? activeButtonColor
                                     : unselectedToggleColor),
                           ))),
@@ -641,7 +637,7 @@ class _CreateTaskState extends State<CreateTask> {
                   category,
                   Difficulty.values.firstWhere(
                       (element) => element.id == _currentDifficulty),
-                  parent: widget.parent != null ? widget.parent!.id : null,
+                  parent: widget.parent?.id,
                   status: _startDoing ? Status.DOING : Status.TODO),
               1,
               0,
@@ -655,7 +651,7 @@ class _CreateTaskState extends State<CreateTask> {
               category,
               Difficulty.values
                   .firstWhere((element) => element.id == _currentDifficulty),
-              parent: widget.parent != null ? widget.parent!.id : null,
+              parent: widget.parent?.id,
               status: _startDoing ? Status.DOING : Status.TODO),
           context);
     }

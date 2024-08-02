@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/assets/light_dark_theme.dart';
@@ -122,9 +121,7 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                 // Text color for the buttons
-                primary: (isDarkTheme ? Colors.grey[100] : Colors.deepPurple),
-                // Background color can be set here, though typically not used for text buttons
-                backgroundColor: dark_light_modes.ScreenBackColor(isDarkTheme),
+                foregroundColor: (isDarkTheme ? Colors.grey[100] : Colors.deepPurple), backgroundColor: dark_light_modes.ScreenBackColor(isDarkTheme),
               ),
             ),
             dialogBackgroundColor: dark_light_modes.ScreenBackColor(
@@ -443,7 +440,7 @@ class _MindfulMomentsScreenState extends State<MindfulMomentsScreen> {
                             width: double.infinity,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  primary: activeButtonColor),
+                                  backgroundColor: activeButtonColor),
                               onPressed: () async {
                                 Navigator.pop(context);
                                 if (permissionStatus !=

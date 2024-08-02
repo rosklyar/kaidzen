@@ -22,7 +22,7 @@ class _DayPickerDialogState extends State<DayPickerDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Pick a day'),
+      title: const Text('Pick a day'),
       content: SingleChildScrollView(
         child: YearPicker(
           selectedDate: _selectedDate,
@@ -34,11 +34,11 @@ class _DayPickerDialogState extends State<DayPickerDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         ElevatedButton(
           onPressed: () => Navigator.pop(context, _selectedDate),
-          child: Text('OK'),
+          child: const Text('OK'),
         ),
       ],
     );

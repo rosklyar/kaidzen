@@ -1,5 +1,4 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -274,7 +273,7 @@ class _EditHabitState extends State<EditHabit> {
                                           .copyWith(color: Colors.white)
                                       : Fonts.largeTextStyle20),
                               style: ElevatedButton.styleFrom(
-                                  primary: _isSaveButtonActive
+                                  backgroundColor: _isSaveButtonActive
                                       ? activeButtonColor
                                       : unselectedToggleColor),
                             ))),
@@ -318,7 +317,7 @@ class _EditHabitState extends State<EditHabit> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           decoration: BoxDecoration(
             color: DevelopmentCategoryDark.values
                 .firstWhere((element) => element.id == _currentCategory)
@@ -337,7 +336,7 @@ class _EditHabitState extends State<EditHabit> {
           maintainSize: true,
           visible: false,
           child: IconButton(
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
             onPressed: () {},
           ),
         )
@@ -354,11 +353,11 @@ class _EditHabitState extends State<EditHabit> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         IconButton(
-          icon: Icon(Icons.remove),
+          icon: const Icon(Icons.remove),
           onPressed: onMinusPressed,
         ),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           decoration: BoxDecoration(
             color: DevelopmentCategoryDark.values
                 .firstWhere((element) => element.id == _currentCategory)
@@ -372,7 +371,7 @@ class _EditHabitState extends State<EditHabit> {
           ),
         ),
         IconButton(
-          icon: Icon(Icons.add),
+          icon: const Icon(Icons.add),
           onPressed: onPlusPressed,
         ),
       ],
@@ -396,7 +395,7 @@ class _EditHabitState extends State<EditHabit> {
                     "$label ",
                     style: Fonts_mode.largeTextStyle(isDarkTheme),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   _nonEditableCounter(value),
                 ]),
           ),
@@ -423,7 +422,7 @@ class _EditHabitState extends State<EditHabit> {
                     "$label ",
                     style: Fonts_mode.largeTextStyle(isDarkTheme),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   _buildCounter(value, onMinusPressed, onPlusPressed),
                 ]),
           ),

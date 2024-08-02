@@ -1,14 +1,12 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/models/progress.dart';
 import 'package:kaidzen_app/models/task.dart';
 import 'package:kaidzen_app/service/ProgressCalculator.dart';
 import 'package:kaidzen_app/service/ProgressRepository.dart';
 
 import '../assets/light_dark_theme.dart';
-import '../main.dart';
 import '../models/habit.dart';
 import '../utils/snackbar.dart';
 import 'AnalyticsService.dart';
@@ -32,7 +30,7 @@ class ProgressState extends ChangeNotifier {
     var updatedProgress = ProgressCalculator.progress(currentProgress, task);
 
     // var temp_name = pointsPropertiesMap[task.category]!.name.toLowerCase();
-    var temp_points = (updatedProgress.totalPoints).abs().toString();
+    var tempPoints = (updatedProgress.totalPoints).abs().toString();
     // print("$updatedProgress and  $currentProgress  and $temp_points");
     // Assume you need to wait for a previous operation to complete or for a UI state to stabilize
     // Future.delayed(Duration(milliseconds: 500), () {
@@ -40,7 +38,7 @@ class ProgressState extends ChangeNotifier {
 
     parentTaskFlag
         ? null
-        : showDarkThemeFlushbar(task.status, context, task, temp_points, true);
+        : showDarkThemeFlushbar(task.status, context, task, tempPoints, true);
     // });
 
     await handleProgressChanged(updatedProgress, currentProgress, task);
@@ -52,14 +50,14 @@ class ProgressState extends ChangeNotifier {
     var updatedProgress =
         ProgressCalculator.habitProgress(currentProgress, habit);
 
-    var temp_points = (updatedProgress.totalPoints).abs().toString();
+    var tempPoints = (updatedProgress.totalPoints).abs().toString();
     await handleProgressChanged(updatedProgress, currentProgress, habit.task);
 
     //point shere updated - current
     notifyListeners();
 
     showDarkThemeFlushbar(
-        habit.task.status, context, habit.task, temp_points, movedFlag);
+        habit.task.status, context, habit.task, tempPoints, movedFlag);
   }
 
   Future<void> handleProgressChanged(

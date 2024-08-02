@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:vibration/vibration.dart';
 
 class ElevatedIconButton extends StatefulWidget {
@@ -34,7 +33,7 @@ class _ElevatedIconButtonState extends State<ElevatedIconButton>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: Duration(milliseconds: 4000),
+      duration: const Duration(milliseconds: 4000),
       vsync: this,
     );
 
@@ -59,7 +58,7 @@ class _ElevatedIconButtonState extends State<ElevatedIconButton>
     Vibration.vibrate(pattern: [500, 1000], repeat: 3);
 
     // Set up a timer for 4 seconds to trigger the action if the button is held long enough.
-    _holdTimer = Timer(Duration(seconds: 4), () {
+    _holdTimer = Timer(const Duration(seconds: 4), () {
       widget.onLongPressCompleted(widget.isDarkMode);
       Vibration.cancel(); // Stop the vibration when the action is triggered
     });

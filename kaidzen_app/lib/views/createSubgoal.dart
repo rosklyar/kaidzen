@@ -5,7 +5,6 @@ import 'package:kaidzen_app/achievements/event.dart';
 import 'package:kaidzen_app/emotions/EmotionsState.dart';
 import 'package:kaidzen_app/assets/constants.dart';
 import 'package:kaidzen_app/views/utils.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vibration/vibration.dart';
 
 import '../assets/light_dark_theme.dart';
@@ -151,7 +150,7 @@ class _CreateSubGoalState extends State<CreateSubGoal> {
                                     width: double.infinity,
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                          primary: _isCreateButtonActive
+                                          backgroundColor: _isCreateButtonActive
                                               ? activeButtonColor
                                               : isDarkTheme
                                                   ? Color.lerp(

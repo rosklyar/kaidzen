@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:kaidzen_app/service/HabitState.dart';
@@ -39,7 +38,7 @@ class _SwitchableBoardsToggleWidgetState
     return Column(
       children: [
         Padding(
-            padding: EdgeInsets.only(bottom: 5),
+            padding: const EdgeInsets.only(bottom: 5),
             child: Image.asset("assets/collapsing_line.png")),
         SizedBox(
             width: double.infinity,
